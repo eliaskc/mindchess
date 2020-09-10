@@ -7,6 +7,7 @@ public class Project {
   private int presses;
 
   public int getPresses() {
+    //presses++;
     return presses;
   }
 
