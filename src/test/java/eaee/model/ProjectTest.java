@@ -1,4 +1,4 @@
-package edu.chalmers.projecttemplate.model;
+package test.java.eaee.model;
 
 import org.junit.Assert;
 import org.junit.Test;
