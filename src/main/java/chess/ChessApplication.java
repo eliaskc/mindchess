@@ -1,4 +1,4 @@
-package main.java.chess;
+package chess;
 
 //import main.java.chess.view.ChessView;
 //import main.java.chess.view.MenuView;

@@ -1,4 +1,4 @@
-package main.java.chess.controller;
+package chess.controller;
 
 public class MenuController {
 
