@@ -4,19 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chess {
-    Player player1 = new Player("Player 1");
-    Player player2 = new Player("Player 2");
+    private static Chess instance = null;
+
+    Player player1 = new Player("Player 3");
+    Player player2 = new Player("Player 4");
 
     Board board = new Board();
 
     List<Move> moves = new ArrayList<>();
 
-    public Chess(String player1name, String player2name) {
-        player1.name = player1name;
-        player2.name = player2name;
+    public static Chess getInstance() {
+        if (instance == null) {
+            instance = new Chess();
+            instance.init();
+        }
+        return instance;
     }
 
-    public void initializeBoard() {
+    private void init() {
+        initializeBoard();
+    }
+
+    private void initializeBoard() {
         Square squares[][] = board.getSquares();
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
@@ -32,6 +41,15 @@ public class Chess {
     public void endGame() {
 
     }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
     //etc...
 
 }

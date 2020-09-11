@@ -1,5 +1,6 @@
 package chess.controller;
 
+import chess.model.Chess;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,15 +17,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController{
+public class MenuController implements Initializable{
+    Chess model = Chess.getInstance();
 
     @FXML private Button btnStart;
     @FXML private Button btnExit;
-
+    @FXML private TextField player1NameField;
+    @FXML private TextField player2NameField;
 
 
     @FXML
     void goToBoard (ActionEvent event) throws IOException {
+        model.getPlayer1().setName(player1NameField.getText());
+        model.getPlayer2().setName(player2NameField.getText());
         Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("board.fxml"));
         Scene scene = new Scene(parent);
 
@@ -32,10 +37,13 @@ public class MenuController{
         window.setScene(scene);
         window.show();
     }
-
     @FXML
     void Exit (ActionEvent event) {
         System.exit(0);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
 

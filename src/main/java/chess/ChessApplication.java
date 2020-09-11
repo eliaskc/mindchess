@@ -2,6 +2,7 @@ package chess;
 
 //import chess.view.ChessView;
 //import chess.view.MenuView;
+import chess.controller.ChessController;
 import chess.model.Chess;
 //import chess.controller.ChessController;
 //import chess.controller.MenuController;
@@ -27,8 +28,7 @@ public final class ChessApplication extends Application {
 
 
 	public static void main(String[] args) {
-		Chess model = new Chess("Elias Carlson (den bästa Elias)", "Erik Wessman");
-		model.initializeBoard();
+		Chess model = Chess.getInstance();
 
 		Application.launch(args);
 	}
