@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public final class ChessApplication extends Application {
+
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("menu.fxml"));
@@ -22,10 +24,16 @@ public final class ChessApplication extends Application {
 		stage.show();
 	}
 
+
+
 	public static void main(String[] args) {
 		Chess model = new Chess("Elias Carlson (den bästa Elias)", "Erik Wessman");
 		model.initializeBoard();
 
 		Application.launch(args);
 	}
+
+
+
+
 }

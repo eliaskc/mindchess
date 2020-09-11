@@ -13,8 +13,8 @@
             <Image url="@MINDCHESS.png" />
          </image>
       </ImageView>
-      <Button layoutX="467.0" layoutY="270.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="346.0" styleClass="startButton" text="Start Game" />
-      <Button layoutX="468.0" layoutY="411.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="346.0" styleClass="exitButton" text="Exit" />
+      <Button fx:id="btnStart" layoutX="467.0" layoutY="270.0" mnemonicParsing="false" onAction="#goToBoard" prefHeight="69.0" prefWidth="346.0" styleClass="startButton" text="Start Game" />
+      <Button fx:id="btnExit" layoutX="468.0" layoutY="411.0" mnemonicParsing="false" onAction="#Exit" prefHeight="69.0" prefWidth="346.0" styleClass="exitButton" text="Exit" />
       <ChoiceBox layoutX="467.0" layoutY="352.0" prefWidth="150.0" styleClass="dropDown" />
    </children>
 </AnchorPane>
