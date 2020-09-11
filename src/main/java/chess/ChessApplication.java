@@ -1,10 +1,10 @@
 package chess;
 
-//import main.java.chess.view.ChessView;
-//import main.java.chess.view.MenuView;
-//import main.java.chess.model.Chess;
-//import main.java.chess.controller.ChessController;
-//import main.java.chess.controller.MenuController;
+//import chess.view.ChessView;
+//import chess.view.MenuView;
+import chess.model.Chess;
+//import chess.controller.ChessController;
+//import chess.controller.MenuController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 public final class ChessApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
-		System.out.println("Hellooo");
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("menu.fxml"));
 		Scene scene = new Scene(root);
 
@@ -24,6 +23,9 @@ public final class ChessApplication extends Application {
 	}
 
 	public static void main(String[] args) {
+		Chess model = new Chess("Elias Carlson (den bästa Elias)", "Erik Wessman");
+		model.initializeBoard();
+
 		Application.launch(args);
 	}
 }

@@ -1,4 +1,16 @@
-package main.java.chess.model.pieces;
+package chess.model.pieces;
 
-public class Pawn implements Piece {
+import chess.model.Color;
+import chess.model.Square;
+
+public class Pawn extends Piece {
+
+    public Pawn(Square position, boolean isActive, Color color) {
+        super(position, isActive, color);
+    }
+
+    @Override
+    void move() {
+
+    }
 }

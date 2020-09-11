@@ -1,4 +1,4 @@
-package main.java.chess.model;
+package chess.model;
 
 public class Move {
 }
