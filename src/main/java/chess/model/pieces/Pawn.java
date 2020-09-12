@@ -5,8 +5,8 @@ import chess.model.Square;
 
 public class Pawn extends Piece {
 
-    public Pawn(boolean isActive, Color color) {
-        super(isActive, color);
+    public Pawn(Square position, boolean isActive, Color color) {
+        super(position, isActive, color);
     }
 
     @Override

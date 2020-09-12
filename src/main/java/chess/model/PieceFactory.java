@@ -3,8 +3,8 @@ package chess.model;
 import chess.model.pieces.*;
 
 public class PieceFactory {
-    public static Pawn createPawn(boolean isActive, Color color) {
-        return new Pawn(isActive, color);
+    public static Pawn createPawn(Square position, boolean isActive, Color color) {
+        return new Pawn(position, isActive, color);
     }
 
     private static King createKing(Square position, boolean isActive, Color color) {

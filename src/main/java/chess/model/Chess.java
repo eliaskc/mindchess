@@ -1,5 +1,10 @@
 package chess.model;
 
+import chess.model.pieces.Piece;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
+import java.net.SocketTimeoutException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +34,11 @@ public class Chess {
         Square squares[][] = board.getSquares();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                squares[i][j] = new Square(352 + i * 71, 82 + j * 71);              //Hard coded until we find better solution(based on the imageview)
+                squares[i][j] = new Square(i, j);
             }
         }
-        squares[0][0].setPiece(PieceFactory.createPawn(true, Color.BLACK));
+        board.pieces.add(PieceFactory.createPawn(squares[0][0],true, Color.BLACK));
+        //squares[0][0].setPiece(PieceFactory.createPawn(true, Color.BLACK));
     }
     public void startGame() {
 
@@ -50,26 +56,67 @@ public class Chess {
         return player2;
     }
 
+
+
     //find the square where the mouse clicked
-    public void findSquare(double x, double y){
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if(checkSquare(i,j,x,y)){
-                    System.out.println(i + " " + j + " " + board.getSquares()[i][j].getPieceName());
-                    break;
-                }
+    public void findSquare(double mouseX, double mouseY){
+
+        //Check pieces squares
+        //Check if marked piece exists
+        //move or mark piece
+        int x = translateX(mouseX);
+        int y = translateY(mouseY);
+        //System.out.println(x + " " + y);
+
+        if (!pieceClicked(x, y)) {
+            if (!(board.markedPiece == null)) {
+                board.markedPiece.setPosition(board.squares[x][y]);
+                board.setMarkedPiece(null);
             }
         }
+        System.out.println(x + " " + y + " " + board.getMarkedStatus());
     }
 
-    private boolean checkSquare(int i, int j, double x, double y){
-        if((board.getSquares()[i][j].getCoordinatesX() < x && x < board.getSquares()[i][j].getCoordinatesX()+71)){
-            if((board.getSquares()[i][j].getCoordinatesY() < y && y < board.getSquares()[i][j].getCoordinatesY()+71)){
+
+    //Checks if the click is inside the square being checked (Hardcoded value for now)
+    private boolean checkSquare(Piece piece, double x, double y){
+        if((piece.getPosition().getCoordinatesX() == x && piece.getPosition().getCoordinatesY() == y)){
+            return true;
+        }
+        return false;
+    }
+
+    //Sets the mouse clicks x to the a value 0-7 corresponding to the correct square
+    private int translateX(double x){
+        for (int i = 0; i < 8; i++) {
+            if((i * 71 + 352 < x && x < 352 + 71*(i+1))){
+                return i;
+            }
+        }
+        return -1;
+    }
+    //Sets the mouse clicks y to the a value 0-7 corresponding to the correct square
+    private int translateY(double y){
+        for (int i = 0; i < 8; i++) {
+            if((i * 71 + 82 < y && y < 82 + 71*(i+1))){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //If the square that was clicked has a piece return true
+    private boolean pieceClicked(int x, int y) {
+        for (int i = 0; i < board.pieces.size(); i++) {
+            if(checkSquare(board.pieces.get(i),x,y)){
+                board.setMarkedPiece(board.pieces.get(i));
                 return true;
             }
         }
         return false;
     }
+
+
 
     //etc...
 

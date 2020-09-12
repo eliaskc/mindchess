@@ -7,12 +7,13 @@ public abstract class Piece {
     Square position;
     boolean isActive;
     Color color;
+    boolean mark = false;
     //Image image; //not sure if this should be in the model or in the application
 
-    public Piece(boolean isActive, Color color) {
+    /*public Piece(boolean isActive, Color color) {
         this.isActive = isActive;
         this.color = color;
-    }
+    }*/
 
     public Piece(Square position, boolean isActive, Color color) {
         this.position = position;
@@ -24,6 +25,10 @@ public abstract class Piece {
 
     public Square getPosition() {
         return position;
+    }
+
+    public void setPosition(Square position) {
+        this.position = position;
     }
 
     /*
@@ -43,4 +48,5 @@ public abstract class Piece {
     public String getName(){
         return "pawn";
     }
+
 }

@@ -47,7 +47,7 @@ public class ChessController implements Initializable {
     }
 
     @FXML
-    public void findSquare(MouseEvent event){
+    public void findSquare(MouseEvent event){                               //Find the square you clicked on and do something about it.
         model.findSquare(event.getSceneX(),event.getSceneY());
     }
 

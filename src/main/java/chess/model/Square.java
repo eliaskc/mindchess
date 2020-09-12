@@ -28,11 +28,5 @@ public class Square {
     public Piece getPiece() {
         return piece;
     }
-    public String getPieceName() {
-        if(piece == null){
-            return "nothing";
-        }
-        return piece.getName();
-    }
 
 }
