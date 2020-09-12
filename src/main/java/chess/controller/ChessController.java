@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.*;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -44,4 +45,11 @@ public class ChessController implements Initializable {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
     }
+
+    @FXML
+    public void findSquare(MouseEvent event){
+        model.findSquare(event.getSceneX(),event.getSceneY());
+    }
+
+
 }

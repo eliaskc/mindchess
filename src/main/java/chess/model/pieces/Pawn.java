@@ -5,12 +5,13 @@ import chess.model.Square;
 
 public class Pawn extends Piece {
 
-    public Pawn(Square position, boolean isActive, Color color) {
-        super(position, isActive, color);
+    public Pawn(boolean isActive, Color color) {
+        super(isActive, color);
     }
 
     @Override
     void move() {
 
     }
+
 }
