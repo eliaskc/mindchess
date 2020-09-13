@@ -8,4 +8,9 @@ public class Knight extends Piece {
         super(position, isActive, color);
     }
 
+    @Override
+    public void fetchImage() {
+
+    }
+
 }

@@ -8,4 +8,9 @@ public class King extends Piece {
         super(position, isActive, color);
     }
 
+    @Override
+    public void fetchImage() {
+
+    }
+
 }

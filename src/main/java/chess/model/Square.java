@@ -17,6 +17,7 @@ public class Square {
     public int getCoordinatesX() {
         return coordinates.x;
     }
+
     public int getCoordinatesY() {
         return coordinates.y;
     }

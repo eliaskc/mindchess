@@ -29,12 +29,12 @@ public class Chess {
 
     private void init() {
         board.initializeBoard();
-        board.pieces.add(PieceFactory.createPawn(board.getSquares()[0][0],true, Color.BLACK));
+        board.pieces.add(PieceFactory.createBishop(board.getSquares()[0][0],true, Color.WHITE));
     }
 
-    public void startGame() { }
+    public void startGame() {}
 
-    public void endGame() { }
+    public void endGame() {}
 
     public Player getPlayer1() {
         return player1;
@@ -50,7 +50,6 @@ public class Chess {
 
     //find the square where the mouse clicked
     public void findSquare(double mouseX, double mouseY){
-
         //Check pieces squares
         //Check if marked piece exists
         //move or mark piece
@@ -64,7 +63,9 @@ public class Chess {
                 board.setMarkedPiece(null);
             }
         }
+
         System.out.println(x + " " + y + " " + board.getMarkedStatus());
+        System.out.println(board.markedPiece);
     }
 
 
@@ -77,9 +78,9 @@ public class Chess {
     }
 
     //Sets the mouse clicks x to the a value 0-7 corresponding to the correct square
-    private int translateX(double x){
+    private int translateX(double x) {
         for (int i = 0; i < 8; i++) {
-            if((i * 71 + 352 < x && x < 352 + 71*(i+1))){
+            if((i * 75 + 359 < x && x < 359 + 75*(i+1))){
                 return i;
             }
         }
@@ -87,9 +88,9 @@ public class Chess {
     }
 
     //Sets the mouse clicks y to the a value 0-7 corresponding to the correct square
-    private int translateY(double y){
+    private int translateY(double y) {
         for (int i = 0; i < 8; i++) {
-            if((i * 71 + 82 < y && y < 82 + 71*(i+1))){
+            if((i * 75 + 79 < y && y < 79 + 75*(i+1))){
                 return i;
             }
         }

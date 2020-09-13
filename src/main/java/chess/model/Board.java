@@ -54,13 +54,11 @@ public class Board {
         this.chessBoard = chessBoard;
     }
 
-    private double getBoardSquareX(){
+//    private double getSquareDimension(){}
 
-    }
+//    private double getBoardX(){}
 
-    private double getBoardSquareY(){
-        
-    }
+//    private double getBoardY(){}
 
     void initializeBoard() {
         for (int i = 0; i < 8; i++) {

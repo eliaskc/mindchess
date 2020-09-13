@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.model.Chess;
+import chess.model.pieces.Piece;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -31,6 +33,7 @@ public class ChessController implements Initializable {
     @FXML private Label player1Timer;
     @FXML private Label player2Timer;
     @FXML private ImageView chessBoard;
+    @FXML private AnchorPane chess_test;
 
 
     @FXML
@@ -59,4 +62,11 @@ public class ChessController implements Initializable {
         return chessBoard;
     }
 
+    public void drawPieces(Piece piece) {
+        ImageView imageview = new ImageView();
+        imageview.setImage(piece.getPieceImage());
+        imageview.setX(piece.getPosition().getCoordinatesX());
+        imageview.setY(piece.getPosition().getCoordinatesY());
+        chess_test.getChildren().add(imageview);
+    }
 }
