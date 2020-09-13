@@ -15,6 +15,7 @@ public class Board {
 
     public Board() {}
 
+    //should be used to move. FIX
     public void move(Piece piece, Square square) {
         piece.setPosition(square);
     }
@@ -76,6 +77,8 @@ public class Board {
 
     void fetchPieceImages() {
         for(Piece p : pieces) {
+            p.getPieceImage().setX(p.getPosition().getCoordinatesX() * 75);
+            p.getPieceImage().setY(p.getPosition().getCoordinatesY() * 75);
             pieceImages.add(p.getPieceImage());
         }
     }

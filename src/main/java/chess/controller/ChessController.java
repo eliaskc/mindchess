@@ -1,5 +1,6 @@
 package chess.controller;
 
+import chess.Observer;
 import chess.model.Chess;
 import chess.model.pieces.Piece;
 import javafx.event.ActionEvent;
@@ -23,11 +24,12 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ChessController implements Initializable {
+public class ChessController implements Initializable, Observer {
 
-    //Controller should not have model
+    //Controller should not have model. FIX
     Chess model = Chess.getInstance();
 
+    //Should not be dependent on model. FIX
     List<ImageView> pieceImages = model.getBoard().getPieceImages();
 
     @FXML Button btnBack;
@@ -74,5 +76,10 @@ public class ChessController implements Initializable {
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().add(pieceImage);
         }
+    }
+
+    @Override
+    public void onAction() {
+        drawPieces();
     }
 }

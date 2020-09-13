@@ -1,5 +1,7 @@
 package chess.model;
 
+import chess.Observable;
+import chess.Observer;
 import chess.model.pieces.Piece;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.fxml.FXML;
@@ -9,8 +11,10 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chess {
+public class Chess implements Observable {
     private static Chess instance = null;
+
+    private List<Observer> observers = new ArrayList<>();
 
     Player player1 = new Player("Player 1");
     Player player2 = new Player("Player 2");
@@ -62,6 +66,7 @@ public class Chess {
             if (!(board.markedPiece == null)) {
                 board.markedPiece.setPosition(board.squares[x][y]);
                 board.setMarkedPiece(null);
+                notifyAllObservers();
             }
         }
 
@@ -109,6 +114,20 @@ public class Chess {
         return false;
     }
 
+    @Override
+    public void notifyAllObservers() {
+        for(Observer observer : observers) {
+            observer.onAction();
+        }
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
 
 
     //etc...
