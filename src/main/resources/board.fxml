@@ -12,11 +12,6 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="105.0" layoutX="340.0" layoutY="596.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00ff09" height="81.0" layoutX="856.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
-      <ImageView fx:id="chessBoard" fitHeight="600.0" fitWidth="600.0" layoutX="359.0" layoutY="79.0" onMouseClicked="#findSquare" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="60.0">
-         <image>
-            <Image url="@chess_board_high_res.png" />
-         </image>
-      </ImageView>
       <Button fx:id="btnBack" layoutX="32.0" layoutY="44.0" mnemonicParsing="false" onAction="#goToMenu" prefHeight="60.0" prefWidth="140.0" text="&lt;-- Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font size="27.0" />
@@ -42,6 +37,13 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="chessTest" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane fx:id="chessBoardContainer" layoutX="340.0" layoutY="60.0" prefHeight="600.0" prefWidth="579.0">
+         <children>
+            <ImageView fx:id="chessBoard" fitHeight="600.0" fitWidth="600.0" onMouseClicked="#findSquare" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@chess_board_high_res.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
    </children>
 </AnchorPane>

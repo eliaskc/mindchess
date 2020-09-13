@@ -17,13 +17,13 @@ public class Bishop extends Piece {
         if(color.equals(WHITE)){
             pieceImage = new ImageView();
             pieceImage.setImage(new Image(getClass().getResourceAsStream("/chessPieces/white_bishop.png")));
-            pieceImage.setX(position.getCoordinatesX() * 75 + 359);
-            pieceImage.setY(position.getCoordinatesY() * 75 + 79);
+            pieceImage.setX(position.getCoordinatesX() * 75);
+            pieceImage.setY(position.getCoordinatesY() * 75);
         } else if(color.equals(BLACK)) {
             pieceImage = new ImageView();
             pieceImage.setImage(new Image(getClass().getResourceAsStream("/chessPieces/black_bishop.png")));
-            pieceImage.setX(position.getCoordinatesX() * 75 + 359);
-            pieceImage.setY(position.getCoordinatesY() * 75 + 79);
+            pieceImage.setX(position.getCoordinatesX() * 75);
+            pieceImage.setY(position.getCoordinatesY() * 75);
         }
     }
 }

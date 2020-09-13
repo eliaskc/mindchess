@@ -36,7 +36,7 @@ public class ChessController implements Initializable {
     @FXML private Label player1Timer;
     @FXML private Label player2Timer;
     @FXML private ImageView chessBoard;
-    @FXML private AnchorPane chessTest;
+    @FXML private AnchorPane chessBoardContainer;
 
 
     @FXML
@@ -71,10 +71,8 @@ public class ChessController implements Initializable {
     }
 
     public void drawPieces() {
-        if(chessTest != null) {
-            for (ImageView pieceImage : pieceImages) {
-                chessTest.getChildren().add(pieceImage);
-            }
+        for (ImageView pieceImage : pieceImages) {
+            chessBoardContainer.getChildren().add(pieceImage);
         }
     }
 }
