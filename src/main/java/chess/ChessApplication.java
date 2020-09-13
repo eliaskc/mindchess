@@ -32,7 +32,7 @@ public final class ChessApplication extends Application {
 		ChessController chessController = new ChessController();
 		model.getBoard().setChessBoard(chessController.getChessBoard());
 
-		chessController.drawPieces(model.getBoard().getPieces().get(0));
+//		chessController.setPieceImages(model.getBoard().getPieceImages());
 
 		Application.launch(args);
 	}

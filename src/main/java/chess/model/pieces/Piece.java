@@ -10,7 +10,7 @@ public abstract class Piece {
     boolean isActive;
     Color color;
     boolean mark = false;
-    Image pieceImage = null; //not sure if this should be in the model or in the application
+    ImageView pieceImage = null; //not sure if this should be in the model or in the application
 
     /*public Piece(boolean isActive, Color color) {
         this.isActive = isActive;
@@ -45,7 +45,7 @@ public abstract class Piece {
         isActive = active;
     }
 
-    public Image getPieceImage() {
+    public ImageView getPieceImage() {
         return pieceImage;
     }
 

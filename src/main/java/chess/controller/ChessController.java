@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChessController implements Initializable {
@@ -27,13 +28,15 @@ public class ChessController implements Initializable {
     //Controller should not have model
     Chess model = Chess.getInstance();
 
+    List<ImageView> pieceImages = model.getBoard().getPieceImages();
+
     @FXML Button btnBack;
     @FXML private Label player1Name;
     @FXML private Label player2Name;
     @FXML private Label player1Timer;
     @FXML private Label player2Timer;
     @FXML private ImageView chessBoard;
-    @FXML private AnchorPane chess_test;
+    @FXML private AnchorPane chessTest;
 
 
     @FXML
@@ -51,6 +54,7 @@ public class ChessController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
+        drawPieces();
     }
 
     @FXML
@@ -62,11 +66,15 @@ public class ChessController implements Initializable {
         return chessBoard;
     }
 
-    public void drawPieces(Piece piece) {
-        ImageView imageview = new ImageView();
-        imageview.setImage(piece.getPieceImage());
-        imageview.setX(piece.getPosition().getCoordinatesX());
-        imageview.setY(piece.getPosition().getCoordinatesY());
-        chess_test.getChildren().add(imageview);
+    public void setPieceImages(List<ImageView> pieceImages) {
+        this.pieceImages = pieceImages;
+    }
+
+    public void drawPieces() {
+        if(chessTest != null) {
+            for (ImageView pieceImage : pieceImages) {
+                chessTest.getChildren().add(pieceImage);
+            }
+        }
     }
 }

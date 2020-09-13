@@ -11,6 +11,7 @@ public class Board {
     List<Piece> pieces = new ArrayList<>();
     Piece markedPiece = null;   //To find the piece you clicked on
     ImageView chessBoard = null;
+    List<ImageView> pieceImages = new ArrayList<>();
 
     public Board() {}
 
@@ -54,6 +55,11 @@ public class Board {
         this.chessBoard = chessBoard;
     }
 
+    public List<ImageView> getPieceImages() {
+        return pieceImages;
+    }
+
+    //For enabling resizing of the board/window
 //    private double getSquareDimension(){}
 
 //    private double getBoardX(){}
@@ -65,6 +71,12 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 squares[i][j] = new Square(i, j);
             }
+        }
+    }
+
+    void fetchPieceImages() {
+        for(Piece p : pieces) {
+            pieceImages.add(p.getPieceImage());
         }
     }
 }
