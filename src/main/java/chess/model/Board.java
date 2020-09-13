@@ -10,7 +10,7 @@ public class Board {
     Square[][] squares = new Square[8][8];
     List<Piece> pieces = new ArrayList<>();
     Piece markedPiece = null;   //To find the piece you clicked on
-    ImageView chessBoard = null;
+    ImageView chessBoardImage = null;
     List<ImageView> pieceImages = new ArrayList<>();
 
     public Board() {}
@@ -52,8 +52,8 @@ public class Board {
         return (markedPiece.getPosition().getCoordinatesX() + " " + markedPiece.getPosition().getCoordinatesY());
     }
 
-    public void setChessBoard(ImageView chessBoard) {
-        this.chessBoard = chessBoard;
+    public void setChessBoardImage(ImageView chessBoard) {
+        this.chessBoardImage = chessBoardImage;
     }
 
     public List<ImageView> getPieceImages() {

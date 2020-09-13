@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 public final class ChessApplication extends Application {
 
+	FXMLLoader loader = new FXMLLoader();
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -25,19 +26,19 @@ public final class ChessApplication extends Application {
 		stage.show();
 	}
 
-
-
 	public static void main(String[] args) {
 		Chess model = Chess.getInstance();
 		ChessController chessController = new ChessController();
-		model.getBoard().setChessBoard(chessController.getChessBoard());
+		model.getBoard().setChessBoardImage(chessController.getChessBoardImage());
 
-		model.addObserver(chessController);
+		//model.addObserver(chessController);
 
 //		chessController.setPieceImages(model.getBoard().getPieceImages());
 
 		Application.launch(args);
 	}
+
+
 
 
 

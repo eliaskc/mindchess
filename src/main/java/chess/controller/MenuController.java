@@ -25,11 +25,11 @@ public class MenuController{
     @FXML private TextField player1NameField;
     @FXML private TextField player2NameField;
 
-
     @FXML
     void goToBoard (ActionEvent event) throws IOException {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
+
         Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("board.fxml"));
         Scene scene = new Scene(parent);
 

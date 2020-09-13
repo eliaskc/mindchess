@@ -26,10 +26,8 @@ import java.util.ResourceBundle;
 
 public class ChessController implements Initializable, Observer {
 
-    //Controller should not have model. FIX
     Chess model = Chess.getInstance();
 
-    //Should not be dependent on model. FIX
     List<ImageView> pieceImages = model.getBoard().getPieceImages();
 
     @FXML Button btnBack;
@@ -37,7 +35,7 @@ public class ChessController implements Initializable, Observer {
     @FXML private Label player2Name;
     @FXML private Label player1Timer;
     @FXML private Label player2Timer;
-    @FXML private ImageView chessBoard;
+    @FXML private ImageView chessBoardImage;
     @FXML private AnchorPane chessBoardContainer;
 
 
@@ -50,8 +48,7 @@ public class ChessController implements Initializable, Observer {
         window.setScene(scene);
         window.show();
     }
-    
-    // Implement observer !!!!!!!
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         player1Name.setText(model.getPlayer1().getName());
@@ -64,8 +61,8 @@ public class ChessController implements Initializable, Observer {
         model.findSquare(event.getSceneX(),event.getSceneY());
     }
 
-    public ImageView getChessBoard() {
-        return chessBoard;
+    public ImageView getChessBoardImage() {
+        return chessBoardImage;
     }
 
     public void setPieceImages(List<ImageView> pieceImages) {
