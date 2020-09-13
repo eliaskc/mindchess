@@ -10,16 +10,7 @@ import static chess.model.Color.*;
 public class Bishop extends Piece {
     public Bishop(Square position, boolean isActive, Color color) {
         super(position, isActive, color);
-    }
-
-    @Override
-    public void fetchImage() {
-        if(color.equals(WHITE)){
-            pieceImage = new ImageView();
-            pieceImage.setImage(new Image(getClass().getResourceAsStream("/chessPieces/white_bishop.png")));
-        } else if(color.equals(BLACK)) {
-            pieceImage = new ImageView();
-            pieceImage.setImage(new Image(getClass().getResourceAsStream("/chessPieces/black_bishop.png")));
-        }
+        whiteImageURL = "/chessPieces/white_bishop.png";
+        blackImageURL = "/chessPieces/black_bishop.png";
     }
 }
