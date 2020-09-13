@@ -44,14 +44,6 @@ public class Board {
         return markedPiece;
     }
 
-    //For testing before real tests
-    public String getMarkedStatus() {
-        if (markedPiece == null){
-            return "null";
-        }
-        return (markedPiece.getPosition().getCoordinatesX() + " " + markedPiece.getPosition().getCoordinatesY());
-    }
-
     public void setChessBoardImage(ImageView chessBoard) {
         this.chessBoardImage = chessBoardImage;
     }
@@ -76,6 +68,7 @@ public class Board {
     }
 
     void fetchPieceImages() {
+        pieceImages.clear();
         for(Piece p : pieces) {
             p.getPieceImage().setX(p.getPosition().getCoordinatesX() * 75);
             p.getPieceImage().setY(p.getPosition().getCoordinatesY() * 75);

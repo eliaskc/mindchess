@@ -34,6 +34,7 @@ public class Chess implements Observable {
     private void init() {
         board.initializeBoard();
         board.pieces.add(PieceFactory.createBishop(board.getSquares()[0][0],true, Color.WHITE));
+        board.pieces.add(PieceFactory.createBishop(board.getSquares()[1][0],true, Color.WHITE));
         board.fetchPieceImages();
     }
 
@@ -66,12 +67,12 @@ public class Chess implements Observable {
             if (!(board.markedPiece == null)) {
                 board.markedPiece.setPosition(board.squares[x][y]);
                 board.setMarkedPiece(null);
+                board.fetchPieceImages();
                 notifyAllObservers();
             }
         }
 
-        System.out.println(x + " " + y + " " + board.getMarkedStatus());
-        System.out.println(board.markedPiece);
+        System.out.println(x + " " + y + " " + board.getMarkedPiece());
     }
 
 

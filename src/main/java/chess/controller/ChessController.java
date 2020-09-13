@@ -38,7 +38,6 @@ public class ChessController implements Initializable, Observer {
     @FXML private ImageView chessBoardImage;
     @FXML private AnchorPane chessBoardContainer;
 
-
     @FXML
     void goToMenu (ActionEvent event) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menu.fxml"));
@@ -51,13 +50,14 @@ public class ChessController implements Initializable, Observer {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Initialized ChessController");
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         drawPieces();
     }
 
     @FXML
-    public void findSquare(MouseEvent event){                               //Find the square you clicked on and do something about it.
+    public void findSquare(MouseEvent event){
         model.findSquare(event.getSceneX(),event.getSceneY());
     }
 
@@ -65,11 +65,11 @@ public class ChessController implements Initializable, Observer {
         return chessBoardImage;
     }
 
-    public void setPieceImages(List<ImageView> pieceImages) {
-        this.pieceImages = pieceImages;
-    }
-
     public void drawPieces() {
+        for (ImageView pieceImage : pieceImages) {
+            chessBoardContainer.getChildren().remove(pieceImage);
+        }
+
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().add(pieceImage);
         }

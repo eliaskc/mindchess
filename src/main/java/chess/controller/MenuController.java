@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController{
+public class MenuController implements Initializable {
     Chess model = Chess.getInstance();
+    public FXMLLoader chessLoader;
+    Parent parent;
 
     @FXML private Button btnStart;
     @FXML private Button btnExit;
@@ -30,7 +32,6 @@ public class MenuController{
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
 
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("board.fxml"));
         Scene scene = new Scene(parent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -43,32 +44,12 @@ public class MenuController{
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Initialized MenuController");
+        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("board.fxml"));
+        try {
+            parent = chessLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
-    //FROM TEMPLATE
-        //  private final Project project;
-        //  private final ProjectView projectView;
-        //  public static final int KO = 1;
-        //
-        //  public static ProjectController create(Project project, ProjectView projectView) {
-        //    return new ProjectController(project, projectView);
-        //  }
-        //
-        //  private ProjectController(Project project, ProjectView projectView) {
-        //    projectView.getButton().addActionListener(new ProjectButtonPressed());
-        //
-        //    this.project = project;
-        //    this.projectView = projectView;
-        //  }
-        //
-        //  private class ProjectButtonPressed implements ActionListener {
-        //    @Override
-        //    public void actionPerformed(ActionEvent e) {
-        //      project.incrementPresses();
-        //      projectView.getPressesLabel().setText(String.valueOf(project.getPresses()));
-        //    }
-        //  }
-
-
 }
