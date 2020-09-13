@@ -29,6 +29,8 @@ public final class ChessApplication extends Application {
 
 	public static void main(String[] args) {
 		Chess model = Chess.getInstance();
+		ChessController chessController = new ChessController();
+		model.getBoard().setChessBoard(chessController.getChessBoard());
 
 		Application.launch(args);
 	}

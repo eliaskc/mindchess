@@ -21,8 +21,6 @@ public abstract class Piece {
         this.color = color;
     }
 
-    abstract void move();
-
     public Square getPosition() {
         return position;
     }

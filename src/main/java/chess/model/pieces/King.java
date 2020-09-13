@@ -8,8 +8,4 @@ public class King extends Piece {
         super(position, isActive, color);
     }
 
-    @Override
-    void move() {
-
-    }
 }

@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class ChessController implements Initializable {
 
+    //Controller should not have model
     Chess model = Chess.getInstance();
 
     @FXML Button btnBack;
@@ -28,6 +30,7 @@ public class ChessController implements Initializable {
     @FXML private Label player2Name;
     @FXML private Label player1Timer;
     @FXML private Label player2Timer;
+    @FXML private ImageView chessBoard;
 
 
     @FXML
@@ -39,7 +42,8 @@ public class ChessController implements Initializable {
         window.setScene(scene);
         window.show();
     }
-
+    
+    // Implement observer !!!!!!!
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         player1Name.setText(model.getPlayer1().getName());
@@ -51,5 +55,8 @@ public class ChessController implements Initializable {
         model.findSquare(event.getSceneX(),event.getSceneY());
     }
 
+    public ImageView getChessBoard() {
+        return chessBoard;
+    }
 
 }

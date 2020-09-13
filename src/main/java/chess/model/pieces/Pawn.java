@@ -9,9 +9,5 @@ public class Pawn extends Piece {
         super(position, isActive, color);
     }
 
-    @Override
-    void move() {
-
-    }
 
 }

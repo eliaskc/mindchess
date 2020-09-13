@@ -8,13 +8,13 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.ChessController">
+<AnchorPane maxHeight="720.0" maxWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.ChessController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="105.0" layoutX="359.0" layoutY="589.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00ff09" height="81.0" layoutX="858.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
-      <ImageView fitHeight="562.0" fitWidth="616.0" layoutX="352.0" layoutY="82.0" onMouseClicked="#findSquare" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="352.0" AnchorPane.rightAnchor="312.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#a1a1a1" height="105.0" layoutX="340.0" layoutY="596.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00ff09" height="81.0" layoutX="856.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+      <ImageView fx:id="chessBoard" fitHeight="600.0" fitWidth="600.0" layoutX="359.0" layoutY="79.0" onMouseClicked="#findSquare" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="60.0">
          <image>
-            <Image url="@chess_board.png" />
+            <Image url="@chess_board_high_res.png" />
          </image>
       </ImageView>
       <Button fx:id="btnBack" layoutX="32.0" layoutY="44.0" mnemonicParsing="false" onAction="#goToMenu" prefHeight="60.0" prefWidth="140.0" text="&lt;-- Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
@@ -22,22 +22,22 @@
             <Font size="27.0" />
          </font>
       </Button>
-      <Label fx:id="player1Name" layoutX="362.0" layoutY="25.0" prefHeight="42.0" prefWidth="140.0" text="Player 1">
+      <Label fx:id="player1Name" layoutX="340.0" layoutY="18.0" prefHeight="42.0" prefWidth="140.0" text="Player 1">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="player2Name" alignment="CENTER_RIGHT" layoutX="781.0" layoutY="648.0" prefHeight="42.0" prefWidth="140.0" text="Player 2">
+      <Label fx:id="player2Name" alignment="CENTER_RIGHT" layoutX="779.0" layoutY="660.0" prefHeight="42.0" prefWidth="140.0" text="Player 2">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="player1Timer" alignment="CENTER" layoutX="858.0" layoutY="28.0" prefHeight="35.0" prefWidth="63.0" text="9:52">
+      <Label fx:id="player1Timer" alignment="CENTER" layoutX="856.0" layoutY="21.0" prefHeight="35.0" prefWidth="63.0" text="9:52">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="Player2Timer" alignment="CENTER" layoutX="362.0" layoutY="652.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
+      <Label fx:id="Player2Timer" alignment="CENTER" layoutX="343.0" layoutY="659.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
          <font>
             <Font size="24.0" />
          </font>
