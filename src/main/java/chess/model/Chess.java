@@ -86,7 +86,7 @@ public class Chess implements Observable {
     //Sets the mouse clicks x to the a value 0-7 corresponding to the correct square
     private int translateX(double x) {
         for (int i = 0; i < 8; i++) {
-            if((i * 75 + 359 <= x && x <= 359 + 75*(i+1))){
+            if((i * 75 + 340 <= x && x <= 340 + 75*(i+1))){
                 return i;
             }
         }
@@ -96,7 +96,7 @@ public class Chess implements Observable {
     //Sets the mouse clicks y to the a value 0-7 corresponding to the correct square
     private int translateY(double y) {
         for (int i = 0; i < 8; i++) {
-            if((i * 75 + 79 <= y && y <= 79 + 75*(i+1))){
+            if((i * 75 + 60 <= y && y <= 60 + 75*(i+1))){
                 return i;
             }
         }
