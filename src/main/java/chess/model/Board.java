@@ -44,7 +44,7 @@ public class Board {
         return markedPiece;
     }
 
-    public void setChessBoardImage(ImageView chessBoard) {
+    public void setChessBoardImage(ImageView chessBoardImage) {
         this.chessBoardImage = chessBoardImage;
     }
 

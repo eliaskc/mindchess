@@ -72,6 +72,7 @@ public class ChessController implements Initializable, Observer {
 
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().add(pieceImage);
+            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
     }
 
