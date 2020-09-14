@@ -44,12 +44,12 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initialized MenuController");
         chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("board.fxml"));
         try {
             parent = chessLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        model.addObserver(chessLoader.getController());
     }
 }

@@ -2,7 +2,6 @@ package chess.controller;
 
 import chess.Observer;
 import chess.model.Chess;
-import chess.model.pieces.Piece;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -18,7 +16,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -50,7 +47,6 @@ public class ChessController implements Initializable, Observer {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Initialized ChessController");
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         drawPieces();
@@ -58,7 +54,7 @@ public class ChessController implements Initializable, Observer {
 
     @FXML
     public void findSquare(MouseEvent event){
-        model.findSquare(event.getSceneX(),event.getSceneY());
+        model.clickSquare(event.getSceneX(),event.getSceneY());
     }
 
     public ImageView getChessBoardImage() {

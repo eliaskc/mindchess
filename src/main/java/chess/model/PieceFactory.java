@@ -15,7 +15,7 @@ public class PieceFactory {
         return king;
     }
 
-    static Queen createQueen(Square position, boolean isActive, Color color) {
+    public static Queen createQueen(Square position, boolean isActive, Color color) {
         Queen queen = new Queen(position, isActive, color);
         queen.fetchImage();
         return queen;

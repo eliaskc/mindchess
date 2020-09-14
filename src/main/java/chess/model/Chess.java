@@ -54,7 +54,7 @@ public class Chess implements Observable {
     }
 
     //find the square where the mouse clicked
-    public void findSquare(double mouseX, double mouseY){
+    public void clickSquare(double mouseX, double mouseY){
         //Check pieces squares
         //Check if marked piece exists
         //move or mark piece
