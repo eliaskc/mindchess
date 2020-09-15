@@ -1,7 +1,8 @@
 package chess.controller;
 
 import chess.Observer;
-import chess.model.Chess;
+import chess.model.*;
+import chess.model.pieces.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -26,6 +29,8 @@ public class ChessController implements Initializable, Observer {
     Chess model = Chess.getInstance();
 
     List<ImageView> pieceImages = model.getBoard().getPieceImages();
+
+    List<ImageView> legalMoveImages = fetchLegalMoveImages();
 
     @FXML Button btnBack;
     @FXML private Label player1Name;
@@ -53,8 +58,8 @@ public class ChessController implements Initializable, Observer {
     }
 
     @FXML
-    public void findSquare(MouseEvent event){
-        model.clickSquare(event.getSceneX(),event.getSceneY());
+    public void handleClick(MouseEvent event){
+        model.handleClick(event.getSceneX(),event.getSceneY());
     }
 
     public ImageView getChessBoardImage() {
@@ -70,6 +75,33 @@ public class ChessController implements Initializable, Observer {
             chessBoardContainer.getChildren().add(pieceImage);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
+
+        //TEMP
+        for (ImageView imageView : legalMoveImages) {
+            chessBoardContainer.getChildren().remove(imageView);
+        }
+
+        legalMoveImages = fetchLegalMoveImages();
+
+        for (ImageView imageView : legalMoveImages) {
+            chessBoardContainer.getChildren().add(imageView);
+            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
+        }
+    }
+
+    //TEMP
+    private List<ImageView> fetchLegalMoveImages() {
+        List<ImageView> imageViews = new ArrayList<>();
+        for (Square s : model.getBoard().getMockLegalSquares()) {
+            ImageView imageView = new ImageView();
+            imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
+            imageView.setX(s.getCoordinatesX() * 75 + 30);
+            imageView.setY(s.getCoordinatesY() * 75 + 30);
+            imageView.setFitHeight(15);
+            imageView.setFitWidth(15);
+            imageViews.add(imageView);
+        }
+        return imageViews;
     }
 
     @Override

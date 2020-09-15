@@ -9,32 +9,22 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestChess {
-    Chess chessModel;
+    Chess model;
     @Before
-    public void init(){
-        chessModel = Chess.getInstance();
-        chessModel.getBoard().getPieces().add(PieceFactory.createQueen(chessModel.getBoard().getSquares()[0][0],true, Color.WHITE));
+    public void init() {
+        model = Chess.getInstance();
     }
 
     @Test
-    public void testSingleton(){
-        Chess newModel = Chess.getInstance();
-        assertTrue(newModel.equals(chessModel));
-    }
+    public void testMove() {
+        Piece testPiece = model.getBoard().getPieces().get(0);
+        assertTrue(testPiece.getSquare().getCoordinatesX() == 0);
+        assertTrue(testPiece.getSquare().getCoordinatesY() == 0);
 
-    @Test
-    public void testImage(){
-        chessModel.getBoard().getPieces().get(0).fetchImage();
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(getClass().getResourceAsStream("/chessPieces/white_queen.png")));
-        assertTrue(chessModel.getBoard().getPieces().get(0).getPieceImage().getCssMetaData().equals(imageView.getCssMetaData()));
-    }
+        model.handleClick(345, 65);
+        model.handleClick(425, 145);
 
-    @Test
-    public void testMovePiece(){
-        chessModel.clickSquare(377, 117);
-        chessModel.clickSquare(452, 108);
-        assertTrue(chessModel.getBoard().getPieces().get(0).getPosition().getCoordinatesX() == 1);
-        assertTrue(chessModel.getBoard().getPieces().get(0).getPosition().getCoordinatesY() == 0);
+        assertTrue(testPiece.getSquare().getCoordinatesX() == 1);
+        assertTrue(testPiece.getSquare().getCoordinatesY() == 1);
     }
 }
