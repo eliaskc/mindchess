@@ -54,7 +54,9 @@ public class Chess implements Observable {
     }
 
     //find the square where the mouse clicked
-    public void findSquare(double mouseX, double mouseY){
+    public void handleClick(double mouseX, double mouseY){
+
+        Square clickedSquare = getClickedSquare(mouseX, mouseY);
         //Check pieces squares
         //Check if marked piece exists
         //move or mark piece
@@ -72,6 +74,12 @@ public class Chess implements Observable {
         }
 
         System.out.println(x + " " + y + " " + board.getMarkedPiece());
+    }
+
+    private Square getClickedSquare(double mouseX, double mouseY) {
+        int x = translateX(mouseX);
+        int y = translateY(mouseY);
+        return board.getSquares()[x][y];
     }
 
 

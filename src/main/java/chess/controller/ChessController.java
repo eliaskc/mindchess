@@ -57,8 +57,8 @@ public class ChessController implements Initializable, Observer {
     }
 
     @FXML
-    public void findSquare(MouseEvent event){
-        model.findSquare(event.getSceneX(),event.getSceneY());
+    public void handleClick(MouseEvent event){
+        model.handleClick(event.getSceneX(),event.getSceneY());
     }
 
     public ImageView getChessBoardImage() {
