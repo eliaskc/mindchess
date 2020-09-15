@@ -34,8 +34,7 @@ public class Chess implements Observable {
 
     private void init() {
         board.initializeBoard();
-        board.pieces.add(PieceFactory.createQueen(board.getSquares()[0][0],true, Color.WHITE));
-        board.pieces.add(PieceFactory.createQueen(board.getSquares()[7][5],true, Color.BLACK));
+        board.placeAllPieces();
         board.fetchPieceImages();
     }
 

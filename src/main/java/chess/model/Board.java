@@ -144,6 +144,40 @@ public class Board {
         }
     }
 
+    void placeAllPieces(){
+        placeBlackPieces();
+        placeWhitePieces();
+        System.out.println(pieces.size());
+    }
+
+    private void placeBlackPieces(){
+        pieces.add(PieceFactory.createRook(getSquares()[0][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createKnight(getSquares()[1][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createBishop(getSquares()[2][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createQueen(getSquares()[3][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createKing(getSquares()[4][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createBishop(getSquares()[5][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createKnight(getSquares()[6][0],true, Color.BLACK));
+        pieces.add(PieceFactory.createRook(getSquares()[7][0],true, Color.BLACK));
+        for (int i = 0; i <= 7; i++) {
+            pieces.add(PieceFactory.createPawn(getSquares()[i][1],true, Color.BLACK));
+        }
+    }
+    private void placeWhitePieces(){
+        pieces.add(PieceFactory.createRook(getSquares()[0][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createKnight(getSquares()[1][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createBishop(getSquares()[2][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createQueen(getSquares()[3][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createKing(getSquares()[4][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createBishop(getSquares()[5][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createKnight(getSquares()[6][7],true, Color.WHITE));
+        pieces.add(PieceFactory.createRook(getSquares()[7][7],true, Color.WHITE));
+        for (int i = 0; i <= 7; i++) {
+            pieces.add(PieceFactory.createPawn(getSquares()[i][6],true, Color.WHITE));
+        }
+    }
+
+
     private void move(Piece piece, Square square) {
         //will later have to check if there is a piece on the square we want to move to
         piece.setSquare(square);

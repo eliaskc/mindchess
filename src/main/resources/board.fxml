@@ -32,7 +32,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="Player2Timer" alignment="CENTER" layoutX="343.0" layoutY="659.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
+      <Label fx:id="player2Timer" alignment="CENTER" layoutX="343.0" layoutY="659.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
          <font>
             <Font size="24.0" />
          </font>

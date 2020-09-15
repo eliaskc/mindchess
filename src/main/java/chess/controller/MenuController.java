@@ -26,11 +26,22 @@ public class MenuController implements Initializable {
     @FXML private Button btnExit;
     @FXML private TextField player1NameField;
     @FXML private TextField player2NameField;
+    @FXML private Slider timerSlider;
 
     @FXML
     void goToBoard (ActionEvent event) throws IOException {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
+        model.getPlayer1().setTimer((int)timerSlider.getValue());
+        model.getPlayer2().setTimer((int)timerSlider.getValue());
+
+        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("board.fxml"));
+        try {
+            parent = chessLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        model.addObserver(chessLoader.getController());
 
         Scene scene = new Scene(parent);
 

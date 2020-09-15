@@ -54,7 +54,11 @@ public class ChessController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
+        player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
+        player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
         drawPieces();
+
+
     }
 
     @FXML

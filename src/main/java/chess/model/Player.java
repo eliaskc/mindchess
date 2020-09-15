@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    Timer timer = new Timer();
+    ChessTimer chessTimer = new ChessTimer();
     List<Piece> pieces = new ArrayList<>();
     String name;
 
@@ -20,5 +20,13 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTimer() {
+        return chessTimer.getTime();
+    }
+
+    public void setTimer(int time) {
+        this.chessTimer.setTime(time);
     }
 }
