@@ -9,7 +9,7 @@ import static chess.model.Color.BLACK;
 import static chess.model.Color.WHITE;
 
 public abstract class Piece {
-    Square position;
+    Square square;
     boolean isActive;
     Color color;
     String blackImageURL;
@@ -17,18 +17,18 @@ public abstract class Piece {
     boolean mark = false;
     ImageView pieceImage = null; //not sure if this should be in the model or in the application
 
-    public Piece(Square position, boolean isActive, Color color) {
-        this.position = position;
+    public Piece(Square square, boolean isActive, Color color) {
+        this.square = square;
         this.isActive = isActive;
         this.color = color;
     }
 
-    public Square getPosition() {
-        return position;
+    public Square getSquare() {
+        return square;
     }
 
-    public void setPosition(Square position) {
-        this.position = position;
+    public void setSquare(Square square) {
+        this.square = square;
     }
 
     /*
