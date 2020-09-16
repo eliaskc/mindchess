@@ -1,6 +1,8 @@
 package chess.controller;
 
 import chess.model.Chess;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ public class MenuController implements Initializable {
     @FXML private TextField player1NameField;
     @FXML private TextField player2NameField;
     @FXML private Slider timerSlider;
+    @FXML private Label timeLabel;
 
     @FXML
     void goToBoard (ActionEvent event) throws IOException {
@@ -62,5 +65,13 @@ public class MenuController implements Initializable {
             e.printStackTrace();
         }
         model.addObserver(chessLoader.getController());
+
+        //Adds a listener to timeSlider, updates label that displays time dynamically
+        timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                timeLabel.textProperty().setValue(t1.intValue() + " m.");
+            }
+        });
     }
 }

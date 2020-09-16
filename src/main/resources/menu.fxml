@@ -31,5 +31,10 @@
          </font>
       </Label>
       <Slider fx:id="timerSlider" layoutX="467.0" layoutY="360.0" max="60.0" min="5.0" showTickLabels="true" />
+      <Label fx:id="timeLabel" alignment="CENTER" layoutX="617.0" layoutY="360.0" prefHeight="33.0" prefWidth="55.0" text="5 m.">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
