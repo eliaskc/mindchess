@@ -59,8 +59,8 @@ public class Chess implements Observable {
      * @param mouseX
      * @param mouseY
      */
-    public void handleClick(double mouseX, double mouseY){
-        board.handleClick(mouseX, mouseY);
+    public void handleBoardClick(double mouseX, double mouseY){
+        board.handleBoardClick(mouseX, mouseY);
 
         notifyAllObservers();
     }

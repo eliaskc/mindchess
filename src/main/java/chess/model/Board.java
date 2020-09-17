@@ -66,11 +66,24 @@ public class Board {
         }
     }
 
-    void handleClick(double mouseX, double mouseY){
+    /**
+     * handleBoardClick() is the method responsible for investigating clicks on the board and deciding what should be done.
+     *
+     * It receives input about the click and first fetches the clicked Square, and then the Piece on the square (if there is one).
+     *
+     * If no piece has been marked, it marks the Piece on the clicked Square
+     *
+     * If a piece has been marked already, it checks if the clicked Square is one that is legal to move to and makes the move
+     * if it is.
+     *
+     * @param mouseX
+     * @param mouseY
+     */
+    void handleBoardClick(double mouseX, double mouseY){
         Square clickedSquare = getClickedSquare(mouseX, mouseY);
 
         Piece clickedPiece = checkSquare(clickedSquare);
-        //Objects shouldn't be null
+
         if(markedPiece == null) {
             markedPiece = clickedPiece;
         }
@@ -101,7 +114,6 @@ public class Board {
     }
 
 
-    //Sets the mouse clicks x to the a value 0-7 corresponding to the correct square
     private int translateX(double x) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {
@@ -112,7 +124,6 @@ public class Board {
         throw new IllegalArgumentException("Outside board");
     }
 
-    //Sets the mouse clicks y to the a value 0-7 corresponding to the correct square
     private int translateY(double y) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {

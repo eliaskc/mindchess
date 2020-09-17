@@ -7,8 +7,6 @@ import java.awt.*;
 public class Square {
     Point coordinates = new Point(0, 0);
 
-    Piece piece = null;
-
     public Square(int x, int y) {
         this.coordinates.x = x;
         this.coordinates.y = y;
@@ -21,13 +19,4 @@ public class Square {
     public int getCoordinatesY() {
         return coordinates.y;
     }
-
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    }
-
-    public Piece getPiece() {
-        return piece;
-    }
-
 }

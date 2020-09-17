@@ -2,7 +2,6 @@ package chess.controller;
 
 import chess.Observer;
 import chess.model.*;
-import chess.model.pieces.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,7 +62,7 @@ public class ChessController implements Initializable, Observer {
 
     @FXML
     public void handleClick(MouseEvent event){
-        model.handleClick(event.getSceneX(),event.getSceneY());
+        model.handleBoardClick(event.getSceneX(),event.getSceneY());
     }
 
     public ImageView getChessBoardImage() {
