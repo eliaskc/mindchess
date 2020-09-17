@@ -3,15 +3,14 @@ package chess.controller;
 import chess.model.Chess;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -24,15 +23,15 @@ public class MenuController implements Initializable {
     public FXMLLoader chessLoader;
     Parent parent;
 
-    @FXML private Button btnStart;
-    @FXML private Button btnExit;
+    @FXML private ImageView btnStart;
+    @FXML private ImageView btnExit;
     @FXML private TextField player1NameField;
     @FXML private TextField player2NameField;
     @FXML private Slider timerSlider;
     @FXML private Label timeLabel;
 
     @FXML
-    void goToBoard (ActionEvent event) throws IOException {
+    void goToBoard (MouseEvent event) throws IOException {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
         model.getPlayer1().setTimer((int)timerSlider.getValue());
@@ -53,7 +52,7 @@ public class MenuController implements Initializable {
         window.show();
     }
     @FXML
-    void Exit (ActionEvent event) {
+    void Exit (MouseEvent event) {
         System.exit(0);
     }
 
