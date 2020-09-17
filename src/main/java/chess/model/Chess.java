@@ -1,18 +1,11 @@
 package chess.model;
 
-import chess.Observable;
 import chess.Observer;
-import chess.model.pieces.Piece;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import javafx.fxml.FXML;
 
-import java.net.SocketTimeoutException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Chess implements Observable {
+public class Chess {
     private static Chess instance = null;
 
     private List<Observer> observers = new ArrayList<>();
@@ -33,7 +26,6 @@ public class Chess implements Observable {
     }
 
     private void init() {
-        board.initializeBoard();
         board.placeAllPieces();
         board.fetchPieceImages();
     }
@@ -64,8 +56,7 @@ public class Chess implements Observable {
 
         notifyAllObservers();
     }
-
-    @Override
+    
     public void notifyAllObservers() {
         for(Observer observer : observers) {
             observer.onAction();

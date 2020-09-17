@@ -37,7 +37,7 @@ public class MenuController implements Initializable {
         model.getPlayer1().setTimer((int)timerSlider.getValue());
         model.getPlayer2().setTimer((int)timerSlider.getValue());
 
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("board.fxml"));
+        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
         try {
             parent = chessLoader.load();
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("board.fxml"));
+        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
         try {
             parent = chessLoader.load();
         } catch (IOException e) {

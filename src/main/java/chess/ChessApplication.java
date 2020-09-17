@@ -18,7 +18,7 @@ public final class ChessApplication extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menu.fxml"));
+		FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
 		Parent root = menuLoader.load();
 		Scene scene = new Scene(root);
 		stage.setScene(scene);

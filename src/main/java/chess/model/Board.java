@@ -20,7 +20,9 @@ public class Board {
 
     List<Square> mockLegalSquares = new ArrayList<>();
 
-    public Board() {}
+    public Board() {
+        initializeBoard();
+    }
 
     public Square[][] getSquares() {
         return squares;
@@ -49,7 +51,7 @@ public class Board {
 
 //    private double getBoardY(){}
 
-    void initializeBoard() {
+    private void initializeBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 squares[i][j] = new Square(i, j);
@@ -89,7 +91,7 @@ public class Board {
         }
 
         if(mockLegalSquares.size() == 0) {
-            checkLegalMoves(clickedPiece);
+            mockLegalSquares = checkLegalMoves(clickedPiece);
         } else {
             if(mockLegalSquares.contains(clickedSquare)) {
                 move(markedPiece, clickedSquare);
@@ -144,15 +146,16 @@ public class Board {
         return returnValue;
     }
 
-    private void checkLegalMoves(Piece clickedPiece) {
+    private List<Square> checkLegalMoves(Piece clickedPiece) {
         if(clickedPiece == null) {
-            return;
+            throw new IllegalArgumentException("No piece given");
         }
-
+        List<Square> returnList = new ArrayList<>();
         //Mock
         for(Square[] array : getSquares()) {
-            mockLegalSquares.addAll(Arrays.asList(array));
+            returnList.addAll(Arrays.asList(array));
         }
+        return returnList;
     }
 
     void placeAllPieces(){

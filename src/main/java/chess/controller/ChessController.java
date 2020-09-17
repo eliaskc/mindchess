@@ -41,7 +41,7 @@ public class ChessController implements Initializable, Observer {
 
     @FXML
     void goToMenu (ActionEvent event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menu.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menuView.fxml"));
         Scene scene = new Scene(parent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
