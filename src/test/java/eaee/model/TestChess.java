@@ -2,6 +2,7 @@ package eaee.model;
 
 import chess.model.*;
 import chess.model.pieces.Piece;
+import javafx.fxml.FXML;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -24,5 +25,9 @@ public class TestChess {
 
         assertTrue(testPiece.getSquare().getCoordinatesX() == 1);
         assertTrue(testPiece.getSquare().getCoordinatesY() == 1);
+    }
+
+    @Test
+    public void testPlaceAllPieces(){
     }
 }

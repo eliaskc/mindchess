@@ -8,6 +8,11 @@ import javafx.scene.image.ImageView;
 import static chess.model.Color.BLACK;
 import static chess.model.Color.WHITE;
 
+/**
+ * Piece represents a chess piece on the board
+ *
+ * Also fetches its own image
+ */
 public abstract class Piece {
     Square square;
     boolean isActive;
@@ -49,6 +54,9 @@ public abstract class Piece {
         return pieceImage;
     }
 
+    /**
+     * fetches the pieces image from the resource map
+     */
     public void fetchImage() {
         if(color.equals(WHITE)){
             pieceImage = new ImageView();

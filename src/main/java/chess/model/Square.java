@@ -4,6 +4,9 @@ import chess.model.pieces.Piece;
 
 import java.awt.*;
 
+/**
+ * Class Square represents a point on the chess board
+ */
 public class Square {
     Point coordinates = new Point(0, 0);
 

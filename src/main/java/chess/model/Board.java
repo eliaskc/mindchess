@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Board represents the chess board and contains the information and methods to interact with the chess board
+ */
 public class Board {
     Square[][] squares = new Square[8][8];
     List<Piece> pieces = new ArrayList<>();
@@ -51,6 +54,9 @@ public class Board {
 
 //    private double getBoardY(){}
 
+    /**
+     * creates a 8x8 matrix with squares representing the chess board
+     */
     private void initializeBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -59,6 +65,9 @@ public class Board {
         }
     }
 
+    /**
+     * Places all the images of the pieces in a list, and gives them a corresponding coordinate
+     */
     void fetchPieceImages() {
         pieceImages.clear();
         for(Piece p : pieces) {
@@ -103,6 +112,15 @@ public class Board {
         fetchPieceImages();
     }
 
+    /**
+     * Translates the input coordinates into a square
+     *
+     * Throws an exception if the coordinate is out of bounds(larger or smaller than the board)
+     *
+     * @param mouseX
+     * @param mouseY
+     * @return  the square corresponding to the coordinates given.
+     */
     private Square getClickedSquare(double mouseX, double mouseY) {
         int x = 0;
         int y = 0;
@@ -116,6 +134,11 @@ public class Board {
     }
 
 
+    /**
+     * Translate input x coordinate into a square index x
+     * @param x
+     * @return
+     */
     private int translateX(double x) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {
@@ -126,6 +149,12 @@ public class Board {
         throw new IllegalArgumentException("Outside board");
     }
 
+
+    /**
+     * Translate input y coordinate into a square index y
+     * @param y
+     * @return
+     */
     private int translateY(double y) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {
@@ -136,6 +165,12 @@ public class Board {
         throw new IllegalArgumentException("Outside board");
     }
 
+    /**
+     * Checks if a square contains a piece on the board
+     *
+     * @param square
+     * @return  returns the piece of the square if it exist otherwise returns null
+     */
     private Piece checkSquare(Square square){
         Piece returnValue = null;
         for(Piece p : pieces) {
@@ -146,6 +181,11 @@ public class Board {
         return returnValue;
     }
 
+    /**
+     * Checks the squares which the clicked piece are allowed to move to
+     * @param clickedPiece the piece that has been clicked on most recently
+     * @return  returns a list of all legal moves possible for the clicked piece
+     */
     private List<Square> checkLegalMoves(Piece clickedPiece) {
         if(clickedPiece == null) {
             throw new IllegalArgumentException("No piece given");
@@ -158,12 +198,17 @@ public class Board {
         return returnList;
     }
 
+    /**
+     * places all pieces on the board
+     */
     void placeAllPieces(){
         placeBlackPieces();
         placeWhitePieces();
-        System.out.println(pieces.size());
     }
 
+    /**
+     * places all black pieces, uses a factory
+     */
     private void placeBlackPieces(){
         pieces.add(PieceFactory.createRook(getSquares()[0][0],true, Color.BLACK));
         pieces.add(PieceFactory.createKnight(getSquares()[1][0],true, Color.BLACK));
@@ -177,6 +222,9 @@ public class Board {
             pieces.add(PieceFactory.createPawn(getSquares()[i][1],true, Color.BLACK));
         }
     }
+    /**
+     * places all white pieces, uses a factory
+     */
     private void placeWhitePieces(){
         pieces.add(PieceFactory.createRook(getSquares()[0][7],true, Color.WHITE));
         pieces.add(PieceFactory.createKnight(getSquares()[1][7],true, Color.WHITE));
@@ -192,6 +240,14 @@ public class Board {
     }
 
 
+    /**
+     * Moves the specified piece to the specified square
+     *
+     * **UNFINISHED**
+     *
+     * @param piece
+     * @param square
+     */
     private void move(Piece piece, Square square) {
         //will later have to check if there is a piece on the square we want to move to
         piece.setSquare(square);
