@@ -17,11 +17,8 @@ public class Piece {
     Square square;
     boolean isActive;
     Color color;
-    String blackImageURL;
-    String whiteImageURL;
     PieceType pieceType;
     boolean mark = false;
-    ImageView pieceImage = null; //not sure if this should be in the model or in the application
 
     public Piece(Square square, boolean isActive, Color color, PieceType pieceType) {
         this.square = square;
@@ -46,29 +43,12 @@ public class Piece {
         isActive = active;
     }
 
-    public ImageView getPieceImage() {
-        return pieceImage;
-    }
-
     public PieceType getPieceType() {
         return pieceType;
     }
 
     public void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
-    }
-
-    /**
-     * fetches the pieces image from the resource map
-     */
-    public void fetchImage() {
-        if(color.equals(WHITE)){
-            pieceImage = new ImageView();
-            pieceImage.setImage(new Image(getClass().getResourceAsStream(whiteImageURL)));
-        } else if(color.equals(BLACK)) {
-            pieceImage = new ImageView();
-            pieceImage.setImage(new Image(getClass().getResourceAsStream(blackImageURL)));
-        }
     }
 
     public Color getColor() {

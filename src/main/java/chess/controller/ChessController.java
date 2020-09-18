@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChessController implements Initializable, Observer {
-
     Chess model = Chess.getInstance();
 
-    List<ImageView> pieceImages = model.getBoard().getPieceImages();
+    ImageHandler imageHandler = new ImageHandler();
+    List<ImageView> pieceImages = imageHandler.fetchPieceImages();
 
-    List<ImageView> legalMoveImages = fetchLegalMoveImages();
+    List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
     @FXML Button btnBack;
     @FXML private Label player1Name;
@@ -62,8 +62,6 @@ public class ChessController implements Initializable, Observer {
         player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
         player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
         drawPieces();
-
-
     }
 
     /**
@@ -97,7 +95,7 @@ public class ChessController implements Initializable, Observer {
             chessBoardContainer.getChildren().remove(imageView);
         }
 
-        legalMoveImages = fetchLegalMoveImages();
+        legalMoveImages = imageHandler.fetchLegalMoveImages();
 
         for (ImageView imageView : legalMoveImages) {
             chessBoardContainer.getChildren().add(imageView);
@@ -105,33 +103,12 @@ public class ChessController implements Initializable, Observer {
         }
     }
 
-    /**temp
-     *
-     * (does) finds and returns a list of images on all squares
-     *
-     * (should) finds and returns a list of images for the squares a piece is allowd to move to
-     *
-     * @return returns a list of images on all squares
-     */
-    private List<ImageView> fetchLegalMoveImages() {
-        List<ImageView> imageViews = new ArrayList<>();
-        for (Square s : model.getBoard().getMockLegalSquares()) {
-            ImageView imageView = new ImageView();
-            imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
-            imageView.setX(s.getCoordinatesX() * 75 + 30);
-            imageView.setY(s.getCoordinatesY() * 75 + 30);
-            imageView.setFitHeight(15);
-            imageView.setFitWidth(15);
-            imageViews.add(imageView);
-        }
-        return imageViews;
-    }
-
     /**
      * draws pieces when called by the observeable, implemented by observer interface
      */
     @Override
     public void onAction() {
+        imageHandler.updateImageCoordinates();
         drawPieces();
     }
 }

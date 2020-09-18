@@ -4,6 +4,8 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static chess.model.Color.*;
+import static chess.model.PieceType.*;
 
 /**
  * Board represents the chess board and contains the information and methods to interact with the chess board
@@ -11,9 +13,7 @@ import java.util.List;
 public class Board {
     Square[][] squares = new Square[8][8];
     List<Piece> pieces = new ArrayList<>();
-    Piece markedPiece = null;   //To find the piece you clicked on
-    ImageView chessBoardImage = null;
-    List<ImageView> pieceImages = new ArrayList<>();
+    Piece markedPiece = null;   //To "mark" a piece
 
     public List<Square> getMockLegalSquares() {
         return mockLegalSquares;
@@ -37,14 +37,6 @@ public class Board {
         this.pieces = pieces;
     }
 
-    public void setChessBoardImage(ImageView chessBoardImage) {
-        this.chessBoardImage = chessBoardImage;
-    }
-
-    public List<ImageView> getPieceImages() {
-        return pieceImages;
-    }
-
     //For enabling resizing of the board/window
 //    private double getSquareDimension(){}
 
@@ -63,17 +55,6 @@ public class Board {
         }
     }
 
-    /**
-     * Places all the images of the pieces in a list, and gives them a corresponding coordinate
-     */
-    void fetchPieceImages() {
-        pieceImages.clear();
-        for(Piece p : pieces) {
-            p.getPieceImage().setX(p.getSquare().getCoordinatesX() * 75 + 7.5);
-            p.getPieceImage().setY(p.getSquare().getCoordinatesY() * 75 + 7.5);
-            pieceImages.add(p.getPieceImage());
-        }
-    }
 
     /**
      * handleBoardClick() is the method responsible for investigating clicks on the board and deciding what should be done.
@@ -97,7 +78,7 @@ public class Board {
             markedPiece = clickedPiece;
         }
 
-        if(mockLegalSquares.size() == 0) {
+        if(mockLegalSquares.size() == 0 && clickedPiece != null) {
             mockLegalSquares = checkLegalMoves(clickedPiece);
         } else {
             if(mockLegalSquares.contains(clickedSquare)) {
@@ -106,8 +87,6 @@ public class Board {
             mockLegalSquares.clear();
             markedPiece = null;
         }
-
-        fetchPieceImages();
     }
 
     /**
@@ -188,12 +167,26 @@ public class Board {
         if(clickedPiece == null) {
             throw new IllegalArgumentException("No piece given");
         }
+
         List<Square> returnList = new ArrayList<>();
         //Mock
         for(Square[] array : getSquares()) {
             returnList.addAll(Arrays.asList(array));
         }
         return returnList;
+    }
+
+    /**
+     * Moves the specified piece to the specified square
+     *
+     * **UNFINISHED**
+     *
+     * @param piece
+     * @param square
+     */
+    private void move(Piece piece, Square square) {
+        //will later have to check if there is a piece on the square we want to move to
+        piece.setSquare(square);
     }
 
     /**
@@ -208,46 +201,35 @@ public class Board {
      * places all black pieces, uses a factory
      */
     private void placeBlackPieces(){
-        pieces.add( new Piece(getSquares()[0][0],true, Color.BLACK, PieceType.ROOK));
-        pieces.add( new Piece(getSquares()[1][0],true, Color.BLACK, PieceType.KNIGHT));
-        pieces.add( new Piece(getSquares()[2][0],true, Color.BLACK, PieceType.BISHOP));
-        pieces.add( new Piece(getSquares()[3][0],true, Color.BLACK, PieceType.QUEEN));
-        pieces.add( new Piece(getSquares()[4][0],true, Color.BLACK, PieceType.KING));
-        pieces.add( new Piece(getSquares()[5][0],true, Color.BLACK, PieceType.BISHOP));
-        pieces.add( new Piece(getSquares()[6][0],true, Color.BLACK, PieceType.KNIGHT));
-        pieces.add( new Piece(getSquares()[7][0],true, Color.BLACK, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[0][0],true, BLACK, ROOK));
+        pieces.add( new Piece(getSquares()[1][0],true, BLACK, KNIGHT));
+        pieces.add( new Piece(getSquares()[2][0],true, BLACK, BISHOP));
+        pieces.add( new Piece(getSquares()[3][0],true, BLACK, QUEEN));
+        pieces.add( new Piece(getSquares()[4][0],true, BLACK, KING));
+        pieces.add( new Piece(getSquares()[5][0],true, BLACK, BISHOP));
+        pieces.add( new Piece(getSquares()[6][0],true, BLACK, KNIGHT));
+        pieces.add( new Piece(getSquares()[7][0],true, BLACK, ROOK));
         for (int i = 0; i <= 7; i++) {
-            pieces.add( new Piece(getSquares()[i][1],true, Color.BLACK, PieceType.PAWN));
+            pieces.add( new Piece(getSquares()[i][1],true, BLACK, PAWN));
         }
     }
     /**
      * places all white pieces, uses a factory
      */
     private void placeWhitePieces(){
-        pieces.add( new Piece(getSquares()[0][7],true, Color.WHITE, PieceType.ROOK));
-        pieces.add( new Piece(getSquares()[1][7],true, Color.WHITE, PieceType.KNIGHT));
-        pieces.add( new Piece(getSquares()[2][7],true, Color.WHITE, PieceType.BISHOP));
-        pieces.add( new Piece(getSquares()[3][7],true, Color.WHITE, PieceType.QUEEN));
-        pieces.add( new Piece(getSquares()[4][7],true, Color.WHITE, PieceType.KING));
-        pieces.add( new Piece(getSquares()[5][7],true, Color.WHITE, PieceType.BISHOP));
-        pieces.add( new Piece(getSquares()[6][7],true, Color.WHITE, PieceType.KNIGHT));
-        pieces.add( new Piece(getSquares()[7][7],true, Color.WHITE, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[0][7],true, WHITE, ROOK));
+        pieces.add( new Piece(getSquares()[1][7],true, WHITE, KNIGHT));
+        pieces.add( new Piece(getSquares()[2][7],true, WHITE, BISHOP));
+        pieces.add( new Piece(getSquares()[3][7],true, WHITE, QUEEN));
+        pieces.add( new Piece(getSquares()[4][7],true, WHITE, KING));
+        pieces.add( new Piece(getSquares()[5][7],true, WHITE, BISHOP));
+        pieces.add( new Piece(getSquares()[6][7],true, WHITE, KNIGHT));
+        pieces.add( new Piece(getSquares()[7][7],true, WHITE, ROOK));
         for (int i = 0; i <= 7; i++) {
-            pieces.add( new Piece(getSquares()[i][6],true, Color.WHITE, PieceType.PAWN));
+            pieces.add( new Piece(getSquares()[i][6],true, WHITE, PAWN));
         }
     }
 
 
-    /**
-     * Moves the specified piece to the specified square
-     *
-     * **UNFINISHED**
-     *
-     * @param piece
-     * @param square
-     */
-    private void move(Piece piece, Square square) {
-        //will later have to check if there is a piece on the square we want to move to
-        piece.setSquare(square);
-    }
+
 }

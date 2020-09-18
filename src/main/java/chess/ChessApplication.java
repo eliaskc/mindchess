@@ -29,7 +29,6 @@ public final class ChessApplication extends Application {
 		Chess model = Chess.getInstance();
 		ChessController chessController = menuController.chessLoader.getController();
 
-		model.getBoard().setChessBoardImage(chessController.getChessBoardImage());
 		model.addObserver(chessController);
 	}
 

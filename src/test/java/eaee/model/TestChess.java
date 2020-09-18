@@ -40,13 +40,4 @@ public class TestChess {
             assertEquals(Color.WHITE,model.getBoard().getPieces().get(i).getColor());
         }
     }
-
-    /**
-     * tests the fetchimages method
-     */
-    @Test
-    public void testFetchImages(){
-        ImageView image = model.getBoard().getPieceImages().get(0);
-        assertEquals(model.getBoard().getPieces().get(0).getPieceImage(),image);
-    }
 }
