@@ -1,4 +1,4 @@
-package chess.model.pieces;
+package chess.model;
 
 import chess.model.Color;
 import chess.model.Square;
@@ -13,19 +13,21 @@ import static chess.model.Color.WHITE;
  *
  * Also fetches its own image
  */
-public abstract class Piece {
+public class Piece {
     Square square;
     boolean isActive;
     Color color;
     String blackImageURL;
     String whiteImageURL;
+    PieceType pieceType;
     boolean mark = false;
     ImageView pieceImage = null; //not sure if this should be in the model or in the application
 
-    public Piece(Square square, boolean isActive, Color color) {
+    public Piece(Square square, boolean isActive, Color color, PieceType pieceType) {
         this.square = square;
         this.isActive = isActive;
         this.color = color;
+        this.pieceType = pieceType;
     }
 
     public Square getSquare() {
@@ -35,12 +37,6 @@ public abstract class Piece {
     public void setSquare(Square square) {
         this.square = square;
     }
-
-    /*
-    public void setPosition(Square position) {
-        this.position = position;
-    }
-     */
 
     public boolean isActive() {
         return isActive;
@@ -52,6 +48,14 @@ public abstract class Piece {
 
     public ImageView getPieceImage() {
         return pieceImage;
+    }
+
+    public PieceType getPieceType() {
+        return pieceType;
+    }
+
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
     /**

@@ -1,8 +1,6 @@
 package chess.model;
 
-import chess.model.pieces.Piece;
 import javafx.scene.image.ImageView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -210,32 +208,32 @@ public class Board {
      * places all black pieces, uses a factory
      */
     private void placeBlackPieces(){
-        pieces.add(PieceFactory.createRook(getSquares()[0][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createKnight(getSquares()[1][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createBishop(getSquares()[2][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createQueen(getSquares()[3][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createKing(getSquares()[4][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createBishop(getSquares()[5][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createKnight(getSquares()[6][0],true, Color.BLACK));
-        pieces.add(PieceFactory.createRook(getSquares()[7][0],true, Color.BLACK));
+        pieces.add( new Piece(getSquares()[0][0],true, Color.BLACK, PieceType.ROOK));
+        pieces.add( new Piece(getSquares()[1][0],true, Color.BLACK, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[2][0],true, Color.BLACK, PieceType.BISHOP));
+        pieces.add( new Piece(getSquares()[3][0],true, Color.BLACK, PieceType.QUEEN));
+        pieces.add( new Piece(getSquares()[4][0],true, Color.BLACK, PieceType.KING));
+        pieces.add( new Piece(getSquares()[5][0],true, Color.BLACK, PieceType.BISHOP));
+        pieces.add( new Piece(getSquares()[6][0],true, Color.BLACK, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[7][0],true, Color.BLACK, PieceType.KNIGHT));
         for (int i = 0; i <= 7; i++) {
-            pieces.add(PieceFactory.createPawn(getSquares()[i][1],true, Color.BLACK));
+            pieces.add( new Piece(getSquares()[i][1],true, Color.BLACK, PieceType.PAWN));
         }
     }
     /**
      * places all white pieces, uses a factory
      */
     private void placeWhitePieces(){
-        pieces.add(PieceFactory.createRook(getSquares()[0][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createKnight(getSquares()[1][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createBishop(getSquares()[2][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createQueen(getSquares()[3][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createKing(getSquares()[4][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createBishop(getSquares()[5][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createKnight(getSquares()[6][7],true, Color.WHITE));
-        pieces.add(PieceFactory.createRook(getSquares()[7][7],true, Color.WHITE));
+        pieces.add( new Piece(getSquares()[0][7],true, Color.WHITE, PieceType.ROOK));
+        pieces.add( new Piece(getSquares()[1][7],true, Color.WHITE, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[2][7],true, Color.WHITE, PieceType.BISHOP));
+        pieces.add( new Piece(getSquares()[3][7],true, Color.WHITE, PieceType.QUEEN));
+        pieces.add( new Piece(getSquares()[4][7],true, Color.WHITE, PieceType.KING));
+        pieces.add( new Piece(getSquares()[5][7],true, Color.WHITE, PieceType.BISHOP));
+        pieces.add( new Piece(getSquares()[6][7],true, Color.WHITE, PieceType.KNIGHT));
+        pieces.add( new Piece(getSquares()[7][7],true, Color.WHITE, PieceType.KNIGHT));
         for (int i = 0; i <= 7; i++) {
-            pieces.add(PieceFactory.createPawn(getSquares()[i][6],true, Color.WHITE));
+            pieces.add( new Piece(getSquares()[i][6],true, Color.WHITE, PieceType.PAWN));
         }
     }
 

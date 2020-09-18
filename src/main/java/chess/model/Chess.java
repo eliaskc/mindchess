@@ -34,7 +34,7 @@ public class Chess {
 
     private void init() {
         board.placeAllPieces();
-        board.fetchPieceImages();
+        //board.fetchPieceImages();
     }
 
     public void startGame() {}

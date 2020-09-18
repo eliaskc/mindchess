@@ -1,7 +1,5 @@
 package chess.model;
 
-import chess.model.pieces.Piece;
-
 import java.awt.*;
 
 /**

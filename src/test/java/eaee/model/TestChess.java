@@ -1,8 +1,7 @@
 package eaee.model;
 
 import chess.model.*;
-import chess.model.pieces.Piece;
-import javafx.fxml.FXML;
+import chess.model.Piece;
 import javafx.scene.image.*;
 import org.junit.Before;
 import org.junit.Test;
