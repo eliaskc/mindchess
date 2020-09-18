@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * MenuController handles the start page and movement from it.
+ */
 public class MenuController implements Initializable {
     Chess model = Chess.getInstance();
     public FXMLLoader chessLoader;
@@ -30,6 +33,14 @@ public class MenuController implements Initializable {
     @FXML private Slider timerSlider;
     @FXML private Label timeLabel;
 
+    /**
+     * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
+     *
+     * Happens when you click the start button
+     *
+     * @param event Clicked the button
+     * @throws IOException
+     */
     @FXML
     void goToBoard (MouseEvent event) throws IOException {
         model.getPlayer1().setName(player1NameField.getText());
@@ -51,6 +62,12 @@ public class MenuController implements Initializable {
         window.setScene(scene);
         window.show();
     }
+
+    /**
+     * Exits the application when called
+     *
+     * @param event Pressed the button
+     */
     @FXML
     void Exit (MouseEvent event) {
         System.exit(0);

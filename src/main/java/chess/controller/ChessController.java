@@ -39,6 +39,12 @@ public class ChessController implements Initializable, Observer {
     @FXML private ImageView chessBoardImage;
     @FXML private AnchorPane chessBoardContainer;
 
+    /**
+     * Switches to the menu/startscreen scene
+     *
+     * @param event Button click
+     * @throws IOException
+     */
     @FXML
     void goToMenu (ActionEvent event) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menuView.fxml"));
@@ -60,6 +66,10 @@ public class ChessController implements Initializable, Observer {
 
     }
 
+    /**
+     * Sends to the board that it has been clicked on
+     * @param event board clicked
+     */
     @FXML
     public void handleClick(MouseEvent event){
         model.handleBoardClick(event.getSceneX(),event.getSceneY());
@@ -69,6 +79,9 @@ public class ChessController implements Initializable, Observer {
         return chessBoardImage;
     }
 
+    /**
+     * Draws all images from the list of pieceImages from the board
+     */
     public void drawPieces() {
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().remove(pieceImage);
@@ -92,7 +105,14 @@ public class ChessController implements Initializable, Observer {
         }
     }
 
-    //TEMP
+    /**temp
+     *
+     * (does) finds and returns a list of images on all squares
+     *
+     * (should) finds and returns a list of images for the squares a piece is allowd to move to
+     *
+     * @return returns a list of images on all squares
+     */
     private List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
         for (Square s : model.getBoard().getMockLegalSquares()) {
@@ -107,6 +127,9 @@ public class ChessController implements Initializable, Observer {
         return imageViews;
     }
 
+    /**
+     * draws pieces when called by the observeable, implemented by observer interface
+     */
     @Override
     public void onAction() {
         drawPieces();
