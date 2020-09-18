@@ -3,8 +3,10 @@ package eaee.model;
 import chess.model.*;
 import chess.model.pieces.Piece;
 import javafx.fxml.FXML;
+import javafx.scene.image.*;
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class TestChess {
@@ -27,7 +29,25 @@ public class TestChess {
         assertTrue(testPiece.getSquare().getCoordinatesY() == 1);
     }
 
+    /**
+     * test the placeAllPieces method
+     */
     @Test
     public void testPlaceAllPieces(){
+        for (int i = 0; i < 16; i++) {
+            assertEquals(Color.BLACK,model.getBoard().getPieces().get(i).getColor());
+        }
+        for (int i = 16; i < 32; i++) {
+            assertEquals(Color.WHITE,model.getBoard().getPieces().get(i).getColor());
+        }
+    }
+
+    /**
+     * tests the fetchimages method
+     */
+    @Test
+    public void testFetchImages(){
+        ImageView image = model.getBoard().getPieceImages().get(0);
+        assertEquals(model.getBoard().getPieces().get(0).getPieceImage(),image);
     }
 }

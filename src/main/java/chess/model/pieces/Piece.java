@@ -66,4 +66,8 @@ public abstract class Piece {
             pieceImage.setImage(new Image(getClass().getResourceAsStream(blackImageURL)));
         }
     }
+
+    public Color getColor() {
+        return color;
+    }
 }
