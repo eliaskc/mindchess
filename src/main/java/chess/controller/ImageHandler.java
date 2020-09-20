@@ -30,44 +30,44 @@ public class ImageHandler {
             switch (p.getPieceType()) {
                 case ROOK:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_rook.png";
+                        imageURL = "src/main/resources/chessPieces/black_rook.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_rook.png";
+                        imageURL = "src/main/resources/chesspieces/white_rook.png";
                     }
                     break;
                 case BISHOP:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_bishop.png";
+                        imageURL = "src/main/resources/chesspieces/black_bishop.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_bishop.png";
+                        imageURL = "src/main/resources/chesspieces/white_bishop.png";
                     }
                     break;
                 case KNIGHT:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_knight.png";
+                        imageURL = "src/main/resources/chesspieces/black_knight.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_knight.png";
+                        imageURL = "src/main/resources/chesspieces/white_knight.png";
                     }
                     break;
                 case QUEEN:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_queen.png";
+                        imageURL = "src/main/resources/chesspieces/black_queen.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_queen.png";
+                        imageURL = "src/main/resources/chesspieces/white_queen.png";
                     }
                     break;
                 case KING:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_king.png";
+                        imageURL = "src/main/resources/chesspieces/black_king.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_king.png";
+                        imageURL = "src/main/resources/chesspieces/white_king.png";
                     }
                     break;
                 case PAWN:
                     if (p.getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_pawn.png";
+                        imageURL = "src/main/resources/chesspieces/black_pawn.png";
                     } else if(p.getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_pawn.png";
+                        imageURL = "src/main/resources/chesspieces/white_pawn.png";
                     }
                     break;
             }
@@ -105,7 +105,7 @@ public class ImageHandler {
         List<ImageView> imageViews = new ArrayList<>();
         for (Square s : model.getBoard().getMockLegalSquares()) {
             ImageView imageView = new ImageView();
-            imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
+            imageView.setImage(new Image(getClass().getResourceAsStream("src/main/resources/legalMove.png")));
             imageView.setFitWidth(squareDimension - 50);
             imageView.setFitHeight(squareDimension - 50);
 
@@ -115,6 +115,10 @@ public class ImageHandler {
             imageViews.add(imageView);
         }
         return imageViews;
+    }
+
+    public double getSquareDimension() {
+        return squareDimension;
     }
 
     public void setSquareDimension(double squareDimension) {

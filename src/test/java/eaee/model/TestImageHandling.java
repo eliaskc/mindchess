@@ -34,14 +34,14 @@ public class TestImageHandling {
     @Test
     public void testUpdateCoordinates() {
         ImageView test = imageHandler.getPieceImages().get(0);
-        assertTrue(test.getX() == 7.5);
-        assertTrue(test.getY() == 7.5);
+        assertTrue(test.getX() == 5);
+        assertTrue(test.getY() == 5);
 
         model.getBoard().getPieces().get(0).setSquare(model.getBoard().getSquares()[2][2]);
 
         imageHandler.updateImageCoordinates();
 
-        assertTrue(test.getX() == 2 * 75 + 7.5);
-        assertTrue(test.getY() == 2 * 75 + 7.5);
+        assertTrue(test.getX() == 2 * imageHandler.getSquareDimension() + 5);
+        assertTrue(test.getY() == 2 * imageHandler.getSquareDimension() + 5);
     }
 }
