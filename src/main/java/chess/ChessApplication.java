@@ -19,16 +19,22 @@ public final class ChessApplication extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
-		Parent root = menuLoader.load();
-		Scene scene = new Scene(root);
+		FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
+
+		Parent menuParent = menuLoader.load();
+		Parent chessParent = chessLoader.load();
+
+		MenuController menuController = menuLoader.getController();
+		ChessController chessController = chessLoader.getController();
+
+		menuController.setChessParent(menuParent);
+		chessController.setMenuParent(chessParent);
+
+		Scene scene = new Scene(menuParent);
 		stage.setScene(scene);
 		stage.show();
 
-		MenuController menuController = menuLoader.getController();
-
 		Chess model = Chess.getInstance();
-		ChessController chessController = menuController.chessLoader.getController();
-
 		model.addObserver(chessController);
 	}
 

@@ -23,8 +23,7 @@ import java.util.ResourceBundle;
  */
 public class MenuController implements Initializable {
     Chess model = Chess.getInstance();
-    public FXMLLoader chessLoader;
-    Parent parent;
+    Parent chessParent;
 
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
@@ -48,19 +47,15 @@ public class MenuController implements Initializable {
         model.getPlayer1().setTimer((int)timerSlider.getValue());
         model.getPlayer2().setTimer((int)timerSlider.getValue());
 
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
-        try {
-            parent = chessLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        model.addObserver(chessLoader.getController());
-
-        Scene scene = new Scene(parent);
+        Scene scene = new Scene(chessParent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    public void setChessParent(Parent chessParent){
+        this.chessParent = chessParent;
     }
 
     /**
@@ -74,14 +69,6 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
-        try {
-            parent = chessLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        model.addObserver(chessLoader.getController());
-
         //Adds a listener to timeSlider, updates label that displays time dynamically
         timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override

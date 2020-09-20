@@ -27,6 +27,8 @@ import java.util.SortedSet;
 public class ChessController implements Initializable, Observer {
     Chess model = Chess.getInstance();
 
+    Parent menuParent;
+
     ImageHandler imageHandler = new ImageHandler();
     List<ImageView> pieceImages;
 
@@ -51,9 +53,8 @@ public class ChessController implements Initializable, Observer {
      * @throws IOException
      */
     @FXML
-    void goToMenu (ActionEvent event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menuView.fxml"));
-        Scene scene = new Scene(parent);
+    void goToMenu (ActionEvent event) {
+        Scene scene = new Scene(menuParent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
@@ -61,8 +62,14 @@ public class ChessController implements Initializable, Observer {
         window.show();
     }
 
+    public void setMenuParent(Parent menuParent){
+        this.menuParent = menuParent;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        model.addObserver(this);
+
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
