@@ -1,7 +1,6 @@
 package chess.controller;
 
-import chess.model.Chess;
-import chess.model.Color;
+import chess.model.ChessFacade;
 import chess.model.Piece;
 import chess.model.Square;
 import javafx.scene.image.Image;
@@ -17,7 +16,9 @@ import static chess.model.Color.*;
 public class ImageHandler {
     private List<ImageView> pieceImages = new ArrayList<>();
     private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
-    private Chess model = Chess.getInstance();
+    private ChessFacade model = ChessFacade.getInstance();
+
+    private double squareDimension;
 
     public List<ImageView> getPieceImages() {
         return pieceImages;
@@ -72,8 +73,12 @@ public class ImageHandler {
             }
             ImageView pieceImage = new ImageView();
             pieceImage.setImage(new Image(getClass().getResourceAsStream(imageURL)));
-            pieceImage.setX(p.getSquare().getCoordinatesX() * 75 + 7.5);
-            pieceImage.setY(p.getSquare().getCoordinatesY() * 75 + 7.5);
+            pieceImage.setFitWidth(squareDimension-10);
+            pieceImage.setFitHeight(squareDimension-10);
+
+            pieceImage.setX(p.getSquare().getCoordinatesX() * squareDimension + 5);
+            pieceImage.setY(p.getSquare().getCoordinatesY() * squareDimension + 5);
+
             pieceImages.add(pieceImage);
             pieceImageViewMap.put(p, pieceImage);
         }
@@ -83,8 +88,8 @@ public class ImageHandler {
 
     public void updateImageCoordinates() {
         for(Map.Entry<Piece, ImageView> entry : pieceImageViewMap.entrySet()) {
-            entry.getValue().setX(entry.getKey().getSquare().getCoordinatesX() * 75 + 7.5);
-            entry.getValue().setY(entry.getKey().getSquare().getCoordinatesY() * 75 + 7.5);
+            entry.getValue().setX(entry.getKey().getSquare().getCoordinatesX() * squareDimension + 5);
+            entry.getValue().setY(entry.getKey().getSquare().getCoordinatesY() * squareDimension + 5);
         }
     }
 
@@ -101,12 +106,22 @@ public class ImageHandler {
         for (Square s : model.getBoard().getMockLegalSquares()) {
             ImageView imageView = new ImageView();
             imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
-            imageView.setX(s.getCoordinatesX() * 75 + 30);
-            imageView.setY(s.getCoordinatesY() * 75 + 30);
-            imageView.setFitHeight(15);
-            imageView.setFitWidth(15);
+            imageView.setFitWidth(squareDimension - 50);
+            imageView.setFitHeight(squareDimension - 50);
+
+            imageView.setX(s.getCoordinatesX() * squareDimension + 25);
+            imageView.setY(s.getCoordinatesY() * squareDimension + 25);
+
             imageViews.add(imageView);
         }
         return imageViews;
+    }
+
+    public double getSquareDimension() {
+        return squareDimension;
+    }
+
+    public void setSquareDimension(double squareDimension) {
+        this.squareDimension = squareDimension;
     }
 }

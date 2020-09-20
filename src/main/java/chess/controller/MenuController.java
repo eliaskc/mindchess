@@ -1,6 +1,6 @@
 package chess.controller;
 
-import chess.model.Chess;
+import chess.model.ChessFacade;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * MenuController handles the start page and movement from it.
  */
 public class MenuController implements Initializable {
-    Chess model = Chess.getInstance();
+    ChessFacade model = ChessFacade.getInstance();
     public FXMLLoader chessLoader;
     Parent parent;
 

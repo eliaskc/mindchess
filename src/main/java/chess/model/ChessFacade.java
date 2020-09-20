@@ -12,8 +12,8 @@ import java.util.List;
  *
  * (Composite pattern?)
  */
-public class Chess {
-    private static Chess instance = null;
+public class ChessFacade {
+    private static ChessFacade instance = null;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -24,9 +24,9 @@ public class Chess {
 
     List<Move> moves = new ArrayList<>();
 
-    public static Chess getInstance() {
+    public static ChessFacade getInstance() {
         if (instance == null) {
-            instance = new Chess();
+            instance = new ChessFacade();
             instance.init();
         }
         return instance;
@@ -56,11 +56,11 @@ public class Chess {
     /**
      * sends the coordinates from the mouse click to the board to handle and notifies all observers a click has been made
      *
-     * @param mouseX the x coordinate for the mouse when it clicks
-     * @param mouseY the y coordinate for the mouse when it clicks
+     * @param x the x coordinate for the mouse when it clicks
+     * @param y the y coordinate for the mouse when it clicks
      */
-    public void handleBoardClick(double mouseX, double mouseY){
-        board.handleBoardClick(mouseX, mouseY);
+    public void handleBoardClick(int x, int y){
+        board.handleBoardClick(x, y);
 
         notifyAllObservers();
     }
