@@ -1,7 +1,6 @@
 package chess.controller;
 
-import chess.model.Chess;
-import chess.model.Color;
+import chess.model.ChessFacade;
 import chess.model.Piece;
 import chess.model.Square;
 import javafx.scene.image.Image;
@@ -17,7 +16,7 @@ import static chess.model.Color.*;
 public class ImageHandler {
     private List<ImageView> pieceImages = new ArrayList<>();
     private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
-    private Chess model = Chess.getInstance();
+    private ChessFacade model = ChessFacade.getInstance();
 
     private double squareDimension;
 

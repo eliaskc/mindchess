@@ -3,20 +3,18 @@ package eaee.model;
 import chess.controller.ChessController;
 import chess.model.*;
 import chess.model.Piece;
-import javafx.event.Event;
-import javafx.scene.image.*;
 import org.junit.Before;
 import org.junit.Test;
 
 
 import static org.junit.Assert.*;
 
-public class TestChess {
-    Chess model;
+public class TestChessFacade {
+    ChessFacade model;
     ChessController chessController = new ChessController();
     @Before
     public void init() {
-        model = Chess.getInstance();
+        model = ChessFacade.getInstance();
     }
 
     @Test
@@ -25,12 +23,8 @@ public class TestChess {
         assertTrue(testPiece.getSquare().getCoordinatesX() == 0);
         assertTrue(testPiece.getSquare().getCoordinatesY() == 0);
 
-        int x1 = chessController.translateX(345);
-        int y1 = chessController.translateY(65);
-        model.handleBoardClick(x1, y1);
-        int x2 = chessController.translateX(425);
-        int y2 = chessController.translateY(145);
-        model.handleBoardClick(x2, y2);
+        model.handleBoardClick(0,0);
+        model.handleBoardClick(1,1);
 
         assertTrue(testPiece.getSquare().getCoordinatesX() == 1);
         assertTrue(testPiece.getSquare().getCoordinatesY() == 1);
@@ -48,13 +42,4 @@ public class TestChess {
             assertEquals(Color.WHITE,model.getBoard().getPieces().get(i).getColor());
         }
     }
-
-    /*@Test
-    public void testTranslate() {
-        chessController.updateSquareDimensions();
-        int x = chessController.translateX(425);
-        int y = chessController.translateY(145);
-        assertTrue(x==1);
-        assertTrue(y==1);
-    }*/
 }

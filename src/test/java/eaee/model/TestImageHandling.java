@@ -1,7 +1,7 @@
 package eaee.model;
 
 import chess.controller.ImageHandler;
-import chess.model.Chess;
+import chess.model.ChessFacade;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.Before;
@@ -9,11 +9,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestImageHandling {
-    Chess model;
+    ChessFacade model;
     ImageHandler imageHandler;
     @Before
     public void init() {
-        model = Chess.getInstance();
+        model = ChessFacade.getInstance();
         imageHandler = new ImageHandler();
         imageHandler.fetchPieceImages();
     }

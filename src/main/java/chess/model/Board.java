@@ -17,6 +17,8 @@ public class Board {
     List<Piece> pieces = new ArrayList<>();
     Piece markedPiece = null;   //To "mark" a piece
 
+    private Movement movement = new Movement;
+
     public List<Square> getMockLegalSquares() {
         return mockLegalSquares;
     }
@@ -117,6 +119,9 @@ public class Board {
         if(clickedPiece == null) {
             throw new IllegalArgumentException("No piece given");
         }
+
+        movement.setPieces(pieces);
+        movement.setSquares(squares);
 
         List<Square> returnList = new ArrayList<>();
         //Mock

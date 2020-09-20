@@ -4,7 +4,7 @@ package chess;
 //import chess.view.MenuView;
 import chess.controller.ChessController;
 import chess.controller.MenuController;
-import chess.model.Chess;
+import chess.model.ChessFacade;
 //import chess.controller.ChessController;
 //import chess.controller.MenuController;
 
@@ -26,7 +26,7 @@ public final class ChessApplication extends Application {
 
 		MenuController menuController = menuLoader.getController();
 
-		Chess model = Chess.getInstance();
+		ChessFacade model = ChessFacade.getInstance();
 		ChessController chessController = menuController.chessLoader.getController();
 
 		model.addObserver(chessController);
