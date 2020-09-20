@@ -1,7 +1,5 @@
 package chess;
 
-//import chess.view.ChessView;
-//import chess.view.MenuView;
 import chess.controller.ChessController;
 import chess.controller.MenuController;
 import chess.model.ChessFacade;
@@ -27,20 +25,15 @@ public final class ChessApplication extends Application {
 		MenuController menuController = menuLoader.getController();
 		ChessController chessController = chessLoader.getController();
 
-		menuController.setChessParent(menuParent);
-		chessController.setMenuParent(chessParent);
+		menuController.createChessScene(chessParent);
+		chessController.createMenuScene(menuParent);
 
-		Scene scene = new Scene(menuParent);
-		stage.setScene(scene);
+		//Might need to be reworked since our menu scene is created in our chessController which is kinda weird
+		stage.setScene(chessController.getMenuScene());
 		stage.show();
-
-		ChessFacade model = ChessFacade.getInstance();
-		model.addObserver(chessController);
 	}
 
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-
-
 }

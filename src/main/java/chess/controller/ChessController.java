@@ -21,10 +21,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * ChessController handles the chess board
+ */
 public class ChessController implements Initializable, Observer {
     ChessFacade model = ChessFacade.getInstance();
 
     Parent menuParent;
+    Scene scene;
 
     ImageHandler imageHandler = new ImageHandler();
     List<ImageView> pieceImages;
@@ -47,20 +51,21 @@ public class ChessController implements Initializable, Observer {
      * Switches to the menu/startscreen scene
      *
      * @param event Button click
-     * @throws IOException
      */
     @FXML
     void goToMenu (ActionEvent event) {
-        Scene scene = new Scene(menuParent);
-
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(scene);
         window.show();
     }
 
-    public void setMenuParent(Parent menuParent){
+    public void createMenuScene(Parent menuParent){
         this.menuParent = menuParent;
+        this.scene = new Scene(menuParent);
+    }
+
+    public Scene getMenuScene() {
+        return scene;
     }
 
     @Override

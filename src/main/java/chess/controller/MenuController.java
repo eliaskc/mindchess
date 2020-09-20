@@ -13,17 +13,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * MenuController handles the start page and movement from it.
+ * MenuController handles the menu
  */
 public class MenuController implements Initializable {
     ChessFacade model = ChessFacade.getInstance();
     Parent chessParent;
+    Scene scene;
 
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
@@ -38,24 +37,22 @@ public class MenuController implements Initializable {
      * Happens when you click the start button
      *
      * @param event Clicked the button
-     * @throws IOException
      */
     @FXML
-    void goToBoard (MouseEvent event) throws IOException {
+    void goToBoard (MouseEvent event) {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
         model.getPlayer1().setTimer((int)timerSlider.getValue());
         model.getPlayer2().setTimer((int)timerSlider.getValue());
-
-        Scene scene = new Scene(chessParent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
     }
 
-    public void setChessParent(Parent chessParent){
+    public void createChessScene(Parent chessParent){
         this.chessParent = chessParent;
+        this.scene = new Scene(chessParent);
     }
 
     /**
