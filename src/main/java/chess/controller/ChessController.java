@@ -11,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
@@ -19,13 +18,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.SortedSet;
 
 public class ChessController implements Initializable, Observer {
-    Chess model = Chess.getInstance();
+    ChessFacade model = ChessFacade.getInstance();
 
     Parent menuParent;
 
@@ -42,7 +39,7 @@ public class ChessController implements Initializable, Observer {
     @FXML private ImageView chessBoardImage;
     @FXML private AnchorPane chessBoardContainer;
 
-    double squareDimension;
+    double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
 
@@ -102,7 +99,7 @@ public class ChessController implements Initializable, Observer {
      * @param x
      * @return
      */
-    public int translateX(double x) {
+    private int translateX(double x) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {
             if((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension*(i+1))){
@@ -117,7 +114,7 @@ public class ChessController implements Initializable, Observer {
      * @param y
      * @return
      */
-    public int translateY(double y) {
+    private int translateY(double y) {
         //hardcoded for now
         for (int i = 0; i < 8; i++) {
             if((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension*(i+1))){

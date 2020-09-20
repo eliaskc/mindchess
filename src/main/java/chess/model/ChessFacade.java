@@ -12,8 +12,8 @@ import java.util.List;
  *
  * (Composite pattern?)
  */
-public class Chess {
-    private static Chess instance = null;
+public class ChessFacade {
+    private static ChessFacade instance = null;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -24,9 +24,9 @@ public class Chess {
 
     List<Move> moves = new ArrayList<>();
 
-    public static Chess getInstance() {
+    public static ChessFacade getInstance() {
         if (instance == null) {
-            instance = new Chess();
+            instance = new ChessFacade();
             instance.init();
         }
         return instance;
