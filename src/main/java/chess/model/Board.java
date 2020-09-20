@@ -17,7 +17,7 @@ public class Board {
     List<Piece> pieces = new ArrayList<>();
     Piece markedPiece = null;   //To "mark" a piece
 
-    private Movement movement = new Movement;
+    private Movement movement = new Movement();
 
     public List<Square> getMockLegalSquares() {
         return mockLegalSquares;
