@@ -22,12 +22,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.SortedSet;
 
 public class ChessController implements Initializable, Observer {
     Chess model = Chess.getInstance();
 
     ImageHandler imageHandler = new ImageHandler();
-    List<ImageView> pieceImages = imageHandler.fetchPieceImages();
+    List<ImageView> pieceImages;
 
     List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
@@ -38,6 +39,10 @@ public class ChessController implements Initializable, Observer {
     @FXML private Label player2Timer;
     @FXML private ImageView chessBoardImage;
     @FXML private AnchorPane chessBoardContainer;
+
+    double squareDimension;
+    double chessboardContainerX;
+    double chessboardContainerY;
 
     /**
      * Switches to the menu/startscreen scene
@@ -51,6 +56,7 @@ public class ChessController implements Initializable, Observer {
         Scene scene = new Scene(parent);
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+
         window.setScene(scene);
         window.show();
     }
@@ -61,7 +67,18 @@ public class ChessController implements Initializable, Observer {
         player2Name.setText(model.getPlayer2().getName());
         player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
         player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
+
+        updateSquareDimensions();
+        chessboardContainerX = chessBoardContainer.getLayoutX();
+        chessboardContainerY = chessBoardContainer.getLayoutY();
+
+        pieceImages = imageHandler.fetchPieceImages();
         drawPieces();
+    }
+
+    public void updateSquareDimensions() {
+        squareDimension = chessBoardImage.getFitHeight() / 8;
+        imageHandler.setSquareDimension(squareDimension);
     }
 
     /**
@@ -70,11 +87,37 @@ public class ChessController implements Initializable, Observer {
      */
     @FXML
     public void handleClick(MouseEvent event){
-        model.handleBoardClick(event.getSceneX(),event.getSceneY());
+        model.handleBoardClick(translateX(event.getSceneX()), translateY(event.getSceneY()));
     }
 
-    public ImageView getChessBoardImage() {
-        return chessBoardImage;
+    /**
+     * Translate input x coordinate into a square index x
+     * @param x
+     * @return
+     */
+    public int translateX(double x) {
+        //hardcoded for now
+        for (int i = 0; i < 8; i++) {
+            if((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension*(i+1))){
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Outside board");
+    }
+
+    /**
+     * Translate input y coordinate into a square index y
+     * @param y
+     * @return
+     */
+    public int translateY(double y) {
+        //hardcoded for now
+        for (int i = 0; i < 8; i++) {
+            if((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension*(i+1))){
+                return i;
+            }
+        }
+        throw new IllegalArgumentException("Outside board");
     }
 
     /**
@@ -104,11 +147,14 @@ public class ChessController implements Initializable, Observer {
     }
 
     /**
-     * draws pieces when called by the observeable, implemented by observer interface
+     * draws pieces when called by the observable, implemented by observer interface
      */
     @Override
     public void onAction() {
         imageHandler.updateImageCoordinates();
+        updateSquareDimensions();
+        chessboardContainerX = chessBoardContainer.getLayoutX();
+        chessboardContainerY = chessBoardContainer.getLayoutY();
         drawPieces();
     }
 }

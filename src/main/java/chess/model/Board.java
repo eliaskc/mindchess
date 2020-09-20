@@ -4,6 +4,8 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import static chess.model.Color.*;
 import static chess.model.PieceType.*;
 
@@ -37,13 +39,6 @@ public class Board {
         this.pieces = pieces;
     }
 
-    //For enabling resizing of the board/window
-//    private double getSquareDimension(){}
-
-//    private double getBoardX(){}
-
-//    private double getBoardY(){}
-
     /**
      * creates a 8x8 matrix with squares representing the chess board
      */
@@ -66,13 +61,21 @@ public class Board {
      * If a piece has been marked already, it checks if the clicked Square is one that is legal to move to and makes the move
      * if it is.
      *
-     * @param mouseX
-     * @param mouseY
+     * @param x
+     * @param y
      */
-    void handleBoardClick(double mouseX, double mouseY){
-        Square clickedSquare = getClickedSquare(mouseX, mouseY);
+    void handleBoardClick(int x, int y){
+        Square clickedSquare = null;
+        try {
+            clickedSquare = getClickedSquare(x, y);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
 
-        Piece clickedPiece = checkSquare(clickedSquare);
+        Square finalClickedSquare = clickedSquare;
+        Optional<Piece> tempClickedPiece = pieces.stream().filter(p -> p.getSquare().equals(finalClickedSquare)).findFirst();
+        Piece clickedPiece;
+        clickedPiece = tempClickedPiece.orElse(null);
 
         if(markedPiece == null) {
             markedPiece = clickedPiece;
@@ -94,68 +97,15 @@ public class Board {
      *
      * Throws an exception if the coordinate is out of bounds(larger or smaller than the board)
      *
-     * @param mouseX
-     * @param mouseY
+     * @param x
+     * @param y
      * @return  the square corresponding to the coordinates given.
      */
-    private Square getClickedSquare(double mouseX, double mouseY) {
-        int x = 0;
-        int y = 0;
-        try {
-            x = translateX(mouseX);
-            y = translateY(mouseY);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
+    private Square getClickedSquare(int x, int y) {
+        if (squares[x][y] == null){
+            throw new NullPointerException("Clicked outside board");
         }
         return squares[x][y];
-    }
-
-
-    /**
-     * Translate input x coordinate into a square index x
-     * @param x
-     * @return
-     */
-    private int translateX(double x) {
-        //hardcoded for now
-        for (int i = 0; i < 8; i++) {
-            if((i * 75 + 340 <= x && x <= 340 + 75*(i+1))){
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("Outside board");
-    }
-
-
-    /**
-     * Translate input y coordinate into a square index y
-     * @param y
-     * @return
-     */
-    private int translateY(double y) {
-        //hardcoded for now
-        for (int i = 0; i < 8; i++) {
-            if((i * 75 + 60 <= y && y <= 60 + 75*(i+1))){
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("Outside board");
-    }
-
-    /**
-     * Checks if a square contains a piece on the board
-     *
-     * @param square
-     * @return  returns the piece of the square if it exist otherwise returns null
-     */
-    private Piece checkSquare(Square square){
-        Piece returnValue = null;
-        for(Piece p : pieces) {
-            if(p.getSquare().equals(square)) {
-                return p;
-            }
-        }
-        return returnValue;
     }
 
     /**
