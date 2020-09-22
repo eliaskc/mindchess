@@ -17,12 +17,12 @@ public class ChessFacade {
 
     private List<Observer> observers = new ArrayList<>();
 
-    Player player1 = new Player("Player 1");
-    Player player2 = new Player("Player 2");
+    private Player player1 = new Player("Player 1");
+    private Player player2 = new Player("Player 2");
 
-    Board board = new Board();
+    private Board board = new Board();
 
-    List<Move> moves = new ArrayList<>();
+    private List<Move> moves = new ArrayList<>();
 
     public static ChessFacade getInstance() {
         if (instance == null) {
@@ -68,7 +68,7 @@ public class ChessFacade {
     /**
      * Notifies all current observers when you click on the chess board
      */
-    public void notifyAllObservers() {
+    private void notifyAllObservers() {
         for(Observer observer : observers) {
             observer.onAction();
         }

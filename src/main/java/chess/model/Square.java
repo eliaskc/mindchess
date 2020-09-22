@@ -6,7 +6,7 @@ import java.awt.*;
  * Class Square represents a point on the chess board
  */
 public class Square {
-    Point coordinates = new Point(0, 0);
+    private Point coordinates = new Point(0, 0);
 
     public Square(int x, int y) {
         this.coordinates.x = x;

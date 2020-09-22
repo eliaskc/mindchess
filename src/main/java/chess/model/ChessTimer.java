@@ -3,8 +3,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ChessTimer {
-    int time;
-    Timer timer = new Timer();
+    private int time;
+    private Timer timer = new Timer();
 
     public ChessTimer() {
 

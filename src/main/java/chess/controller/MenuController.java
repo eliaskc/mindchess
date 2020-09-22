@@ -20,9 +20,9 @@ import java.util.ResourceBundle;
  * MenuController handles the menu
  */
 public class MenuController implements Initializable {
-    ChessFacade model = ChessFacade.getInstance();
-    Parent chessParent;
-    Scene scene;
+    private ChessFacade model = ChessFacade.getInstance();
+    private Parent chessParent;
+    private Scene scene;
 
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;

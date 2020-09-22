@@ -25,15 +25,15 @@ import java.util.ResourceBundle;
  * ChessController handles the chess board
  */
 public class ChessController implements Initializable, Observer {
-    ChessFacade model = ChessFacade.getInstance();
+    private ChessFacade model = ChessFacade.getInstance();
 
-    Parent menuParent;
-    Scene scene;
+    private Parent menuParent;
+    private Scene scene;
 
-    ImageHandler imageHandler = new ImageHandler();
-    List<ImageView> pieceImages;
+    private ImageHandler imageHandler = new ImageHandler();
+    private List<ImageView> pieceImages;
 
-    List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
+    private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
     @FXML Button btnBack;
     @FXML private Label player1Name;
