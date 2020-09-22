@@ -14,11 +14,11 @@ import static chess.model.Color.WHITE;
  * Also fetches its own image
  */
 public class Piece {
-    Square square;
-    boolean isActive;
-    Color color;
-    PieceType pieceType;
-    boolean mark = false;
+    private Square square;
+    private boolean isActive;
+    private Color color;
+    private PieceType pieceType;
+    private boolean mark = false;
 
     public Piece(Square square, boolean isActive, Color color, PieceType pieceType) {
         this.square = square;

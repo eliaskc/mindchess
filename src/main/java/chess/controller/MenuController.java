@@ -13,18 +13,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * MenuController handles the start page and movement from it.
+ * MenuController handles the menu
  */
 public class MenuController implements Initializable {
-    ChessFacade model = ChessFacade.getInstance();
-    public FXMLLoader chessLoader;
-    Parent parent;
+    private ChessFacade model = ChessFacade.getInstance();
+    private Parent chessParent;
+    private Scene scene;
 
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
@@ -39,28 +37,22 @@ public class MenuController implements Initializable {
      * Happens when you click the start button
      *
      * @param event Clicked the button
-     * @throws IOException
      */
     @FXML
-    void goToBoard (MouseEvent event) throws IOException {
+    void goToBoard (MouseEvent event) {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
         model.getPlayer1().setTimer((int)timerSlider.getValue());
         model.getPlayer2().setTimer((int)timerSlider.getValue());
 
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
-        try {
-            parent = chessLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        model.addObserver(chessLoader.getController());
-
-        Scene scene = new Scene(parent);
-
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    public void createChessScene(Parent chessParent){
+        this.chessParent = chessParent;
+        this.scene = new Scene(chessParent);
     }
 
     /**
@@ -74,14 +66,6 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
-        try {
-            parent = chessLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        model.addObserver(chessLoader.getController());
-
         //Adds a listener to timeSlider, updates label that displays time dynamically
         timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override

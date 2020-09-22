@@ -21,13 +21,19 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * ChessController handles the chess board
+ */
 public class ChessController implements Initializable, Observer {
-    ChessFacade model = ChessFacade.getInstance();
+    private ChessFacade model = ChessFacade.getInstance();
 
-    ImageHandler imageHandler = new ImageHandler();
-    List<ImageView> pieceImages;
+    private Parent menuParent;
+    private Scene scene;
 
-    List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
+    private ImageHandler imageHandler = new ImageHandler();
+    private List<ImageView> pieceImages;
+
+    private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
     @FXML Button btnBack;
     @FXML private Label player1Name;
@@ -45,21 +51,27 @@ public class ChessController implements Initializable, Observer {
      * Switches to the menu/startscreen scene
      *
      * @param event Button click
-     * @throws IOException
      */
     @FXML
-    void goToMenu (ActionEvent event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menuView.fxml"));
-        Scene scene = new Scene(parent);
-
+    void goToMenu (ActionEvent event) {
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(scene);
         window.show();
     }
 
+    public void createMenuScene(Parent menuParent){
+        this.menuParent = menuParent;
+        this.scene = new Scene(menuParent);
+    }
+
+    public Scene getMenuScene() {
+        return scene;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        model.addObserver(this);
+
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));

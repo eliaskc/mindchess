@@ -13,9 +13,9 @@ import static chess.model.PieceType.*;
  * Board represents the chess board and contains the information and methods to interact with the chess board
  */
 public class Board {
-    Square[][] squares = new Square[8][8];
-    List<Piece> pieces = new ArrayList<>();
-    Piece markedPiece = null;   //To "mark" a piece
+    private Square[][] squares = new Square[8][8];
+    private List<Piece> pieces = new ArrayList<>();
+    private Piece markedPiece = null;   //To "mark" a piece
 
     private Movement movement = new Movement();
 

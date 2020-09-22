@@ -10,8 +10,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestChessFacade {
-    ChessFacade model;
-    ChessController chessController = new ChessController();
+    private ChessFacade model;
+    private ChessController chessController = new ChessController();
+
     @Before
     public void init() {
         model = ChessFacade.getInstance();
