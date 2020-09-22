@@ -28,6 +28,8 @@ public final class ChessApplication extends Application {
 		menuController.createChessScene(chessParent);
 		chessController.createMenuScene(menuParent);
 
+		menuController.setChessController(chessController);
+
 		//Might need to be reworked since our menu scene is created in our chessController which is kinda weird
 		stage.setScene(chessController.getMenuScene());
 		stage.show();

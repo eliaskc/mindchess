@@ -71,18 +71,20 @@ public class ChessController implements Initializable, Observer {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model.addObserver(this);
-
-        player1Name.setText(model.getPlayer1().getName());
-        player2Name.setText(model.getPlayer2().getName());
-        player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
-        player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
-
         updateSquareDimensions();
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
 
         pieceImages = imageHandler.fetchPieceImages();
         drawPieces();
+        init();
+    }
+
+    public void init() {
+        player1Name.setText(model.getPlayer1().getName());
+        player2Name.setText(model.getPlayer2().getName());
+        player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
+        player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
     }
 
     public void updateSquareDimensions() {
