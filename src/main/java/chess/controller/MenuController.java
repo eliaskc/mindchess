@@ -24,6 +24,12 @@ public class MenuController implements Initializable {
     private Parent chessParent;
     private Scene scene;
 
+    private ChessController chessController;
+
+    public void setChessController(ChessController chessController) {
+        this.chessController = chessController;
+    }
+
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
     @FXML private TextField player1NameField;
@@ -48,6 +54,8 @@ public class MenuController implements Initializable {
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+
+        chessController.init();
     }
 
     public void createChessScene(Parent chessParent){
