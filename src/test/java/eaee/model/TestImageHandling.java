@@ -23,11 +23,11 @@ public class TestImageHandling {
 
 
         ImageView test1 = new ImageView();
-        test1.setImage(new Image(getClass().getResourceAsStream("../../../main/resources/chesspieces/black_rook.png")));
+        test1.setImage(new Image(getClass().getResourceAsStream("/chesspieces/black_rook.png")));
         assertTrue(imageHandler.getPieceImages().get(0).getCssMetaData().equals(test1.getCssMetaData()));
 
         ImageView test2 = new ImageView();
-        test2.setImage(new Image(getClass().getResourceAsStream("../../../main/resources/chesspieces/black_bishop.png")));
+        test2.setImage(new Image(getClass().getResourceAsStream("/chesspieces/black_bishop.png")));
         assertTrue(imageHandler.getPieceImages().get(2).getCssMetaData().equals(test2.getCssMetaData()));
     }
 
