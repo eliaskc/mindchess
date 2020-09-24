@@ -77,7 +77,6 @@ public class ChessController implements Initializable, Observer {
 
         pieceImages = imageHandler.fetchPieceImages();
         drawPieces();
-        init();
     }
 
     public void init() {
@@ -163,9 +162,6 @@ public class ChessController implements Initializable, Observer {
     @Override
     public void onAction() {
         imageHandler.updateImageCoordinates();
-        updateSquareDimensions();
-        chessboardContainerX = chessBoardContainer.getLayoutX();
-        chessboardContainerY = chessBoardContainer.getLayoutY();
         drawPieces();
     }
 }
