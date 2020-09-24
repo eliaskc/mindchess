@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * ChessTimer handles timers
+ *
+ * The timer counts down from a specified number in seconds and updates its observers every second
+ *
+ * It allows the manipulation of timers by pausing and unpausing.
+ */
 public class ChessTimer {
     private int time;
     private boolean active = false;
@@ -16,39 +23,47 @@ public class ChessTimer {
 
     }
 
+    /**
+     * stops previous timer to make sure that not more than 1 threads are active
+     *
+     * Creates and starts decrementing a new timer
+     */
     public void startTimer() {
         stopTimer();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println(time);
                 if(active)decrementTime();
-                if(getTime() <= 0){
-                    notifyObservers();
-                    stopTimer();
-                }
+                if(getTime() <= 0) stopTimer();
             }
         }, 0, 1000);
     }
 
+    /**
+     * stops timer,
+     */
     public void stopTimer(){
         timer.cancel();
         setActive(false);
     }
 
+    /**
+     * decrements the time Integer
+     */
     private void decrementTime(){
         time--;
-        System.out.println(time);
         notifyObservers();
     }
 
+    /**
+     * Notifies observers every second
+     */
     private void notifyObservers(){
         for (TimerObserver o: observers) {
             o.updateTimer();
         }
     }
-
 
     public void setTime(int time) {
         this.time = time;

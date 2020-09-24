@@ -84,24 +84,20 @@ public class MenuController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initTimer();
-
-        //Adds a listener to timeSlider, updates label that displays time dynamically
-        /*timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                timeLabel.textProperty().setValue(t1.intValue() + " m.");
-            }
-        });
-        */
     }
 
+    /**
+     * creates the timermap and gives the dropdown menu its options
+     *
+     * Where the possible times is decided
+     */
     private void initTimer(){
         timerMap.put("03:00 min", 180);
         timerMap.put("05:00 min", 300);
         timerMap.put("10:00 min", 600);
         timerMap.put("30:00 min", 1800);
         timerMap.put("60:00 min", 3600);
-        
+
         btnTimerDrop.getItems().addAll(
                 "03:00 min",
                 "05:00 min",
@@ -109,6 +105,11 @@ public class MenuController implements Initializable {
                 "30:00 min",
                 "60:00 min"
         );
+        //needs to be sorted because it's in random order works otherwise.
+        /*
+        timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
+         */
+
     }
 
 

@@ -171,39 +171,47 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
     }
 
-    void timer1Start(){
+    private void timer1Start(){
         model.getPlayer1().getTimer().startTimer();
     }
-    void timer1Stop(){
+    private void timer1Stop(){
         model.getPlayer1().getTimer().stopTimer();
     }
-    void timer1Pause(){
+    private void timer1Pause(){
         model.getPlayer1().getTimer().setActive(false);
     }
-    void timer1Unpause() {
+    private void timer1Unpause() {
         model.getPlayer1().getTimer().setActive(true);
     }
 
-    void timer2Start(){
+    private void timer2Start(){
         model.getPlayer2().getTimer().startTimer();
     }
-    void timer2Stop(){
+    private void timer2Stop(){
         model.getPlayer2().getTimer().stopTimer();
     }
-    void timer2Pause(){
+    private void timer2Pause(){
         model.getPlayer2().getTimer().setActive(false);
     }
-    void timer2Unpause() {
+    private void timer2Unpause() {
         model.getPlayer2().getTimer().setActive(true);
     }
 
 
-
+    /**
+     * fetches the times for each timer from the model when called and updates the labels
+     */
     public void updateTimer(){
         Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayer1().getTimer().getTime())));
         Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime())));
     }
 
+    /**
+     * Takes an input integer seconds and formats it into minutes and seconds xx:xx as a String
+     * appends zeroes when needed to maintain the 4 digit structure
+     * @param seconds
+     * @return the formatted time
+     */
     private String formatTime(int seconds){
         String sec = seconds % 60 >= 10 ? "" + (seconds % 3600 ) % 60 : "0" + (seconds % 3600 ) % 60;
         String min = seconds >= 600 ? "" + (seconds % 3600 ) / 60 : "0" + (seconds % 3600 ) / 60;
