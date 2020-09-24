@@ -44,18 +44,7 @@ public class Movement {
                 points.add(p);
                 break;
             } else {
-                break;
-            }
-        }
 
-        return points;
-    }
-
-    private List<Point> down(Piece markedPiece, Point markedPoint, int steps){
-        List<Point> points = new ArrayList<>();
-
-        for(int i = markedPoint.y + 1; i < 8; i++) {
-            Point p = new Point(markedPoint.x, i);
             if (boardMap.get(p) == null) {
                 points.add(p);
             } else if (boardMap.get(p).getColor() != markedPiece.getColor()) {
