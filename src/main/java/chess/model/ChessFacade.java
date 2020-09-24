@@ -33,8 +33,7 @@ public class ChessFacade {
     }
 
     private void init() {
-        board.placeAllPieces();
-        //board.fetchPieceImages();
+        board.initBoard();
     }
 
     public void startGame() {}
