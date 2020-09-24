@@ -23,6 +23,7 @@ public class TestMovement {
     public void init() {
         model = ChessFacade.getInstance();
         boardMap = model.getBoard().getBoardMap();
+        movement.setBoardMap(boardMap);
     }
 
     @Test

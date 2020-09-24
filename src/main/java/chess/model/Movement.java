@@ -77,10 +77,31 @@ public class Movement {
     private List<Point> legalMovesPawn(Piece pieceToMove, Point markedPoint) {
         List<Point> points = new ArrayList<>();
 
+        //Need to check if the pawn has moved already, because if not then it can move 2 steps
+
+        //Also need to make sure it can't take pieces straight in front
+
+        //Also need to check if 0 index out of bounds
         if (pieceToMove.getColor() == BLACK) {
             points.add(down(pieceToMove, markedPoint).get(0));
+
+            //Could simplify, make more beautiful
+            /*if(boardMap.get(downRight(pieceToMove, markedPoint).get(0)) != null && boardMap.get(downRight(pieceToMove, markedPoint).get(0)).getColor() == BLACK) {
+                points.add(downRight(pieceToMove, markedPoint).get(0));
+            }
+            if(boardMap.get(downLeft(pieceToMove, markedPoint).get(0)) != null && boardMap.get(downLeft(pieceToMove, markedPoint).get(0)).getColor() == BLACK) {
+                points.add(downLeft(pieceToMove, markedPoint).get(0));
+            }*/
         } else if (pieceToMove.getColor() == WHITE) {
             points.add(up(pieceToMove, markedPoint).get(0));
+
+            /*//Could simplify, make more beautiful
+            if(boardMap.get(upRight(pieceToMove, markedPoint).get(0)) != null && boardMap.get(upRight(pieceToMove, markedPoint).get(0)).getColor() == BLACK) {
+                points.add(upRight(pieceToMove, markedPoint).get(0));
+            }
+            if(boardMap.get(upLeft(pieceToMove, markedPoint).get(0)) != null && boardMap.get(upLeft(pieceToMove, markedPoint).get(0)).getColor() == BLACK) {
+                points.add(upLeft(pieceToMove, markedPoint).get(0));
+            }*/
         }
 
         return points;
@@ -89,6 +110,7 @@ public class Movement {
     private List<Point> legalMovesKing(Piece pieceToMove, Point markedPoint) {
         List<Point> points = new ArrayList<>();
 
+        //Need to check if 0 index out of bounds
         points.add(up(pieceToMove, markedPoint).get(0));
         points.add(right(pieceToMove, markedPoint).get(0));
         points.add(down(pieceToMove, markedPoint).get(0));
