@@ -172,7 +172,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     void timer1Start(){
-        model.getPlayer1().getTimer().startTimer(180);
+        model.getPlayer1().getTimer().startTimer();
     }
     void timer1Stop(){
         model.getPlayer1().getTimer().stopTimer();
@@ -185,7 +185,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     void timer2Start(){
-        model.getPlayer2().getTimer().startTimer(180);
+        model.getPlayer2().getTimer().startTimer();
     }
     void timer2Stop(){
         model.getPlayer2().getTimer().stopTimer();

@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.model.ChessFacade;
+import chess.model.Piece;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -10,10 +11,16 @@ import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -30,12 +37,14 @@ public class MenuController implements Initializable {
         this.chessController = chessController;
     }
 
+    private Map<String, Integer> timerMap = new HashMap<>();
+
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
     @FXML private TextField player1NameField;
     @FXML private TextField player2NameField;
-    @FXML private Slider timerSlider;
     @FXML private Label timeLabel;
+    @FXML private ComboBox btnTimerDrop;
 
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
@@ -48,8 +57,8 @@ public class MenuController implements Initializable {
     void goToBoard (MouseEvent event) {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
-        //model.getPlayer1().setTimer((int)timerSlider.getValue());
-        //model.getPlayer2().setTimer((int)timerSlider.getValue());
+        model.getPlayer1().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        model.getPlayer2().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -74,12 +83,33 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initTimer();
+
         //Adds a listener to timeSlider, updates label that displays time dynamically
-        timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        /*timerSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 timeLabel.textProperty().setValue(t1.intValue() + " m.");
             }
         });
+        */
     }
+
+    private void initTimer(){
+        timerMap.put("03:00 min", 180);
+        timerMap.put("05:00 min", 300);
+        timerMap.put("10:00 min", 600);
+        timerMap.put("30:00 min", 1800);
+        timerMap.put("60:00 min", 3600);
+        
+        btnTimerDrop.getItems().addAll(
+                "03:00 min",
+                "05:00 min",
+                "10:00 min",
+                "30:00 min",
+                "60:00 min"
+        );
+    }
+
+
 }

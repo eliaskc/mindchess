@@ -7,7 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ChessTimer {
-    private int time = 0;
+    private int time;
     private boolean active = false;
     private Timer timer = new Timer();
     private List<TimerObserver> observers = new ArrayList<>();
@@ -16,14 +16,13 @@ public class ChessTimer {
 
     }
 
-    public void startTimer(int time) {
+    public void startTimer() {
         stopTimer();
         timer = new Timer();
-        setTime(time);
-        System.out.println("timer " + timer + " started");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                System.out.println(time);
                 if(active)decrementTime();
                 if(getTime() <= 0){
                     notifyObservers();
@@ -35,8 +34,6 @@ public class ChessTimer {
 
     public void stopTimer(){
         timer.cancel();
-        setTime(0);
-        System.out.println("timer " + timer + " stopped");
         setActive(false);
     }
 
@@ -53,7 +50,7 @@ public class ChessTimer {
     }
 
 
-    private void setTime(int time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
@@ -62,7 +59,6 @@ public class ChessTimer {
     }
 
     public void setActive(boolean active) {
-        System.out.println(timer + " active=" + active);
         this.active = active;
     }
 
