@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -37,7 +38,7 @@ public class MenuController implements Initializable {
         this.chessController = chessController;
     }
 
-    private Map<String, Integer> timerMap = new HashMap<>();
+    private HashMap<String, Integer> timerMap = new LinkedHashMap<>();
 
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
@@ -98,18 +99,7 @@ public class MenuController implements Initializable {
         timerMap.put("30:00 min", 1800);
         timerMap.put("60:00 min", 3600);
 
-        btnTimerDrop.getItems().addAll(
-                "03:00 min",
-                "05:00 min",
-                "10:00 min",
-                "30:00 min",
-                "60:00 min"
-        );
-        //needs to be sorted because it's in random order works otherwise.
-        /*
         timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
-         */
-
     }
 
 
