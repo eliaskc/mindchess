@@ -74,6 +74,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model.addObserver(this);
         model.getPlayer1().getTimer().addObserver(this);
+        model.getPlayer2().getTimer().addObserver(this);
         updateSquareDimensions();
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
@@ -87,6 +88,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         player2Name.setText(model.getPlayer2().getName());
         timer1Start();
         timer1Unpause();
+        timer2Start();
+        timer2Unpause();
     }
 
     public void updateSquareDimensions() {
@@ -168,22 +171,37 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
     }
 
-    @FXML void timer1Start(){
-        model.getPlayer1().getTimer().startTimer(123);
+    void timer1Start(){
+        model.getPlayer1().getTimer().startTimer(180);
     }
-    @FXML void timer1Stop(){
+    void timer1Stop(){
         model.getPlayer1().getTimer().stopTimer();
     }
-    @FXML void timer1Pause(){
+    void timer1Pause(){
         model.getPlayer1().getTimer().setActive(false);
     }
-    @FXML void timer1Unpause() {
+    void timer1Unpause() {
         model.getPlayer1().getTimer().setActive(true);
     }
 
+    void timer2Start(){
+        model.getPlayer2().getTimer().startTimer(180);
+    }
+    void timer2Stop(){
+        model.getPlayer2().getTimer().stopTimer();
+    }
+    void timer2Pause(){
+        model.getPlayer2().getTimer().setActive(false);
+    }
+    void timer2Unpause() {
+        model.getPlayer2().getTimer().setActive(true);
+    }
+
+
+
     public void updateTimer(){
         Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayer1().getTimer().getTime())));
-        //Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime)));
+        Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime())));
     }
 
     private String formatTime(int seconds){
