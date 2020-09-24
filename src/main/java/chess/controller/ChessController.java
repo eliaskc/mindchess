@@ -1,7 +1,9 @@
 package chess.controller;
 
 import chess.Observer;
+import chess.TimerObserver;
 import chess.model.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * ChessController handles the chess board
  */
-public class ChessController implements Initializable, Observer {
+public class ChessController implements Initializable, Observer, TimerObserver {
     private ChessFacade model = ChessFacade.getInstance();
 
     private Parent menuParent;
@@ -71,6 +73,7 @@ public class ChessController implements Initializable, Observer {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model.addObserver(this);
+        model.getPlayer1().getTimer().addObserver(this);
         updateSquareDimensions();
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
@@ -82,8 +85,8 @@ public class ChessController implements Initializable, Observer {
     public void init() {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
-        player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
-        player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
+        timer1Start();
+        timer1Unpause();
     }
 
     public void updateSquareDimensions() {
@@ -163,5 +166,29 @@ public class ChessController implements Initializable, Observer {
     public void onAction() {
         imageHandler.updateImageCoordinates();
         drawPieces();
+    }
+
+    @FXML void timer1Start(){
+        model.getPlayer1().getTimer().startTimer(123);
+    }
+    @FXML void timer1Stop(){
+        model.getPlayer1().getTimer().stopTimer();
+    }
+    @FXML void timer1Pause(){
+        model.getPlayer1().getTimer().setActive(false);
+    }
+    @FXML void timer1Unpause() {
+        model.getPlayer1().getTimer().setActive(true);
+    }
+
+    public void updateTimer(){
+        Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayer1().getTimer().getTime())));
+        //Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime)));
+    }
+
+    private String formatTime(int seconds){
+        String sec = seconds % 60 >= 10 ? "" + (seconds % 3600 ) % 60 : "0" + (seconds % 3600 ) % 60;
+        String min = seconds >= 600 ? "" + (seconds % 3600 ) / 60 : "0" + (seconds % 3600 ) / 60;
+        return min+":"+sec;
     }
 }

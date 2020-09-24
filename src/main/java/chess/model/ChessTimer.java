@@ -42,6 +42,7 @@ public class ChessTimer {
 
     private void decrementTime(){
         time--;
+        System.out.println(time);
         notifyObservers();
     }
 
@@ -63,5 +64,9 @@ public class ChessTimer {
     public void setActive(boolean active) {
         System.out.println(timer + " active=" + active);
         this.active = active;
+    }
+
+    public void addObserver(TimerObserver t){
+        observers.add(t);
     }
 }

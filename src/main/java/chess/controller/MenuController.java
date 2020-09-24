@@ -48,8 +48,8 @@ public class MenuController implements Initializable {
     void goToBoard (MouseEvent event) {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
-        model.getPlayer1().setTimer((int)timerSlider.getValue());
-        model.getPlayer2().setTimer((int)timerSlider.getValue());
+        //model.getPlayer1().setTimer((int)timerSlider.getValue());
+        //model.getPlayer2().setTimer((int)timerSlider.getValue());
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
