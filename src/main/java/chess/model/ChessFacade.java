@@ -17,12 +17,6 @@ public class ChessFacade {
 
     private List<Observer> observers = new ArrayList<>();
 
-    private Player player1 = new Player("Player 1");
-    private Player player2 = new Player("Player 2");
-
-    //private Board board = new Board();
-
-    //private Game game;
     private Game currentGame;
     private List<Game> gameList = new ArrayList<>();
 
@@ -43,14 +37,12 @@ public class ChessFacade {
 
     public void startGame() {}
 
-    public void endGame() {}
-
     public Player getPlayer1() {
-        return player1;
+        return currentGame.getPlayer1();
     }
 
     public Player getPlayer2() {
-        return player2;
+        return currentGame.getPlayer2();
     }
 
     public Game getGame() {
@@ -65,7 +57,6 @@ public class ChessFacade {
      */
     public void handleBoardClick(int x, int y){
         currentGame.handleBoardClick(x, y);
-
         notifyAllObservers();
     }
 
@@ -97,4 +88,9 @@ public class ChessFacade {
     public Game getCurrentGame() {
         return currentGame;
     }
+
+    public void endGame() {
+        gameList.remove(currentGame);
+    }
+
 }
