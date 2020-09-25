@@ -58,10 +58,8 @@ public class MenuController implements Initializable {
     void goToBoard (MouseEvent event) {
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
-
         model.getPlayer1().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
         model.getPlayer2().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
-
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -102,8 +100,6 @@ public class MenuController implements Initializable {
         timerMap.put("60:00 min", 3600);
 
         timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
-
-        btnTimerDrop.getSelectionModel().selectFirst();
     }
 
 
