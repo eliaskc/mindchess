@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -27,8 +27,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Slider fx:id="timerSlider" layoutX="467.0" layoutY="360.0" max="60.0" min="5.0" showTickLabels="true" />
-      <Label fx:id="timeLabel" alignment="CENTER" layoutX="617.0" layoutY="360.0" prefHeight="33.0" prefWidth="55.0" text="5 m.">
+      <Label fx:id="timeLabel" alignment="CENTER" layoutX="617.0" layoutY="360.0" prefHeight="33.0" prefWidth="55.0" text="5 m." visible="false">
          <font>
             <Font size="15.0" />
          </font>
@@ -43,5 +42,6 @@
             <Image url="@exit_game.png" />
          </image>
       </ImageView>
+      <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="360.0" prefWidth="150.0" promptText="Välj tid" />
    </children>
 </AnchorPane>

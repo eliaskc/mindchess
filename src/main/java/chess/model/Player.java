@@ -23,11 +23,7 @@ public class Player {
         this.name = name;
     }
 
-    public int getTimer() {
-        return chessTimer.getTime();
-    }
-
-    public void setTimer(int time) {
-        this.chessTimer.setTime(time);
+    public ChessTimer getTimer() {
+        return chessTimer;
     }
 }
