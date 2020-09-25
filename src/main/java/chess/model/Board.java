@@ -11,10 +11,10 @@ import static chess.model.PieceType.*;
  * Board represents the chess board and contains the information and methods to interact with the chess board
  */
 public class Board {
-    private Piece markedPiece = null;   //To "mark" a piece
     private Point markedPoint = null;
     private Map<Point, Piece> boardMap = new HashMap<>();
-    List<Point> mockLegalPoints = new ArrayList<>();
+    private List<Piece> deadPieces = new ArrayList<>();
+    List<Point> legalPoints = new ArrayList<>();
 
     private Movement movement = new Movement();
 
@@ -25,23 +25,8 @@ public class Board {
         return boardMap;
     }
 
-    public List<Point> getMockLegalPoints() {
-        return mockLegalPoints;
-    }
-
-    //Temporary, just used to get all points for legalMoves
-    public List<Point> getAllPoints() {
-        List<Point> points = new ArrayList<>();
-        for (int i = 0; i < 8; i ++) {
-            for (int j = 0; j < 8; j ++) {
-                points.add(new Point(i,j));
-            }
-        }
-        return points;
-    }
-
-    public List<Piece> getPieces() {
-        return new ArrayList<>(boardMap.values());
+    public List<Point> getLegalPoints() {
+        return legalPoints;
     }
 
     public void initBoard(){
@@ -64,25 +49,21 @@ public class Board {
      */
     void handleBoardClick(int x, int y){
         Point clickedPoint = new Point(x, y);
-        Piece clickedPiece = boardMap.get(clickedPoint);
 
-        if(markedPiece == null && markedPoint == null) {
-            markedPiece = clickedPiece;
+        if(markedPoint == null) {
             markedPoint = new Point(x,y);
         }
 
-        if(mockLegalPoints.size() == 0 && markedPiece != null) {
-            mockLegalPoints = checkLegalMoves(markedPiece, markedPoint);
-            if(mockLegalPoints.size() == 0){ //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
-                markedPiece = null;
+        if(legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
+            legalPoints = checkLegalMoves(boardMap.get(markedPoint), markedPoint);
+            if(legalPoints.size() == 0){ //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
                 markedPoint = null;
             }
         } else {
-            if(mockLegalPoints.contains(clickedPoint)) {
-                move(markedPiece, clickedPoint);
+            if(legalPoints.contains(clickedPoint)) {
+                move(clickedPoint);
             }
-            mockLegalPoints.clear();
-            markedPiece = null;
+            legalPoints.clear();
             markedPoint = null;
         }
     }
@@ -101,7 +82,11 @@ public class Board {
      *
      * **UNFINISHED**
      */
-    private void move(Piece piece, Point clickedPoint) {
+    private void move(Point clickedPoint) {
+        if (boardMap.get(clickedPoint) != null) {
+            deadPieces.add(boardMap.get(clickedPoint));
+        }
+
         boardMap.put(clickedPoint, boardMap.get(markedPoint));
         boardMap.remove(markedPoint);
         //Currently two bugs: cant move piece on top of another piece and cant move current piece to same point

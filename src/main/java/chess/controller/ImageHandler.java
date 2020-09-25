@@ -105,7 +105,7 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getBoard().getMockLegalPoints()) {
+        for (Point point : model.getBoard().getLegalPoints()) {
             ImageView imageView = new ImageView();
             imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
             imageView.setFitWidth(squareDimension - 50);
