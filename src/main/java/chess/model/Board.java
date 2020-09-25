@@ -14,7 +14,7 @@ public class Board {
     private Piece markedPiece = null;   //To "mark" a piece
     private Point markedPoint = null;
     private Map<Point, Piece> boardMap = new HashMap<>();
-    List<Point> mockLegalSquares = new ArrayList<>();
+    List<Point> mockLegalPoints = new ArrayList<>();
 
     private Movement movement = new Movement();
 
@@ -25,19 +25,19 @@ public class Board {
         return boardMap;
     }
 
-    public List<Point> getMockLegalSquares() {
-        return mockLegalSquares;
+    public List<Point> getMockLegalPoints() {
+        return mockLegalPoints;
     }
 
-    //Temporary, just used to get all squares for legalMoves
-    public List<Point> getAllSquares() {
-        List<Point> squares = new ArrayList<>();
+    //Temporary, just used to get all points for legalMoves
+    public List<Point> getAllPoints() {
+        List<Point> points = new ArrayList<>();
         for (int i = 0; i < 8; i ++) {
             for (int j = 0; j < 8; j ++) {
-                squares.add(new Point(i,j));
+                points.add(new Point(i,j));
             }
         }
-        return squares;
+        return points;
     }
 
     public List<Piece> getPieces() {
@@ -52,63 +52,59 @@ public class Board {
     /**
      * handleBoardClick() is the method responsible for investigating clicks on the board and deciding what should be done.
      *
-     * It receives input about the click and first fetches the clicked Square, and then the Piece on the square (if there is one).
+     * It receives input about the click and first fetches the clicked Point, and then the Piece on the point (if there is one).
      *
-     * If no piece has been marked, it marks the Piece on the clicked Square
+     * If no piece has been marked, it marks the Piece on the clicked Point
      *
-     * If a piece has been marked already, it checks if the clicked Square is one that is legal to move to and makes the move
+     * If a piece has been marked already, it checks if the clicked Point is one that is legal to move to and makes the move
      * if it is.
      *
      * @param x
      * @param y
      */
     void handleBoardClick(int x, int y){
-        Point clickedSquare = new Point(x, y);
-        Piece clickedPiece = boardMap.get(clickedSquare);
+        Point clickedPoint = new Point(x, y);
+        Piece clickedPiece = boardMap.get(clickedPoint);
 
         if(markedPiece == null && markedPoint == null) {
             markedPiece = clickedPiece;
             markedPoint = new Point(x,y);
         }
 
-        if(mockLegalSquares.size() == 0 && markedPiece != null) {
-            mockLegalSquares = checkLegalMoves(markedPiece, markedPoint);
-            if(mockLegalSquares.size() == 0){ //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
+        if(mockLegalPoints.size() == 0 && markedPiece != null) {
+            mockLegalPoints = checkLegalMoves(markedPiece, markedPoint);
+            if(mockLegalPoints.size() == 0){ //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
                 markedPiece = null;
                 markedPoint = null;
             }
         } else {
-            if(mockLegalSquares.contains(clickedSquare)) {
-                move(markedPiece, clickedSquare);
+            if(mockLegalPoints.contains(clickedPoint)) {
+                move(markedPiece, clickedPoint);
             }
-            mockLegalSquares.clear();
+            mockLegalPoints.clear();
             markedPiece = null;
             markedPoint = null;
         }
     }
 
     /**
-     * Checks the squares which the clicked piece are allowed to move to
+     * Checks the points which the clicked piece are allowed to move to
      * @param markedPiece the piece that was "highlighted"
      * @return  returns a list of all legal moves possible for the clicked piece
      */
     private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
-        if (markedPiece.getPieceType() == QUEEN) { //Test
-            return new ArrayList<>(movement.legalMovesQueen(markedPiece, markedPoint));
-        } else {
-            return getAllSquares();
-        }
+        return movement.pieceMoveDelegation(markedPiece, markedPoint);
     }
 
     /**
-     * Moves the specified piece to the specified square
+     * Moves the specified piece to the specified point
      *
      * **UNFINISHED**
      */
-    private void move(Piece piece, Point clickedSquare) {
-        boardMap.put(clickedSquare, boardMap.get(markedPoint));
+    private void move(Piece piece, Point clickedPoint) {
+        boardMap.put(clickedPoint, boardMap.get(markedPoint));
         boardMap.remove(markedPoint);
-        //Currently two bugs: cant move piece on top of another piece and cant move current piece to same square
+        //Currently two bugs: cant move piece on top of another piece and cant move current piece to same point
         //This is fine because it shouldn't be allowed anyway, and will be handled by the checkLegal moves in movement
     }
 

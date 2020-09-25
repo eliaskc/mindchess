@@ -83,7 +83,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
     }
 
-    public void init() {
+    void init() {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         timer1Start();
@@ -92,7 +92,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         timer2Unpause();
     }
 
-    public void updateSquareDimensions() {
+    private void updateSquareDimensions() {
         squareDimension = chessBoardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
     }
@@ -144,6 +144,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
             chessBoardContainer.getChildren().remove(pieceImage);
         }
 
+        //Clears the list of old piece locations/images and updates it with the new one
+        imageHandler.getPieceImages().clear();
+        pieceImages = imageHandler.fetchPieceImages();
+
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().add(pieceImage);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
@@ -167,6 +171,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      */
     @Override
     public void onAction() {
+        imageHandler.fetchPieceImages();
         imageHandler.updateImageCoordinates();
         drawPieces();
     }
