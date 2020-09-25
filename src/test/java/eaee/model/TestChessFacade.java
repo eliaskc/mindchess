@@ -40,11 +40,10 @@ public class TestChessFacade {
      */
     @Test
     public void testPlaceAllPieces(){
-        for (int i = 0; i < 16; i++) {
-            assertEquals(Color.BLACK,model.getBoard().getPieces().get(i).getColor());
-        }
-        for (int i = 16; i < 32; i++) {
-            assertEquals(Color.WHITE,model.getBoard().getPieces().get(i).getColor());
-        }
+        Map<Point, Piece> boardMap = model.getBoard().getBoardMap();
+
+        assertTrue(boardMap.get(new Point(0,0)).getColor() == Color.BLACK && boardMap.get(new Point(0,0)).getPieceType() == PieceType.ROOK);
+        assertTrue(boardMap.get(new Point(6,6)).getColor() == Color.WHITE && boardMap.get(new Point(6,6)).getPieceType() == PieceType.PAWN);
+        assertTrue(boardMap.get(new Point(4,7)).getColor() == Color.WHITE && boardMap.get(new Point(4,7)).getPieceType() == PieceType.KING);
     }
 }
