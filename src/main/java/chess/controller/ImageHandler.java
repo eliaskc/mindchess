@@ -24,6 +24,7 @@ public class ImageHandler {
     }
 
     public List<ImageView> fetchPieceImages() {
+        pieceImageViewMap.clear();
         for (Map.Entry<Point,Piece> piece : boardMap.entrySet()) {
             String imageURL = "";
             if (piece.getValue() == null) {

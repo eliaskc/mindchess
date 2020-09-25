@@ -134,9 +134,11 @@ public class ChessController implements Initializable, Observer {
      * Draws all images from the list of pieceImages from the board
      */
     public void drawPieces() {
+
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().remove(pieceImage);
         }
+
 
         for (ImageView pieceImage : pieceImages) {
             chessBoardContainer.getChildren().add(pieceImage);
@@ -161,6 +163,7 @@ public class ChessController implements Initializable, Observer {
      */
     @Override
     public void onAction() {
+        pieceImages = imageHandler.fetchPieceImages();
         imageHandler.updateImageCoordinates();
         drawPieces();
     }
