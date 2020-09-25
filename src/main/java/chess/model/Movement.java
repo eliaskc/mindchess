@@ -193,7 +193,6 @@ public class Movement {
                 break;
             }
         }
-
         return points;
     }
 
