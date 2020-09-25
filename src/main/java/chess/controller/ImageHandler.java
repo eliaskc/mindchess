@@ -89,19 +89,10 @@ public class ImageHandler {
     }
 
     public void updateImageCoordinates() {
-        for(Map.Entry<Piece, ImageView> entry : pieceImageViewMap.entrySet()) {
-            entry.getValue().setX(getKeyByValue(model.getBoard().getBoardMap(), entry.getKey()).x * squareDimension + 5);
-            entry.getValue().setY(getKeyByValue(model.getBoard().getBoardMap(), entry.getKey()).y * squareDimension + 5);
+        for(Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+            pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
+            pieceImageViewMap.get(entry.getValue()).setY(entry.getKey().y * squareDimension + 5);
         }
-    }
-
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
     /**temp
