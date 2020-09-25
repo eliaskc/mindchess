@@ -75,7 +75,26 @@ public class Movement {
     }
 
     private List<Point> legalMovesKnight(Piece pieceToMove, Point markedPoint) {
-        return null;
+        List<Point> points = new ArrayList<>();
+
+        int x = markedPoint.x;
+        int y = markedPoint.y;
+
+        points.add(new Point(x+1, y-2));
+        points.add(new Point(x+2, y-1));
+        points.add(new Point(x+2, y+1));
+        points.add(new Point(x+1, y+2));
+        points.add(new Point(x-1, y+2));
+        points.add(new Point(x-2, y+1));
+        points.add(new Point(x-2, y-1));
+        points.add(new Point(x-1, y-2));
+
+        //Ohhh my
+        points.removeIf(p -> p.x > 7 || p.x < 0 || p.y > 7 || p.y < 0 );
+        points.removeIf(p -> boardMap.get(p) != null && boardMap.get(p).getColor() == pieceToMove.getColor());
+
+
+        return points;
     }
 
     private List<Point> legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {

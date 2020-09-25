@@ -79,14 +79,14 @@ public class ChessController implements Initializable, Observer {
         drawPieces();
     }
 
-    public void init() {
+    void init() {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
         player1Timer.setText(Double.toString(model.getPlayer1().getTimer()));
         player2Timer.setText(Double.toString(model.getPlayer2().getTimer()));
     }
 
-    public void updateSquareDimensions() {
+    private void updateSquareDimensions() {
         squareDimension = chessBoardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
     }
