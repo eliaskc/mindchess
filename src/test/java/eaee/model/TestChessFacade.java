@@ -24,7 +24,7 @@ public class TestChessFacade {
 
     @Test
     public void testMove() {
-        Map<Point, Piece> boardMap = model.getBoard().getBoardMap();
+        Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
         Piece testPieceBefore = boardMap.get(new Point(0,1));
 
         model.handleBoardClick(0,1);
@@ -40,7 +40,7 @@ public class TestChessFacade {
      */
     @Test
     public void testPlaceAllPieces(){
-        Map<Point, Piece> boardMap = model.getBoard().getBoardMap();
+        Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
 
         assertTrue(boardMap.get(new Point(0,0)).getColor() == Color.BLACK && boardMap.get(new Point(0,0)).getPieceType() == PieceType.ROOK);
         assertTrue(boardMap.get(new Point(6,6)).getColor() == Color.WHITE && boardMap.get(new Point(6,6)).getPieceType() == PieceType.PAWN);

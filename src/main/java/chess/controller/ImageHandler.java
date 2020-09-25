@@ -15,7 +15,7 @@ public class ImageHandler {
     private List<ImageView> pieceImages = new ArrayList<>();
     private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
     private ChessFacade model = ChessFacade.getInstance();
-    private Map<Point, Piece> boardMap = model.getBoard().getBoardMap();
+    private Map<Point, Piece> boardMap = model.getCurrentGame().getBoard().getBoardMap();
 
     private double squareDimension;
 
@@ -105,7 +105,7 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getBoard().getLegalPoints()) {
+        for (Point point : model.getGame().getBoard().getLegalPoints()) {
             ImageView imageView = new ImageView();
             imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
             imageView.setFitWidth(squareDimension - 50);
@@ -125,5 +125,10 @@ public class ImageHandler {
 
     public void setSquareDimension(double squareDimension) {
         this.squareDimension = squareDimension;
+    }
+
+    //Game
+    public void initTest() {
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
     }
 }

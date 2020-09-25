@@ -56,6 +56,13 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard (MouseEvent event) {
+
+        //Does not create a new boardmap
+        model.createNewGame();
+        model.getCurrentGame().initGame();
+
+        chessController.updateImageHandeler();
+
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
         model.getPlayer1().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
@@ -66,6 +73,8 @@ public class MenuController implements Initializable {
         window.show();
 
         chessController.init();
+
+        chessController.drawPieces();
     }
 
     public void createChessScene(Parent chessParent){
@@ -102,5 +111,6 @@ public class MenuController implements Initializable {
         timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
     }
 
+    //Game
 
 }

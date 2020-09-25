@@ -22,7 +22,7 @@ public class TestMovement {
     @Before
     public void init() {
         model = ChessFacade.getInstance();
-        boardMap = model.getBoard().getBoardMap();
+        boardMap = model.getGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 
