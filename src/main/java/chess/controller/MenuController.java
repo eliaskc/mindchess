@@ -108,6 +108,8 @@ public class MenuController implements Initializable {
         timerMap.put("30:00 min", 1800);
         timerMap.put("60:00 min", 3600);
 
+        btnTimerDrop.getSelectionModel().selectFirst();
+
         timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
     }
 
