@@ -104,7 +104,6 @@ public class Board {
     private void move(Piece piece, Point clickedPoint) {
         boardMap.put(clickedPoint, boardMap.get(markedPoint));
         boardMap.remove(markedPoint);
-        boardMap.remove(new Point(0,0));
         //Currently two bugs: cant move piece on top of another piece and cant move current piece to same point
         //This is fine because it shouldn't be allowed anyway, and will be handled by the checkLegal moves in movement
     }
