@@ -222,4 +222,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         String min = seconds >= 600 ? "" + (seconds % 3600 ) / 60 : "0" + (seconds % 3600 ) / 60;
         return min+":"+sec;
     }
+
+
+    //Game
+    public void updateImageHandeler() {
+        imageHandler.initTest();
+    }
 }

@@ -20,7 +20,11 @@ public class ChessFacade {
     private Player player1 = new Player("Player 1");
     private Player player2 = new Player("Player 2");
 
-    private Board board = new Board();
+    //private Board board = new Board();
+
+    //private Game game;
+    private Game currentGame;
+    private List<Game> gameList = new ArrayList<>();
 
     private List<Move> moves = new ArrayList<>();
 
@@ -33,7 +37,8 @@ public class ChessFacade {
     }
 
     private void init() {
-        board.initBoard();
+        createNewGame();
+        currentGame.initGame();
     }
 
     public void startGame() {}
@@ -48,8 +53,8 @@ public class ChessFacade {
         return player2;
     }
 
-    public Board getBoard() {
-        return board;
+    public Game getGame() {
+        return currentGame;
     }
 
     /**
@@ -59,7 +64,7 @@ public class ChessFacade {
      * @param y the y coordinate for the mouse when it clicks
      */
     public void handleBoardClick(int x, int y){
-        board.handleBoardClick(x, y);
+        currentGame.handleBoardClick(x, y);
 
         notifyAllObservers();
     }
@@ -79,5 +84,17 @@ public class ChessFacade {
 
     public void removeObserver(Observer observer) {
         observers.remove(observer);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Game
+
+    public void createNewGame() {
+        currentGame = new Game();
+        gameList.add(currentGame);
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
     }
 }
