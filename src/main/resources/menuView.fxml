@@ -17,14 +17,14 @@
             <Image url="@MINDCHESS.png" />
          </image>
       </ImageView>
-      <TextField fx:id="player1NameField" layoutX="467.0" layoutY="229.0" />
-      <TextField fx:id="player2NameField" layoutX="665.0" layoutY="229.0" />
-      <Label layoutX="468.0" layoutY="200.0" text="Player 1 name:">
+      <TextField fx:id="player1NameField" layoutX="472.0" layoutY="229.0" />
+      <TextField fx:id="player2NameField" layoutX="669.0" layoutY="229.0" />
+      <Label layoutX="471.0" layoutY="197.0" styleClass="outline" stylesheets="@chess.css" text="Player 1 name:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="711.0" layoutY="200.0" text="Player 2 name:">
+      <Label layoutX="673.0" layoutY="197.0" styleClass="outline" text="Player 2 name:">
          <font>
             <Font size="16.0" />
          </font>

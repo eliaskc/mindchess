@@ -106,8 +106,9 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //Fetches a random video from /background_videos/ and sets it as the background in our root
-        int randomInt = ThreadLocalRandom.current().nextInt(0, 4);
-        mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(randomInt)).toExternalForm()));
+        Random ran = new Random();
+        int videoIndex = ran.nextInt(4);
+        mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
         mediaPlayer.setAutoPlay(true);
         media.setMediaPlayer(mediaPlayer);
 
