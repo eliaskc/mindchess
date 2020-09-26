@@ -34,8 +34,9 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     private ImageHandler imageHandler = new ImageHandler();
     private List<ImageView> pieceImages;
-
     private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
+
+    private static final String media_URL = "/background_videos/background_video_1";
 
     @FXML Button btnBack;
     @FXML private Label player1Name;
@@ -225,7 +226,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
 
     //Game
-    public void updateImageHandeler() {
+    public void updateImageHandler() {
         imageHandler.initTest();
     }
 }
