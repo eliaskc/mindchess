@@ -24,7 +24,7 @@ public class Movement {
     }
 
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
-
+        points.clear();
         switch (pieceToMove.getPieceType()) {
             case ROOK:
                 legalMovesRook(pieceToMove, markedPoint);
@@ -49,35 +49,24 @@ public class Movement {
                 }
                 break;
         }
-
         return new ArrayList<>(points);
     }
 
-    private List<Point> legalMovesRook(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-        
+    private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove, markedPoint,7);
         down(pieceToMove, markedPoint,7);
         left(pieceToMove, markedPoint,7);
         right(pieceToMove, markedPoint,7);
-
-        return points;
     }
 
-    private List<Point> legalMovesBishop(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    private void legalMovesBishop(Piece pieceToMove, Point markedPoint) {
         upLeft(pieceToMove, markedPoint,7);
         upRight(pieceToMove, markedPoint,7);
         downRight(pieceToMove, markedPoint,7);
         downLeft(pieceToMove, markedPoint,7);
-
-        return points;
     }
 
-    private List<Point> legalMovesKnight(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    private void legalMovesKnight(Piece pieceToMove, Point markedPoint) {
         int x = markedPoint.x;
         int y = markedPoint.y;
 
@@ -89,13 +78,9 @@ public class Movement {
         addPoint(new Point(x-2, y+1),pieceToMove);
         addPoint(new Point(x-2, y-1),pieceToMove);
         addPoint(new Point(x-1, y-2),pieceToMove);
-
-        return points;
     }
 
-    private List<Point> legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    private void legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
         //Check if the pawn can move up, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
         if(markedPoint.getY() == 6){
             if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1)) && isUnoccupied(new Point(markedPoint.x,markedPoint.y-2)) ){
@@ -115,12 +100,9 @@ public class Movement {
             upLeft(pieceToMove,markedPoint,1);
         }
 
-        return points;
     }
 
-    private List<Point> legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    private void legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
         //Check if the pawn can move down, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
         if(markedPoint.getY() == 1){
             if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x,markedPoint.y+2)) == null ){
@@ -139,13 +121,9 @@ public class Movement {
         if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y+1)).getColor() == WHITE){
             downLeft(pieceToMove,markedPoint,1);
         }
-
-        return points;
     }
 
-    private List<Point> legalMovesKing(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove,markedPoint,1);
         right(pieceToMove,markedPoint,1);
         down(pieceToMove,markedPoint,1);
@@ -155,13 +133,9 @@ public class Movement {
         upRight(pieceToMove,markedPoint,1);
         downLeft(pieceToMove,markedPoint,1);
         downRight(pieceToMove,markedPoint,1);
-
-        return points;
     }
 
-    public List<Point> legalMovesQueen(Piece pieceToMove, Point markedPoint) {
-        points.clear();
-
+    public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove, markedPoint,7);
         down(pieceToMove, markedPoint,7);
         left(pieceToMove, markedPoint,7);
@@ -171,8 +145,6 @@ public class Movement {
         upRight(pieceToMove, markedPoint,7);
         downRight(pieceToMove, markedPoint,7);
         downLeft(pieceToMove, markedPoint,7);
-
-        return points;
     }
 
     private boolean isUnoccupied(Point p){
