@@ -10,9 +10,11 @@ public class Player {
     private ChessTimer chessTimer = new ChessTimer();
     private List<Piece> pieces = new ArrayList<>();
     private String name;
+    private Color color;
 
-    public Player(String name) {
+    public Player(String name, Color color) {
         this.name = name;
+        this.color = color;
     }
 
     public String getName() {
@@ -25,5 +27,9 @@ public class Player {
 
     public ChessTimer getTimer() {
         return chessTimer;
+    }
+
+    public void setPieces(List<Piece> pieces) {
+        this.pieces = pieces;
     }
 }

@@ -1,14 +1,10 @@
 package chess.controller;
 
 import chess.model.ChessFacade;
-import chess.model.Piece;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,11 +17,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * MenuController handles the menu
@@ -75,10 +69,10 @@ public class MenuController implements Initializable {
 
         chessController.updateImageHandler();
 
-        model.getPlayer1().setName(player1NameField.getText());
-        model.getPlayer2().setName(player2NameField.getText());
-        model.getPlayer1().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
-        model.getPlayer2().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        model.getPlayerWhite().setName(player1NameField.getText());
+        model.getPlayerBlack().setName(player2NameField.getText());
+        model.getPlayerWhite().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        model.getPlayerBlack().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
 
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(scene);
