@@ -32,7 +32,6 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     private ImageHandler imageHandler = new ImageHandler();
     private List<ImageView> pieceImages;
-
     private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
     @FXML
@@ -243,7 +242,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     //Game
-    public void updateImageHandeler() {
+    public void updateImageHandler() {
         imageHandler.initTest();
     }
 }

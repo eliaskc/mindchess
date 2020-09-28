@@ -116,12 +116,18 @@ public class ImageHandler {
         List<ImageView> imageViews = new ArrayList<>();
         for (Point point : model.getGame().getBoard().getLegalPoints()) {
             ImageView imageView = new ImageView();
-            imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
-            imageView.setFitWidth(squareDimension - 50);
-            imageView.setFitHeight(squareDimension - 50);
 
-            imageView.setX(point.x * squareDimension + 25);
-            imageView.setY(point.y * squareDimension + 25);
+            if(boardMap.get(point) != null){
+                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMoveBox.png")));
+            } else {
+                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
+            }
+
+            imageView.setFitWidth(squareDimension);
+            imageView.setFitHeight(squareDimension);
+
+            imageView.setX(point.x * squareDimension);
+            imageView.setY(point.y * squareDimension);
 
             imageViews.add(imageView);
         }
