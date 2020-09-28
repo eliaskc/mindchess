@@ -73,8 +73,6 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model.addObserver(this);
-        model.getPlayer1().getTimer().addObserver(this);
-        model.getPlayer2().getTimer().addObserver(this);
         updateSquareDimensions();
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
@@ -86,6 +84,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     void init() {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
+        model.getPlayer1().getTimer().addObserver(this);
+        model.getPlayer2().getTimer().addObserver(this);
         timer1Start();
         timer1Unpause();
         timer2Start();
