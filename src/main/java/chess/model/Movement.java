@@ -44,6 +44,7 @@ public class Movement {
             case PAWN:
                 if (pieceToMove.getColor() == WHITE) {
                     legalMoves.addAll(legalMovesWhitePawn(pieceToMove, markedPoint));
+                    System.out.println(markedPoint.getX() + " " + markedPoint.getY());
                 } else if (pieceToMove.getColor() == BLACK) {
                     legalMoves.addAll(legalMovesBlackPawn(pieceToMove, markedPoint));
                 }
@@ -107,10 +108,10 @@ public class Movement {
         }
 
         //if there are a opponent in its diagonal up squares it can take it
-        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
+        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y-1)).getColor() == BLACK){
             upRight(pieceToMove,markedPoint,1);
         }
-        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y-1)).getColor() == BLACK){
+        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
             upLeft(pieceToMove,markedPoint,1);
         }
 
@@ -170,7 +171,7 @@ public class Movement {
         upRight(pieceToMove, markedPoint,7);
         downRight(pieceToMove, markedPoint,7);
         downLeft(pieceToMove, markedPoint,7);
-        
+
         return points;
     }
 
