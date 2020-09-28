@@ -24,33 +24,33 @@ public class Movement {
     }
 
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
-        List<Point> legalMoves = new ArrayList<>();
+
         switch (pieceToMove.getPieceType()) {
             case ROOK:
-                legalMoves.addAll(legalMovesRook(pieceToMove, markedPoint));
+                legalMovesRook(pieceToMove, markedPoint);
                 break;
             case BISHOP:
-                legalMoves.addAll(legalMovesBishop(pieceToMove, markedPoint));
+                legalMovesBishop(pieceToMove, markedPoint);
                 break;
             case KNIGHT:
-                legalMoves.addAll(legalMovesKnight(pieceToMove, markedPoint));
+                legalMovesKnight(pieceToMove, markedPoint);
                 break;
             case QUEEN:
-                legalMoves.addAll(legalMovesQueen(pieceToMove, markedPoint));
+                legalMovesQueen(pieceToMove, markedPoint);
                 break;
             case KING:
-                legalMoves.addAll(legalMovesKing(pieceToMove, markedPoint));
+                legalMovesKing(pieceToMove, markedPoint);
                 break;
             case PAWN:
                 if (pieceToMove.getColor() == WHITE) {
-                    legalMoves.addAll(legalMovesWhitePawn(pieceToMove, markedPoint));
-                    System.out.println(markedPoint.getX() + " " + markedPoint.getY());
+                    legalMovesWhitePawn(pieceToMove, markedPoint);
                 } else if (pieceToMove.getColor() == BLACK) {
-                    legalMoves.addAll(legalMovesBlackPawn(pieceToMove, markedPoint));
+                    legalMovesBlackPawn(pieceToMove, markedPoint);
                 }
                 break;
         }
-        return legalMoves;
+
+        return new ArrayList<>(points);
     }
 
     private List<Point> legalMovesRook(Piece pieceToMove, Point markedPoint) {
@@ -60,7 +60,7 @@ public class Movement {
         down(pieceToMove, markedPoint,7);
         left(pieceToMove, markedPoint,7);
         right(pieceToMove, markedPoint,7);
-        
+
         return points;
     }
 
