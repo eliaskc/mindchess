@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.Color.*;
 
 /**
  * Is responisble for finding legal moves
  */
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
+    private List<Point> points = new ArrayList<>();
 
     //possible alternative to writing own getters and setters
 //    private String _name;
@@ -53,23 +53,23 @@ public class Movement {
     }
 
     private List<Point> legalMovesRook(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
+        points.clear();
         
-        points.addAll(up(pieceToMove, markedPoint));
-        points.addAll(down(pieceToMove, markedPoint));
-        points.addAll(left(pieceToMove, markedPoint));
-        points.addAll(right(pieceToMove, markedPoint));
+        up(pieceToMove, markedPoint);
+        down(pieceToMove, markedPoint);
+        left(pieceToMove, markedPoint);
+        right(pieceToMove, markedPoint);
         
         return points;
     }
 
     private List<Point> legalMovesBishop(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
+        points.clear();
 
-        points.addAll(upLeft(pieceToMove, markedPoint));
-        points.addAll(upRight(pieceToMove, markedPoint));
-        points.addAll(downRight(pieceToMove, markedPoint));
-        points.addAll(downLeft(pieceToMove, markedPoint));
+        upLeft(pieceToMove, markedPoint);
+        upRight(pieceToMove, markedPoint);
+        downRight(pieceToMove, markedPoint);
+        downLeft(pieceToMove, markedPoint);
 
         return points;
     }
@@ -98,60 +98,66 @@ public class Movement {
     }
 
     private List<Point> legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
+        List<Point> pawnPoints = new ArrayList<>();
+        points.clear();
         //Need to check if the pawn has moved already, because if not then it can move 2 steps
 
-        List<Point> legalMovesUp = up(pieceToMove, markedPoint);
-        if (legalMovesUp.size() != 0 && boardMap.get(legalMovesUp.get(0)) == null) points.add(legalMovesUp.get(0));
-
+        up(pieceToMove, markedPoint);
+        if (points.size() != 0 && boardMap.get(points.get(0)) == null) pawnPoints.add(points.get(0));
+        points.clear();
         //Check if the square to the right and up has a black piece on it, and if so add it to
+        
         //the list of legal points
-        List<Point> legalMovesUpRight = upRight(pieceToMove, markedPoint);
-        if(legalMovesUpRight.size() != 0 && boardMap.get(legalMovesUpRight.get(0)) != null) {
-            if (boardMap.get(legalMovesUpRight.get(0)).getColor() == BLACK) {
-                points.add(legalMovesUpRight.get(0));
+        upRight(pieceToMove, markedPoint);
+        if(points.size() != 0 && boardMap.get(points.get(0)) != null) {
+            if (boardMap.get(points.get(0)).getColor() == BLACK) {
+                pawnPoints.add(points.get(0));
             }
         }
+        points.clear();
 
         //same for left and up
-        List<Point> legalMovesUpLeft = upLeft(pieceToMove, markedPoint);
-        if(legalMovesUpLeft.size() != 0 && boardMap.get(legalMovesUpLeft.get(0)) != null) {
-            if (boardMap.get(legalMovesUpLeft.get(0)).getColor() == BLACK) {
-                points.add(legalMovesUpLeft.get(0));
+        upLeft(pieceToMove, markedPoint);
+        if(points.size() != 0 && boardMap.get(points.get(0)) != null) {
+            if (boardMap.get(points.get(0)).getColor() == BLACK) {
+                pawnPoints.add(points.get(0));
             }
         }
 
-        return points;
+        return pawnPoints;
     }
 
     private List<Point> legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
+        List<Point> pawnPoints = new ArrayList<>();
+        points.clear();
         //Need to check if the pawn has moved already, because if not then it can move 2 steps
 
-        List<Point> legalMovesDown = down(pieceToMove, markedPoint);
-        if (legalMovesDown.size() != 0 && boardMap.get(legalMovesDown.get(0)) == null) points.add(legalMovesDown.get(0));
+        down(pieceToMove, markedPoint);
+        if (points.size() != 0 && boardMap.get(points.get(0)) == null) pawnPoints.add(points.get(0));
+        points.clear();
 
-        List<Point> legalMovesDownRight = downRight(pieceToMove, markedPoint);
-        if(legalMovesDownRight.size() != 0 && boardMap.get(legalMovesDownRight.get(0)) != null) {
-            if (boardMap.get(legalMovesDownRight.get(0)).getColor() == WHITE) {
-                points.add(legalMovesDownRight.get(0));
+        downRight(pieceToMove, markedPoint);
+        if(points.size() != 0 && boardMap.get(points.get(0)) != null) {
+            if (boardMap.get(points.get(0)).getColor() == WHITE) {
+                pawnPoints.add(points.get(0));
             }
         }
-        List<Point> legalMovesDownLeft = downLeft(pieceToMove, markedPoint);
-        if(legalMovesDownLeft.size() != 0 && boardMap.get(legalMovesDownLeft.get(0)) != null) {
-            if (boardMap.get(legalMovesDownLeft.get(0)).getColor() == WHITE) {
-                points.add(legalMovesDownLeft.get(0));
+        points.clear();
+
+        downLeft(pieceToMove, markedPoint);
+        if(points.size() != 0 && boardMap.get(points.get(0)) != null) {
+            if (boardMap.get(points.get(0)).getColor() == WHITE) {
+                pawnPoints.add(points.get(0));
             }
         }
 
-        return points;
+        return pawnPoints;
     }
 
     private List<Point> legalMovesKing(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
+        points.clear();
 
+        /*
         if (up(pieceToMove, markedPoint).size() != 0) points.add(up(pieceToMove, markedPoint).get(0));
         if (right(pieceToMove, markedPoint).size() != 0) points.add(right(pieceToMove, markedPoint).get(0));
         if (down(pieceToMove, markedPoint).size() != 0) points.add(down(pieceToMove, markedPoint).get(0));
@@ -161,196 +167,145 @@ public class Movement {
         if (upRight(pieceToMove, markedPoint).size() != 0) points.add(upRight(pieceToMove, markedPoint).get(0));
         if (downRight(pieceToMove, markedPoint).size() != 0) points.add(downRight(pieceToMove, markedPoint).get(0));
         if (downLeft(pieceToMove, markedPoint).size() != 0) points.add(downLeft(pieceToMove, markedPoint).get(0));
+         */
 
         return points;
     }
 
     public List<Point> legalMovesQueen(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-        points.addAll(up(pieceToMove, markedPoint));
-        points.addAll(down(pieceToMove, markedPoint));
-        points.addAll(left(pieceToMove, markedPoint));
-        points.addAll(right(pieceToMove, markedPoint));
+        points.clear();
+        up(pieceToMove, markedPoint);
+        down(pieceToMove, markedPoint);
+        left(pieceToMove, markedPoint);
+        right(pieceToMove, markedPoint);
 
-        points.addAll(upLeft(pieceToMove, markedPoint));
-        points.addAll(upRight(pieceToMove, markedPoint));
-        points.addAll(downRight(pieceToMove, markedPoint));
-        points.addAll(downLeft(pieceToMove, markedPoint));
+        upLeft(pieceToMove, markedPoint);
+        upRight(pieceToMove, markedPoint);
+        downRight(pieceToMove, markedPoint);
+        downLeft(pieceToMove, markedPoint);
         return points;
     }
 
-    private List<Point> up(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
-
+    private void up(Piece pieceToMove, Point markedPoint){
         for(int i = markedPoint.y - 1; i >= 0; i--) {
             Point p = new Point(markedPoint.x, i);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
     }
 
-    private List<Point> down(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void up(Piece pieceToMove, Point markedPoint, PieceType pieceType){
+        if(pieceType == PieceType.PAWN || pieceType == PieceType.KING){
+            addPoint(new Point(markedPoint.x,markedPoint.y-1),pieceToMove);
+        } else {
+            up(pieceToMove,markedPoint);
+        }
+    }
+
+    private void down(Piece pieceToMove, Point markedPoint){
 
         for(int i = markedPoint.y + 1; i < 8; i++) {
             Point p = new Point(markedPoint.x, i);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    private List<Point> left(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void down(Piece pieceToMove, Point markedPoint,PieceType pieceType){
+        if(pieceType == PieceType.PAWN || pieceType == PieceType.KING){
+            addPoint(new Point(markedPoint.x,markedPoint.y-1),pieceToMove);
+        } else {
+            up(pieceToMove,markedPoint);
+        }
+
+    }
+
+    private void left(Piece pieceToMove, Point markedPoint){
 
         for(int i = markedPoint.x - 1; i >= 0; i--) {
             Point p = new Point(i, markedPoint.y);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    private List<Point> right(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void right(Piece pieceToMove, Point markedPoint){
 
         for(int i = markedPoint.x + 1; i < 8; i++) {
             Point p = new Point(i, markedPoint.y);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    private List<Point> upLeft(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void upLeft(Piece pieceToMove, Point markedPoint){
 
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
+        Point p = new Point(markedPoint.x, markedPoint.y);
 
         for(int i = 0; i < 8; i++) {
             p.x--;
             p.y--;
             if(p.x >= 0 && p.y >= 0) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
+                if(addPoint(p,pieceToMove))break;
             } else {
                 break;
             }
         }
-        return points;
     }
 
-    private List<Point> upRight(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void upRight(Piece pieceToMove, Point markedPoint){
 
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
+        Point p = new Point(markedPoint.x, markedPoint.y);
 
         for(int i = 0; i < 8; i++) {
             p.x++;
             p.y--;
             if(p.x < 8 && p.y >= 0) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
+                if(addPoint(p,pieceToMove))break;
             } else {
                 break;
             }
         }
-        return points;
     }
 
-    private List<Point> downRight(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void downRight(Piece pieceToMove, Point markedPoint){
 
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
+        Point p = new Point(markedPoint.x, markedPoint.y);
 
         for(int i = 0; i < 8; i++) {
             p.x++;
             p.y++;
             if(p.x < 8 && p.y < 8) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
+                if(addPoint(p,pieceToMove))break;
             } else {
                 break;
             }
         }
-        return points;
     }
 
-    private List<Point> downLeft(Piece pieceToMove, Point markedPoint){
-        List<Point> points = new ArrayList<>();
+    private void downLeft(Piece pieceToMove, Point markedPoint){
 
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
+        Point p = new Point(markedPoint.x, markedPoint.y);
 
         for(int i = 0; i < 8; i++) {
             p.x--;
             p.y++;
             if(p.x >= 0 && p.y < 8) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
+                if(addPoint(p,pieceToMove))break;
             } else {
                 break;
             }
         }
-        return points;
+    }
+
+
+    private boolean addPoint(Point p, Piece pieceToMove){
+        boolean breakLoop;      //Used just to be extra clear, instead of return false or true
+        if (boardMap.get(p) == null) {
+            points.add(new Point(p.x, p.y));
+            breakLoop = false;
+        } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
+            points.add(new Point(p.x, p.y));
+            breakLoop = true;
+        } else {
+            breakLoop = true;
+        }
+        return breakLoop;
     }
 }
