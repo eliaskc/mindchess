@@ -80,25 +80,21 @@ public class Movement {
         int x = markedPoint.x;
         int y = markedPoint.y;
 
-        points.add(new Point(x+1, y-2));
-        points.add(new Point(x+2, y-1));
-        points.add(new Point(x+2, y+1));
-        points.add(new Point(x+1, y+2));
-        points.add(new Point(x-1, y+2));
-        points.add(new Point(x-2, y+1));
-        points.add(new Point(x-2, y-1));
-        points.add(new Point(x-1, y-2));
-
-        //Ohhh my
-        points.removeIf(p -> p.x > 7 || p.x < 0 || p.y > 7 || p.y < 0 );
-        points.removeIf(p -> boardMap.get(p) != null && boardMap.get(p).getColor() == pieceToMove.getColor());
-
+        addPoint(new Point(x+1, y-2),pieceToMove);
+        addPoint(new Point(x+2, y-1),pieceToMove);
+        addPoint(new Point(x+2, y+1),pieceToMove);
+        addPoint(new Point(x+1, y+2),pieceToMove);
+        addPoint(new Point(x-1, y+2),pieceToMove);
+        addPoint(new Point(x-2, y+1),pieceToMove);
+        addPoint(new Point(x-2, y-1),pieceToMove);
+        addPoint(new Point(x-1, y-2),pieceToMove);
 
         return points;
     }
 
     private List<Point> legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
         points.clear();
+
         //Check if the pawn can move up, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
         if(markedPoint.getY() == 6){
             if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1)) && isUnoccupied(new Point(markedPoint.x,markedPoint.y-2)) ){
@@ -111,7 +107,7 @@ public class Movement {
         }
 
         //if there are a opponent in its diagonal up squares it can take it
-        if(isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
+        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
             upRight(pieceToMove,markedPoint,1);
         }
         if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y-1)).getColor() == BLACK){
@@ -174,6 +170,7 @@ public class Movement {
         upRight(pieceToMove, markedPoint,7);
         downRight(pieceToMove, markedPoint,7);
         downLeft(pieceToMove, markedPoint,7);
+        
         return points;
     }
 
@@ -215,11 +212,7 @@ public class Movement {
         for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x--;
             p.y--;
-            if(p.x >= 0 && p.y >= 0) {
-                if(addPoint(p,pieceToMove))break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
     }
 
@@ -228,11 +221,7 @@ public class Movement {
         for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x++;
             p.y--;
-            if(p.x < 8 && p.y >= 0) {
-                if(addPoint(p,pieceToMove))break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
     }
 
@@ -241,11 +230,7 @@ public class Movement {
         for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x++;
             p.y++;
-            if(p.x < 8 && p.y < 8) {
-                if(addPoint(p,pieceToMove))break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
     }
 
@@ -255,26 +240,26 @@ public class Movement {
         for(int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
             p.y++;
-            if(p.x >= 0 && p.y < 8) {
-                if(addPoint(p,pieceToMove))break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
     }
 
 
     private boolean addPoint(Point p, Piece pieceToMove){
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
-        if (boardMap.get(p) == null) {
-            points.add(new Point(p.x, p.y));
-            breakLoop = false;
-        } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-            points.add(new Point(p.x, p.y));
-            breakLoop = true;
-        } else {
+        if(p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
+            if (boardMap.get(p) == null) {
+                points.add(new Point(p.x, p.y));
+                breakLoop = false;
+            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
+                points.add(new Point(p.x, p.y));
+                breakLoop = true;
+            } else {
+                breakLoop = true;
+            }
+        }   else {
             breakLoop = true;
         }
-        return breakLoop;
+            return breakLoop;
     }
 }
