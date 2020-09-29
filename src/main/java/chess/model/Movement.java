@@ -38,6 +38,7 @@ public class Movement {
                 legalMovesKing(pieceToMove, markedPoint);
                 break;
             case PAWN:
+
                 legalMovesPawn(pieceToMove, markedPoint);
                 break;
         }
@@ -67,7 +68,6 @@ public class Movement {
 
             if(!isUnoccupied(new Point(x+1,y+1))) addPoint(new Point(x+1,y+1), pieceToMove);
             if(!isUnoccupied(new Point(x-1,y+1))) addPoint(new Point(x-1,y+1), pieceToMove);
-
         }
     }
 
@@ -98,8 +98,6 @@ public class Movement {
         addPoint(new Point(x-2, y-1),pieceToMove);
         addPoint(new Point(x-1, y-2),pieceToMove);
     }
-
-
 
     private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove,markedPoint,1);
