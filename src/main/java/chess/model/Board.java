@@ -80,7 +80,7 @@ public class Board {
     /**
      * Moves the specified piece to the specified point
      *
-     * **UNFINISHED**
+     * TODO Is also going to save each move as an instance of Move
      */
     private void move(Point clickedPoint) {
         if (boardMap.get(clickedPoint) != null) {
@@ -89,8 +89,6 @@ public class Board {
 
         boardMap.put(clickedPoint, boardMap.get(markedPoint));
         boardMap.remove(markedPoint);
-        //Currently two bugs: cant move piece on top of another piece and cant move current piece to same point
-        //This is fine because it shouldn't be allowed anyway, and will be handled by the checkLegal moves in movement
     }
 
     /**
@@ -101,9 +99,6 @@ public class Board {
         placeWhitePieces();
     }
 
-    /**
-     * places all black pieces
-     */
     private void placeBlackPieces(){
         boardMap.put(new Point(0,0), new Piece(true, BLACK, ROOK));
         boardMap.put(new Point(1,0), new Piece(true, BLACK, KNIGHT));
@@ -118,9 +113,6 @@ public class Board {
         }
     }
 
-    /**
-     * places all white pieces
-     */
     private void placeWhitePieces(){
         for (int i = 0; i <= 7; i++) {
             boardMap.put(new Point(i,6), new Piece(true, WHITE, PAWN));

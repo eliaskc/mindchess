@@ -15,14 +15,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * MenuController handles the menu
@@ -32,6 +35,14 @@ public class MenuController implements Initializable {
     private Parent chessParent;
     private Scene scene;
 
+    private String media_URL_1 = "/background_videos/background_video_1.mp4";
+    private String media_URL_2 = "/background_videos/background_video_2.mp4";
+    private String media_URL_3 = "/background_videos/background_video_3.mp4";
+    private String media_URL_4 = "/background_videos/background_video_4.mp4";
+    List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
+
+    private MediaPlayer mediaPlayer;
+
     private ChessController chessController;
 
     public void setChessController(ChessController chessController) {
@@ -40,6 +51,8 @@ public class MenuController implements Initializable {
 
     private HashMap<String, Integer> timerMap = new LinkedHashMap<>();
 
+    @FXML private MediaView media;
+    @FXML private AnchorPane rootAnchor;
     @FXML private ImageView btnStart;
     @FXML private ImageView btnExit;
     @FXML private TextField player1NameField;
@@ -56,12 +69,11 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard (MouseEvent event) {
-
         //Does not create a new boardmap
         model.createNewGame();
         model.getCurrentGame().initGame();
 
-        chessController.updateImageHandeler();
+        chessController.updateImageHandler();
 
         model.getPlayer1().setName(player1NameField.getText());
         model.getPlayer2().setName(player2NameField.getText());
@@ -73,7 +85,6 @@ public class MenuController implements Initializable {
         window.show();
 
         chessController.init();
-
         chessController.drawPieces();
     }
 
@@ -93,6 +104,15 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        //Fetches a random video from /background_videos/ and sets it as the background in our root
+        Random ran = new Random();
+        int videoIndex = ran.nextInt(4);
+        mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(100);
+        media.setMediaPlayer(mediaPlayer);
+
         initTimer();
     }
 
@@ -108,9 +128,9 @@ public class MenuController implements Initializable {
         timerMap.put("30:00 min", 1800);
         timerMap.put("60:00 min", 3600);
 
-        btnTimerDrop.getSelectionModel().selectFirst();
-
         timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
+
+        btnTimerDrop.getSelectionModel().selectFirst();
     }
 
     //Game

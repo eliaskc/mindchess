@@ -1,3 +1,13 @@
 .startButton, .exitButton {
     -fx-font-size: 32px;
 }
+
+.label {
+    -fx-font-size: 22px;
+}
+
+.outline.label .text {
+    -fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 1px;
+}

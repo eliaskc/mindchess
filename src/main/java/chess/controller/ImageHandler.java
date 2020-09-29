@@ -11,6 +11,9 @@ import java.util.List;
 
 import static chess.model.Color.*;
 
+/**
+ * Is responsible for fetching the images from files and matching them with the right pieces
+ */
 public class ImageHandler {
     private List<ImageView> pieceImages = new ArrayList<>();
     private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
@@ -23,6 +26,12 @@ public class ImageHandler {
         return pieceImages;
     }
 
+    /**
+     * Creates a list of images for all pieces on the board, and a map with the pieces as keys for their respective image
+     *
+     * The list is used to clear the board of old piece position and the map is used to calculate the coordinates of the images
+     * @return List of piece images
+     */
     public List<ImageView> fetchPieceImages() {
         pieceImageViewMap.clear();
         for (Map.Entry<Point,Piece> piece : boardMap.entrySet()) {
@@ -88,6 +97,9 @@ public class ImageHandler {
         return pieceImages;
     }
 
+    /**
+     * Uses the map created in fetchPieceImages to calculate the coordinates that the images are supposed to have
+     */
     public void updateImageCoordinates() {
         for(Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
@@ -95,24 +107,27 @@ public class ImageHandler {
         }
     }
 
-    /**temp
+    /**
+     * Finds and returns a list of images for the squares a piece is allowed to move to
      *
-     * (does) finds and returns a list of images on all squares
-     *
-     * (should) finds and returns a list of images for the squares a piece is allowed to move to
-     *
-     * @return returns a list of images on all squares
+     * @return returns a list of images to indicate current legal moves
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
         for (Point point : model.getGame().getBoard().getLegalPoints()) {
             ImageView imageView = new ImageView();
-            imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
-            imageView.setFitWidth(squareDimension - 50);
-            imageView.setFitHeight(squareDimension - 50);
 
-            imageView.setX(point.x * squareDimension + 25);
-            imageView.setY(point.y * squareDimension + 25);
+            if(boardMap.get(point) != null){
+                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMoveBox.png")));
+            } else {
+                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
+            }
+
+            imageView.setFitWidth(squareDimension);
+            imageView.setFitHeight(squareDimension);
+
+            imageView.setX(point.x * squareDimension);
+            imageView.setY(point.y * squareDimension);
 
             imageViews.add(imageView);
         }

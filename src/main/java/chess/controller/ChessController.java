@@ -2,11 +2,10 @@ package chess.controller;
 
 import chess.Observer;
 import chess.TimerObserver;
-import chess.model.*;
+import chess.model.ChessFacade;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,11 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,16 +32,22 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     private ImageHandler imageHandler = new ImageHandler();
     private List<ImageView> pieceImages;
-
     private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
 
-    @FXML Button btnBack;
-    @FXML private Label player1Name;
-    @FXML private Label player2Name;
-    @FXML private Label player1Timer;
-    @FXML private Label player2Timer;
-    @FXML private ImageView chessBoardImage;
-    @FXML private AnchorPane chessBoardContainer;
+    @FXML
+    Button btnBack;
+    @FXML
+    private Label player1Name;
+    @FXML
+    private Label player2Name;
+    @FXML
+    private Label player1Timer;
+    @FXML
+    private Label player2Timer;
+    @FXML
+    private ImageView chessBoardImage;
+    @FXML
+    private AnchorPane chessBoardContainer;
 
     double squareDimension = 75;
     double chessboardContainerX;
@@ -55,13 +59,13 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * @param event Button click
      */
     @FXML
-    void goToMenu (ActionEvent event) {
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    void goToMenu(ActionEvent event) {
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
     }
 
-    public void createMenuScene(Parent menuParent){
+    public void createMenuScene(Parent menuParent) {
         this.menuParent = menuParent;
         this.scene = new Scene(menuParent);
     }
@@ -70,11 +74,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         return scene;
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         model.addObserver(this);
-        model.getPlayer1().getTimer().addObserver(this);
-        model.getPlayer2().getTimer().addObserver(this);
         updateSquareDimensions();
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
@@ -83,15 +86,23 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
     }
 
+    /**
+     * Gives initial values to JavaFX elements and starts timers
+     */
     void init() {
         player1Name.setText(model.getPlayer1().getName());
         player2Name.setText(model.getPlayer2().getName());
+        model.getPlayer1().getTimer().addObserver(this);
+        model.getPlayer2().getTimer().addObserver(this);
         timer1Start();
         timer1Unpause();
         timer2Start();
         timer2Unpause();
     }
 
+    /**
+     * Gets the dimensions of the squares from the current size of the chessboard
+     */
     private void updateSquareDimensions() {
         squareDimension = chessBoardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
@@ -99,22 +110,23 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     /**
      * Sends to the board that it has been clicked on
+     *
      * @param event board clicked
      */
     @FXML
-    public void handleClick(MouseEvent event){
+    public void handleClick(MouseEvent event) {
         model.handleBoardClick(translateX(event.getSceneX()), translateY(event.getSceneY()));
     }
 
     /**
      * Translate input x coordinate into a square index x
-     * @param x
+     *
+     * @param x coordinate of click
      * @return
      */
     private int translateX(double x) {
-        //hardcoded for now
         for (int i = 0; i < 8; i++) {
-            if((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension*(i+1))){
+            if ((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension * (i + 1))) {
                 return i;
             }
         }
@@ -123,13 +135,13 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     /**
      * Translate input y coordinate into a square index y
-     * @param y
+     *
+     * @param y coordinate of click
      * @return
      */
     private int translateY(double y) {
-        //hardcoded for now
         for (int i = 0; i < 8; i++) {
-            if((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension*(i+1))){
+            if ((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1))) {
                 return i;
             }
         }
@@ -137,7 +149,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     /**
-     * Draws all images from the list of pieceImages from the board
+     * Draws all images from the list of pieceImages from the board, and the possible legal moves
      */
     public void drawPieces() {
         for (ImageView pieceImage : pieceImages) {
@@ -153,7 +165,6 @@ public class ChessController implements Initializable, Observer, TimerObserver {
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
 
-        //TEMP
         for (ImageView imageView : legalMoveImages) {
             chessBoardContainer.getChildren().remove(imageView);
         }
@@ -167,7 +178,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     /**
-     * draws pieces when called by the observable, implemented by observer interface
+     * Draws pieces when called by the observable, implemented by observer interface
      */
     @Override
     public void onAction() {
@@ -176,37 +187,43 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
     }
 
-    private void timer1Start(){
+    private void timer1Start() {
         model.getPlayer1().getTimer().startTimer();
     }
-    private void timer1Stop(){
+
+    private void timer1Stop() {
         model.getPlayer1().getTimer().stopTimer();
     }
-    private void timer1Pause(){
+
+    private void timer1Pause() {
         model.getPlayer1().getTimer().setActive(false);
     }
+
     private void timer1Unpause() {
         model.getPlayer1().getTimer().setActive(true);
     }
 
-    private void timer2Start(){
+    private void timer2Start() {
         model.getPlayer2().getTimer().startTimer();
     }
-    private void timer2Stop(){
+
+    private void timer2Stop() {
         model.getPlayer2().getTimer().stopTimer();
     }
-    private void timer2Pause(){
+
+    private void timer2Pause() {
         model.getPlayer2().getTimer().setActive(false);
     }
+
     private void timer2Unpause() {
         model.getPlayer2().getTimer().setActive(true);
     }
 
 
     /**
-     * fetches the times for each timer from the model when called and updates the labels
+     * Fetches the times for each timer from the model when called and updates the labels
      */
-    public void updateTimer(){
+    public void updateTimer() {
         Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayer1().getTimer().getTime())));
         Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime())));
     }
@@ -214,18 +231,18 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     /**
      * Takes an input integer seconds and formats it into minutes and seconds xx:xx as a String
      * appends zeroes when needed to maintain the 4 digit structure
+     *
      * @param seconds
      * @return the formatted time
      */
-    private String formatTime(int seconds){
-        String sec = seconds % 60 >= 10 ? "" + (seconds % 3600 ) % 60 : "0" + (seconds % 3600 ) % 60;
-        String min = seconds >= 600 ? "" + (seconds % 3600 ) / 60 : "0" + (seconds % 3600 ) / 60;
-        return min+":"+sec;
+    private String formatTime(int seconds) {
+        String sec = seconds % 60 >= 10 ? "" + (seconds % 3600) % 60 : "0" + (seconds % 3600) % 60;
+        String min = seconds >= 600 ? "" + (seconds % 3600) / 60 : "0" + (seconds % 3600) / 60;
+        return min + ":" + sec;
     }
 
-
     //Game
-    public void updateImageHandeler() {
+    public void updateImageHandler() {
         imageHandler.initTest();
     }
 }

@@ -1,28 +1,29 @@
 package chess.model;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 import static chess.model.Color.*;
 
 /**
- * Is responisble for finding legal moves
+ * Is responsible for finding legal moves
  */
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
     private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
 
-    //possible alternative to writing own getters and setters
-//    private String _name;
-//    public string Name; {get -> {thing++; return _name;}; set -> _name = value;};
-
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
     }
 
+    /**
+     * Creates a list of current legal moves for a given piece (and its position)
+     *
+     * @param pieceToMove
+     * @param markedPoint current position for the piece
+     * @return current legal moves
+     */
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
         switch (pieceToMove.getPieceType()) {
@@ -151,7 +152,13 @@ public class Movement {
         if(boardMap.get(p) == null) return true;
         return false;
     }
-
+     /**
+     * Creates a list with the legal moves possible for the given piece (and its position) in the upwards direction
+     *
+     * @param pieceToMove
+     * @param markedPoint the piece's position
+     * @return a list of points representing the legal moves
+     */
     private void up(Piece pieceToMove, Point markedPoint, int iterations){
         for(int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Point p = new Point(markedPoint.x, i);
@@ -159,6 +166,13 @@ public class Movement {
         }
     }
 
+     /**
+     * Creates a list with the legal moves possible for the given piece (and its position) in the downwards direction
+     *
+     * @param pieceToMove
+     * @param markedPoint the piece's position
+     * @return a list of points representing the legal moves
+     */
     private void down(Piece pieceToMove, Point markedPoint, int iterations){
         for(int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(markedPoint.x, i);
