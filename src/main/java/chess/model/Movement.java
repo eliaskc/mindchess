@@ -4,14 +4,14 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.Color.*;
 
 /**
  * Is responsible for finding legal moves
  */
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
+    private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
@@ -25,389 +25,228 @@ public class Movement {
      * @return current legal moves
      */
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
-        List<Point> legalMoves = new ArrayList<>();
+        points.clear();
         switch (pieceToMove.getPieceType()) {
             case ROOK:
-                legalMoves.addAll(legalMovesRook(pieceToMove, markedPoint));
+                legalMovesRook(pieceToMove, markedPoint);
                 break;
             case BISHOP:
-                legalMoves.addAll(legalMovesBishop(pieceToMove, markedPoint));
+                legalMovesBishop(pieceToMove, markedPoint);
                 break;
             case KNIGHT:
-                legalMoves.addAll(legalMovesKnight(pieceToMove, markedPoint));
+                legalMovesKnight(pieceToMove, markedPoint);
                 break;
             case QUEEN:
-                legalMoves.addAll(legalMovesQueen(pieceToMove, markedPoint));
+                legalMovesQueen(pieceToMove, markedPoint);
                 break;
             case KING:
-                legalMoves.addAll(legalMovesKing(pieceToMove, markedPoint));
+                legalMovesKing(pieceToMove, markedPoint);
                 break;
             case PAWN:
                 if (pieceToMove.getColor() == WHITE) {
-                    legalMoves.addAll(legalMovesWhitePawn(pieceToMove, markedPoint));
+                    legalMovesWhitePawn(pieceToMove, markedPoint);
                 } else if (pieceToMove.getColor() == BLACK) {
-                    legalMoves.addAll(legalMovesBlackPawn(pieceToMove, markedPoint));
+                    legalMovesBlackPawn(pieceToMove, markedPoint);
                 }
                 break;
         }
-        return legalMoves;
+        return new ArrayList<>(points);
     }
 
-    private List<Point> legalMovesRook(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        points.addAll(up(pieceToMove, markedPoint));
-        points.addAll(down(pieceToMove, markedPoint));
-        points.addAll(left(pieceToMove, markedPoint));
-        points.addAll(right(pieceToMove, markedPoint));
-
-        return points;
+    private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
+        up(pieceToMove, markedPoint,7);
+        down(pieceToMove, markedPoint,7);
+        left(pieceToMove, markedPoint,7);
+        right(pieceToMove, markedPoint,7);
     }
 
-    private List<Point> legalMovesBishop(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        points.addAll(upLeft(pieceToMove, markedPoint));
-        points.addAll(upRight(pieceToMove, markedPoint));
-        points.addAll(downRight(pieceToMove, markedPoint));
-        points.addAll(downLeft(pieceToMove, markedPoint));
-
-        return points;
+    private void legalMovesBishop(Piece pieceToMove, Point markedPoint) {
+        upLeft(pieceToMove, markedPoint,7);
+        upRight(pieceToMove, markedPoint,7);
+        downRight(pieceToMove, markedPoint,7);
+        downLeft(pieceToMove, markedPoint,7);
     }
 
-    private List<Point> legalMovesKnight(Piece pieceToMove, Point markedPoint) {
+    private void legalMovesKnight(Piece pieceToMove, Point markedPoint) {
         int x = markedPoint.x;
         int y = markedPoint.y;
 
-        List<Point> points = Arrays.asList(
-        new Point(x + 1, y - 2),
-        new Point(x + 2, y - 1),
-        new Point(x + 2, y + 1),
-        new Point(x + 1, y + 2),
-        new Point(x - 1, y + 2),
-        new Point(x - 2, y + 1),
-        new Point(x - 2, y - 1),
-        new Point(x - 1, y - 2)
-        );
-
-        //Ohhh my
-        points.removeIf(p -> p.x > 7 || p.x < 0 || p.y > 7 || p.y < 0);
-        points.removeIf(p -> boardMap.get(p) != null && boardMap.get(p).getColor() == pieceToMove.getColor());
-
-        return points;
+        addPoint(new Point(x+1, y-2),pieceToMove);
+        addPoint(new Point(x+2, y-1),pieceToMove);
+        addPoint(new Point(x+2, y+1),pieceToMove);
+        addPoint(new Point(x+1, y+2),pieceToMove);
+        addPoint(new Point(x-1, y+2),pieceToMove);
+        addPoint(new Point(x-2, y+1),pieceToMove);
+        addPoint(new Point(x-2, y-1),pieceToMove);
+        addPoint(new Point(x-1, y-2),pieceToMove);
     }
 
-    private List<Point> legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        //Need to check if the pawn has moved already, because if not then it can move 2 steps
-
-        List<Point> legalMovesUp = up(pieceToMove, markedPoint);
-        if (legalMovesUp.size() != 0 && boardMap.get(legalMovesUp.get(0)) == null) points.add(legalMovesUp.get(0));
-
-        //Check if the square to the right and up has a black piece on it, and if so add it to
-        //the list of legal points
-        List<Point> legalMovesUpRight = upRight(pieceToMove, markedPoint);
-        if (legalMovesUpRight.size() != 0 && boardMap.get(legalMovesUpRight.get(0)) != null) {
-            if (boardMap.get(legalMovesUpRight.get(0)).getColor() == BLACK) {
-                points.add(legalMovesUpRight.get(0));
+    private void legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
+        //Check if the pawn can move up, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
+        if(markedPoint.getY() == 6){
+            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1)) && isUnoccupied(new Point(markedPoint.x,markedPoint.y-2)) ){
+                up(pieceToMove,markedPoint,2);
+            }else if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1))) {
+                up(pieceToMove,markedPoint,1);
             }
+        } else{
+            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1))) up(pieceToMove,markedPoint,1);
         }
 
-        //same for left and up
-        List<Point> legalMovesUpLeft = upLeft(pieceToMove, markedPoint);
-        if (legalMovesUpLeft.size() != 0 && boardMap.get(legalMovesUpLeft.get(0)) != null) {
-            if (boardMap.get(legalMovesUpLeft.get(0)).getColor() == BLACK) {
-                points.add(legalMovesUpLeft.get(0));
-            }
+        //if there are a opponent in its diagonal up squares it can take it
+        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y-1)).getColor() == BLACK){
+            upRight(pieceToMove,markedPoint,1);
+        }
+        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
+            upLeft(pieceToMove,markedPoint,1);
         }
 
-        return points;
     }
 
-    private List<Point> legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        //TODO Need to check if the pawn has moved already, because if not then it can move 2 steps
-
-        List<Point> legalMovesDown = down(pieceToMove, markedPoint);
-        if (legalMovesDown.size() != 0 && boardMap.get(legalMovesDown.get(0)) == null)
-            points.add(legalMovesDown.get(0));
-
-        List<Point> legalMovesDownRight = downRight(pieceToMove, markedPoint);
-        if (legalMovesDownRight.size() != 0 && boardMap.get(legalMovesDownRight.get(0)) != null) {
-            if (boardMap.get(legalMovesDownRight.get(0)).getColor() == WHITE) {
-                points.add(legalMovesDownRight.get(0));
+    private void legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
+        //Check if the pawn can move down, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
+        if(markedPoint.getY() == 1){
+            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x,markedPoint.y+2)) == null ){
+                down(pieceToMove,markedPoint,2);
+            }else if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1))) {
+                down(pieceToMove,markedPoint,1);
             }
-        }
-        List<Point> legalMovesDownLeft = downLeft(pieceToMove, markedPoint);
-        if (legalMovesDownLeft.size() != 0 && boardMap.get(legalMovesDownLeft.get(0)) != null) {
-            if (boardMap.get(legalMovesDownLeft.get(0)).getColor() == WHITE) {
-                points.add(legalMovesDownLeft.get(0));
-            }
+        } else{
+            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1))) down(pieceToMove,markedPoint,1);
         }
 
-        return points;
+        //if there are a opponent in its diagonal down squares it can take it
+        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y+1)).getColor() == WHITE){
+            downRight(pieceToMove,markedPoint,1);
+        }
+        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y+1)).getColor() == WHITE){
+            downLeft(pieceToMove,markedPoint,1);
+        }
     }
 
-    private List<Point> legalMovesKing(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
+    private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
+        up(pieceToMove,markedPoint,1);
+        right(pieceToMove,markedPoint,1);
+        down(pieceToMove,markedPoint,1);
+        left(pieceToMove,markedPoint,1);
 
-        if (up(pieceToMove, markedPoint).size() != 0) points.add(up(pieceToMove, markedPoint).get(0));
-        if (right(pieceToMove, markedPoint).size() != 0) points.add(right(pieceToMove, markedPoint).get(0));
-        if (down(pieceToMove, markedPoint).size() != 0) points.add(down(pieceToMove, markedPoint).get(0));
-        if (left(pieceToMove, markedPoint).size() != 0) points.add(left(pieceToMove, markedPoint).get(0));
-
-        if (upLeft(pieceToMove, markedPoint).size() != 0) points.add(upLeft(pieceToMove, markedPoint).get(0));
-        if (upRight(pieceToMove, markedPoint).size() != 0) points.add(upRight(pieceToMove, markedPoint).get(0));
-        if (downRight(pieceToMove, markedPoint).size() != 0) points.add(downRight(pieceToMove, markedPoint).get(0));
-        if (downLeft(pieceToMove, markedPoint).size() != 0) points.add(downLeft(pieceToMove, markedPoint).get(0));
-
-        return points;
+        upLeft(pieceToMove,markedPoint,1);
+        upRight(pieceToMove,markedPoint,1);
+        downLeft(pieceToMove,markedPoint,1);
+        downRight(pieceToMove,markedPoint,1);
     }
 
-    public List<Point> legalMovesQueen(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-        points.addAll(up(pieceToMove, markedPoint));
-        points.addAll(down(pieceToMove, markedPoint));
-        points.addAll(left(pieceToMove, markedPoint));
-        points.addAll(right(pieceToMove, markedPoint));
+    public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
+        up(pieceToMove, markedPoint,7);
+        down(pieceToMove, markedPoint,7);
+        left(pieceToMove, markedPoint,7);
+        right(pieceToMove, markedPoint,7);
 
-        points.addAll(upLeft(pieceToMove, markedPoint));
-        points.addAll(upRight(pieceToMove, markedPoint));
-        points.addAll(downRight(pieceToMove, markedPoint));
-        points.addAll(downLeft(pieceToMove, markedPoint));
-        return points;
+        upLeft(pieceToMove, markedPoint,7);
+        upRight(pieceToMove, markedPoint,7);
+        downRight(pieceToMove, markedPoint,7);
+        downLeft(pieceToMove, markedPoint,7);
     }
 
-    /**
+    private boolean isUnoccupied(Point p){
+        if(boardMap.get(p) == null) return true;
+        return false;
+    }
+     /**
      * Creates a list with the legal moves possible for the given piece (and its position) in the upwards direction
      *
      * @param pieceToMove
      * @param markedPoint the piece's position
      * @return a list of points representing the legal moves
      */
-    private List<Point> up(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        for (int i = markedPoint.y - 1; i >= 0; i--) {
+    private void up(Piece pieceToMove, Point markedPoint, int iterations){
+        for(int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Point p = new Point(markedPoint.x, i);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
     }
 
-    /**
+     /**
      * Creates a list with the legal moves possible for the given piece (and its position) in the downwards direction
      *
      * @param pieceToMove
      * @param markedPoint the piece's position
      * @return a list of points representing the legal moves
      */
-    private List<Point> down(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        for (int i = markedPoint.y + 1; i < 8; i++) {
+    private void down(Piece pieceToMove, Point markedPoint, int iterations){
+        for(int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(markedPoint.x, i);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) to the left
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> left(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        for (int i = markedPoint.x - 1; i >= 0; i--) {
+    private void left(Piece pieceToMove, Point markedPoint, int iterations){
+        for(int i = markedPoint.x - 1; i >= 0 && iterations > 0; i--,iterations--) {
             Point p = new Point(i, markedPoint.y);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) to the right
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> right(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        for (int i = markedPoint.x + 1; i < 8; i++) {
+    private void right(Piece pieceToMove, Point markedPoint,int iterations){
+        for(int i = markedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(i, markedPoint.y);
-            if (boardMap.get(p) == null) {
-                points.add(p);
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(p);
-                break;
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the diagonal up and left direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> upLeft(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
-
-        for (int i = 0; i < 8; i++) {
+    private void upLeft(Piece pieceToMove, Point markedPoint, int iterations){
+        Point p = new Point(markedPoint.x, markedPoint.y);
+        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x--;
             p.y--;
-            if (p.x >= 0 && p.y >= 0) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the diagonal up and right direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> upRight(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
-
-        for (int i = 0; i < 8; i++) {
+    private void upRight(Piece pieceToMove, Point markedPoint,int iterations){
+        Point p = new Point(markedPoint.x, markedPoint.y);
+        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x++;
             p.y--;
-            if (p.x < 8 && p.y >= 0) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the diagonal down and right direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> downRight(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
-
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
-
-        for (int i = 0; i < 8; i++) {
+    private void downRight(Piece pieceToMove, Point markedPoint,int iterations){
+        Point p = new Point(markedPoint.x, markedPoint.y);
+        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
             p.x++;
             p.y++;
-            if (p.x < 8 && p.y < 8) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
     }
 
-    /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the diagonal down and left direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
-    private List<Point> downLeft(Piece pieceToMove, Point markedPoint) {
-        List<Point> points = new ArrayList<>();
+    private void downLeft(Piece pieceToMove, Point markedPoint, int iterations){
+        Point p = new Point(markedPoint.x, markedPoint.y);
 
-        int x = markedPoint.x;
-        int y = markedPoint.y;
-        Point p = new Point(x, y);
-
-        for (int i = 0; i < 8; i++) {
+        for(int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
             p.y++;
-            if (p.x >= 0 && p.y < 8) {
-                if (boardMap.get(p) == null) {
-                    points.add(new Point(p.x, p.y));
-                } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                    points.add(new Point(p.x, p.y));
-                    break;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+            if(addPoint(p,pieceToMove))break;
         }
-        return points;
+    }
+
+
+    private boolean addPoint(Point p, Piece pieceToMove){
+        boolean breakLoop;      //Used just to be extra clear, instead of return false or true
+        if(p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
+            if (boardMap.get(p) == null) {
+                points.add(new Point(p.x, p.y));
+                breakLoop = false;
+            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
+                points.add(new Point(p.x, p.y));
+                breakLoop = true;
+            } else {
+                breakLoop = true;
+            }
+        }   else {
+            breakLoop = true;
+        }
+            return breakLoop;
     }
 }
