@@ -1,13 +1,15 @@
 package chess.model;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static chess.model.Color.*;
 
 /**
- * Is responsible for finding legal moves
+ * Is responisble for finding legal moves
  */
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
@@ -17,13 +19,6 @@ public class Movement {
         this.boardMap = boardMap;
     }
 
-    /**
-     * Creates a list of current legal moves for a given piece (and its position)
-     *
-     * @param pieceToMove
-     * @param markedPoint current position for the piece
-     * @return current legal moves
-     */
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
         switch (pieceToMove.getPieceType()) {
@@ -43,14 +38,37 @@ public class Movement {
                 legalMovesKing(pieceToMove, markedPoint);
                 break;
             case PAWN:
-                if (pieceToMove.getColor() == WHITE) {
-                    legalMovesWhitePawn(pieceToMove, markedPoint);
-                } else if (pieceToMove.getColor() == BLACK) {
-                    legalMovesBlackPawn(pieceToMove, markedPoint);
-                }
+
+                legalMovesPawn(pieceToMove, markedPoint);
                 break;
         }
         return new ArrayList<>(points);
+    }
+
+    private void legalMovesPawn(Piece pieceToMove, Point markedPoint) {
+        int x = markedPoint.x;
+        int y = markedPoint.y;
+
+        if (pieceToMove.getColor() == WHITE){
+
+            if(isUnoccupied(new Point(x, y-1))) {
+                addPoint(new Point(x, y-1), pieceToMove);
+                if(isUnoccupied(new Point(x, y-2)) && markedPoint.y == 6) addPoint(new Point(x, y-2), pieceToMove);
+            }
+
+            if(!isUnoccupied(new Point(x+1,y-1))) addPoint(new Point(x+1,y-1), pieceToMove);
+            if(!isUnoccupied(new Point(x-1,y-1))) addPoint(new Point(x-1,y-1), pieceToMove);
+
+        } else if (pieceToMove.getColor() == BLACK){
+
+            if(isUnoccupied(new Point(x, y+1))){
+                addPoint(new Point(x, y+1), pieceToMove);
+                if(isUnoccupied(new Point(x, y+2)) && markedPoint.y == 1) addPoint(new Point(x, y+2), pieceToMove);
+            }
+
+            if(!isUnoccupied(new Point(x+1,y+1))) addPoint(new Point(x+1,y+1), pieceToMove);
+            if(!isUnoccupied(new Point(x-1,y+1))) addPoint(new Point(x-1,y+1), pieceToMove);
+        }
     }
 
     private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
@@ -81,49 +99,6 @@ public class Movement {
         addPoint(new Point(x-1, y-2),pieceToMove);
     }
 
-    private void legalMovesWhitePawn(Piece pieceToMove, Point markedPoint) {
-        //Check if the pawn can move up, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
-        if(markedPoint.getY() == 6){
-            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1)) && isUnoccupied(new Point(markedPoint.x,markedPoint.y-2)) ){
-                up(pieceToMove,markedPoint,2);
-            }else if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1))) {
-                up(pieceToMove,markedPoint,1);
-            }
-        } else{
-            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y-1))) up(pieceToMove,markedPoint,1);
-        }
-
-        //if there are a opponent in its diagonal up squares it can take it
-        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y-1)).getColor() == BLACK){
-            upRight(pieceToMove,markedPoint,1);
-        }
-        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y-1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y-1)).getColor() == BLACK){
-            upLeft(pieceToMove,markedPoint,1);
-        }
-
-    }
-
-    private void legalMovesBlackPawn(Piece pieceToMove, Point markedPoint) {
-        //Check if the pawn can move down, if they are at their starting position they can move two squares, the pawn can't take a piece on front of it
-        if(markedPoint.getY() == 1){
-            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x,markedPoint.y+2)) == null ){
-                down(pieceToMove,markedPoint,2);
-            }else if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1))) {
-                down(pieceToMove,markedPoint,1);
-            }
-        } else{
-            if(isUnoccupied(new Point(markedPoint.x,markedPoint.y+1))) down(pieceToMove,markedPoint,1);
-        }
-
-        //if there are a opponent in its diagonal down squares it can take it
-        if(!isUnoccupied(new Point(markedPoint.x+1,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x+1,markedPoint.y+1)).getColor() == WHITE){
-            downRight(pieceToMove,markedPoint,1);
-        }
-        if(!isUnoccupied(new Point(markedPoint.x-1,markedPoint.y+1)) && boardMap.get(new Point(markedPoint.x-1,markedPoint.y+1)).getColor() == WHITE){
-            downLeft(pieceToMove,markedPoint,1);
-        }
-    }
-
     private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove,markedPoint,1);
         right(pieceToMove,markedPoint,1);
@@ -152,13 +127,7 @@ public class Movement {
         if(boardMap.get(p) == null) return true;
         return false;
     }
-     /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the upwards direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
+
     private void up(Piece pieceToMove, Point markedPoint, int iterations){
         for(int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Point p = new Point(markedPoint.x, i);
@@ -166,13 +135,6 @@ public class Movement {
         }
     }
 
-     /**
-     * Creates a list with the legal moves possible for the given piece (and its position) in the downwards direction
-     *
-     * @param pieceToMove
-     * @param markedPoint the piece's position
-     * @return a list of points representing the legal moves
-     */
     private void down(Piece pieceToMove, Point markedPoint, int iterations){
         for(int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(markedPoint.x, i);
@@ -231,7 +193,6 @@ public class Movement {
         }
     }
 
-
     private boolean addPoint(Point p, Piece pieceToMove){
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
         if(p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
@@ -247,6 +208,6 @@ public class Movement {
         }   else {
             breakLoop = true;
         }
-            return breakLoop;
+        return breakLoop;
     }
 }

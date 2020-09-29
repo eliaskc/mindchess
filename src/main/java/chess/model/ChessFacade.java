@@ -7,9 +7,9 @@ import java.util.List;
 
 /**
  * Chess represents the model to the rest of the application
- *
+ * <p>
  * It also makes sure that that the model updates when something happens during runtime
- *
+ * <p>
  * (Composite pattern?)
  */
 public class ChessFacade {
@@ -35,14 +35,15 @@ public class ChessFacade {
         currentGame.initGame();
     }
 
-    public void startGame() {}
-
-    public Player getPlayer1() {
-        return currentGame.getPlayer1();
+    public void startGame() {
     }
 
-    public Player getPlayer2() {
-        return currentGame.getPlayer2();
+    public Player getPlayerWhite() {
+        return currentGame.getPlayerWhite();
+    }
+
+    public Player getPlayerBlack() {
+        return currentGame.getPlayerBlack();
     }
 
     public Game getGame() {
@@ -55,7 +56,7 @@ public class ChessFacade {
      * @param x the x coordinate for the mouse when it clicks
      * @param y the y coordinate for the mouse when it clicks
      */
-    public void handleBoardClick(int x, int y){
+    public void handleBoardClick(int x, int y) {
         currentGame.handleBoardClick(x, y);
         notifyAllObservers();
     }
@@ -64,7 +65,7 @@ public class ChessFacade {
      * Notifies all current observers when you click on the chess board
      */
     private void notifyAllObservers() {
-        for(Observer observer : observers) {
+        for (Observer observer : observers) {
             observer.onAction();
         }
     }

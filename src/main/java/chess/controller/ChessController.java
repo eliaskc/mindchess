@@ -90,10 +90,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * Gives initial values to JavaFX elements and starts timers
      */
     void init() {
-        player1Name.setText(model.getPlayer1().getName());
-        player2Name.setText(model.getPlayer2().getName());
-        model.getPlayer1().getTimer().addObserver(this);
-        model.getPlayer2().getTimer().addObserver(this);
+        player1Name.setText(model.getPlayerWhite().getName());
+        player2Name.setText(model.getPlayerBlack().getName());
+        model.getPlayerWhite().getTimer().addObserver(this);
+        model.getPlayerBlack().getTimer().addObserver(this);
         timer1Start();
         timer1Unpause();
         timer2Start();
@@ -188,35 +188,35 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     private void timer1Start() {
-        model.getPlayer1().getTimer().startTimer();
+        model.getPlayerWhite().getTimer().startTimer();
     }
 
     private void timer1Stop() {
-        model.getPlayer1().getTimer().stopTimer();
+        model.getPlayerWhite().getTimer().stopTimer();
     }
 
     private void timer1Pause() {
-        model.getPlayer1().getTimer().setActive(false);
+        model.getPlayerWhite().getTimer().setActive(false);
     }
 
     private void timer1Unpause() {
-        model.getPlayer1().getTimer().setActive(true);
+        model.getPlayerWhite().getTimer().setActive(true);
     }
 
     private void timer2Start() {
-        model.getPlayer2().getTimer().startTimer();
+        model.getPlayerBlack().getTimer().startTimer();
     }
 
     private void timer2Stop() {
-        model.getPlayer2().getTimer().stopTimer();
+        model.getPlayerBlack().getTimer().stopTimer();
     }
 
     private void timer2Pause() {
-        model.getPlayer2().getTimer().setActive(false);
+        model.getPlayerBlack().getTimer().setActive(false);
     }
 
     private void timer2Unpause() {
-        model.getPlayer2().getTimer().setActive(true);
+        model.getPlayerBlack().getTimer().setActive(true);
     }
 
 
@@ -224,8 +224,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * Fetches the times for each timer from the model when called and updates the labels
      */
     public void updateTimer() {
-        Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayer1().getTimer().getTime())));
-        Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayer2().getTimer().getTime())));
+        Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayerWhite().getTimer().getTime())));
+        Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayerBlack().getTimer().getTime())));
     }
 
     /**
