@@ -15,6 +15,7 @@ public class Game {
     private List<Piece> deadPieces = new ArrayList<>();
     List<Point> legalPoints = new ArrayList<>();
     private Movement movement = new Movement();
+    private List<Move> moves = new ArrayList<>();
 
     private Player playerWhite = new Player("Player 1", WHITE);
     private Player playerBlack = new Player("Player 2", BLACK);
@@ -44,7 +45,7 @@ public class Game {
     void handleBoardClick(int x, int y) {
         Point clickedPoint = new Point(x, y);
 
-        //If you click on a piece that doesn't belong to you (and no piece is marked), the click doesn't register
+        //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
         if(boardMap.containsKey(clickedPoint) && markedPoint == null){
             if(!clickedOwnPiece(clickedPoint)){
                 return;
@@ -57,7 +58,9 @@ public class Game {
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
             legalPoints = checkLegalMoves(boardMap.get(markedPoint), markedPoint);
-            if (legalPoints.size() == 0) { //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
+
+            //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
+            if (legalPoints.size() == 0) {
                 markedPoint = null;
             }
         } else {

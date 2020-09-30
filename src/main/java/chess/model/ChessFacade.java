@@ -20,8 +20,6 @@ public class ChessFacade {
     private Game currentGame;
     private List<Game> gameList = new ArrayList<>();
 
-    private List<Move> moves = new ArrayList<>();
-
     public static ChessFacade getInstance() {
         if (instance == null) {
             instance = new ChessFacade();
