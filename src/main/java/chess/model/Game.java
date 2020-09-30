@@ -13,7 +13,7 @@ public class Game {
     private Point markedPoint = null;
 
     private List<Piece> deadPieces = new ArrayList<>();
-    List<Point> legalPoints = new ArrayList<>();
+    private List<Point> legalPoints = new ArrayList<>();
     private Movement movement = new Movement();
     private List<Move> moves = new ArrayList<>();
 
