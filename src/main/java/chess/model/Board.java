@@ -1,78 +1,81 @@
 package chess.model;
 
-import chess.model.pieces.Piece;
-import javafx.scene.image.ImageView;
-
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static chess.model.Color.BLACK;
+import static chess.model.Color.WHITE;
+import static chess.model.PieceType.*;
+
+/**
+ * Board represents the chess board and contains the information and methods to interact with the chess board
+ */
 public class Board {
-    Square[][] squares = new Square[8][8];
-    List<Piece> pieces = new ArrayList<>();
-    Piece markedPiece = null;   //To find the piece you clicked on
-    ImageView chessBoardImage = null;
-    List<ImageView> pieceImages = new ArrayList<>();
-
-    public Board() {}
-
-    //should be used to move. FIX
-    public void move(Piece piece, Square square) {
-        piece.setPosition(square);
+    private Map<Point, Piece> boardMap = new HashMap<>();
+    private Movement movement = new Movement();
+    public Board() {
     }
 
-    public Square[][] getSquares() {
-        return squares;
+    List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
+        return movement.pieceMoveDelegation(markedPiece, markedPoint);
     }
 
-    public void setSquares(Square[][] squares) {
-        this.squares = squares;
+    public Map<Point, Piece> getBoardMap() {
+        return boardMap;
     }
 
-    public List<Piece> getPieces() {
-        return pieces;
+    public void initBoard() {
+        placeAllPieces();
+        movement.setBoardMap(boardMap);
     }
 
-    public void setPieces(List<Piece> pieces) {
-        this.pieces = pieces;
+    /**
+     * places all pieces on the board
+     */
+    private void placeAllPieces() {
+        placeBlackPieces();
+        placeWhitePieces();
     }
 
-    public void setMarkedPiece(Piece markedPiece) {
-        this.markedPiece = markedPiece;
+    private void placeBlackPieces() {
+        //PieceType.values();
+        boardMap.put(new Point(0, 0), new Piece(true, BLACK, ROOK));
+        boardMap.put(new Point(1, 0), new Piece(true, BLACK, KNIGHT));
+        boardMap.put(new Point(2, 0), new Piece(true, BLACK, BISHOP));
+        boardMap.put(new Point(3, 0), new Piece(true, BLACK, QUEEN));
+        boardMap.put(new Point(4, 0), new Piece(true, BLACK, KING));
+        boardMap.put(new Point(5, 0), new Piece(true, BLACK, BISHOP));
+        boardMap.put(new Point(6, 0), new Piece(true, BLACK, KNIGHT));
+        boardMap.put(new Point(7, 0), new Piece(true, BLACK, ROOK));
+        for (int i = 0; i <= 7; i++) {
+            boardMap.put(new Point(i, 1), new Piece(true, BLACK, PAWN));
+        }
     }
 
-    public Piece getMarkedPiece() {
-        return markedPiece;
+    private void placeWhitePieces() {
+        for (int i = 0; i <= 7; i++) {
+            boardMap.put(new Point(i, 6), new Piece(true, WHITE, PAWN));
+        }
+        boardMap.put(new Point(0, 7), new Piece(true, WHITE, ROOK));
+        boardMap.put(new Point(1, 7), new Piece(true, WHITE, KNIGHT));
+        boardMap.put(new Point(2, 7), new Piece(true, WHITE, BISHOP));
+        boardMap.put(new Point(3, 7), new Piece(true, WHITE, QUEEN));
+        boardMap.put(new Point(4, 7), new Piece(true, WHITE, KING));
+        boardMap.put(new Point(5, 7), new Piece(true, WHITE, BISHOP));
+        boardMap.put(new Point(6, 7), new Piece(true, WHITE, KNIGHT));
+        boardMap.put(new Point(7, 7), new Piece(true, WHITE, ROOK));
     }
 
-    public void setChessBoardImage(ImageView chessBoardImage) {
-        this.chessBoardImage = chessBoardImage;
-    }
-
-    public List<ImageView> getPieceImages() {
-        return pieceImages;
-    }
-
-    //For enabling resizing of the board/window
-//    private double getSquareDimension(){}
-
-//    private double getBoardX(){}
-
-//    private double getBoardY(){}
-
-    void initializeBoard() {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                squares[i][j] = new Square(i, j);
+    List<Piece> getPiecesByColor(Color color) {
+        List<Piece> returnList = new ArrayList<>();
+        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+            if (entry.getValue().getColor() == color) {
+                returnList.add(entry.getValue());
             }
         }
-    }
-
-    void fetchPieceImages() {
-        pieceImages.clear();
-        for(Piece p : pieces) {
-            p.getPieceImage().setX(p.getPosition().getCoordinatesX() * 75);
-            p.getPieceImage().setY(p.getPosition().getCoordinatesY() * 75);
-            pieceImages.add(p.getPieceImage());
-        }
+        return returnList;
     }
 }
