@@ -76,9 +76,14 @@ public class Game {
         }
     }
 
+    /**
+     * moves the rook to its castling position if a castling occurs
+     * @param kingOldPoint
+     * @param kingNewPoint
+     */
     private void moveCastleRook(Point kingOldPoint,Point kingNewPoint){
         if(kingNewPoint.getX() > kingOldPoint.getX()){
-            Point rookOldPoint = new Point(kingNewPoint.x + 1, kingNewPoint.y); 
+            Point rookOldPoint = new Point(kingNewPoint.x + 1, kingNewPoint.y);
             Point rookNewPoint = new Point(kingNewPoint.x - 1, kingNewPoint.y);
             move(rookOldPoint, rookNewPoint);
         } else {
@@ -99,12 +104,24 @@ public class Game {
         return board.checkLegalMoves(markedPiece, markedPoint);
     }
 
+    /**
+     * Used for checking special moves such as castling
+     * @param markedPiece
+     * @param markedPoint
+     * @return returns a list of possible special moves.
+     */
     private List<Point> getSpecialMoves(Piece markedPiece, Point markedPoint){
         List<Point> specialMoves = new ArrayList<>();
         specialMoves.addAll(getCastleMoves(markedPiece,markedPoint));
         return specialMoves;
     }
 
+    /**
+     * get castling moves if possible
+     * @param markedPiece
+     * @param markedPoint
+     * @return a list of possible castle moves
+     */
     private List<Point> getCastleMoves(Piece markedPiece, Point markedPoint){
         List<Point> castleMoves = new ArrayList<>();
         if(markedPiece.getPieceType() == PieceType.KING && !pieceOnPointHasMoved(markedPoint)){
@@ -126,13 +143,11 @@ public class Game {
         if(!isPointUnoccupied(new Point(markedPoint.x+3, markedPoint.y))){
             Point p = new Point(markedPoint.x+3, markedPoint.y);
             if(boardMap.get(p).getPieceType() == PieceType.ROOK && pieceOnPointHasMoved(p)){
-                System.out.println("false");
                 return false;
             }
         } else {
             return false;
         }
-        System.out.println("true");
         return true;
     }
 
@@ -143,21 +158,24 @@ public class Game {
         if(!isPointUnoccupied(new Point(markedPoint.x-4, markedPoint.y))){
             Point p = new Point(markedPoint.x-4, markedPoint.y);
             if(boardMap.get(p).getPieceType() == PieceType.ROOK && pieceOnPointHasMoved(p)){
-                System.out.println("false");
                 return false;
             }
         }
-        System.out.println("true");
         return true;
     }
 
+    /**
+     * checks if a point is unoccupied by a piece
+     * @param p
+     * @return true if unoccupied
+     */
     private boolean isPointUnoccupied(Point p){
         if(boardMap.get(p) == null) return true;
         return false;
     }
 
     /**
-     * Moves the specified piece to the specified point
+     * Moves the marked piece to the clicked point
      * <p>
      * TODO Is also going to save each move as an instance of Move
      */
@@ -171,6 +189,11 @@ public class Game {
         boardMap.remove(markedPoint);
     }
 
+    /**
+     * Moves the specified piece from a point to the specified point
+     * @param pointFrom
+     * @param pointTo
+     */
     private void move(Point pointFrom,Point pointTo){
         plies.add(new Ply(pointFrom, pointTo, boardMap.get(pointFrom), currentPlayer));
         if(boardMap.get(pointFrom) != null){
@@ -231,6 +254,11 @@ public class Game {
         return plies;
     }
 
+    /**
+     * checks if a piece from a specified point has moved
+     * @param point
+     * @return true if the piece on the specified point has moved
+     */
     private boolean pieceOnPointHasMoved(Point point) {
         if(boardMap.get(point) != null && pliesContainsPiece(boardMap.get(point))){
             return true;
@@ -238,6 +266,11 @@ public class Game {
         return false;
     }
 
+    /**
+     * checking if a piece exists in the plies list
+     * @param piece
+     * @return true if it exists
+     */
     private boolean pliesContainsPiece(Piece piece) {
         for(Ply p : plies){
             if(p.getMovedPiece() == piece) return true;
