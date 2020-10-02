@@ -13,28 +13,17 @@ import java.util.List;
  * (Composite pattern?)
  */
 public class ChessFacade {
-    private static ChessFacade instance = null;
-
     private List<Observer> observers = new ArrayList<>();
 
     private Game currentGame;
     private List<Game> gameList = new ArrayList<>();
 
-    public static ChessFacade getInstance() {
-        if (instance == null) {
-            instance = new ChessFacade();
-            instance.init();
-        }
-        return instance;
-    }
-
-    private void init() {
+    public ChessFacade() {
         createNewGame();
         currentGame.initGame();
     }
 
-    public void startGame() {
-    }
+    public void startGame() {}
 
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();

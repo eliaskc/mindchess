@@ -21,7 +21,7 @@ public class TestMovement {
 
     @Before
     public void init() {
-        model = ChessFacade.getInstance();
+        model = new ChessFacade();
         boardMap = model.getGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }

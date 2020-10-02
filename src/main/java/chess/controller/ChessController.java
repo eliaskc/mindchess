@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -25,14 +26,22 @@ import java.util.ResourceBundle;
  * ChessController handles the chess board
  */
 public class ChessController implements Initializable, Observer, TimerObserver {
-    private ChessFacade model = ChessFacade.getInstance();
+    private ChessFacade model;
 
     private Parent menuParent;
     private Scene scene;
 
-    private ImageHandler imageHandler = new ImageHandler();
+    private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
-    private List<ImageView> legalMoveImages = imageHandler.fetchLegalMoveImages();
+    private List<ImageView> legalMoveImages;
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
+    }
+
+    public void setImageHandler(ImageHandler imageHandler) {
+        this.imageHandler = imageHandler;
+    }
 
     @FXML
     Button btnBack;
@@ -77,19 +86,21 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        model.addObserver(this);
-        updateSquareDimensions();
+
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
-
-        pieceImages = imageHandler.fetchPieceImages();
-        drawPieces();
     }
 
     /**
-     * Gives initial values to JavaFX elements and starts timers
+     * Fetches needed values & objects, updates labels and starts timers
      */
     void init() {
+        updateSquareDimensions();
+
+        pieceImages = imageHandler.fetchPieceImages();
+        legalMoveImages = imageHandler.fetchLegalMoveImages();
+        drawPieces();
+
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
         model.getPlayerWhite().getTimer().addObserver(this);
