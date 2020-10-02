@@ -23,7 +23,8 @@ public class ChessFacade {
         currentGame.initGame();
     }
 
-    public void startGame() {}
+    public void startGame() {
+    }
 
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();
