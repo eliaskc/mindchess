@@ -143,4 +143,8 @@ public class Game {
     public List<Piece> getDeadPieces() {
         return deadPieces;
     }
+
+    public List<Ply> getPlies() {
+        return plies;
+    }
 }

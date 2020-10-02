@@ -22,16 +22,25 @@ public class TestChessFacade {
     }
 
     @Test
-    public void testMove() {
+    public void testMoveAndPly() {
         Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
-        Piece testPieceBefore = boardMap.get(new Point(0,6));
+        Point p1 = new Point(0,6);
+        Point p2 = new Point(0,5);
+
+        Piece testPieceBefore = boardMap.get(p1);
 
         model.handleBoardClick(0,6);
         model.handleBoardClick(0,5);
 
-        Piece testPieceAfter = boardMap.get(new Point(0,5));
+        Piece testPieceAfter = boardMap.get(p2);
+
+        Ply ply = new Ply(p1,p2,testPieceAfter, model.getPlayerWhite());
 
         assertEquals(testPieceBefore, testPieceAfter);
+        assertEquals(model.getGame().getPlies().get(0).getMovedFrom(), ply.getMovedFrom());
+        assertEquals(model.getGame().getPlies().get(0).getMovedTo(), ply.getMovedTo());
+        assertEquals(model.getGame().getPlies().get(0).getMovedPiece(), ply.getMovedPiece());
+        assertEquals(model.getGame().getPlies().get(0).getPlayer(), ply.getPlayer());
     }
 
     /**
