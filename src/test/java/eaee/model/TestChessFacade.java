@@ -15,24 +15,23 @@ import static org.junit.Assert.*;
 
 public class TestChessFacade {
     private ChessFacade model;
-    private ChessController chessController = new ChessController();
 
     @Before
     public void init() {
-        model = ChessFacade.getInstance();
+        model = new ChessFacade();
     }
 
     @Test
     public void testMove() {
         Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
-        Piece testPieceBefore = boardMap.get(new Point(0,1));
+        Piece testPieceBefore = boardMap.get(new Point(0,6));
 
-        model.handleBoardClick(0,1);
-        model.handleBoardClick(0,2);
+        model.handleBoardClick(0,6);
+        model.handleBoardClick(0,5);
 
-        Piece testPieceAfter = boardMap.get(new Point(0,2));
+        Piece testPieceAfter = boardMap.get(new Point(0,5));
 
-        assertTrue(testPieceAfter.equals(testPieceBefore));
+        assertEquals(testPieceBefore, testPieceAfter);
     }
 
     /**

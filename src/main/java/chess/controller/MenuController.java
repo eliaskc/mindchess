@@ -25,7 +25,8 @@ import java.util.List;
  * MenuController handles the menu
  */
 public class MenuController implements Initializable {
-    private ChessFacade model = ChessFacade.getInstance();
+    private ChessFacade model;
+
     private Parent chessParent;
     private Scene scene;
 
@@ -41,6 +42,10 @@ public class MenuController implements Initializable {
 
     public void setChessController(ChessController chessController) {
         this.chessController = chessController;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
     }
 
     private HashMap<String, Integer> timerMap = new LinkedHashMap<>();

@@ -13,7 +13,7 @@ public class TestImageHandling {
     ImageHandler imageHandler;
     @Before
     public void init() {
-        model = ChessFacade.getInstance();
+        model = new ChessFacade();
         imageHandler = new ImageHandler();
         imageHandler.fetchPieceImages();
     }

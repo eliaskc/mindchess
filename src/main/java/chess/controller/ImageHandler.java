@@ -17,13 +17,17 @@ import static chess.model.Color.*;
 public class ImageHandler {
     private List<ImageView> pieceImages = new ArrayList<>();
     private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
-    private ChessFacade model = ChessFacade.getInstance();
-    private Map<Point, Piece> boardMap = model.getCurrentGame().getBoard().getBoardMap();
+    private ChessFacade model;
+    private Map<Point, Piece> boardMap;
 
     private double squareDimension;
 
     public List<ImageView> getPieceImages() {
         return pieceImages;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
     }
 
     /**
@@ -33,6 +37,8 @@ public class ImageHandler {
      * @return List of piece images
      */
     public List<ImageView> fetchPieceImages() {
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+
         pieceImageViewMap.clear();
         for (Map.Entry<Point,Piece> piece : boardMap.entrySet()) {
             String imageURL = "";
@@ -101,6 +107,7 @@ public class ImageHandler {
      * Uses the map created in fetchPieceImages to calculate the coordinates that the images are supposed to have
      */
     public void updateImageCoordinates() {
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         for(Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
             pieceImageViewMap.get(entry.getValue()).setY(entry.getKey().y * squareDimension + 5);
