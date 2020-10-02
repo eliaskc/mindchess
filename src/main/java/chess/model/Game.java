@@ -133,4 +133,12 @@ public class Game {
     public Player getPlayerBlack() {
         return playerBlack;
     }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public List<Piece> getDeadPieces() {
+        return deadPieces;
+    }
 }
