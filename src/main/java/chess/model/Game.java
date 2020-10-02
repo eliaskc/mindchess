@@ -44,7 +44,7 @@ public class Game {
         Point clickedPoint = new Point(x, y);
 
         //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
-        if(clickedOwnPiece(clickedPoint)) {
+        if(clickedOpponentsPiece(clickedPoint)) {
             return;
         }
 
@@ -94,7 +94,7 @@ public class Game {
         boardMap.remove(markedPoint);
     }
 
-    private boolean clickedOwnPiece(Point p){
+    private boolean clickedOpponentsPiece(Point p){
         if(boardMap.containsKey(p) && markedPoint == null){
             return !(boardMap.get(p).getColor() == currentPlayer.getColor());
         }
