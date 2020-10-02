@@ -14,7 +14,6 @@ public class Game {
 
     private List<Piece> deadPieces = new ArrayList<>();
     private List<Point> legalPoints = new ArrayList<>();
-    //private Movement movement = new Movement();
     private List<Ply> plies = new ArrayList<>();
 
     private Player playerWhite = new Player("Player 1", WHITE);
@@ -23,7 +22,6 @@ public class Game {
 
     public void initGame() {
         board.initBoard();
-        //movement.setBoardMap(boardMap);
         playerWhite.setPieces(board.getPiecesByColor(WHITE));
         playerBlack.setPieces(board.getPiecesByColor(BLACK));
         currentPlayer = playerWhite;
@@ -80,7 +78,6 @@ public class Game {
      */
     private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
         return board.checkLegalMoves(markedPiece, markedPoint);
-        //return movement.pieceMoveDelegation(markedPiece, markedPoint);
     }
 
     /**

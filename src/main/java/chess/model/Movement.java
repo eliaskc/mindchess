@@ -22,25 +22,17 @@ public class Movement {
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
         switch (pieceToMove.getPieceType()) {
-            case ROOK:
-                legalMovesRook(pieceToMove, markedPoint);
-                break;
-            case BISHOP:
-                legalMovesBishop(pieceToMove, markedPoint);
-                break;
-            case KNIGHT:
-                legalMovesKnight(pieceToMove, markedPoint);
-                break;
-            case QUEEN:
-                legalMovesQueen(pieceToMove, markedPoint);
-                break;
-            case KING:
-                legalMovesKing(pieceToMove, markedPoint);
-                break;
-            case PAWN:
+            case ROOK -> legalMovesRook(pieceToMove, markedPoint);
 
-                legalMovesPawn(pieceToMove, markedPoint);
-                break;
+            case BISHOP -> legalMovesBishop(pieceToMove, markedPoint);
+
+            case KNIGHT -> legalMovesKnight(pieceToMove, markedPoint);
+
+            case QUEEN -> legalMovesQueen(pieceToMove, markedPoint);
+
+            case KING -> legalMovesKing(pieceToMove, markedPoint);
+
+            case PAWN -> legalMovesPawn(pieceToMove, markedPoint);
         }
         return new ArrayList<>(points);
     }
@@ -53,7 +45,10 @@ public class Movement {
 
             if(isUnoccupied(new Point(x, y-1))) {
                 addPoint(new Point(x, y-1), pieceToMove);
-                if(isUnoccupied(new Point(x, y-2)) && markedPoint.y == 6) addPoint(new Point(x, y-2), pieceToMove);
+                //Hardcoded based on standard pawn positions atm. Could use Plies to check if has moved instead
+                if(isUnoccupied(new Point(x, y-2)) && markedPoint.y == 6) {
+                    addPoint(new Point(x, y-2), pieceToMove);
+                }
             }
 
             if(!isUnoccupied(new Point(x+1,y-1))) addPoint(new Point(x+1,y-1), pieceToMove);
@@ -63,7 +58,10 @@ public class Movement {
 
             if(isUnoccupied(new Point(x, y+1))){
                 addPoint(new Point(x, y+1), pieceToMove);
-                if(isUnoccupied(new Point(x, y+2)) && markedPoint.y == 1) addPoint(new Point(x, y+2), pieceToMove);
+                //Hardcoded based on standard pawn positions atm. Could use Plies to check if has moved instead
+                if(isUnoccupied(new Point(x, y+2)) && markedPoint.y == 1) {
+                    addPoint(new Point(x, y+2), pieceToMove);
+                }
             }
 
             if(!isUnoccupied(new Point(x+1,y+1))) addPoint(new Point(x+1,y+1), pieceToMove);
@@ -193,6 +191,14 @@ public class Movement {
         }
     }
 
+    /**
+     * Adds point to the list of legal moves if the point is inside the board AND:
+     *   - the point is empty
+     *   - the point has a piece of the opposite color
+     * @param p point to move to
+     * @param pieceToMove
+     * @return returns boolean that breaks the loop where the method was called, if a point has been added
+     */
     private boolean addPoint(Point p, Piece pieceToMove){
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
         if(p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {

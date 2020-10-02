@@ -14,6 +14,7 @@ public final class ChessApplication extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		stage.setResizable(false);
 		FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
 		FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
 
