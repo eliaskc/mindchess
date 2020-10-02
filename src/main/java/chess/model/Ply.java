@@ -17,4 +17,20 @@ public class Ply {
         this.movedPiece = movedPiece;
         this.player = player;
     }
+
+    public Point getMovedFrom() {
+        return movedFrom;
+    }
+
+    public Point getMovedTo() {
+        return movedTo;
+    }
+
+    public Piece getMovedPiece() {
+        return movedPiece;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
