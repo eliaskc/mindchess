@@ -56,9 +56,9 @@ public class Board {
     }
 
     private void placeWhitePieces() {
-        //for (int i = 0; i <= 7; i++) {
-            //boardMap.put(new Point(i, 6), new Piece(true, WHITE, PAWN));
-        //}
+        for (int i = 0; i <= 7; i++) {
+            boardMap.put(new Point(i, 6), new Piece(true, WHITE, PAWN));
+        }
         boardMap.put(new Point(0, 7), new Piece(true, WHITE, ROOK));
         boardMap.put(new Point(1, 7), new Piece(true, WHITE, KNIGHT));
         boardMap.put(new Point(2, 7), new Piece(true, WHITE, BISHOP));

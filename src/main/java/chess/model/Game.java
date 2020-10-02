@@ -15,6 +15,7 @@ public class Game {
     private List<Piece> deadPieces = new ArrayList<>();
     private List<Point> legalPoints = new ArrayList<>();
     private List<Ply> plies = new ArrayList<>();
+    private List<Point> specialMoves = new ArrayList<>();
 
     private Player playerWhite = new Player("Player 1", WHITE);
     private Player playerBlack = new Player("Player 2", BLACK);
@@ -54,19 +55,40 @@ public class Game {
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
             legalPoints.addAll(checkLegalMoves(boardMap.get(markedPoint), markedPoint));
+            specialMoves = getSpecialMoves(boardMap.get(markedPoint),markedPoint);
+            legalPoints.addAll(specialMoves);
 
             //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
             if (legalPoints.size() == 0) {
                 markedPoint = null;
             }
         } else {
-            if (legalPoints.contains(clickedPoint)) {
+            if(specialMoves.contains(clickedPoint)){
+                plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+                move(clickedPoint);
+                moveCastleRook(markedPoint,clickedPoint);
+                switchPlayer();
+            }else if (legalPoints.contains(clickedPoint)) {
                 plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
                 move(clickedPoint);
                 switchPlayer();
             }
             legalPoints.clear();
             markedPoint = null;
+        }
+    }
+
+    private void moveCastleRook(Point kingOldPoint,Point kingNewPoint){
+        if(kingNewPoint.getX() > kingOldPoint.getX()){
+            Point rookOldPoint = new Point(kingNewPoint.x + 1, kingNewPoint.y); //Rooks position
+            Point rookNewPoint = new Point(kingNewPoint.x - 1, kingNewPoint.y); //Rooks destination
+            plies.add(new Ply(rookOldPoint, rookNewPoint, boardMap.get(rookOldPoint), currentPlayer));
+            move(rookOldPoint, rookNewPoint);
+        } else {
+            Point rookOldPoint = new Point(kingNewPoint.x - 1, kingNewPoint.y); //Rooks position
+            Point rookNewPoint = new Point(kingNewPoint.x + 1, kingNewPoint.y); //Rooks destination
+            plies.add(new Ply(rookOldPoint, rookNewPoint, boardMap.get(rookOldPoint), currentPlayer));
+            move(rookOldPoint, rookNewPoint);
         }
     }
 
@@ -78,25 +100,26 @@ public class Game {
      */
     private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
         //Boolean hasMoved = pieceOnPointHasMoved(markedPoint);
-        checkSpecials(markedPiece, markedPoint);
         return board.checkLegalMoves(markedPiece, markedPoint);
     }
 
-    private void checkSpecials(Piece markedPiece, Point markedPoint){
+    private List<Point> getSpecialMoves(Piece markedPiece, Point markedPoint){
         //castle
+        List<Point> specialMoves = new ArrayList<>();
         if(markedPiece.getPieceType() == PieceType.KING && !pieceOnPointHasMoved(markedPoint)){
             //om man klickat på en kung som inte rört sig
             if(checkRightCastle(markedPiece, markedPoint)){
-                legalPoints.add(new Point(markedPoint.x + 2, markedPoint.y));
+                specialMoves.add(new Point(markedPoint.x + 2, markedPoint.y));
             }
             if(checkLeftCastle(markedPiece, markedPoint)){
-                legalPoints.add(new Point(markedPoint.x - 3, markedPoint.y));
+                specialMoves.add(new Point(markedPoint.x - 3, markedPoint.y));
             }
         }
+        return specialMoves;
     }
 
     private boolean checkRightCastle (Piece markedPiece, Point markedPoint) {
-        for (int i = markedPoint.x; i < markedPoint.x+2; i++) {
+        for (int i = markedPoint.x; i < markedPoint.x+2 && i < 8; i++) {
             if(!isPointUnoccupied(new Point(i+1, markedPoint.y)))return false;
         }
         if(!isPointUnoccupied(new Point(markedPoint.x+3, markedPoint.y))){
@@ -113,7 +136,7 @@ public class Game {
     }
 
     private boolean checkLeftCastle (Piece markedPiece, Point markedPoint) {
-        for (int i = markedPoint.x; i > markedPoint.x-3; i--) {
+        for (int i = markedPoint.x; i > markedPoint.x-3 && i > 0; i--) {
             if(!isPointUnoccupied(new Point(i-1, markedPoint.y)))return false;
         }
         if(!isPointUnoccupied(new Point(markedPoint.x-4, markedPoint.y))){
@@ -144,6 +167,13 @@ public class Game {
 
         boardMap.put(clickedPoint, boardMap.get(markedPoint));
         boardMap.remove(markedPoint);
+    }
+
+    private void move(Point pointFrom,Point pointTo){
+        if(boardMap.get(pointFrom) != null){
+            boardMap.put(pointTo, boardMap.get(pointFrom));
+            boardMap.remove(pointFrom);
+        }
     }
 
     private boolean clickedOpponentsPiece(Point p){
