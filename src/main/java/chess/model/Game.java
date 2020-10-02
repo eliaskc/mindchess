@@ -15,7 +15,7 @@ public class Game {
     private List<Piece> deadPieces = new ArrayList<>();
     private List<Point> legalPoints = new ArrayList<>();
     //private Movement movement = new Movement();
-    private List<Move> moves = new ArrayList<>();
+    private List<Ply> plies = new ArrayList<>();
 
     private Player playerWhite = new Player("Player 1", WHITE);
     private Player playerBlack = new Player("Player 2", BLACK);
@@ -46,10 +46,8 @@ public class Game {
         Point clickedPoint = new Point(x, y);
 
         //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
-        if(boardMap.containsKey(clickedPoint) && markedPoint == null){
-            if(!clickedOwnPiece(clickedPoint)){
-                return;
-            }
+        if(clickedOwnPiece(clickedPoint)) {
+            return;
         }
 
         if (markedPoint == null) {
@@ -65,6 +63,7 @@ public class Game {
             }
         } else {
             if (legalPoints.contains(clickedPoint)) {
+                plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
                 move(clickedPoint);
                 switchPlayer();
             }
@@ -99,7 +98,10 @@ public class Game {
     }
 
     private boolean clickedOwnPiece(Point p){
-        return boardMap.get(p).getColor() == currentPlayer.getColor();
+        if(boardMap.containsKey(p) && markedPoint == null){
+            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
+        }
+        return false;
     }
 
     private void switchPlayer() {
