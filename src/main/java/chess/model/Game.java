@@ -53,7 +53,7 @@ public class Game {
         }
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
-            legalPoints = checkLegalMoves(boardMap.get(markedPoint), markedPoint);
+            legalPoints.addAll(checkLegalMoves(boardMap.get(markedPoint), markedPoint));
 
             //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
             if (legalPoints.size() == 0) {
@@ -77,7 +77,59 @@ public class Game {
      * @return returns a list of all legal moves possible for the clicked piece
      */
     private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
+        //Boolean hasMoved = pieceOnPointHasMoved(markedPoint);
+        checkSpecials(markedPiece, markedPoint);
         return board.checkLegalMoves(markedPiece, markedPoint);
+    }
+
+    private void checkSpecials(Piece markedPiece, Point markedPoint){
+        //castle
+        if(markedPiece.getPieceType() == PieceType.KING && !pieceOnPointHasMoved(markedPoint)){
+            //om man klickat på en kung som inte rört sig
+            if(checkRightCastle(markedPiece, markedPoint)){
+                legalPoints.add(new Point(markedPoint.x + 2, markedPoint.y));
+            }
+            if(checkLeftCastle(markedPiece, markedPoint)){
+                legalPoints.add(new Point(markedPoint.x - 3, markedPoint.y));
+            }
+        }
+    }
+
+    private boolean checkRightCastle (Piece markedPiece, Point markedPoint) {
+        for (int i = markedPoint.x; i < markedPoint.x+2; i++) {
+            if(!isPointUnoccupied(new Point(i+1, markedPoint.y)))return false;
+        }
+        if(!isPointUnoccupied(new Point(markedPoint.x+3, markedPoint.y))){
+            Point p = new Point(markedPoint.x+3, markedPoint.y);
+            if(boardMap.get(p).getPieceType() == PieceType.ROOK && pieceOnPointHasMoved(p)){
+                System.out.println("false");
+                return false;
+            }
+        } else {
+            return false;
+        }
+        System.out.println("true");
+        return true;
+    }
+
+    private boolean checkLeftCastle (Piece markedPiece, Point markedPoint) {
+        for (int i = markedPoint.x; i > markedPoint.x-3; i--) {
+            if(!isPointUnoccupied(new Point(i-1, markedPoint.y)))return false;
+        }
+        if(!isPointUnoccupied(new Point(markedPoint.x-4, markedPoint.y))){
+            Point p = new Point(markedPoint.x-4, markedPoint.y);
+            if(boardMap.get(p).getPieceType() == PieceType.ROOK && pieceOnPointHasMoved(p)){
+                System.out.println("false");
+                return false;
+            }
+        }
+        System.out.println("true");
+        return true;
+    }
+
+    private boolean isPointUnoccupied(Point p){
+        if(boardMap.get(p) == null) return true;
+        return false;
     }
 
     /**
@@ -143,5 +195,19 @@ public class Game {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    private boolean pieceOnPointHasMoved(Point point) {
+        if(boardMap.get(point) != null && pliesContainsPiece(boardMap.get(point))){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean pliesContainsPiece(Piece piece) {
+        for(Ply p : plies){
+            if(p.getMovedPiece() == piece) return true;
+        }
+        return false;
     }
 }

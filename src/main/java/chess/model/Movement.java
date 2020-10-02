@@ -107,6 +107,8 @@ public class Movement {
         upRight(pieceToMove,markedPoint,1);
         downLeft(pieceToMove,markedPoint,1);
         downRight(pieceToMove,markedPoint,1);
+
+
     }
 
     public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
