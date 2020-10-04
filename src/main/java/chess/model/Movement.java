@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static chess.model.Color.BLACK;
 import static chess.model.Color.WHITE;
+import static chess.model.PieceType.PAWN;
 
 /**
  * Is responisble for finding legal moves
@@ -17,6 +18,7 @@ public class Movement {
     private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
     private List<Ply> plies = new ArrayList<>();
     private List<Point> castlingPoints = new ArrayList<>();
+    private List<Point> enPassantPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
@@ -28,6 +30,10 @@ public class Movement {
 
     public List<Point> getCastlingPoints() {
         return castlingPoints;
+    }
+
+    public List<Point> getEnPassantPoints() {
+        return enPassantPoints;
     }
 
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
@@ -78,6 +84,10 @@ public class Movement {
             if (isOccupied(new Point(x + 1, y + 1))) addPoint(new Point(x + 1, y + 1), pieceToMove);
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
+
+        enPassantPoints.clear();
+        checkEnPassant(pieceToMove, markedPoint);
+        points.addAll(enPassantPoints);
     }
 
     private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
@@ -264,6 +274,7 @@ public class Movement {
 
     /**
      * Checks that the conditions for castling to the right are filled
+     *
      * @param markedPoint
      * @return
      */
@@ -286,6 +297,7 @@ public class Movement {
 
     /**
      * Checks that the conditions for castling to the left are filled
+     *
      * @param markedPoint
      * @return
      */
@@ -304,5 +316,24 @@ public class Movement {
             }
         }
         return false;
+    }
+
+    private void checkEnPassant(Piece pieceToMove, Point markedPoint) {
+        if (plies.size() == 0) return;
+
+        Ply lastPly = plies.get(plies.size() - 1);
+        Piece lastMovedPiece = lastPly.movedPiece;
+
+        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
+            if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
+                if (lastPly.movedTo.x == markedPoint.x + 1 || lastPly.movedTo.x == markedPoint.x - 1) {
+                    if (lastMovedPiece.getColor() == BLACK) {
+                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
+                    } else if (lastMovedPiece.getColor() == WHITE) {
+                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
+                    }
+                }
+            }
+        }
     }
 }

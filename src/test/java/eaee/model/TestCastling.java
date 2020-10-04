@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class TestSpecialMoves {
+public class TestCastling {
     ChessFacade model;
     Map<Point, Piece> boardMap = new HashMap<>();
     Movement movement = new Movement();

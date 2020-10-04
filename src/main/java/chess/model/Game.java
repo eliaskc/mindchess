@@ -67,8 +67,8 @@ public class Game {
         } else {
             if (legalPoints.contains(clickedPoint)) {
                 plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-                move(markedPoint, clickedPoint);
                 makeSpecialMoves(markedPoint, clickedPoint);
+                move(markedPoint, clickedPoint);
                 switchPlayer();
             }
             legalPoints.clear();
@@ -93,6 +93,7 @@ public class Game {
      * @param clickedPoint
      */
     private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
+        //castling
         if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
             if (clickedPoint.x > markedPoint.x) {
                 move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
@@ -101,6 +102,14 @@ public class Game {
             }
         }
 
+        //en passant
+        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
+            if (boardMap.get(markedPoint).getColor() == WHITE) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
+            } else if (boardMap.get(markedPoint).getColor() == BLACK) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
+            }
+        }
     }
 
 
@@ -110,11 +119,15 @@ public class Game {
      */
     private void move(Point moveFrom, Point moveTo) {
         if (boardMap.get(moveTo) != null) {
-            deadPieces.add(boardMap.get(moveTo));
+            takePiece(moveTo);
         }
 
         boardMap.put(moveTo, boardMap.get(moveFrom));
         boardMap.remove(moveFrom);
+    }
+
+    private void takePiece(Point pointToTake) {
+        deadPieces.add(boardMap.remove(pointToTake));
     }
 
     private boolean clickedOpponentsPiece(Point p){
