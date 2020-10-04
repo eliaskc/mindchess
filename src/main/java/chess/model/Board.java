@@ -15,21 +15,17 @@ import static chess.model.PieceType.*;
  */
 public class Board {
     private Map<Point, Piece> boardMap = new HashMap<>();
-    private Movement movement = new Movement();
     public Board() {
     }
 
-    List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
-        return movement.pieceMoveDelegation(markedPiece, markedPoint);
-    }
 
     public Map<Point, Piece> getBoardMap() {
         return boardMap;
     }
 
+
     public void initBoard() {
         placeAllPieces();
-        movement.setBoardMap(boardMap);
     }
 
     /**
