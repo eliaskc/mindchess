@@ -9,12 +9,15 @@ import static chess.model.Color.*;
 
 public class Game {
     private Board board = new Board();
+    private Movement movement = new Movement();
     private Map<Point, Piece> boardMap = board.getBoardMap();
+
     private Point markedPoint = null;
 
     private List<Piece> deadPieces = new ArrayList<>();
     private List<Point> legalPoints = new ArrayList<>();
     private List<Ply> plies = new ArrayList<>();
+    private List<Point> specialMoves = new ArrayList<>();
 
     private Player playerWhite = new Player("Player 1", WHITE);
     private Player playerBlack = new Player("Player 2", BLACK);
@@ -22,6 +25,8 @@ public class Game {
 
     public void initGame() {
         board.initBoard();
+        movement.setBoardMap(boardMap);
+        movement.setPlies(plies);
         playerWhite.setPieces(board.getPiecesByColor(WHITE));
         playerBlack.setPieces(board.getPiecesByColor(BLACK));
         currentPlayer = playerWhite;
@@ -53,7 +58,7 @@ public class Game {
         }
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
-            legalPoints = checkLegalMoves(boardMap.get(markedPoint), markedPoint);
+            legalPoints.addAll(checkLegalMoves(boardMap.get(markedPoint), markedPoint));
 
             //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
             if (legalPoints.size() == 0) {
@@ -62,13 +67,15 @@ public class Game {
         } else {
             if (legalPoints.contains(clickedPoint)) {
                 plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-                move(clickedPoint);
+                makeSpecialMoves(markedPoint, clickedPoint);
+                move(markedPoint, clickedPoint);
                 switchPlayer();
             }
             legalPoints.clear();
             markedPoint = null;
         }
     }
+
 
     /**
      * Checks the points which the clicked piece are allowed to move to
@@ -77,21 +84,50 @@ public class Game {
      * @return returns a list of all legal moves possible for the clicked piece
      */
     private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
-        return board.checkLegalMoves(markedPiece, markedPoint);
+        return movement.pieceMoveDelegation(markedPiece, markedPoint);
     }
 
     /**
-     * Moves the specified piece to the specified point
-     * <p>
-     * TODO Is also going to save each move as an instance of Move
+     * Checks if any special moves are attempted and if so, makes the necessary actions
+     * @param markedPoint
+     * @param clickedPoint
      */
-    private void move(Point clickedPoint) {
-        if (boardMap.get(clickedPoint) != null) {
-            deadPieces.add(boardMap.get(clickedPoint));
+    private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
+        //castling
+        if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
+            if (clickedPoint.x > markedPoint.x) {
+                move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
+            } else if (clickedPoint.x < markedPoint.x) {
+                move(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
+            }
         }
 
-        boardMap.put(clickedPoint, boardMap.get(markedPoint));
-        boardMap.remove(markedPoint);
+        //en passant
+        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
+            if (boardMap.get(markedPoint).getColor() == WHITE) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
+            } else if (boardMap.get(markedPoint).getColor() == BLACK) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
+            }
+        }
+    }
+
+
+    /**
+     * Moves the marked piece to the clicked point
+     * <p>
+     */
+    private void move(Point moveFrom, Point moveTo) {
+        if (boardMap.get(moveTo) != null) {
+            takePiece(moveTo);
+        }
+
+        boardMap.put(moveTo, boardMap.get(moveFrom));
+        boardMap.remove(moveFrom);
+    }
+
+    private void takePiece(Point pointToTake) {
+        deadPieces.add(boardMap.remove(pointToTake));
     }
 
     private boolean clickedOpponentsPiece(Point p){
@@ -143,5 +179,29 @@ public class Game {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    /**
+     * checks if a piece from a specified point has moved
+     * @param point
+     * @return true if the piece on the specified point has moved
+     */
+    private boolean pieceOnPointHasMoved(Point point) {
+        if(boardMap.get(point) != null && pliesContainsPiece(boardMap.get(point))){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * checking if a piece exists in the plies list
+     * @param piece
+     * @return true if it exists
+     */
+    private boolean pliesContainsPiece(Piece piece) {
+        for(Ply p : plies){
+            if(p.getMovedPiece() == piece) return true;
+        }
+        return false;
     }
 }

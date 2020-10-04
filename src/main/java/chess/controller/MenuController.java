@@ -4,11 +4,12 @@ import chess.model.ChessFacade;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -19,7 +20,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 /**
  * MenuController handles the menu
@@ -50,44 +50,53 @@ public class MenuController implements Initializable {
 
     private HashMap<String, Integer> timerMap = new LinkedHashMap<>();
 
-    @FXML private MediaView media;
-    @FXML private AnchorPane rootAnchor;
-    @FXML private ImageView btnStart;
-    @FXML private ImageView btnExit;
-    @FXML private TextField player1NameField;
-    @FXML private TextField player2NameField;
-    @FXML private Label timeLabel;
-    @FXML private ComboBox btnTimerDrop;
+    @FXML
+    private MediaView media;
+    @FXML
+    private AnchorPane rootAnchor;
+    @FXML
+    private ImageView btnStart;
+    @FXML
+    private ImageView btnExit;
+    @FXML
+    private TextField player1NameField;
+    @FXML
+    private TextField player2NameField;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private ComboBox btnTimerDrop;
 
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
-     *
+     * <p>
      * Happens when you click the start button
      *
      * @param event Clicked the button
      */
     @FXML
-    void goToBoard (MouseEvent event) {
+    void goToBoard(MouseEvent event) {
         //Does not create a new boardmap
         model.createNewGame();
         model.getCurrentGame().initGame();
 
         chessController.updateImageHandler();
 
-        if(!player1NameField.getText().equals("")) model.getPlayerWhite().setName(player1NameField.getText());
-        if(!player2NameField.getText().equals("")) model.getPlayerBlack().setName(player2NameField.getText());
+        if (!player1NameField.getText().equals("")) model.getPlayerWhite().setName(player1NameField.getText());
+        if (!player2NameField.getText().equals("")) model.getPlayerBlack().setName(player2NameField.getText());
         model.getPlayerWhite().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
         model.getPlayerBlack().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
 
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
 
+        chessController.setMediaPlayer(mediaPlayer);
         chessController.init();
         chessController.drawPieces();
     }
 
-    public void createChessScene(Parent chessParent){
+    public void createChessScene(Parent chessParent) {
         this.chessParent = chessParent;
         this.scene = new Scene(chessParent);
     }
@@ -98,7 +107,7 @@ public class MenuController implements Initializable {
      * @param event Pressed the button
      */
     @FXML
-    void Exit (MouseEvent event) {
+    void Exit(MouseEvent event) {
         System.exit(0);
     }
 
@@ -117,17 +126,17 @@ public class MenuController implements Initializable {
 
     /**
      * creates the timermap and gives the dropdown menu its options
-     *
+     * <p>
      * Where the possible times is decided
      */
-    private void initTimer(){
+    private void initTimer() {
         timerMap.put("03:00 min", 180);
         timerMap.put("05:00 min", 300);
         timerMap.put("10:00 min", 600);
         timerMap.put("30:00 min", 1800);
         timerMap.put("60:00 min", 3600);
 
-        timerMap.forEach((key,value) -> btnTimerDrop.getItems().add(key));
+        timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
 
         btnTimerDrop.getSelectionModel().selectFirst();
     }

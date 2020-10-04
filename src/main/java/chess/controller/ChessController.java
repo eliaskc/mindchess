@@ -12,10 +12,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -35,6 +37,12 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
 
+    private MediaPlayer mediaPlayer;
+
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
+
     public void setModel(ChessFacade model) {
         this.model = model;
     }
@@ -43,6 +51,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         this.imageHandler = imageHandler;
     }
 
+    @FXML
+    private MediaView media;
     @FXML
     Button btnBack;
     @FXML
@@ -86,7 +96,6 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         chessboardContainerX = chessBoardContainer.getLayoutX();
         chessboardContainerY = chessBoardContainer.getLayoutY();
     }
@@ -95,6 +104,9 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * Fetches needed values & objects, updates labels and starts timers
      */
     void init() {
+        media.setMediaPlayer(mediaPlayer);
+        media.setEffect(new GaussianBlur(18));
+
         updateSquareDimensions();
 
         pieceImages = imageHandler.fetchPieceImages();

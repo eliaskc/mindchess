@@ -2,11 +2,13 @@ package chess.model;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.*;
+import static chess.model.Color.BLACK;
+import static chess.model.Color.WHITE;
+import static chess.model.PieceType.PAWN;
 
 /**
  * Is responisble for finding legal moves
@@ -14,9 +16,24 @@ import static chess.model.Color.*;
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
     private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
+    private List<Ply> plies = new ArrayList<>();
+    private List<Point> castlingPoints = new ArrayList<>();
+    private List<Point> enPassantPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
+    }
+
+    public void setPlies(List<Ply> plies) {
+        this.plies = plies;
+    }
+
+    public List<Point> getCastlingPoints() {
+        return castlingPoints;
+    }
+
+    public List<Point> getEnPassantPoints() {
+        return enPassantPoints;
     }
 
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
@@ -41,167 +58,171 @@ public class Movement {
         int x = markedPoint.x;
         int y = markedPoint.y;
 
-        if (pieceToMove.getColor() == WHITE){
+        if (pieceToMove.getColor() == WHITE) {
 
-            if(isUnoccupied(new Point(x, y-1))) {
-                addPoint(new Point(x, y-1), pieceToMove);
-                //Hardcoded based on standard pawn positions atm. Could use Plies to check if has moved instead
-                if(isUnoccupied(new Point(x, y-2)) && markedPoint.y == 6) {
-                    addPoint(new Point(x, y-2), pieceToMove);
+            if (isUnoccupied(new Point(x, y - 1))) {
+                addPoint(new Point(x, y - 1), pieceToMove);
+
+                if (isUnoccupied(new Point(x, y - 2)) && !pieceHasMoved(pieceToMove)) {
+                    addPoint(new Point(x, y - 2), pieceToMove);
                 }
             }
 
-            if(!isUnoccupied(new Point(x+1,y-1))) addPoint(new Point(x+1,y-1), pieceToMove);
-            if(!isUnoccupied(new Point(x-1,y-1))) addPoint(new Point(x-1,y-1), pieceToMove);
+            if (isOccupied(new Point(x + 1, y - 1))) addPoint(new Point(x + 1, y - 1), pieceToMove);
+            if (isOccupied(new Point(x - 1, y - 1))) addPoint(new Point(x - 1, y - 1), pieceToMove);
 
-        } else if (pieceToMove.getColor() == BLACK){
+        } else if (pieceToMove.getColor() == BLACK) {
 
-            if(isUnoccupied(new Point(x, y+1))){
-                addPoint(new Point(x, y+1), pieceToMove);
-                //Hardcoded based on standard pawn positions atm. Could use Plies to check if has moved instead
-                if(isUnoccupied(new Point(x, y+2)) && markedPoint.y == 1) {
-                    addPoint(new Point(x, y+2), pieceToMove);
+            if (isUnoccupied(new Point(x, y + 1))) {
+                addPoint(new Point(x, y + 1), pieceToMove);
+
+                if (isUnoccupied(new Point(x, y + 2)) && !pieceHasMoved(pieceToMove)) {
+                    addPoint(new Point(x, y + 2), pieceToMove);
                 }
             }
 
-            if(!isUnoccupied(new Point(x+1,y+1))) addPoint(new Point(x+1,y+1), pieceToMove);
-            if(!isUnoccupied(new Point(x-1,y+1))) addPoint(new Point(x-1,y+1), pieceToMove);
+            if (isOccupied(new Point(x + 1, y + 1))) addPoint(new Point(x + 1, y + 1), pieceToMove);
+            if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
+
+        enPassantPoints.clear();
+        checkEnPassant(pieceToMove, markedPoint);
+        points.addAll(enPassantPoints);
     }
 
     private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove, markedPoint,7);
-        down(pieceToMove, markedPoint,7);
-        left(pieceToMove, markedPoint,7);
-        right(pieceToMove, markedPoint,7);
+        up(pieceToMove, markedPoint, 7);
+        down(pieceToMove, markedPoint, 7);
+        left(pieceToMove, markedPoint, 7);
+        right(pieceToMove, markedPoint, 7);
     }
 
     private void legalMovesBishop(Piece pieceToMove, Point markedPoint) {
-        upLeft(pieceToMove, markedPoint,7);
-        upRight(pieceToMove, markedPoint,7);
-        downRight(pieceToMove, markedPoint,7);
-        downLeft(pieceToMove, markedPoint,7);
+        upLeft(pieceToMove, markedPoint, 7);
+        upRight(pieceToMove, markedPoint, 7);
+        downRight(pieceToMove, markedPoint, 7);
+        downLeft(pieceToMove, markedPoint, 7);
     }
 
     private void legalMovesKnight(Piece pieceToMove, Point markedPoint) {
         int x = markedPoint.x;
         int y = markedPoint.y;
 
-        addPoint(new Point(x+1, y-2),pieceToMove);
-        addPoint(new Point(x+2, y-1),pieceToMove);
-        addPoint(new Point(x+2, y+1),pieceToMove);
-        addPoint(new Point(x+1, y+2),pieceToMove);
-        addPoint(new Point(x-1, y+2),pieceToMove);
-        addPoint(new Point(x-2, y+1),pieceToMove);
-        addPoint(new Point(x-2, y-1),pieceToMove);
-        addPoint(new Point(x-1, y-2),pieceToMove);
+        addPoint(new Point(x + 1, y - 2), pieceToMove);
+        addPoint(new Point(x + 2, y - 1), pieceToMove);
+        addPoint(new Point(x + 2, y + 1), pieceToMove);
+        addPoint(new Point(x + 1, y + 2), pieceToMove);
+        addPoint(new Point(x - 1, y + 2), pieceToMove);
+        addPoint(new Point(x - 2, y + 1), pieceToMove);
+        addPoint(new Point(x - 2, y - 1), pieceToMove);
+        addPoint(new Point(x - 1, y - 2), pieceToMove);
     }
 
     private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove,markedPoint,1);
-        right(pieceToMove,markedPoint,1);
-        down(pieceToMove,markedPoint,1);
-        left(pieceToMove,markedPoint,1);
+        up(pieceToMove, markedPoint, 1);
+        right(pieceToMove, markedPoint, 1);
+        down(pieceToMove, markedPoint, 1);
+        left(pieceToMove, markedPoint, 1);
 
-        upLeft(pieceToMove,markedPoint,1);
-        upRight(pieceToMove,markedPoint,1);
-        downLeft(pieceToMove,markedPoint,1);
-        downRight(pieceToMove,markedPoint,1);
+        upLeft(pieceToMove, markedPoint, 1);
+        upRight(pieceToMove, markedPoint, 1);
+        downLeft(pieceToMove, markedPoint, 1);
+        downRight(pieceToMove, markedPoint, 1);
+
+        castlingPoints.clear();
+        checkCastling(pieceToMove, markedPoint);
+        points.addAll(castlingPoints);
     }
 
     public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove, markedPoint,7);
-        down(pieceToMove, markedPoint,7);
-        left(pieceToMove, markedPoint,7);
-        right(pieceToMove, markedPoint,7);
+        up(pieceToMove, markedPoint, 7);
+        down(pieceToMove, markedPoint, 7);
+        left(pieceToMove, markedPoint, 7);
+        right(pieceToMove, markedPoint, 7);
 
-        upLeft(pieceToMove, markedPoint,7);
-        upRight(pieceToMove, markedPoint,7);
-        downRight(pieceToMove, markedPoint,7);
-        downLeft(pieceToMove, markedPoint,7);
+        upLeft(pieceToMove, markedPoint, 7);
+        upRight(pieceToMove, markedPoint, 7);
+        downRight(pieceToMove, markedPoint, 7);
+        downLeft(pieceToMove, markedPoint, 7);
     }
 
-    private boolean isUnoccupied(Point p){
-        if(boardMap.get(p) == null) return true;
-        return false;
-    }
-
-    private void up(Piece pieceToMove, Point markedPoint, int iterations){
-        for(int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
+    private void up(Piece pieceToMove, Point markedPoint, int iterations) {
+        for (int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Point p = new Point(markedPoint.x, i);
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void down(Piece pieceToMove, Point markedPoint, int iterations){
-        for(int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
+    private void down(Piece pieceToMove, Point markedPoint, int iterations) {
+        for (int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(markedPoint.x, i);
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void left(Piece pieceToMove, Point markedPoint, int iterations){
-        for(int i = markedPoint.x - 1; i >= 0 && iterations > 0; i--,iterations--) {
+    private void left(Piece pieceToMove, Point markedPoint, int iterations) {
+        for (int i = markedPoint.x - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Point p = new Point(i, markedPoint.y);
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void right(Piece pieceToMove, Point markedPoint,int iterations){
-        for(int i = markedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
+    private void right(Piece pieceToMove, Point markedPoint, int iterations) {
+        for (int i = markedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
             Point p = new Point(i, markedPoint.y);
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void upLeft(Piece pieceToMove, Point markedPoint, int iterations){
+    private void upLeft(Piece pieceToMove, Point markedPoint, int iterations) {
         Point p = new Point(markedPoint.x, markedPoint.y);
-        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
+        for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
             p.y--;
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void upRight(Piece pieceToMove, Point markedPoint,int iterations){
+    private void upRight(Piece pieceToMove, Point markedPoint, int iterations) {
         Point p = new Point(markedPoint.x, markedPoint.y);
-        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
+        for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x++;
             p.y--;
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void downRight(Piece pieceToMove, Point markedPoint,int iterations){
+    private void downRight(Piece pieceToMove, Point markedPoint, int iterations) {
         Point p = new Point(markedPoint.x, markedPoint.y);
-        for(int i = 0; i < 8 && iterations > 0; i++,iterations--) {
+        for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x++;
             p.y++;
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void downLeft(Piece pieceToMove, Point markedPoint, int iterations){
+    private void downLeft(Piece pieceToMove, Point markedPoint, int iterations) {
         Point p = new Point(markedPoint.x, markedPoint.y);
 
-        for(int i = 0; i < 8 && iterations > 0; i++, iterations--) {
+        for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
             p.y++;
-            if(addPoint(p,pieceToMove))break;
+            if (addPoint(p, pieceToMove)) break;
         }
     }
 
     /**
      * Adds point to the list of legal moves if the point is inside the board AND:
-     *   - the point is empty
-     *   - the point has a piece of the opposite color
-     * @param p point to move to
+     * - the point is empty
+     * - the point has a piece of the opposite color
+     *
+     * @param p           point to move to
      * @param pieceToMove
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
      */
-    private boolean addPoint(Point p, Piece pieceToMove){
+    private boolean addPoint(Point p, Piece pieceToMove) {
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
-        if(p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
+        if (p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
             if (boardMap.get(p) == null) {
                 points.add(new Point(p.x, p.y));
                 breakLoop = false;
@@ -211,9 +232,108 @@ public class Movement {
             } else {
                 breakLoop = true;
             }
-        }   else {
+        } else {
             breakLoop = true;
         }
         return breakLoop;
+    }
+
+    private boolean isUnoccupied(Point p) {
+        if (boardMap.get(p) == null) return true;
+        return false;
+    }
+
+    private boolean isOccupied(Point p) {
+        if (boardMap.get(p) == null) return false;
+        return true;
+    }
+
+    private void checkCastling(Piece pieceToMove, Point markedPoint) {
+        if (!pieceHasMoved(pieceToMove)) {
+            if (checkRightCastling(markedPoint)) {
+                castlingPoints.add(new Point(markedPoint.x + 2, markedPoint.y));
+            }
+            if (checkLeftCastling(markedPoint)) {
+                castlingPoints.add(new Point(markedPoint.x - 2, markedPoint.y));
+            }
+        }
+    }
+
+    /**
+     * Checks if a piece has moved
+     *
+     * @param piece
+     * @return boolean
+     */
+    private boolean pieceHasMoved(Piece piece) {
+        for (Ply p : plies) {
+            if (p.getMovedPiece() == piece) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks that the conditions for castling to the right are filled
+     *
+     * @param markedPoint
+     * @return
+     */
+    private boolean checkRightCastling(Point markedPoint) {
+        for (int i = markedPoint.x + 1; i < markedPoint.x + 2; i++) {
+            if (isOccupied(new Point(i, markedPoint.y))) {
+                return false;
+            }
+        }
+
+        Point p = new Point(markedPoint.x + 3, markedPoint.y);
+        if (isOccupied(p)) {
+            Piece piece = boardMap.get(p);
+            if (piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks that the conditions for castling to the left are filled
+     *
+     * @param markedPoint
+     * @return
+     */
+    private boolean checkLeftCastling(Point markedPoint) {
+        for (int i = markedPoint.x - 1; i > markedPoint.x - 3; i--) {
+            if (isOccupied(new Point(i, markedPoint.y))) {
+                return false;
+            }
+        }
+
+        Point p = new Point(markedPoint.x - 4, markedPoint.y);
+        if (isOccupied(p)) {
+            Piece piece = boardMap.get(p);
+            if (piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkEnPassant(Piece pieceToMove, Point markedPoint) {
+        if (plies.size() == 0) return;
+
+        Ply lastPly = plies.get(plies.size() - 1);
+        Piece lastMovedPiece = lastPly.movedPiece;
+
+        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
+            if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
+                if (lastPly.movedTo.x == markedPoint.x + 1 || lastPly.movedTo.x == markedPoint.x - 1) {
+                    if (lastMovedPiece.getColor() == BLACK) {
+                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
+                    } else if (lastMovedPiece.getColor() == WHITE) {
+                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
+                    }
+                }
+            }
+        }
     }
 }
