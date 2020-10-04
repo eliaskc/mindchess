@@ -108,7 +108,6 @@ public class Game {
      * Moves the marked piece to the clicked point
      * <p>
      */
-
     private void move(Point moveFrom, Point moveTo) {
         if (boardMap.get(moveTo) != null) {
             deadPieces.add(boardMap.get(moveTo));

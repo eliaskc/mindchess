@@ -15,7 +15,7 @@ import static chess.model.Color.WHITE;
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
     private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
-    private List<Ply> plies;
+    private List<Ply> plies = new ArrayList<>();
     private List<Point> castlingPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
