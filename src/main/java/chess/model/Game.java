@@ -182,18 +182,6 @@ public class Game {
     }
 
     /**
-     * checks if a piece from a specified point has moved
-     * @param point
-     * @return true if the piece on the specified point has moved
-     */
-    private boolean pieceOnPointHasMoved(Point point) {
-        if(boardMap.get(point) != null && pliesContainsPiece(boardMap.get(point))){
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * checking if a piece exists in the plies list
      * @param piece
      * @return true if it exists

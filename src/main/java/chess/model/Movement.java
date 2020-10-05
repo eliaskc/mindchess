@@ -327,10 +327,12 @@ public class Movement {
         if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
             if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
                 if (lastPly.movedTo.x == markedPoint.x + 1 || lastPly.movedTo.x == markedPoint.x - 1) {
-                    if (lastMovedPiece.getColor() == BLACK) {
-                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
-                    } else if (lastMovedPiece.getColor() == WHITE) {
-                        enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
+                    if (lastPly.movedTo.y == markedPoint.y){
+                        if (lastMovedPiece.getColor() == BLACK) {
+                            enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
+                        } else if (lastMovedPiece.getColor() == WHITE) {
+                            enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
+                        }
                     }
                 }
             }

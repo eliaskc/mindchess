@@ -79,6 +79,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      */
     @FXML
     void goToMenu(ActionEvent event) {
+        clearAllPieceImages();
+        clearAllLegalMoveImages();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -172,9 +174,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * Draws all images from the list of pieceImages from the board, and the possible legal moves
      */
     public void drawPieces() {
-        for (ImageView pieceImage : pieceImages) {
-            chessBoardContainer.getChildren().remove(pieceImage);
-        }
+        clearAllPieceImages();
 
         //Clears the list of old piece locations/images and updates it with the new one
         imageHandler.getPieceImages().clear();
@@ -185,9 +185,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
 
-        for (ImageView imageView : legalMoveImages) {
-            chessBoardContainer.getChildren().remove(imageView);
-        }
+        clearAllLegalMoveImages();
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
@@ -195,6 +193,14 @@ public class ChessController implements Initializable, Observer, TimerObserver {
             chessBoardContainer.getChildren().add(imageView);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
         }
+    }
+
+    private void clearAllPieceImages(){
+        chessBoardContainer.getChildren().removeAll(pieceImages);
+    }
+
+    private void clearAllLegalMoveImages(){
+        chessBoardContainer.getChildren().removeAll(legalMoveImages);
     }
 
     /**
