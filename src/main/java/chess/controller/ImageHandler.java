@@ -45,50 +45,9 @@ public class ImageHandler {
             if (piece.getValue() == null) {
                 break;
             }
-            switch (piece.getValue().getPieceType()) {
-                case ROOK:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_rook.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_rook.png";
-                    }
-                    break;
-                case BISHOP:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_bishop.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_bishop.png";
-                    }
-                    break;
-                case KNIGHT:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_knight.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_knight.png";
-                    }
-                    break;
-                case QUEEN:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_queen.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_queen.png";
-                    }
-                    break;
-                case KING:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_king.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_king.png";
-                    }
-                    break;
-                case PAWN:
-                    if (piece.getValue().getColor().equals(BLACK)) {
-                        imageURL = "/chesspieces/black_pawn.png";
-                    } else if(piece.getValue().getColor().equals(WHITE)) {
-                        imageURL = "/chesspieces/white_pawn.png";
-                    }
-                    break;
-            }
+
+            imageURL = "/chesspieces/" + piece.getValue().getColor().toString().toLowerCase() + "_" + piece.getValue().getPieceType().toString().toLowerCase() + ".png";
+
             ImageView pieceImage = new ImageView();
             pieceImage.setImage(new Image(getClass().getResourceAsStream(imageURL)));
             pieceImage.setFitWidth(squareDimension-10);
