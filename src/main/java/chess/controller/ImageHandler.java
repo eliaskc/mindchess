@@ -41,15 +41,19 @@ public class ImageHandler {
 
         pieceImageViewMap.clear();
         for (Map.Entry<Point,Piece> piece : boardMap.entrySet()) {
-            String imageURL = "";
             if (piece.getValue() == null) {
                 break;
             }
 
-            imageURL = "/chesspieces/" + piece.getValue().getColor().toString().toLowerCase() + "_" + piece.getValue().getPieceType().toString().toLowerCase() + ".png";
+            String imageURL = String.format("/chesspieces/%s_%s.png", piece.getValue().getColor().toString(), piece.getValue().getPieceType().toString());
 
             ImageView pieceImage = new ImageView();
-            pieceImage.setImage(new Image(getClass().getResourceAsStream(imageURL)));
+            try {
+                pieceImage.setImage(new Image(getClass().getResourceAsStream(imageURL)));
+            } catch (NullPointerException e) {
+                pieceImage.setImage(new Image(getClass().getResourceAsStream("/missing_texture.png")));
+            }
+
             pieceImage.setFitWidth(squareDimension-10);
             pieceImage.setFitHeight(squareDimension-10);
 
