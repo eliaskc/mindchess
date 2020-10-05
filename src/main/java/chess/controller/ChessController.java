@@ -196,15 +196,11 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     private void clearAllPieceImages(){
-        for (ImageView pieceImage : pieceImages) {
-            chessBoardContainer.getChildren().remove(pieceImage);
-        }
+        chessBoardContainer.getChildren().removeAll(pieceImages);
     }
 
     private void clearAllLegalMoveImages(){
-        for (ImageView imageView : legalMoveImages) {
-            chessBoardContainer.getChildren().remove(imageView);
-        }
+        chessBoardContainer.getChildren().removeAll(legalMoveImages);
     }
 
     /**
