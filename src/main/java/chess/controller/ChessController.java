@@ -56,7 +56,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     @FXML
     private MediaView media;
     @FXML
-    Button btnBack;
+    private ImageView btnBack;
     @FXML
     private Label player1Name;
     @FXML
@@ -84,7 +84,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * @param event Button click
      */
     @FXML
-    void goToMenu(ActionEvent event) {
+    void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

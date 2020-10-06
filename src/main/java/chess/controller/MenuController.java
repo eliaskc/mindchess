@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -30,10 +29,10 @@ public class MenuController implements Initializable {
     private Parent chessParent;
     private Scene scene;
 
-    private String media_URL_1 = "/background_videos/background_video_1.mp4";
-    private String media_URL_2 = "/background_videos/background_video_2.mp4";
-    private String media_URL_3 = "/background_videos/background_video_3.mp4";
-    private String media_URL_4 = "/background_videos/background_video_4.mp4";
+    private String media_URL_1 = "/backgroundVideos/background_video_1.mp4";
+    private String media_URL_2 = "/backgroundVideos/background_video_2.mp4";
+    private String media_URL_3 = "/backgroundVideos/background_video_3.mp4";
+    private String media_URL_4 = "/backgroundVideos/background_video_4.mp4";
     List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
 
     private MediaPlayer mediaPlayer;
@@ -130,17 +129,14 @@ public class MenuController implements Initializable {
      * Where the possible times is decided
      */
     private void initTimer() {
-        timerMap.put("03:00 min", 180);
-        timerMap.put("05:00 min", 300);
-        timerMap.put("10:00 min", 600);
-        timerMap.put("30:00 min", 1800);
-        timerMap.put("60:00 min", 3600);
+        timerMap.put("3 min", 180);
+        timerMap.put("5 min", 300);
+        timerMap.put("10 min", 600);
+        timerMap.put("30 min", 1800);
+        timerMap.put("60 min", 3600);
 
         timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
 
         btnTimerDrop.getSelectionModel().selectFirst();
     }
-
-    //Game
-
 }
