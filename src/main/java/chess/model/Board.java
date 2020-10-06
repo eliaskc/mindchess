@@ -14,7 +14,8 @@ import static chess.model.PieceType.*;
  * Board represents the chess board and contains the information and methods to interact with the chess board
  */
 public class Board {
-    private Map<Point, Piece> boardMap = new HashMap<>();
+    private final Map<Point, Piece> boardMap = new HashMap<>();
+
     public Board() {
     }
 

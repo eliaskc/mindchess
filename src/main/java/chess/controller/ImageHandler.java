@@ -6,10 +6,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static chess.model.Color.*;
+import static chess.model.Color.BLACK;
+import static chess.model.Color.WHITE;
 
 /**
  * Is responsible for fetching the images from files and matching them with the right pieces
@@ -17,8 +20,8 @@ import static chess.model.Color.*;
 public class ImageHandler {
     List<ImageView> blackImageViews = new ArrayList<>();
     List<ImageView> whiteImageViews = new ArrayList<>();
-    private List<ImageView> pieceImages = new ArrayList<>();
-    private Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
+    private final List<ImageView> pieceImages = new ArrayList<>();
+    private final Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
     private ChessFacade model;
     private Map<Point, Piece> boardMap;
     private double squareDimension;
@@ -129,9 +132,9 @@ public class ImageHandler {
             ImageView imageView = new ImageView();
 
             if (boardMap.get(point) != null) {
-                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMoveBox.png")));
+                imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
-                imageView.setImage(new Image(getClass().getResourceAsStream("/legalMove.png")));
+                imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMove.png")));
             }
 
             imageView.setFitWidth(squareDimension);

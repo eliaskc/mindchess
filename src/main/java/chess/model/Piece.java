@@ -2,14 +2,14 @@ package chess.model;
 
 /**
  * Piece represents a chess piece on the board
- *
+ * <p>
  * Also fetches its own image
  */
 public class Piece {
     private boolean isActive;
-    private Color color;
+    private final Color color;
     private PieceType pieceType;
-    private boolean mark = false;
+    private final boolean mark = false;
 
     public Piece(boolean isActive, Color color, PieceType pieceType) {
         this.isActive = isActive;

@@ -7,10 +7,10 @@ import java.util.List;
  * Class Player represents a player playing chess and contains attributes for that player
  */
 public class Player {
-    private ChessTimer chessTimer = new ChessTimer();
+    private final ChessTimer chessTimer = new ChessTimer();
     private List<Piece> pieces = new ArrayList<>();
     private String name;
-    private Color color;
+    private final Color color;
 
     public Player(String name, Color color) {
         this.name = name;
@@ -21,12 +21,12 @@ public class Player {
         return name;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public ChessTimer getTimer() {

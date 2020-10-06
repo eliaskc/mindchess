@@ -4,16 +4,13 @@ import chess.Observer;
 import chess.TimerObserver;
 import chess.model.ChessFacade;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -30,33 +27,20 @@ import java.util.ResourceBundle;
  * ChessController handles the chess board
  */
 public class ChessController implements Initializable, Observer, TimerObserver {
+    double squareDimension = 75;
+    double chessboardContainerX;
+    double chessboardContainerY;
     private ChessFacade model;
-
     private Parent menuParent;
     private Scene scene;
-
     private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
-
     private MediaPlayer mediaPlayer;
-
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
-        this.mediaPlayer = mediaPlayer;
-    }
-
-    public void setModel(ChessFacade model) {
-        this.model = model;
-    }
-
-    public void setImageHandler(ImageHandler imageHandler) {
-        this.imageHandler = imageHandler;
-    }
-
     @FXML
     private MediaView media;
     @FXML
-    Button btnBack;
+    private ImageView btnBack;
     @FXML
     private Label player1Name;
     @FXML
@@ -74,9 +58,17 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     @FXML
     private FlowPane flowPaneWhitePieces;
 
-    double squareDimension = 75;
-    double chessboardContainerX;
-    double chessboardContainerY;
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
+    }
+
+    public void setImageHandler(ImageHandler imageHandler) {
+        this.imageHandler = imageHandler;
+    }
 
     /**
      * Switches to the menu/startscreen scene
@@ -84,7 +76,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
      * @param event Button click
      */
     @FXML
-    void goToMenu(ActionEvent event) {
+    void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -210,11 +202,11 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         flowPaneBlackPieces.getChildren().addAll(imageHandler.getBlackImageViews());
     }
 
-    private void clearAllPieceImages(){
+    private void clearAllPieceImages() {
         chessBoardContainer.getChildren().removeAll(pieceImages);
     }
 
-    private void clearAllLegalMoveImages(){
+    private void clearAllLegalMoveImages() {
         chessBoardContainer.getChildren().removeAll(legalMoveImages);
     }
 
