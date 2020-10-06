@@ -13,9 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
@@ -67,6 +69,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     private ImageView chessBoardImage;
     @FXML
     private AnchorPane chessBoardContainer;
+    @FXML
+    private FlowPane flowPaneBlackPieces;
+    @FXML
+    private FlowPane flowPaneWhitePieces;
 
     double squareDimension = 75;
     double chessboardContainerX;
@@ -114,6 +120,7 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         pieceImages = imageHandler.fetchPieceImages();
         legalMoveImages = imageHandler.fetchLegalMoveImages();
         drawPieces();
+        drawDeadPieces();
 
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
@@ -195,6 +202,14 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         }
     }
 
+    private void drawDeadPieces() {
+        imageHandler.fetchDeadPieceImages();
+        flowPaneWhitePieces.getChildren().clear();
+        flowPaneBlackPieces.getChildren().clear();
+        flowPaneWhitePieces.getChildren().addAll(imageHandler.getWhiteImageViews());
+        flowPaneBlackPieces.getChildren().addAll(imageHandler.getBlackImageViews());
+    }
+
     private void clearAllPieceImages(){
         chessBoardContainer.getChildren().removeAll(pieceImages);
     }
@@ -211,40 +226,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         imageHandler.fetchPieceImages();
         imageHandler.updateImageCoordinates();
         drawPieces();
+        drawDeadPieces();
     }
-
-    private void timer1Start() {
-        model.getPlayerWhite().getTimer().startTimer();
-    }
-
-    private void timer1Stop() {
-        model.getPlayerWhite().getTimer().stopTimer();
-    }
-
-    private void timer1Pause() {
-        model.getPlayerWhite().getTimer().setActive(false);
-    }
-
-    private void timer1Unpause() {
-        model.getPlayerWhite().getTimer().setActive(true);
-    }
-
-    private void timer2Start() {
-        model.getPlayerBlack().getTimer().startTimer();
-    }
-
-    private void timer2Stop() {
-        model.getPlayerBlack().getTimer().stopTimer();
-    }
-
-    private void timer2Pause() {
-        model.getPlayerBlack().getTimer().setActive(false);
-    }
-
-    private void timer2Unpause() {
-        model.getPlayerBlack().getTimer().setActive(true);
-    }
-
 
     /**
      * Fetches the times for each timer from the model when called and updates the labels
