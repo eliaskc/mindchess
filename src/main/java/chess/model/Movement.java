@@ -277,7 +277,7 @@ public class Movement {
      * @return
      */
     private boolean checkRightCastling(Point markedPoint) {
-        for (int i = markedPoint.x + 1; i < markedPoint.x + 2; i++) {
+        for (int i = markedPoint.x + 1; i <= markedPoint.x + 2; i++) {
             if (isOccupied(new Point(i, markedPoint.y))) {
                 return false;
             }
@@ -298,7 +298,7 @@ public class Movement {
      * @return
      */
     private boolean checkLeftCastling(Point markedPoint) {
-        for (int i = markedPoint.x - 1; i > markedPoint.x - 3; i--) {
+        for (int i = markedPoint.x - 1; i >= markedPoint.x - 3; i--) {
             if (isOccupied(new Point(i, markedPoint.y))) {
                 return false;
             }
