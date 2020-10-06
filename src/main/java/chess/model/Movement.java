@@ -15,10 +15,10 @@ import static chess.model.PieceType.PAWN;
  */
 public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
-    private List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
+    private final List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
     private List<Ply> plies = new ArrayList<>();
-    private List<Point> castlingPoints = new ArrayList<>();
-    private List<Point> enPassantPoints = new ArrayList<>();
+    private final List<Point> castlingPoints = new ArrayList<>();
+    private final List<Point> enPassantPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
@@ -239,13 +239,11 @@ public class Movement {
     }
 
     private boolean isUnoccupied(Point p) {
-        if (boardMap.get(p) == null) return true;
-        return false;
+        return boardMap.get(p) == null;
     }
 
     private boolean isOccupied(Point p) {
-        if (boardMap.get(p) == null) return false;
-        return true;
+        return boardMap.get(p) != null;
     }
 
     private void checkCastling(Piece pieceToMove, Point markedPoint) {
@@ -288,9 +286,7 @@ public class Movement {
         Point p = new Point(markedPoint.x + 3, markedPoint.y);
         if (isOccupied(p)) {
             Piece piece = boardMap.get(p);
-            if (piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor()) {
-                return true;
-            }
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor();
         }
         return false;
     }
@@ -311,9 +307,7 @@ public class Movement {
         Point p = new Point(markedPoint.x - 4, markedPoint.y);
         if (isOccupied(p)) {
             Piece piece = boardMap.get(p);
-            if (piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor()) {
-                return true;
-            }
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor();
         }
         return false;
     }
@@ -327,7 +321,7 @@ public class Movement {
         if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
             if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
                 if (lastPly.movedTo.x == markedPoint.x + 1 || lastPly.movedTo.x == markedPoint.x - 1) {
-                    if (lastPly.movedTo.y == markedPoint.y){
+                    if (lastPly.movedTo.y == markedPoint.y) {
                         if (lastMovedPiece.getColor() == BLACK) {
                             enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
                         } else if (lastMovedPiece.getColor() == WHITE) {

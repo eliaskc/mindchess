@@ -1,4 +1,5 @@
 package chess.model;
+
 import chess.TimerObserver;
 
 import java.util.ArrayList;
@@ -8,16 +9,16 @@ import java.util.TimerTask;
 
 /**
  * ChessTimer handles timers
- *
+ * <p>
  * The timer counts down from a specified number in seconds and updates its observers every second
- *
+ * <p>
  * It allows the manipulation of timers by pausing and unpausing.
  */
 public class ChessTimer {
     private int time;
     private boolean active = false;
     private Timer timer = new Timer();
-    private List<TimerObserver> observers = new ArrayList<>();
+    private final List<TimerObserver> observers = new ArrayList<>();
 
     public ChessTimer() {
 
@@ -25,7 +26,7 @@ public class ChessTimer {
 
     /**
      * stops previous timer to make sure that not more than 1 threads are active
-     *
+     * <p>
      * Creates and starts decrementing a new timer
      */
     public void startTimer() {
@@ -34,8 +35,8 @@ public class ChessTimer {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(active)decrementTime();
-                if(getTime() <= 0) stopTimer();
+                if (active) decrementTime();
+                if (getTime() <= 0) stopTimer();
             }
         }, 0, 1000);
     }
@@ -43,7 +44,7 @@ public class ChessTimer {
     /**
      * stops timer,
      */
-    public void stopTimer(){
+    public void stopTimer() {
         timer.cancel();
         setActive(false);
     }
@@ -51,7 +52,7 @@ public class ChessTimer {
     /**
      * decrements the time Integer
      */
-    private void decrementTime(){
+    private void decrementTime() {
         time--;
         notifyObservers();
     }
@@ -59,25 +60,25 @@ public class ChessTimer {
     /**
      * Notifies observers every second
      */
-    private void notifyObservers(){
-        for (TimerObserver o: observers) {
+    private void notifyObservers() {
+        for (TimerObserver o : observers) {
             o.updateTimer();
         }
-    }
-
-    public void setTime(int time) {
-        this.time = time;
     }
 
     public int getTime() {
         return time;
     }
 
+    public void setTime(int time) {
+        this.time = time;
+    }
+
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    public void addObserver(TimerObserver t){
+    public void addObserver(TimerObserver t) {
         observers.add(t);
     }
 }

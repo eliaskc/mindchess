@@ -13,17 +13,18 @@ import java.util.List;
  * (Composite pattern?)
  */
 public class ChessFacade {
-    private List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
     private Game currentGame;
-    private List<Game> gameList = new ArrayList<>();
+    private final List<Game> gameList = new ArrayList<>();
 
     public ChessFacade() {
         createNewGame();
         currentGame.initGame();
     }
 
-    public void startGame() {}
+    public void startGame() {
+    }
 
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();

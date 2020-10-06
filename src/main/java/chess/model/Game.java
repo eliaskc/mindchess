@@ -5,22 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.*;
+import static chess.model.Color.BLACK;
+import static chess.model.Color.WHITE;
 
 public class Game {
-    private Board board = new Board();
-    private Movement movement = new Movement();
-    private Map<Point, Piece> boardMap = board.getBoardMap();
+    private final Board board = new Board();
+    private final Movement movement = new Movement();
+    private final Map<Point, Piece> boardMap = board.getBoardMap();
 
     private Point markedPoint = null;
 
-    private List<Piece> deadPieces = new ArrayList<>();
-    private List<Point> legalPoints = new ArrayList<>();
-    private List<Ply> plies = new ArrayList<>();
-    private List<Point> specialMoves = new ArrayList<>();
+    private final List<Piece> deadPieces = new ArrayList<>();
+    private final List<Point> legalPoints = new ArrayList<>();
+    private final List<Ply> plies = new ArrayList<>();
+    private final List<Point> specialMoves = new ArrayList<>();
 
-    private Player playerWhite = new Player("Player 1", WHITE);
-    private Player playerBlack = new Player("Player 2", BLACK);
+    private final Player playerWhite = new Player("Player 1", WHITE);
+    private final Player playerBlack = new Player("Player 2", BLACK);
     private Player currentPlayer;
 
     public void initGame() {
@@ -49,7 +50,7 @@ public class Game {
         Point clickedPoint = new Point(x, y);
 
         //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
-        if(clickedOpponentsPiece(clickedPoint)) {
+        if (clickedOpponentsPiece(clickedPoint)) {
             return;
         }
 
@@ -89,6 +90,7 @@ public class Game {
 
     /**
      * Checks if any special moves are attempted and if so, makes the necessary actions
+     *
      * @param markedPoint
      * @param clickedPoint
      */
@@ -130,8 +132,8 @@ public class Game {
         deadPieces.add(boardMap.remove(pointToTake));
     }
 
-    private boolean clickedOpponentsPiece(Point p){
-        if(boardMap.containsKey(p) && markedPoint == null){
+    private boolean clickedOpponentsPiece(Point p) {
+        if (boardMap.containsKey(p) && markedPoint == null) {
             return !(boardMap.get(p).getColor() == currentPlayer.getColor());
         }
         return false;
@@ -139,7 +141,7 @@ public class Game {
 
     private void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
-        if(currentPlayer == playerWhite) {
+        if (currentPlayer == playerWhite) {
             currentPlayer = playerBlack;
         } else if (currentPlayer == playerBlack) {
             currentPlayer = playerWhite;
@@ -147,7 +149,7 @@ public class Game {
         currentPlayer.getTimer().setActive(true);
     }
 
-    public void initTimers(){
+    public void initTimers() {
         playerWhite.getTimer().startTimer();
         playerWhite.getTimer().setActive(true);
         playerBlack.getTimer().startTimer();
@@ -183,12 +185,13 @@ public class Game {
 
     /**
      * checking if a piece exists in the plies list
+     *
      * @param piece
      * @return true if it exists
      */
     private boolean pliesContainsPiece(Piece piece) {
-        for(Ply p : plies){
-            if(p.getMovedPiece() == piece) return true;
+        for (Ply p : plies) {
+            if (p.getMovedPiece() == piece) return true;
         }
         return false;
     }

@@ -3,7 +3,6 @@ package chess;
 import chess.controller.ChessController;
 import chess.controller.ImageHandler;
 import chess.controller.MenuController;
-
 import chess.model.ChessFacade;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,38 +11,38 @@ import javafx.stage.Stage;
 
 public final class ChessApplication extends Application {
 
-	@Override
-	public void start(Stage stage) throws Exception {
-		stage.setResizable(false);
-		FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
-		FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 
-		Parent menuParent = menuLoader.load();
-		Parent chessParent = chessLoader.load();
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setResizable(false);
+        FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
+        FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
 
-		MenuController menuController = menuLoader.getController();
-		ChessController chessController = chessLoader.getController();
-		ImageHandler imageHandler = new ImageHandler();
+        Parent menuParent = menuLoader.load();
+        Parent chessParent = chessLoader.load();
 
-		menuController.createChessScene(chessParent);
-		chessController.createMenuScene(menuParent);
+        MenuController menuController = menuLoader.getController();
+        ChessController chessController = chessLoader.getController();
+        ImageHandler imageHandler = new ImageHandler();
 
-		menuController.setChessController(chessController);
+        menuController.createChessScene(chessParent);
+        chessController.createMenuScene(menuParent);
 
-		ChessFacade model = new ChessFacade();
-		menuController.setModel(model);
-		chessController.setModel(model);
-		imageHandler.setModel(model);
-		model.addObserver(chessController);
+        menuController.setChessController(chessController);
 
-		chessController.setImageHandler(imageHandler);
+        ChessFacade model = new ChessFacade();
+        menuController.setModel(model);
+        chessController.setModel(model);
+        imageHandler.setModel(model);
+        model.addObserver(chessController);
 
-		//Might need to be reworked since our menu scene is created in our chessController which is kinda weird
-		stage.setScene(chessController.getMenuScene());
-		stage.show();
-	}
+        chessController.setImageHandler(imageHandler);
 
-	public static void main(String[] args) {
-		Application.launch(args);
-	}
+        //Might need to be reworked since our menu scene is created in our chessController which is kinda weird
+        stage.setScene(chessController.getMenuScene());
+        stage.show();
+    }
 }
