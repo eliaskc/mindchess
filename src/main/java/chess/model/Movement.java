@@ -38,6 +38,9 @@ public class Movement {
 
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
+        enPassantPoints.clear();
+        castlingPoints.clear();
+
         switch (pieceToMove.getPieceType()) {
             case ROOK -> legalMovesRook(pieceToMove, markedPoint);
 
@@ -85,7 +88,6 @@ public class Movement {
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
 
-        enPassantPoints.clear();
         checkEnPassant(pieceToMove, markedPoint);
         points.addAll(enPassantPoints);
     }
@@ -129,7 +131,6 @@ public class Movement {
         downLeft(pieceToMove, markedPoint, 1);
         downRight(pieceToMove, markedPoint, 1);
 
-        castlingPoints.clear();
         checkCastling(pieceToMove, markedPoint);
         points.addAll(castlingPoints);
     }
