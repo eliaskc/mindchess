@@ -124,6 +124,11 @@ public class Game {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
             }
         }
+        
+        //pawn promotion
+        if (movement.getPromotionPoints().size() != 0 && movement.getPromotionPoints().contains(clickedPoint)) {
+            notifyPawnPromotion();
+        }
     }
 
     private boolean clickedOpponentsPiece(Point p) {

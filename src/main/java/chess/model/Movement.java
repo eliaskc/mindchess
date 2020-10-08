@@ -19,6 +19,7 @@ public class Movement {
     private List<Ply> plies = new ArrayList<>();
     private final List<Point> castlingPoints = new ArrayList<>();
     private final List<Point> enPassantPoints = new ArrayList<>();
+    private final List<Point> promotionPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
@@ -36,10 +37,15 @@ public class Movement {
         return enPassantPoints;
     }
 
+    public List<Point> getPromotionPoints() {
+        return promotionPoints;
+    }
+
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
         enPassantPoints.clear();
         castlingPoints.clear();
+        promotionPoints.clear();
 
         switch (pieceToMove.getPieceType()) {
             case ROOK -> legalMovesRook(pieceToMove, markedPoint);
@@ -88,6 +94,7 @@ public class Movement {
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
 
+        checkPawnPromotion(pieceToMove, markedPoint);
         checkEnPassant(pieceToMove, markedPoint);
         points.addAll(enPassantPoints);
     }
@@ -330,6 +337,17 @@ public class Movement {
                         }
                     }
                 }
+            }
+        }
+    }
+
+
+    private void checkPawnPromotion(Piece pieceToMove, Point markedPoint) {
+        for (Point p : points) {
+            if (p.y == 0 && pieceToMove.getColor() == WHITE){
+                promotionPoints.add(p);
+            } else if (p.y == 7 && pieceToMove.getColor() == BLACK) {
+                promotionPoints.add(p);
             }
         }
     }
