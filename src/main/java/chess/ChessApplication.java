@@ -37,7 +37,6 @@ public final class ChessApplication extends Application {
         menuController.setModel(model);
         chessController.setModel(model);
         imageHandler.setModel(model);
-        model.addObserver(chessController);
 
         chessController.setImageHandler(imageHandler);
 

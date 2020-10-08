@@ -1,7 +1,5 @@
 package chess.model;
 
-import chess.Observer;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,6 @@ import java.util.List;
  * (Composite pattern?)
  */
 public class ChessFacade {
-    private final List<Observer> observers = new ArrayList<>();
-
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
 
@@ -46,24 +42,6 @@ public class ChessFacade {
      */
     public void handleBoardClick(int x, int y) {
         currentGame.handleBoardClick(x, y);
-        notifyAllObservers();
-    }
-
-    /**
-     * Notifies all current observers when you click on the chess board
-     */
-    private void notifyAllObservers() {
-        for (Observer observer : observers) {
-            observer.onAction();
-        }
-    }
-
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
     }
 
     //-------------------------------------------------------------------------------------
