@@ -1,7 +1,7 @@
 package eaee.model;
 
 import chess.model.ChessFacade;
-import chess.model.Color;
+import chess.model.ChessColor;
 import chess.model.Movement;
 import chess.model.Piece;
 import chess.model.PieceType;
@@ -47,7 +47,7 @@ public class TestEnPassant {
         model.handleBoardClick(3,2);
 
         assertEquals(PieceType.PAWN, boardMap.get(new Point(3,2)).getPieceType());
-        assertEquals(Color.WHITE, boardMap.get(new Point(3,2)).getColor());
+        assertEquals(ChessColor.WHITE, boardMap.get(new Point(3,2)).getColor());
         assertEquals(null, boardMap.get(new Point(3,3)));
     }
 }

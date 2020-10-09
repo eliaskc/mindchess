@@ -7,25 +7,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.ChessColor.*;
+import static chess.model.PieceType.*;
 
 public class Game {
     private final List<GameObserver> gameObservers = new ArrayList<>();
-
     private final Board board = new Board();
     private final Movement movement = new Movement();
-    private final Map<Point, Piece> boardMap = board.getBoardMap();
-
-    private Point markedPoint = null;
+    private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
     private final List<Piece> deadPieces = new ArrayList<>();
-    private final List<Point> legalPoints = new ArrayList<>();
+    private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
     private final List<Ply> plies = new ArrayList<>();
 
     private final Player playerWhite = new Player("Player 1", WHITE);
     private final Player playerBlack = new Player("Player 2", BLACK);
     private Player currentPlayer;
+
+    private Point markedPoint = null; //Used to keep track of the currently marked point/piece so that it can be moved
+
+    private boolean pawnPromotionInProgress = false;
+    private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
     public void initGame() {
         board.initBoard();
@@ -56,9 +58,14 @@ public class Game {
      * @param y
      */
     void handleBoardClick(int x, int y) {
+        if (pawnPromotionInProgress) {
+            return;
+        }
+
+        //The last point/square that has been clicked on
         Point clickedPoint = new Point(x, y);
 
-        //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
+        //If you click on a piece that doesn't belong to you when trying to mark a point, the click is ignored
         if (clickedOpponentsPiece(clickedPoint)) {
             return;
         }
@@ -68,36 +75,41 @@ public class Game {
         }
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
-            legalPoints.addAll(checkLegalMoves(boardMap.get(markedPoint), markedPoint));
-
-            //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
-            if (legalPoints.size() == 0) {
-                markedPoint = null;
-            }
-
+            fetchLegalMoves();
         } else {
-            if (legalPoints.contains(clickedPoint)) {
-                plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-                makeSpecialMoves(markedPoint, clickedPoint);
-                move(markedPoint, clickedPoint);
-                switchPlayer();
-            }
-            legalPoints.clear();
-            markedPoint = null;
+            checkMove(clickedPoint);
         }
 
         notifyDrawLegalMoves();
     }
 
+    /**
+     *
+     */
+    private void fetchLegalMoves(){
+        legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(markedPoint), markedPoint));
+
+        //This is needed otherwise an empty list wouldn't nullify markedPoint
+        if (legalPoints.size() == 0) {
+            markedPoint = null;
+        }
+    }
 
     /**
-     * Checks the points which the clicked piece are allowed to move to
      *
-     * @param markedPiece the piece that was "highlighted"
-     * @return returns a list of all legal moves possible for the clicked piece
+     * @param clickedPoint
      */
-    private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
-        return movement.pieceMoveDelegation(markedPiece, markedPoint);
+    private void checkMove(Point clickedPoint){
+        if (legalPoints.contains(clickedPoint)) {
+            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+            makeSpecialMoves(markedPoint, clickedPoint);
+            move(markedPoint, clickedPoint);
+            checkPawnPromotion(clickedPoint);
+            switchPlayer();
+            notifyDrawPieces();
+        }
+        legalPoints.clear();
+        markedPoint = null;
     }
 
     /**
@@ -124,11 +136,24 @@ public class Game {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
             }
         }
-        
-        //pawn promotion
-        if (movement.getPromotionPoints().size() != 0 && movement.getPromotionPoints().contains(clickedPoint)) {
-            notifyPawnPromotion();
+    }
+
+    private void checkPawnPromotion(Point clickedPoint){
+        if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
+            if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)){
+                notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
+                pawnPromotionInProgress = true;
+                pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
+            }
         }
+    }
+
+    public void pawnPromotion(PieceType pieceType){
+        boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
+        pawnPromotionInProgress = false;
+        pawnPromotionPoint = null;
+
+        notifyDrawPieces();
     }
 
     private boolean clickedOpponentsPiece(Point p) {
@@ -149,7 +174,6 @@ public class Game {
 
         boardMap.put(moveTo, boardMap.get(moveFrom));
         boardMap.remove(moveFrom);
-        notifyDrawPieces();
     }
 
     private void takePiece(Point pointToTake) {
@@ -192,9 +216,9 @@ public class Game {
         }
     }
 
-    private void notifyPawnPromotion() {
+    private void notifyPawnPromotion(ChessColor chessColor) {
         for (GameObserver gameObserver : gameObservers) {
-            gameObserver.pawnPromotion();
+            gameObserver.pawnPromotionSetup(chessColor);
         }
     }
 

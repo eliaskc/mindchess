@@ -2,7 +2,9 @@ package chess.controller;
 
 import chess.GameObserver;
 import chess.TimerObserver;
+import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.PieceType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +26,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static chess.model.PieceType.*;
 
 /**
  * ChessController handles the chess board
@@ -63,6 +67,16 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
+    @FXML
+    private AnchorPane promotionAnchorPane;
+    @FXML
+    private ImageView promotionQueen;
+    @FXML
+    private ImageView promotionKnight;
+    @FXML
+    private ImageView promotionRook;
+    @FXML
+    private ImageView promotionBishop;
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
@@ -85,6 +99,7 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -242,8 +257,37 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
      */
     @Override
-    public void pawnPromotion() {
-        System.out.println("Pawn promotion in progress");
+    public void pawnPromotionSetup(ChessColor chessColor) {
+        promotionAnchorPane.toFront();
+        promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
+        promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
+        promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
+        promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
+    }
+
+    private void pawnPromotion(PieceType pieceType) {
+        model.getCurrentGame().pawnPromotion(pieceType);
+        promotionAnchorPane.toBack();
+    }
+
+    @FXML
+    public void handleQueenPromotion(){
+        pawnPromotion(QUEEN);
+    }
+
+    @FXML
+    public void handleKnightPromotion(){
+        pawnPromotion(KNIGHT);
+    }
+
+    @FXML
+    public void handleRookPromotion(){
+        pawnPromotion(ROOK);
+    }
+
+    @FXML
+    public void handleBishopPromotion(){
+        pawnPromotion(BISHOP);
     }
 
     private void clearAllPieceImages() {
@@ -277,6 +321,6 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
 
     //Game
     public void updateImageHandler() {
-        imageHandler.initTest();
+        imageHandler.init();
     }
 }
