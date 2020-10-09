@@ -84,7 +84,7 @@ public class Game {
     }
 
     /**
-     *
+     * Adds all legal points the marked piece can move to to the legalPoints list
      */
     private void fetchLegalMoves(){
         legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(markedPoint), markedPoint));
@@ -96,14 +96,15 @@ public class Game {
     }
 
     /**
-     *
+     * Checks if the latest click was on a point that is legal to move to
+     * If it is, the move is made
      * @param clickedPoint
      */
     private void checkMove(Point clickedPoint){
         if (legalPoints.contains(clickedPoint)) {
-            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
+            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             checkPawnPromotion(clickedPoint);
             switchPlayer();
             notifyDrawPieces();
@@ -113,7 +114,7 @@ public class Game {
     }
 
     /**
-     * Checks if any special moves are attempted and if so, makes the necessary actions
+     * Checks if any special moves are attempted and if so, performs the necessary actions
      *
      * @param markedPoint
      * @param clickedPoint
@@ -138,6 +139,10 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
+     * @param clickedPoint
+     */
     private void checkPawnPromotion(Point clickedPoint){
         if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)){
@@ -148,6 +153,10 @@ public class Game {
         }
     }
 
+    /**
+     * Promotes the pawn being promoted to the selected type
+     * @param pieceType
+     */
     public void pawnPromotion(PieceType pieceType){
         boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
         pawnPromotionInProgress = false;

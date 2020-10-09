@@ -240,7 +240,7 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     }
 
     /**
-     * *Lights up" the current player's timer, dims the opponents timer
+     * "Lights up" the current player's timer, dims the opponents timer
      */
     @Override
     public void switchedPlayer() {
@@ -255,6 +255,7 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
 
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
+     * @param chessColor
      */
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
