@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.ChessColor.*;
-import static chess.model.PieceType.*;
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.PAWN;
 
 public class Game {
     private final List<GameObserver> gameObservers = new ArrayList<>();
@@ -65,12 +66,9 @@ public class Game {
         //The last point/square that has been clicked on
         Point clickedPoint = new Point(x, y);
 
-        //If you click on a piece that doesn't belong to you when trying to mark a point, the click is ignored
-        if (clickedOpponentsPiece(clickedPoint)) {
-            return;
-        }
-
-        if (markedPoint == null) {
+        //Only marks a clicked piece if it is your own
+        if (clickedOwnPiece(clickedPoint)) {
+            if (checkDeselection(clickedPoint)) return;
             markedPoint = new Point(x, y);
         }
 
@@ -83,10 +81,28 @@ public class Game {
         notifyDrawLegalMoves();
     }
 
+    private boolean clickedOwnPiece(Point p) {
+        if (boardMap.containsKey(p)) {
+            return (boardMap.get(p).getColor() == currentPlayer.getColor());
+        }
+        return false;
+    }
+
+    private boolean checkDeselection(Point clickedPoint) {
+        if (markedPoint != null) {
+            legalPoints.clear();
+            if (markedPoint.equals(clickedPoint)){
+                markedPoint = null;
+                notifyDrawLegalMoves();
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
-    private void fetchLegalMoves(){
+    private void fetchLegalMoves() {
         legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(markedPoint), markedPoint));
 
         //This is needed otherwise an empty list wouldn't nullify markedPoint
@@ -98,9 +114,10 @@ public class Game {
     /**
      * Checks if the latest click was on a point that is legal to move to
      * If it is, the move is made
+     *
      * @param clickedPoint
      */
-    private void checkMove(Point clickedPoint){
+    private void checkMove(Point clickedPoint) {
         if (legalPoints.contains(clickedPoint)) {
             plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             makeSpecialMoves(markedPoint, clickedPoint);
@@ -141,41 +158,6 @@ public class Game {
     }
 
     /**
-     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
-     * @param clickedPoint
-     */
-    private boolean checkPawnPromotion(Point clickedPoint){
-        if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
-            if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)){
-                notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
-                pawnPromotionInProgress = true;
-                pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
-            }
-        }
-        return pawnPromotionInProgress;
-    }
-
-    /**
-     * Promotes the pawn being promoted to the selected type
-     * @param pieceType
-     */
-    public void pawnPromotion(PieceType pieceType){
-        boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
-        pawnPromotionInProgress = false;
-        pawnPromotionPoint = null;
-
-        switchPlayer();
-        notifyDrawPieces();
-    }
-
-    private boolean clickedOpponentsPiece(Point p) {
-        if (boardMap.containsKey(p) && markedPoint == null) {
-            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
-        }
-        return false;
-    }
-
-    /**
      * Moves the marked piece to the clicked point
      * <p>
      */
@@ -191,6 +173,36 @@ public class Game {
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
         notifyDrawDeadPieces();
+    }
+
+    /**
+     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
+     *
+     * @param clickedPoint
+     */
+    private boolean checkPawnPromotion(Point clickedPoint) {
+        if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
+            if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)) {
+                notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
+                pawnPromotionInProgress = true;
+                pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
+            }
+        }
+        return pawnPromotionInProgress;
+    }
+
+    /**
+     * Promotes the pawn being promoted to the selected type
+     *
+     * @param pieceType
+     */
+    public void pawnPromotion(PieceType pieceType) {
+        boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
+        pawnPromotionInProgress = false;
+        pawnPromotionPoint = null;
+
+        switchPlayer();
+        notifyDrawPieces();
     }
 
     private void switchPlayer() {
