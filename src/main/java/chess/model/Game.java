@@ -150,6 +150,29 @@ public class Game {
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
         notifyDrawDeadPieces();
+        checkKingTaken();
+    }
+
+    private void checkKingTaken(){
+        deadPieces.forEach(p -> {
+            if(p.getPieceType() == PieceType.KING){
+                if(p.getColor() == BLACK) whitePlayerWin();
+                else if(p.getColor() == WHITE) blackPlayerWin();
+            }});
+    }
+
+    private void whitePlayerWin(){
+        notifyEndGameObservers("white");
+
+    }
+    private void blackPlayerWin(){
+        notifyEndGameObservers("black");
+    }
+
+    void notifyEndGameObservers(String result){
+        gameObservers.forEach(p -> {
+            p.checkEndGame(result);
+        });
     }
 
     private void switchPlayer() {

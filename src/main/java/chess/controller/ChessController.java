@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
@@ -63,6 +64,11 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
+    @FXML
+    private Button btnMenuEndGame;
+
+
+
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
@@ -112,6 +118,7 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     void init() {
         media.setMediaPlayer(mediaPlayer);
         media.setEffect(new GaussianBlur(18));
+        endGamePane.toBack();
 
         updateSquareDimensions();
 
@@ -135,6 +142,28 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
     private void updateSquareDimensions() {
         squareDimension = chessBoardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
+    }
+
+    @FXML AnchorPane endGamePane;
+    @FXML Label endGameLabel;
+
+    @Override
+    public void checkEndGame(String result) {
+        if(result.equals("white")){
+            endGameLabel.setText(player1Name.getText() + " wins");
+            endGamePane.toFront();
+            model.endGame();
+        }
+        else if(result.equals("black")){
+            endGameLabel.setText(player2Name.getText() + " wins");
+            endGamePane.toFront();
+            model.endGame();
+        }
+        else if(result.equals("draw")){
+            endGameLabel.setText("Game draw");
+            endGamePane.toFront();
+            model.endGame();
+        }
     }
 
     /**

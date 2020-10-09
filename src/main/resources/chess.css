@@ -26,6 +26,11 @@
     -fx-font-size: 22px;
 }
 
+.endgame {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
 .outline.label .text {
     -fx-fill: white;
     -fx-stroke: black;

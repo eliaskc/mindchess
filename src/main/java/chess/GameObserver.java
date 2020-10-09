@@ -6,4 +6,5 @@ public interface GameObserver {
     void drawLegalMoves();
     void switchedPlayer();
     void pawnPromotion();
+    void checkEndGame(String result);
 }

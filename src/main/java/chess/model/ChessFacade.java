@@ -15,8 +15,6 @@ public class ChessFacade {
     private final List<Game> gameList = new ArrayList<>();
 
     public ChessFacade() {
-        createNewGame();
-        currentGame.initGame();
     }
 
     public void startGame() {
@@ -49,6 +47,7 @@ public class ChessFacade {
 
     public void createNewGame() {
         currentGame = new Game();
+        currentGame.initGame();
         gameList.add(currentGame);
     }
 
@@ -58,6 +57,7 @@ public class ChessFacade {
 
     public void endGame() {
         gameList.remove(currentGame);
+        System.out.println(gameList.size());
     }
 
 }
