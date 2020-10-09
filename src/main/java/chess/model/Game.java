@@ -18,7 +18,7 @@ public class Game {
 
     private final List<Piece> deadPieces = new ArrayList<>();
     private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
-    private final List<Ply> plies = new ArrayList<>();
+    private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
     private final Player playerWhite = new Player("Player 1", WHITE);
     private final Player playerBlack = new Player("Player 2", BLACK);
@@ -102,11 +102,12 @@ public class Game {
      */
     private void checkMove(Point clickedPoint){
         if (legalPoints.contains(clickedPoint)) {
+            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
-            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-            checkPawnPromotion(clickedPoint);
-            switchPlayer();
+            if (!checkPawnPromotion(clickedPoint)) {
+                switchPlayer();
+            }
             notifyDrawPieces();
         }
         legalPoints.clear();
@@ -143,7 +144,7 @@ public class Game {
      * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
      * @param clickedPoint
      */
-    private void checkPawnPromotion(Point clickedPoint){
+    private boolean checkPawnPromotion(Point clickedPoint){
         if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)){
                 notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
@@ -151,6 +152,7 @@ public class Game {
                 pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
             }
         }
+        return pawnPromotionInProgress;
     }
 
     /**
@@ -162,6 +164,7 @@ public class Game {
         pawnPromotionInProgress = false;
         pawnPromotionPoint = null;
 
+        switchPlayer();
         notifyDrawPieces();
     }
 

@@ -139,6 +139,8 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
 
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
+        player1TimerBox.setFill(Color.GREENYELLOW);
+        player2TimerBox.setFill(Color.LIGHTGRAY);
         model.getPlayerWhite().getTimer().addObserver(this);
         model.getPlayerBlack().getTimer().addObserver(this);
         model.getCurrentGame().initTimers();
