@@ -83,7 +83,7 @@ public class Game implements TimerObserver {
                 makeSpecialMoves(markedPoint, clickedPoint);
                 move(markedPoint, clickedPoint);
                 switchPlayer();
-                checkKingTaken();
+                winConditionCheck();
             }
             legalPoints.clear();
             markedPoint = null;
@@ -92,6 +92,9 @@ public class Game implements TimerObserver {
         notifyDrawLegalMoves();
     }
 
+    private void winConditionCheck(){
+        checkKingTaken();
+    }
 
     /**
      * Checks the points which the clicked piece are allowed to move to
@@ -156,16 +159,17 @@ public class Game implements TimerObserver {
     }
 
     private void checkKingTaken(){
-        deadPieces.forEach(p -> {
-            if(p.getPieceType() == PieceType.KING){
-                if(p.getColor() == BLACK) whitePlayerWin();
-                else if(p.getColor() == WHITE) blackPlayerWin();
-            }});
+        if (!(deadPieces.size() == 0)) {
+            Piece lastPieceTaken = deadPieces.get(deadPieces.size()-1);
+            if (lastPieceTaken.getPieceType() == PieceType.KING) {
+                if (lastPieceTaken.getColor() == BLACK) whitePlayerWin();
+                else if (lastPieceTaken.getColor() == WHITE) blackPlayerWin();
+            }
+        }
     }
 
     private void whitePlayerWin(){
         notifyEndGameObservers("white");
-
     }
     private void blackPlayerWin(){
         notifyEndGameObservers("black");
