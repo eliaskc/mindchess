@@ -152,17 +152,20 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
         if(result.equals("white")){
             endGameLabel.setText(player1Name.getText() + " wins");
             endGamePane.toFront();
+            model.getCurrentGame().stopAllTimers();
             model.endGame();
         }
         else if(result.equals("black")){
             endGameLabel.setText(player2Name.getText() + " wins");
             endGamePane.toFront();
+            model.getCurrentGame().stopAllTimers();
             model.endGame();
         }
         else if(result.equals("draw")){
             endGameLabel.setText("Game draw");
             endGamePane.toFront();
             model.endGame();
+            model.getCurrentGame().stopAllTimers();
         }
     }
 

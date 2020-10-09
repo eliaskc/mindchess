@@ -81,6 +81,7 @@ public class Game {
                 makeSpecialMoves(markedPoint, clickedPoint);
                 move(markedPoint, clickedPoint);
                 switchPlayer();
+                checkKingTaken();
             }
             legalPoints.clear();
             markedPoint = null;
@@ -150,7 +151,6 @@ public class Game {
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
         notifyDrawDeadPieces();
-        checkKingTaken();
     }
 
     private void checkKingTaken(){
@@ -184,6 +184,11 @@ public class Game {
         }
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
+    }
+
+    public void stopAllTimers(){
+        playerBlack.getTimer().setActive(false);
+        playerWhite.getTimer().setActive(false);
     }
 
     private void notifyDrawPieces() {
