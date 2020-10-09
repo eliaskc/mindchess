@@ -15,11 +15,6 @@ public class ChessFacade {
     private final List<Game> gameList = new ArrayList<>();
 
     public ChessFacade() {
-        createNewGame();
-        currentGame.initGame();
-    }
-
-    public void startGame() {
     }
 
     public Player getPlayerWhite() {
@@ -32,6 +27,10 @@ public class ChessFacade {
 
     public Game getGame() {
         return currentGame;
+    }
+
+    public List<Game> getGameList() {
+        return new ArrayList<>(gameList);
     }
 
     /**
@@ -49,6 +48,7 @@ public class ChessFacade {
 
     public void createNewGame() {
         currentGame = new Game();
+        currentGame.initGame();
         gameList.add(currentGame);
     }
 
@@ -57,6 +57,7 @@ public class ChessFacade {
     }
 
     public void endGame() {
+        currentGame.stopAllTimers();
         gameList.remove(currentGame);
     }
 

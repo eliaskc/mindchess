@@ -14,6 +14,7 @@ public class TestImageHandling {
     @Before
     public void init() {
         model = new ChessFacade();
+        model.createNewGame();
         imageHandler = new ImageHandler();
         imageHandler.fetchPieceImages();
     }

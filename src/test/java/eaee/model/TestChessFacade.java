@@ -18,6 +18,7 @@ public class TestChessFacade {
     @Before
     public void init() {
         model = new ChessFacade();
+        model.createNewGame();
     }
 
     @Test

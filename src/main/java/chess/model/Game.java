@@ -11,7 +11,7 @@ import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.PAWN;
 
-public class Game {
+public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final Board board = new Board();
     private final Movement movement = new Movement();
@@ -40,6 +40,8 @@ public class Game {
     }
 
     public void initTimers() {
+        playerWhite.getTimer().addObserver(this);
+        playerBlack.getTimer().addObserver(this);
         playerWhite.getTimer().startTimer();
         playerWhite.getTimer().setActive(true);
         playerBlack.getTimer().startTimer();
@@ -111,6 +113,10 @@ public class Game {
         }
     }
 
+    private void winConditionCheck(){
+        checkKingTaken();
+    }
+
     /**
      * Checks if the latest click was on a point that is legal to move to
      * If it is, the move is made
@@ -125,6 +131,7 @@ public class Game {
             if (!checkPawnPromotion(clickedPoint)) {
                 switchPlayer();
             }
+            winConditionCheck();
             notifyDrawPieces();
         }
         legalPoints.clear();
@@ -175,6 +182,27 @@ public class Game {
         notifyDrawDeadPieces();
     }
 
+    private void checkKingTaken(){
+        if (!(deadPieces.size() == 0)) {
+            Piece lastPieceTaken = deadPieces.get(deadPieces.size()-1);
+            if (lastPieceTaken.getPieceType() == PieceType.KING) {
+                if (lastPieceTaken.getColor() == BLACK) whitePlayerWin();
+                else if (lastPieceTaken.getColor() == WHITE) blackPlayerWin();
+            }
+        }
+    }
+
+    private void whitePlayerWin(){
+        notifyEndGameObservers("white");
+    }
+    private void blackPlayerWin(){
+        notifyEndGameObservers("black");
+    }
+
+    void notifyEndGameObservers(String result){
+        gameObservers.forEach(p -> {
+            p.checkEndGame(result);
+        });
     /**
      * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
      *
@@ -203,6 +231,7 @@ public class Game {
 
         switchPlayer();
         notifyDrawPieces();
+
     }
 
     private void switchPlayer() {
@@ -214,6 +243,26 @@ public class Game {
         }
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
+    }
+
+    void stopAllTimers(){
+        playerBlack.getTimer().setActive(false);
+        playerWhite.getTimer().setActive(false);
+    }
+
+    @Override
+     public void updateTimer() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.updateTimer();
+        }
+    }
+
+    public void timerGameEnd() {
+        if(playerWhite.getTimer().getTime()==0){
+            notifyEndGameObservers("black");
+        } else if (playerBlack.getTimer().getTime()==0) {
+            notifyEndGameObservers("white");
+        }
     }
 
     private void notifyDrawPieces() {

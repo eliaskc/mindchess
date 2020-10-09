@@ -1,7 +1,5 @@
 package chess.model;
 
-import chess.TimerObserver;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -44,9 +42,12 @@ public class ChessTimer {
     /**
      * stops timer,
      */
-    public void stopTimer() {
+    private void stopTimer() {
         timer.cancel();
         setActive(false);
+        for (TimerObserver o : observers) {
+            o.timerGameEnd();
+        }
     }
 
     /**
@@ -81,4 +82,6 @@ public class ChessTimer {
     public void addObserver(TimerObserver t) {
         observers.add(t);
     }
+
+
 }
