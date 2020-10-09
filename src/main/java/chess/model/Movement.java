@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.PAWN;
 
 /**

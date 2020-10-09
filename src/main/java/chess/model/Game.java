@@ -7,25 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.PAWN;
 
 public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
-
     private final Board board = new Board();
     private final Movement movement = new Movement();
-    private final Map<Point, Piece> boardMap = board.getBoardMap();
-
-    private Point markedPoint = null;
+    private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
     private final List<Piece> deadPieces = new ArrayList<>();
-    private final List<Point> legalPoints = new ArrayList<>();
-    private final List<Ply> plies = new ArrayList<>();
+    private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
+    private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
     private final Player playerWhite = new Player("Player 1", WHITE);
     private final Player playerBlack = new Player("Player 2", BLACK);
     private Player currentPlayer;
+
+    private Point markedPoint = null; //Used to keep track of the currently marked point/piece so that it can be moved
+
+    private boolean pawnPromotionInProgress = false;
+    private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
     public void initGame() {
         board.initBoard();
@@ -58,38 +61,56 @@ public class Game implements TimerObserver {
      * @param y
      */
     void handleBoardClick(int x, int y) {
-        Point clickedPoint = new Point(x, y);
-
-        //If you click on a piece that doesn't belong to you (and no piece is marked), the click is ignored
-        if (clickedOpponentsPiece(clickedPoint)) {
+        if (pawnPromotionInProgress) {
             return;
         }
 
-        if (markedPoint == null) {
+        //The last point/square that has been clicked on
+        Point clickedPoint = new Point(x, y);
+
+        //Only marks a clicked piece if it is your own
+        if (clickedOwnPiece(clickedPoint)) {
+            if (checkDeselection(clickedPoint)) return;
             markedPoint = new Point(x, y);
         }
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
-            legalPoints.addAll(checkLegalMoves(boardMap.get(markedPoint), markedPoint));
-
-            //This is needed otherwise an empty list would leave markedPiece and markedPoint as some value
-            if (legalPoints.size() == 0) {
-                markedPoint = null;
-            }
-
+            fetchLegalMoves();
         } else {
-            if (legalPoints.contains(clickedPoint)) {
-                plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-                makeSpecialMoves(markedPoint, clickedPoint);
-                move(markedPoint, clickedPoint);
-                switchPlayer();
-                winConditionCheck();
-            }
-            legalPoints.clear();
-            markedPoint = null;
+            checkMove(clickedPoint);
         }
 
         notifyDrawLegalMoves();
+    }
+
+    private boolean clickedOwnPiece(Point p) {
+        if (boardMap.containsKey(p)) {
+            return (boardMap.get(p).getColor() == currentPlayer.getColor());
+        }
+        return false;
+    }
+
+    private boolean checkDeselection(Point clickedPoint) {
+        if (markedPoint != null) {
+            legalPoints.clear();
+            if (markedPoint.equals(clickedPoint)){
+                markedPoint = null;
+                notifyDrawLegalMoves();
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Adds all legal points the marked piece can move to to the legalPoints list
+     */
+    private void fetchLegalMoves() {
+        legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(markedPoint), markedPoint));
+
+        //This is needed otherwise an empty list wouldn't nullify markedPoint
+        if (legalPoints.size() == 0) {
+            markedPoint = null;
+        }
     }
 
     private void winConditionCheck(){
@@ -97,17 +118,28 @@ public class Game implements TimerObserver {
     }
 
     /**
-     * Checks the points which the clicked piece are allowed to move to
+     * Checks if the latest click was on a point that is legal to move to
+     * If it is, the move is made
      *
-     * @param markedPiece the piece that was "highlighted"
-     * @return returns a list of all legal moves possible for the clicked piece
+     * @param clickedPoint
      */
-    private List<Point> checkLegalMoves(Piece markedPiece, Point markedPoint) {
-        return movement.pieceMoveDelegation(markedPiece, markedPoint);
+    private void checkMove(Point clickedPoint) {
+        if (legalPoints.contains(clickedPoint)) {
+            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+            makeSpecialMoves(markedPoint, clickedPoint);
+            move(markedPoint, clickedPoint);
+            if (!checkPawnPromotion(clickedPoint)) {
+                switchPlayer();
+            }
+            winConditionCheck();
+            notifyDrawPieces();
+        }
+        legalPoints.clear();
+        markedPoint = null;
     }
 
     /**
-     * Checks if any special moves are attempted and if so, makes the necessary actions
+     * Checks if any special moves are attempted and if so, performs the necessary actions
      *
      * @param markedPoint
      * @param clickedPoint
@@ -132,13 +164,6 @@ public class Game implements TimerObserver {
         }
     }
 
-    private boolean clickedOpponentsPiece(Point p) {
-        if (boardMap.containsKey(p) && markedPoint == null) {
-            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
-        }
-        return false;
-    }
-
     /**
      * Moves the marked piece to the clicked point
      * <p>
@@ -150,7 +175,6 @@ public class Game implements TimerObserver {
 
         boardMap.put(moveTo, boardMap.get(moveFrom));
         boardMap.remove(moveFrom);
-        notifyDrawPieces();
     }
 
     private void takePiece(Point pointToTake) {
@@ -179,6 +203,35 @@ public class Game implements TimerObserver {
         gameObservers.forEach(p -> {
             p.checkEndGame(result);
         });
+    /**
+     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
+     *
+     * @param clickedPoint
+     */
+    private boolean checkPawnPromotion(Point clickedPoint) {
+        if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
+            if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)) {
+                notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
+                pawnPromotionInProgress = true;
+                pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
+            }
+        }
+        return pawnPromotionInProgress;
+    }
+
+    /**
+     * Promotes the pawn being promoted to the selected type
+     *
+     * @param pieceType
+     */
+    public void pawnPromotion(PieceType pieceType) {
+        boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
+        pawnPromotionInProgress = false;
+        pawnPromotionPoint = null;
+
+        switchPlayer();
+        notifyDrawPieces();
+
     }
 
     private void switchPlayer() {
@@ -236,9 +289,9 @@ public class Game implements TimerObserver {
         }
     }
 
-    private void notifyPawnPromotion() {
+    private void notifyPawnPromotion(ChessColor chessColor) {
         for (GameObserver gameObserver : gameObservers) {
-            gameObserver.pawnPromotion();
+            gameObserver.pawnPromotionSetup(chessColor);
         }
     }
 

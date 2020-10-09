@@ -1,7 +1,10 @@
 package chess.controller;
 
 import chess.GameObserver;
+
+import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.PieceType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +27,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static chess.model.PieceType.*;
 
 /**
  * ChessController handles the chess board
@@ -65,8 +70,16 @@ public class ChessController implements Initializable, GameObserver {
     private Rectangle player2TimerBox;
     @FXML
     private Button btnMenuEndGame;
-
-
+    @FXML
+    private AnchorPane promotionAnchorPane;
+    @FXML
+    private ImageView promotionQueen;
+    @FXML
+    private ImageView promotionKnight;
+    @FXML
+    private ImageView promotionRook;
+    @FXML
+    private ImageView promotionBishop;
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -90,6 +103,7 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -130,6 +144,10 @@ public class ChessController implements Initializable, GameObserver {
 
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
+        player1TimerBox.setFill(Color.GREENYELLOW);
+        player2TimerBox.setFill(Color.LIGHTGRAY);
+        model.getPlayerWhite().getTimer().addObserver(this);
+        model.getPlayerBlack().getTimer().addObserver(this);
         model.getCurrentGame().initTimers();
     }
 
@@ -254,7 +272,7 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     /**
-     * *Lights up" the current player's timer, dims the opponents timer
+     * "Lights up" the current player's timer, dims the opponents timer
      */
     @Override
     public void switchedPlayer() {
@@ -269,10 +287,40 @@ public class ChessController implements Initializable, GameObserver {
 
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
+     * @param chessColor
      */
     @Override
-    public void pawnPromotion() {
-        System.out.println("Pawn promotion in progress");
+    public void pawnPromotionSetup(ChessColor chessColor) {
+        promotionAnchorPane.toFront();
+        promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
+        promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
+        promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
+        promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
+    }
+
+    private void pawnPromotion(PieceType pieceType) {
+        model.getCurrentGame().pawnPromotion(pieceType);
+        promotionAnchorPane.toBack();
+    }
+
+    @FXML
+    public void handleQueenPromotion(){
+        pawnPromotion(QUEEN);
+    }
+
+    @FXML
+    public void handleKnightPromotion(){
+        pawnPromotion(KNIGHT);
+    }
+
+    @FXML
+    public void handleRookPromotion(){
+        pawnPromotion(ROOK);
+    }
+
+    @FXML
+    public void handleBishopPromotion(){
+        pawnPromotion(BISHOP);
     }
 
     private void clearAllPieceImages() {
@@ -306,6 +354,6 @@ public class ChessController implements Initializable, GameObserver {
 
     //Game
     public void updateImageHandler() {
-        imageHandler.initTest();
+        imageHandler.init();
     }
 }

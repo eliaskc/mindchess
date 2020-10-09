@@ -1,7 +1,9 @@
 package chess.controller;
 
+import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.Piece;
+import chess.model.PieceType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -11,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
 
 /**
  * Is responsible for fetching the images from files and matching them with the right pieces
@@ -53,33 +55,34 @@ public class ImageHandler {
         boardMap = model.getCurrentGame().getBoard().getBoardMap();
 
         pieceImageViewMap.clear();
-        for (Map.Entry<Point, Piece> piece : boardMap.entrySet()) {
-            if (piece.getValue() == null) {
+        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+            if (entry.getValue() == null) {
                 break;
             }
 
-            ImageView pieceImage = createPieceImage(piece.getValue());
+            ImageView pieceImageView = new ImageView();
+            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
 
-            pieceImage.setFitWidth(squareDimension - 10);
-            pieceImage.setFitHeight(squareDimension - 10);
+            pieceImageView.setFitWidth(squareDimension - 10);
+            pieceImageView.setFitHeight(squareDimension - 10);
 
-            pieceImage.setX(piece.getKey().x * squareDimension + 5);
-            pieceImage.setY(piece.getKey().y * squareDimension + 5);
+            pieceImageView.setX(entry.getKey().x * squareDimension + 5);
+            pieceImageView.setY(entry.getKey().y * squareDimension + 5);
 
-            pieceImages.add(pieceImage);
-            pieceImageViewMap.put(piece.getValue(), pieceImage);
+            pieceImages.add(pieceImageView);
+            pieceImageViewMap.put(entry.getValue(), pieceImageView);
         }
         return pieceImages;
     }
 
-    ImageView createPieceImage(Piece piece) {
-        String imageURL = String.format("/chesspieces/%s_%s.png", piece.getColor().toString(), piece.getPieceType().toString());
+    Image createPieceImage(PieceType pieceType, ChessColor chessColor) {
+        String imageURL = String.format("/chesspieces/%s_%s.png", chessColor.toString(), pieceType.toString());
 
-        ImageView pieceImage = new ImageView();
+        Image pieceImage;
         try {
-            pieceImage.setImage(new Image(getClass().getResourceAsStream(imageURL)));
+            pieceImage = new Image(getClass().getResourceAsStream(imageURL));
         } catch (NullPointerException e) {
-            pieceImage.setImage(new Image(getClass().getResourceAsStream("/missing_texture.png")));
+            pieceImage = new Image(getClass().getResourceAsStream("/missing_texture.png"));
         }
 
         return pieceImage;
@@ -95,15 +98,16 @@ public class ImageHandler {
                 break;
             }
 
-            ImageView pieceImage = createPieceImage(piece);
+            ImageView pieceImageView = new ImageView();
+            pieceImageView.setImage(createPieceImage(piece.getPieceType(), piece.getColor()));
 
-            pieceImage.setFitWidth(squareDimension - 25);
-            pieceImage.setFitHeight(squareDimension - 25);
+            pieceImageView.setFitWidth(squareDimension - 25);
+            pieceImageView.setFitHeight(squareDimension - 25);
 
             if (piece.getColor() == WHITE) {
-                whiteImageViews.add(pieceImage);
+                whiteImageViews.add(pieceImageView);
             } else if (piece.getColor() == BLACK) {
-                blackImageViews.add(pieceImage);
+                blackImageViews.add(pieceImageView);
             }
 
         }
@@ -157,7 +161,7 @@ public class ImageHandler {
     }
 
     //Game
-    public void initTest() {
+    public void init() {
         boardMap = model.getCurrentGame().getBoard().getBoardMap();
     }
 }
