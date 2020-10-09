@@ -16,10 +16,7 @@ public class ChessFacade {
 
     public ChessFacade() {
     }
-
-    public void startGame() {
-    }
-
+    
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();
     }
