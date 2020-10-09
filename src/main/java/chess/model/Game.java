@@ -1,5 +1,7 @@
 package chess.model;
 
+import chess.GameObserver;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,8 @@ import static chess.model.Color.BLACK;
 import static chess.model.Color.WHITE;
 
 public class Game {
+    private final List<GameObserver> gameObservers = new ArrayList<>();
+
     private final Board board = new Board();
     private final Movement movement = new Movement();
     private final Map<Point, Piece> boardMap = board.getBoardMap();
@@ -18,7 +22,6 @@ public class Game {
     private final List<Piece> deadPieces = new ArrayList<>();
     private final List<Point> legalPoints = new ArrayList<>();
     private final List<Ply> plies = new ArrayList<>();
-    private final List<Point> specialMoves = new ArrayList<>();
 
     private final Player playerWhite = new Player("Player 1", WHITE);
     private final Player playerBlack = new Player("Player 2", BLACK);
@@ -31,6 +34,12 @@ public class Game {
         playerWhite.setPieces(board.getPiecesByColor(WHITE));
         playerBlack.setPieces(board.getPiecesByColor(BLACK));
         currentPlayer = playerWhite;
+    }
+
+    public void initTimers() {
+        playerWhite.getTimer().startTimer();
+        playerWhite.getTimer().setActive(true);
+        playerBlack.getTimer().startTimer();
     }
 
     /**
@@ -65,6 +74,7 @@ public class Game {
             if (legalPoints.size() == 0) {
                 markedPoint = null;
             }
+
         } else {
             if (legalPoints.contains(clickedPoint)) {
                 plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
@@ -75,6 +85,8 @@ public class Game {
             legalPoints.clear();
             markedPoint = null;
         }
+
+        notifyDrawLegalMoves();
     }
 
 
@@ -114,6 +126,12 @@ public class Game {
         }
     }
 
+    private boolean clickedOpponentsPiece(Point p) {
+        if (boardMap.containsKey(p) && markedPoint == null) {
+            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
+        }
+        return false;
+    }
 
     /**
      * Moves the marked piece to the clicked point
@@ -126,17 +144,12 @@ public class Game {
 
         boardMap.put(moveTo, boardMap.get(moveFrom));
         boardMap.remove(moveFrom);
+        notifyDrawPieces();
     }
 
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
-    }
-
-    private boolean clickedOpponentsPiece(Point p) {
-        if (boardMap.containsKey(p) && markedPoint == null) {
-            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
-        }
-        return false;
+        notifyDrawDeadPieces();
     }
 
     private void switchPlayer() {
@@ -147,12 +160,45 @@ public class Game {
             currentPlayer = playerWhite;
         }
         currentPlayer.getTimer().setActive(true);
+        notifySwitchedPlayer();
     }
 
-    public void initTimers() {
-        playerWhite.getTimer().startTimer();
-        playerWhite.getTimer().setActive(true);
-        playerBlack.getTimer().startTimer();
+    private void notifyDrawPieces() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.drawPieces();
+        }
+    }
+
+    private void notifyDrawDeadPieces() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.drawDeadPieces();
+        }
+    }
+
+    private void notifyDrawLegalMoves() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.drawLegalMoves();
+        }
+    }
+
+    private void notifySwitchedPlayer() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.switchedPlayer();
+        }
+    }
+
+    private void notifyPawnPromotion() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.pawnPromotion();
+        }
+    }
+
+    public void addObserver(GameObserver gameObserver) {
+        gameObservers.add(gameObserver);
+    }
+
+    public void removeObserver(GameObserver gameObserver) {
+        gameObservers.remove(gameObserver);
     }
 
     public List<Point> getLegalPoints() {
@@ -181,18 +227,5 @@ public class Game {
 
     public List<Ply> getPlies() {
         return plies;
-    }
-
-    /**
-     * checking if a piece exists in the plies list
-     *
-     * @param piece
-     * @return true if it exists
-     */
-    private boolean pliesContainsPiece(Piece piece) {
-        for (Ply p : plies) {
-            if (p.getMovedPiece() == piece) return true;
-        }
-        return false;
     }
 }

@@ -1,6 +1,6 @@
 package chess.controller;
 
-import chess.Observer;
+import chess.GameObserver;
 import chess.TimerObserver;
 import chess.model.ChessFacade;
 import javafx.application.Platform;
@@ -17,6 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -26,7 +28,7 @@ import java.util.ResourceBundle;
 /**
  * ChessController handles the chess board
  */
-public class ChessController implements Initializable, Observer, TimerObserver {
+public class ChessController implements Initializable, GameObserver, TimerObserver {
     double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
@@ -57,6 +59,10 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     private FlowPane flowPaneBlackPieces;
     @FXML
     private FlowPane flowPaneWhitePieces;
+    @FXML
+    private Rectangle player1TimerBox;
+    @FXML
+    private Rectangle player2TimerBox;
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
@@ -114,6 +120,8 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         drawPieces();
         drawDeadPieces();
 
+        model.getCurrentGame().addObserver(this);
+
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
         model.getPlayerWhite().getTimer().addObserver(this);
@@ -170,9 +178,13 @@ public class ChessController implements Initializable, Observer, TimerObserver {
     }
 
     /**
-     * Draws all images from the list of pieceImages from the board, and the possible legal moves
+     * Draws all pieces from the list of pieceImages from the ImageHandler
      */
+    @Override
     public void drawPieces() {
+        imageHandler.fetchPieceImages();
+        imageHandler.updateImageCoordinates();
+
         clearAllPieceImages();
 
         //Clears the list of old piece locations/images and updates it with the new one
@@ -183,7 +195,25 @@ public class ChessController implements Initializable, Observer, TimerObserver {
             chessBoardContainer.getChildren().add(pieceImage);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
+    }
 
+    /**
+     * Draws all dead pieces from the ImageHandler
+     */
+    @Override
+    public void drawDeadPieces() {
+        imageHandler.fetchDeadPieceImages();
+        flowPaneWhitePieces.getChildren().clear();
+        flowPaneBlackPieces.getChildren().clear();
+        flowPaneWhitePieces.getChildren().addAll(imageHandler.getWhiteImageViews());
+        flowPaneBlackPieces.getChildren().addAll(imageHandler.getBlackImageViews());
+    }
+
+    /**
+     * Draws all legal moves from the list of legalMoves from the ImageHandler
+     */
+    @Override
+    public void drawLegalMoves(){
         clearAllLegalMoveImages();
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
@@ -194,12 +224,26 @@ public class ChessController implements Initializable, Observer, TimerObserver {
         }
     }
 
-    private void drawDeadPieces() {
-        imageHandler.fetchDeadPieceImages();
-        flowPaneWhitePieces.getChildren().clear();
-        flowPaneBlackPieces.getChildren().clear();
-        flowPaneWhitePieces.getChildren().addAll(imageHandler.getWhiteImageViews());
-        flowPaneBlackPieces.getChildren().addAll(imageHandler.getBlackImageViews());
+    /**
+     * *Lights up" the current player's timer, dims the opponents timer
+     */
+    @Override
+    public void switchedPlayer() {
+        if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()){
+            player1TimerBox.setFill(Color.GREENYELLOW);
+            player2TimerBox.setFill(Color.LIGHTGRAY);
+        } else {
+            player2TimerBox.setFill(Color.GREENYELLOW);
+            player1TimerBox.setFill(Color.LIGHTGRAY);
+        }
+    }
+
+    /**
+     * Opens a dialogue box to let the player choose a piece to transform their pawn into
+     */
+    @Override
+    public void pawnPromotion() {
+        System.out.println("Pawn promotion in progress");
     }
 
     private void clearAllPieceImages() {
@@ -208,17 +252,6 @@ public class ChessController implements Initializable, Observer, TimerObserver {
 
     private void clearAllLegalMoveImages() {
         chessBoardContainer.getChildren().removeAll(legalMoveImages);
-    }
-
-    /**
-     * Draws pieces when called by the observable, implemented by observer interface
-     */
-    @Override
-    public void onAction() {
-        imageHandler.fetchPieceImages();
-        imageHandler.updateImageCoordinates();
-        drawPieces();
-        drawDeadPieces();
     }
 
     /**
