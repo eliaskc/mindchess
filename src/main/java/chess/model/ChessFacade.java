@@ -29,6 +29,10 @@ public class ChessFacade {
         return currentGame;
     }
 
+    public List<Game> getGameList() {
+        return new ArrayList<>(gameList);
+    }
+
     /**
      * sends the coordinates from the mouse click to the board to handle and notifies all observers a click has been made
      *
