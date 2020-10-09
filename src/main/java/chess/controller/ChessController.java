@@ -1,7 +1,6 @@
 package chess.controller;
 
 import chess.GameObserver;
-import chess.TimerObserver;
 import chess.model.ChessFacade;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -29,7 +28,7 @@ import java.util.ResourceBundle;
 /**
  * ChessController handles the chess board
  */
-public class ChessController implements Initializable, GameObserver, TimerObserver {
+public class ChessController implements Initializable, GameObserver {
     double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
@@ -131,8 +130,6 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
 
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
-        model.getPlayerWhite().getTimer().addObserver(this);
-        model.getPlayerBlack().getTimer().addObserver(this);
         model.getCurrentGame().initTimers();
     }
 
@@ -149,21 +146,24 @@ public class ChessController implements Initializable, GameObserver, TimerObserv
 
     @Override
     public void checkEndGame(String result) {
-        if(result.equals("white")){
-            endGameLabel.setText(player1Name.getText() + " wins");
-            endGamePane.toFront();
-            model.endGame();
-        }
-        else if(result.equals("black")){
-            endGameLabel.setText(player2Name.getText() + " wins");
-            endGamePane.toFront();
-            model.endGame();
-        }
-        else if(result.equals("draw")){
-            endGameLabel.setText("Game draw");
-            endGamePane.toFront();
-            model.endGame();
-        }
+        Platform.runLater(() -> {
+            if(result.equals("white")){
+                endGameLabel.setText(player1Name.getText() + " wins");
+                endGamePane.toFront();
+                model.endGame();
+            }
+            else if(result.equals("black")){
+                endGameLabel.setText(player2Name.getText() + " wins");
+                endGamePane.toFront();
+                model.endGame();
+            }
+            else if(result.equals("draw")){
+                endGameLabel.setText("Game draw");
+                endGamePane.toFront();
+                model.endGame();
+            }
+        });
+
     }
 
     /**

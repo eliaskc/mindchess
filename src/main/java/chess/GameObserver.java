@@ -7,4 +7,5 @@ public interface GameObserver {
     void switchedPlayer();
     void pawnPromotion();
     void checkEndGame(String result);
+    void updateTimer();
 }

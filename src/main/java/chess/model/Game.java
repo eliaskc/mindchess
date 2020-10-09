@@ -10,7 +10,7 @@ import java.util.Map;
 import static chess.model.Color.BLACK;
 import static chess.model.Color.WHITE;
 
-public class Game {
+public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
 
     private final Board board = new Board();
@@ -37,6 +37,8 @@ public class Game {
     }
 
     public void initTimers() {
+        playerWhite.getTimer().addObserver(this);
+        playerBlack.getTimer().addObserver(this);
         playerWhite.getTimer().startTimer();
         playerWhite.getTimer().setActive(true);
         playerBlack.getTimer().startTimer();
@@ -189,6 +191,21 @@ public class Game {
     void stopAllTimers(){
         playerBlack.getTimer().setActive(false);
         playerWhite.getTimer().setActive(false);
+    }
+
+    @Override
+     public void updateTimer() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.updateTimer();
+        }
+    }
+
+    public void timerGameEnd() {
+        if(playerWhite.getTimer().getTime()==0){
+            notifyEndGameObservers("black");
+        } else if (playerBlack.getTimer().getTime()==0) {
+            notifyEndGameObservers("white");
+        }
     }
 
     private void notifyDrawPieces() {

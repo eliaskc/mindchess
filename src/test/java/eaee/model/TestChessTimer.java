@@ -32,6 +32,6 @@ public class TestChessTimer {
         chessTimer.setActive(true);
         Thread.sleep(1000);
         assertTrue(chessTimer.getTime() < 10);
-        chessTimer.stopTimer();
+        chessTimer.setActive(false);
     }
 }

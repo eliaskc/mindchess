@@ -127,7 +127,7 @@ public class MenuController implements Initializable {
      * Where the possible times is decided
      */
     private void initTimer() {
-        timerMap.put("3 min", 180);
+        timerMap.put("3 min", 5);
         timerMap.put("5 min", 300);
         timerMap.put("10 min", 600);
         timerMap.put("30 min", 1800);
