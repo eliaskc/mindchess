@@ -199,10 +199,11 @@ public class Game implements TimerObserver {
         notifyEndGameObservers("black");
     }
 
-    void notifyEndGameObservers(String result){
+    void notifyEndGameObservers(String result) {
         gameObservers.forEach(p -> {
             p.checkEndGame(result);
         });
+    }
     /**
      * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
      *
