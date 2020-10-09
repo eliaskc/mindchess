@@ -65,13 +65,12 @@ public class Game {
         //The last point/square that has been clicked on
         Point clickedPoint = new Point(x, y);
 
-        //If you click on a piece that doesn't belong to you when trying to mark a point, the click is ignored
-        if (clickedOpponentsPiece(clickedPoint)) {
-            return;
-        }
-
-        if (markedPoint == null) {
-            markedPoint = new Point(x, y);
+        //Only marks a clicked piece if it is your own
+        if (clickedOwnPiece(clickedPoint)) {
+            if (markedPoint != null) {
+                legalPoints.clear();
+            }
+            markedPoint = new Point(x,y);
         }
 
         if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
@@ -168,9 +167,9 @@ public class Game {
         notifyDrawPieces();
     }
 
-    private boolean clickedOpponentsPiece(Point p) {
-        if (boardMap.containsKey(p) && markedPoint == null) {
-            return !(boardMap.get(p).getColor() == currentPlayer.getColor());
+    private boolean clickedOwnPiece(Point p) {
+        if (boardMap.containsKey(p)) {
+            return (boardMap.get(p).getColor() == currentPlayer.getColor());
         }
         return false;
     }
