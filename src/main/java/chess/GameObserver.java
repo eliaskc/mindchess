@@ -1,9 +1,13 @@
 package chess;
 
+import chess.model.ChessColor;
+
+import java.awt.*;
+
 public interface GameObserver {
     void drawPieces();
     void drawDeadPieces();
     void drawLegalMoves();
     void switchedPlayer();
-    void pawnPromotion();
+    void pawnPromotionSetup(ChessColor chessColor);
 }

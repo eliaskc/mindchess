@@ -7,13 +7,13 @@ package chess.model;
  */
 public class Piece {
     private boolean isActive;
-    private final Color color;
+    private final ChessColor chessColor;
     private PieceType pieceType;
     private final boolean mark = false;
 
-    public Piece(boolean isActive, Color color, PieceType pieceType) {
+    public Piece(boolean isActive, ChessColor chessColor, PieceType pieceType) {
         this.isActive = isActive;
-        this.color = color;
+        this.chessColor = chessColor;
         this.pieceType = pieceType;
     }
 
@@ -33,7 +33,7 @@ public class Piece {
         this.pieceType = pieceType;
     }
 
-    public Color getColor() {
-        return color;
+    public ChessColor getColor() {
+        return chessColor;
     }
 }

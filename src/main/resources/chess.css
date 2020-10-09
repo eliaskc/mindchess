@@ -22,6 +22,10 @@
     -fx-image: url("guiFiles/buttons/back_button_hover.png");
 }
 
+.pawnPromotionBox {
+    -fx-background-color: #D7D7D7;
+}
+
 .label {
     -fx-font-size: 22px;
 }

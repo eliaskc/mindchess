@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static chess.model.Color.BLACK;
-import static chess.model.Color.WHITE;
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.*;
 
 /**
@@ -66,10 +66,10 @@ public class Board {
         boardMap.put(new Point(7, 7), new Piece(true, WHITE, ROOK));
     }
 
-    List<Piece> getPiecesByColor(Color color) {
+    List<Piece> getPiecesByColor(ChessColor chessColor) {
         List<Piece> returnList = new ArrayList<>();
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
-            if (entry.getValue().getColor() == color) {
+            if (entry.getValue().getColor() == chessColor) {
                 returnList.add(entry.getValue());
             }
         }
