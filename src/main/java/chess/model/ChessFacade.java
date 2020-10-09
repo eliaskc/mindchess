@@ -16,7 +16,7 @@ public class ChessFacade {
 
     public ChessFacade() {
     }
-    
+
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();
     }
@@ -53,6 +53,7 @@ public class ChessFacade {
     }
 
     public void endGame() {
+        currentGame.stopAllTimers();
         gameList.remove(currentGame);
         System.out.println(gameList.size());
     }

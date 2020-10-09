@@ -186,7 +186,7 @@ public class Game {
         notifySwitchedPlayer();
     }
 
-    public void stopAllTimers(){
+    void stopAllTimers(){
         playerBlack.getTimer().setActive(false);
         playerWhite.getTimer().setActive(false);
     }
