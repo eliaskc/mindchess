@@ -20,6 +20,7 @@ public class TestChessTimer {
     @Before
     public void init() {
         model = new ChessFacade();
+        model.createNewGame();
         boardMap = model.getGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
