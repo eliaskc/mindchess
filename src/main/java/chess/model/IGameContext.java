@@ -7,14 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IGameContext {
-    enum GameStates {
-        NoPieceSelected,
-        PieceSelected,
-        GameOver,
-        GameInactive
-    }
-    void setGameState(GameStates gameState);
-    GameState getGameState();
+    void setGameState(GameState gameState);
     Player getCurrentPlayer();
     List<Point> getLegalPoints();
     List<Piece> getDeadPieces();

@@ -35,26 +35,14 @@ public class Game implements TimerObserver, IGameContext {
     private final Movement movement = new Movement(boardMap,plies);
 
     GameState gameState;
-    GameState noPiecesSelected;
-    GameState pieceSelected;
 
     @Override
-    public void setGameState(GameStates gameState) {
-        switch (gameState){
-            case NoPieceSelected -> this.gameState = noPiecesSelected;
-            case PieceSelected -> this.gameState =  pieceSelected;
-        }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
-
-    @Override
-    public GameState getGameState() {
-        return gameState;
-    }
-
+    
     private void initGameStates(){
-        noPiecesSelected = new NoPieceSelectedState(this);
-        pieceSelected = new PieceSelectedState(this);
-        gameState = noPiecesSelected;
+        gameState = new NoPieceSelectedState(this);
     }
 
     public void initGame() {

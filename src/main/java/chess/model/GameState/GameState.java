@@ -13,5 +13,4 @@ public interface GameState {
     void handleInput(int x, int y);
     boolean isGameOver();
     String getWinnerName();
-    void setMarkedPoint(Point markedPoint);
 }

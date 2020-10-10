@@ -6,7 +6,6 @@ import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
     private IGameContext context;
-    private Point markedPoint;
 
     public NoPieceSelectedState(IGameContext context) {
         this.context = context;
@@ -15,13 +14,12 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
-        markedPoint = new Point(x,y);
+        Point markedPoint = new Point(x,y);
         if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
             fetchLegalMoves(markedPoint);
             if(context.getLegalPoints().size() == 0) return;
             notifyDrawLegalMoves();
-            context.setGameState(IGameContext.GameStates.PieceSelected);
-            context.getGameState().setMarkedPoint(new Point(x,y));
+            context.setGameState(new PieceSelectedState(markedPoint,context));
         }
     }
 
@@ -54,10 +52,5 @@ public class NoPieceSelectedState implements GameState {
     @Override
     public String getWinnerName() {
         return "null";
-    }
-
-    @Override
-    public void setMarkedPoint(Point markedPoint) {
-        this.markedPoint = markedPoint;
     }
 }

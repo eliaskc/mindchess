@@ -15,7 +15,8 @@ public class PieceSelectedState implements GameState {
     private IGameContext context;
 
 
-    public PieceSelectedState(IGameContext context) {
+    public PieceSelectedState(Point markedPoint, IGameContext context) {
+        this.markedPoint = markedPoint;
         this.context = context;
     }
 
@@ -37,12 +38,12 @@ public class PieceSelectedState implements GameState {
             context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
-            notifyDrawPieces();
-            notifySwitchedPlayer();
+            context.notifyDrawPieces();
+            context.notifySwitchedPlayer();
         }
-        context.setGameState(IGameContext.GameStates.NoPieceSelected);
+        context.setGameState(new NoPieceSelectedState(context));
         context.getLegalPoints().clear();
-        notifyDrawLegalMoves();
+        context.notifyDrawLegalMoves();
     }
 
     /**
@@ -85,28 +86,7 @@ public class PieceSelectedState implements GameState {
 
     private void takePiece(Point pointToTake) {
         context.getDeadPieces().add(context.getBoardMap().remove(pointToTake));
-        notifyDrawDeadPieces();
-    }
-
-    private void notifyDrawPieces(){
-        context.notifyDrawPieces();
-    }
-
-    private void notifyDrawDeadPieces(){
         context.notifyDrawDeadPieces();
-    }
-
-    public void notifySwitchedPlayer(){
-        context.notifySwitchedPlayer();
-    }
-
-    private void notifyDrawLegalMoves(){
-        context.notifyDrawLegalMoves();
-    }
-
-    @Override
-    public void setMarkedPoint(Point markedPoint) {
-        this.markedPoint = markedPoint;
     }
 
     @Override
