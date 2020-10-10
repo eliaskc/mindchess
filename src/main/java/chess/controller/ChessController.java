@@ -80,6 +80,10 @@ public class ChessController implements Initializable, GameObserver {
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
+    @FXML
+    private ImageView btnForfeit;
+    @FXML
+    private ImageView btnDraw;
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -107,6 +111,16 @@ public class ChessController implements Initializable, GameObserver {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    @FXML
+    void forfeitClicked(MouseEvent event) {
+        model.getCurrentGame().onePlayerForfeit();
+    }
+
+    @FXML
+    void drawGameClicked(MouseEvent event) {
+        model.getCurrentGame().drawGameClicked();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -179,7 +193,6 @@ public class ChessController implements Initializable, GameObserver {
                 model.endGame();
             }
         });
-
     }
 
     /**

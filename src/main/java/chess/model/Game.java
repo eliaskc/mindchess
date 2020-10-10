@@ -192,11 +192,25 @@ public class Game implements TimerObserver {
         }
     }
 
+    //Should this go through chessFacade
+    public void onePlayerForfeit() {
+        if(currentPlayer.getColor().equals(WHITE))blackPlayerWin();
+        else whitePlayerWin();
+    }
+
+    public void drawGameClicked() {
+        draw();
+    }
+
+
     private void whitePlayerWin(){
         notifyEndGameObservers("white");
     }
     private void blackPlayerWin(){
         notifyEndGameObservers("black");
+    }
+    private void draw(){
+        notifyEndGameObservers("draw");
     }
 
     void notifyEndGameObservers(String result) {
