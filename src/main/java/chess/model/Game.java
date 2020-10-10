@@ -27,7 +27,7 @@ public class Game implements TimerObserver {
 
     private Point markedPoint = null; //Used to keep track of the currently marked point/piece so that it can be moved
 
-    private boolean pawnPromotionInProgress = false;
+    private boolean allowedToMovePieces = true;
     private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
     public void initGame() {
@@ -61,7 +61,7 @@ public class Game implements TimerObserver {
      * @param y
      */
     void handleBoardClick(int x, int y) {
-        if (pawnPromotionInProgress) {
+        if (!allowedToMovePieces) {
             return;
         }
 
@@ -113,6 +113,9 @@ public class Game implements TimerObserver {
         }
     }
 
+    /**
+     * Checks the different winconditions that can happen during a game
+     */
     private void winConditionCheck(){
         checkKingTaken();
     }
@@ -128,7 +131,7 @@ public class Game implements TimerObserver {
             plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
-            if (!checkPawnPromotion(clickedPoint)) {
+            if (checkPawnPromotion(clickedPoint)) {
                 switchPlayer();
             }
             winConditionCheck();
@@ -177,11 +180,18 @@ public class Game implements TimerObserver {
         boardMap.remove(moveFrom);
     }
 
+    /**
+     * Removes a piece on a point from the boardmap and adds it to the deadpieces list and draws it in the interface
+     * @param pointToTake the point the piece is removed from
+     */
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
         notifyDrawDeadPieces();
     }
 
+    /**
+     * checks if a king is taken and if so determines who won by taking the opponents king
+     */
     private void checkKingTaken(){
         if (!(deadPieces.size() == 0)) {
             Piece lastPieceTaken = deadPieces.get(deadPieces.size()-1);
@@ -192,11 +202,35 @@ public class Game implements TimerObserver {
         }
     }
 
+    //Should this go through chessFacade
+    /**
+     * handles forfeits, makes the current player lose the game
+     */
+    public void onePlayerForfeit() {
+        if(currentPlayer.getColor().equals(WHITE))blackPlayerWin();
+        else whitePlayerWin();
+    }
+
+
+    /**
+     * sets the white player as winner
+     */
     private void whitePlayerWin(){
         notifyEndGameObservers("white");
     }
+    /**
+     * sets the black player as winner
+     */
     private void blackPlayerWin(){
         notifyEndGameObservers("black");
+    }
+
+    /**
+     * sets the game to a draw
+     */
+    //Is there a way to make this private and still work
+    public void gameDraw(){
+        notifyEndGameObservers("draw");
     }
 
     void notifyEndGameObservers(String result) {
@@ -213,11 +247,11 @@ public class Game implements TimerObserver {
         if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)) {
                 notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
-                pawnPromotionInProgress = true;
+                setAllowedToMovePieces(false);
                 pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
             }
         }
-        return pawnPromotionInProgress;
+        return allowedToMovePieces;
     }
 
     /**
@@ -227,7 +261,7 @@ public class Game implements TimerObserver {
      */
     public void pawnPromotion(PieceType pieceType) {
         boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
-        pawnPromotionInProgress = false;
+        setAllowedToMovePieces(true);
         pawnPromotionPoint = null;
 
         switchPlayer();
@@ -252,7 +286,7 @@ public class Game implements TimerObserver {
     }
 
     @Override
-     public void updateTimer() {
+    public void updateTimer() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.updateTimer();
         }
@@ -330,5 +364,9 @@ public class Game implements TimerObserver {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    public void setAllowedToMovePieces(boolean allowedToMovePieces) {
+        this.allowedToMovePieces = allowedToMovePieces;
     }
 }

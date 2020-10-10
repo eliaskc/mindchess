@@ -47,8 +47,6 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private MediaView media;
     @FXML
-    private ImageView btnBack;
-    @FXML
     private Label player1Name;
     @FXML
     private Label player2Name;
@@ -57,9 +55,13 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private Label player2Timer;
     @FXML
+    private Label lblDrawLabel;
+    @FXML
     private ImageView chessBoardImage;
     @FXML
     private AnchorPane chessBoardContainer;
+    @FXML
+    private AnchorPane drawAnchorPane;
     @FXML
     private FlowPane flowPaneBlackPieces;
     @FXML
@@ -68,8 +70,6 @@ public class ChessController implements Initializable, GameObserver {
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
-    @FXML
-    private Button btnMenuEndGame;
     @FXML
     private AnchorPane promotionAnchorPane;
     @FXML
@@ -80,6 +80,7 @@ public class ChessController implements Initializable, GameObserver {
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
+
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -103,10 +104,45 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    @FXML
+    void forfeitClicked(MouseEvent event) {
+        model.getCurrentGame().onePlayerForfeit();
+    }
+
+    /**
+     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
+     * stops players from moving their pieces while the interface is up
+     */
+    @FXML
+    void drawGameClicked() {
+        //Cascading
+        lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
+        drawAnchorPane.toFront();
+        model.getCurrentGame().setAllowedToMovePieces(false);
+    }
+
+    /**
+     * if the opponent refuses the interface will close and allows the player to move their pieces
+     */
+    @FXML
+    void refuseGameDraw() {
+        model.getCurrentGame().setAllowedToMovePieces(true);
+        drawAnchorPane.toBack();
+    }
+
+    /**
+     * sets the game to a draw
+     */
+    @FXML
+    void acceptGameDraw() {
+        model.getCurrentGame().gameDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -179,7 +215,6 @@ public class ChessController implements Initializable, GameObserver {
                 model.endGame();
             }
         });
-
     }
 
     /**
@@ -346,7 +381,7 @@ public class ChessController implements Initializable, GameObserver {
      */
     private String formatTime(int seconds) {
         String sec = seconds % 60 >= 10 ? "" + (seconds % 3600) % 60 : "0" + (seconds % 3600) % 60;
-        String min = seconds >= 600 ? "" + (seconds % 3600) / 60 : "0" + (seconds % 3600) / 60;
+        String min = seconds >= 600 ? "" + seconds / 60 : "0" + seconds / 60;
         return min + ":" + sec;
     }
 
