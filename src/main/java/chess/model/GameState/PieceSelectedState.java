@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
+
 public class PieceSelectedState implements GameState {
 
     Point markedPoint;
@@ -32,6 +35,63 @@ public class PieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
 
+    }
+
+    private void checkMove(Point clickedPoint) {
+        if (legalPoints.contains(clickedPoint)) {
+            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+            makeSpecialMoves(markedPoint, clickedPoint);
+            move(markedPoint, clickedPoint);
+            if (!checkPawnPromotion(clickedPoint)) {
+                switchPlayer();
+            }
+            winConditionCheck();
+            notifyDrawPieces();
+        }
+        legalPoints.clear();
+        markedPoint = null;
+    }
+
+    private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
+        //castling
+        if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
+            if (clickedPoint.x > markedPoint.x) {
+                move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
+            } else if (clickedPoint.x < markedPoint.x) {
+                move(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
+            }
+        }
+
+        //en passant
+        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
+            if (boardMap.get(markedPoint).getColor() == WHITE) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
+            } else if (boardMap.get(markedPoint).getColor() == BLACK) {
+                takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
+            }
+        }
+    }
+
+    private void move(Point moveFrom, Point moveTo) {
+        if (boardMap.get(moveTo) != null) {
+            takePiece(moveTo);
+        }
+
+        boardMap.put(moveTo, boardMap.get(moveFrom));
+        boardMap.remove(moveFrom);
+    }
+
+    private void takePiece(Point pointToTake) {
+        deadPieces.add(boardMap.remove(pointToTake));
+        notifyDrawDeadPieces();
+    }
+
+    private void notifyDrawPieces(){
+        context.notifyDrawPieces();
+    }
+
+    private void notifyDrawDeadPieces(){
+        context.notifyDrawDeadPieces();
     }
 
 }

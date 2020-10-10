@@ -11,6 +11,7 @@ public class Player {
     private List<Piece> pieces = new ArrayList<>();
     private String name;
     private final ChessColor chessColor;
+    private Player opponent;
 
     public Player(String name, ChessColor chessColor) {
         this.name = name;
@@ -35,5 +36,9 @@ public class Player {
 
     public void setPieces(List<Piece> pieces) {
         this.pieces = pieces;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 }
