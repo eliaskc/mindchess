@@ -27,7 +27,7 @@ public class Game implements TimerObserver {
 
     private Point markedPoint = null; //Used to keep track of the currently marked point/piece so that it can be moved
 
-    private boolean pawnPromotionInProgress = false;
+    private boolean allowedToMovePieces = true;
     private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
     public void initGame() {
@@ -61,7 +61,7 @@ public class Game implements TimerObserver {
      * @param y
      */
     void handleBoardClick(int x, int y) {
-        if (pawnPromotionInProgress) {
+        if (!allowedToMovePieces) {
             return;
         }
 
@@ -128,7 +128,7 @@ public class Game implements TimerObserver {
             plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
-            if (!checkPawnPromotion(clickedPoint)) {
+            if (checkPawnPromotion(clickedPoint)) {
                 switchPlayer();
             }
             winConditionCheck();
@@ -199,8 +199,7 @@ public class Game implements TimerObserver {
     }
 
     public void drawGameClicked() {
-        //Send a conformation question of draw to your opponent
-        draw();
+        allowedToMovePieces = false;
     }
 
 
@@ -210,7 +209,8 @@ public class Game implements TimerObserver {
     private void blackPlayerWin(){
         notifyEndGameObservers("black");
     }
-    private void draw(){
+    //Is there a way to make this private and still work
+    public void gameDraw(){
         notifyEndGameObservers("draw");
     }
 
@@ -228,11 +228,11 @@ public class Game implements TimerObserver {
         if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)) {
                 notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
-                pawnPromotionInProgress = true;
+                allowedToMovePieces = false;
                 pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
             }
         }
-        return pawnPromotionInProgress;
+        return allowedToMovePieces;
     }
 
     /**
@@ -242,7 +242,7 @@ public class Game implements TimerObserver {
      */
     public void pawnPromotion(PieceType pieceType) {
         boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
-        pawnPromotionInProgress = false;
+        allowedToMovePieces = true;
         pawnPromotionPoint = null;
 
         switchPlayer();

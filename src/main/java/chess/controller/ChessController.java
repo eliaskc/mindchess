@@ -47,8 +47,6 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private MediaView media;
     @FXML
-    private ImageView btnBack;
-    @FXML
     private Label player1Name;
     @FXML
     private Label player2Name;
@@ -57,9 +55,13 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private Label player2Timer;
     @FXML
+    private Label lblDrawLabel;
+    @FXML
     private ImageView chessBoardImage;
     @FXML
     private AnchorPane chessBoardContainer;
+    @FXML
+    private AnchorPane drawAnchorPane;
     @FXML
     private FlowPane flowPaneBlackPieces;
     @FXML
@@ -68,8 +70,6 @@ public class ChessController implements Initializable, GameObserver {
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
-    @FXML
-    private Button btnMenuEndGame;
     @FXML
     private AnchorPane promotionAnchorPane;
     @FXML
@@ -80,10 +80,7 @@ public class ChessController implements Initializable, GameObserver {
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
-    @FXML
-    private ImageView btnForfeit;
-    @FXML
-    private ImageView btnDraw;
+
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -107,6 +104,7 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -120,7 +118,20 @@ public class ChessController implements Initializable, GameObserver {
 
     @FXML
     void drawGameClicked(MouseEvent event) {
+        //Cascading
+        lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
+        drawAnchorPane.toFront();
         model.getCurrentGame().drawGameClicked();
+    }
+
+    @FXML
+    void refuseGameDraw(MouseEvent event) {
+        drawAnchorPane.toBack();
+    }
+
+    @FXML
+    void acceptGameDraw(MouseEvent event) {
+        model.getCurrentGame().gameDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
