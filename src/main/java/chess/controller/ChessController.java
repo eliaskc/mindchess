@@ -5,7 +5,10 @@ import chess.GameObserver;
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.PieceType;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -23,6 +26,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.List;
@@ -264,6 +268,14 @@ public class ChessController implements Initializable, GameObserver {
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
         for (ImageView imageView : legalMoveImages) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView)), imageView);
+            st.setFromX(0.1);
+            st.setFromY(0.1);
+            st.setToX(1);
+            st.setToY(1);
+            st.setCycleCount(1);
+            st.play();
+
             chessBoardContainer.getChildren().add(imageView);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
         }
@@ -326,7 +338,22 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     private void clearAllLegalMoveImages() {
-        chessBoardContainer.getChildren().removeAll(legalMoveImages);
+        for (ImageView imageView : legalMoveImages) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(75), imageView);
+            st.setFromX(1);
+            st.setFromY(1);
+            st.setToX(0.1);
+            st.setToY(0.1);
+            st.setCycleCount(1);
+            st.play();
+
+            st.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    chessBoardContainer.getChildren().remove(imageView);
+                }
+            });
+        }
     }
 
     /**
