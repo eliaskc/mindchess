@@ -143,7 +143,7 @@ public class Movement {
         points.addAll(castlingPoints);
     }
 
-    public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
+    private void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove, markedPoint, 7);
         down(pieceToMove, markedPoint, 7);
         left(pieceToMove, markedPoint, 7);

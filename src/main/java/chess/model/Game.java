@@ -34,7 +34,7 @@ public class Game implements TimerObserver,IGameStateChanger {
 
     private final Movement movement = new Movement(boardMap,plies);
 
-    GameState gameState = new NoPieceSelectedState(boardMap,plies);
+    GameState gameState = new NoPieceSelectedState(boardMap,plies,movement,legalPoints,this);
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
@@ -90,11 +90,13 @@ public class Game implements TimerObserver,IGameStateChanger {
 
         notifyDrawLegalMoves();
 
+
+
         /**
          * -----------------------------------------------
          */
 
-        gameState.handleInput(x,y,boardMap,plies);
+        gameState.handleInput(x,y);
     }
 
     private boolean clickedOwnPiece(Point p) {

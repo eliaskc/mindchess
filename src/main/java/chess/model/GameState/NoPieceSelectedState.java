@@ -14,25 +14,32 @@ import java.util.Map;
 public class NoPieceSelectedState implements GameState {
     private Map<Point, Piece> boardMap;
     private List<Ply> plies;
-    private Movement movement = new Movement();
-    private List<Point> legalPoints = new ArrayList<>();
-    private Point pointSelected;
+    private Movement movement;
+    private List<Point> legalPoints;
+    private IGameStateChanger context;
 
-    @Override
-    public void handleInput(int x, int y, Map<Point, Piece> boardMap, List<Ply> plies, IGameStateChanger context) {
+    public NoPieceSelectedState(Map<Point, Piece> boardMap, List<Ply> plies,Movement movement,List<Point> legalPoints, IGameStateChanger context) {
         this.boardMap = boardMap;
         this.plies = plies;
-        pointSelected = new Point(x,y);
+        this.context = context;
+        this.movement = movement;
+        this.legalPoints = legalPoints;
+    }
+
+    @Override
+    public void handleInput(int x, int y) {
+        Point pointSelected = new Point(x,y);
         if(pointContainsPiece(pointSelected)) {
-            fetchLegalMoves();
+            fetchLegalMoves(pointSelected);
             if(legalPoints.size() == 0) return;
-            context.setGameState(new PieceSelectedState(pointSelected));
+            notifyDrawLegalMoves();
+            context.setGameState(new PieceSelectedState(pointSelected,boardMap,plies,movement,legalPoints,context));
             return;
         }
 
     }
 
-    private void fetchLegalMoves() {
+    private void fetchLegalMoves(Point pointSelected) {
         legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(pointSelected), pointSelected));
     }
 
@@ -43,8 +50,6 @@ public class NoPieceSelectedState implements GameState {
     }
 
     private void notifyDrawLegalMoves() {
-        for (GameObserver gameObserver : gameObservers) {
-            gameObserver.drawLegalMoves();
-        }
+        context.notifyDrawLegalMoves();
     }
 }
