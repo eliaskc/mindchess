@@ -12,30 +12,6 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.ChessController">
    <children>
-      <AnchorPane fx:id="endGamePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane fx:id="whiteWinAnchorPane" opacity="0.7" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: WhiteSmoke;" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="240.0">
-               <children>
-                  <Label fx:id="endGameLabel" alignment="CENTER" prefHeight="120.0" prefWidth="400.0" styleClass="endgame" text="Player 1 Wins" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="218.0" layoutY="140.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="150.0" text="Analyze" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Button>
-                  <ImageView fitHeight="70.0" fitWidth="150.0" layoutX="38.0" layoutY="143.0" onMouseClicked="#goToMenu" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@guiFiles/buttons/back_button.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
       <AnchorPane style="-fx-background-color: WHITESMOKE;">
          <children>
             <AnchorPane fx:id="promotionAnchorPane" prefHeight="250.0" prefWidth="350.0" styleClass="pawnPromotionBox" AnchorPane.bottomAnchor="235.0" AnchorPane.leftAnchor="465.0" AnchorPane.rightAnchor="465.0" AnchorPane.topAnchor="235.0">
@@ -86,6 +62,31 @@
             <ImageView fx:id="btnDraw" fitHeight="49.0" fitWidth="108.0" layoutX="1127.0" layoutY="527.0" onMouseClicked="#drawGameClicked" pickOnBounds="true" preserveRatio="true" styleClass="backButton" AnchorPane.bottomAnchor="150.0" AnchorPane.rightAnchor="45.0" />
             <Label layoutX="1135.0" layoutY="493.0" text="Draw" />
             <Label layoutX="1121.0" layoutY="588.0" text="Forfeit" />
+            <AnchorPane prefHeight="250.0" prefWidth="350.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="465.0" AnchorPane.topAnchor="235.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="endGamePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="whiteWinAnchorPane" opacity="0.7" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane prefHeight="250.0" prefWidth="350.0" style="-fx-background-color: WhiteSmoke;" AnchorPane.leftAnchor="465.0" AnchorPane.topAnchor="235.0">
+               <children>
+                  <Label fx:id="endGameLabel" alignment="CENTER" prefHeight="120.0" prefWidth="350.0" styleClass="endgame" text="Player 1 Wins" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="218.0" layoutY="140.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="120.0" text="Analyze" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitWidth="120.0" layoutX="38.0" layoutY="143.0" onMouseClicked="#goToMenu" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0">
+                     <image>
+                        <Image url="@guiFiles/buttons/back_button.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>

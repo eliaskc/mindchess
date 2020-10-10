@@ -199,6 +199,7 @@ public class Game implements TimerObserver {
     }
 
     public void drawGameClicked() {
+        //Send a conformation question of draw to your opponent
         draw();
     }
 
