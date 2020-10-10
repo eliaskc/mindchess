@@ -113,6 +113,9 @@ public class Game implements TimerObserver {
         }
     }
 
+    /**
+     * Checks the different winconditions that can happen during a game
+     */
     private void winConditionCheck(){
         checkKingTaken();
     }
@@ -177,11 +180,18 @@ public class Game implements TimerObserver {
         boardMap.remove(moveFrom);
     }
 
+    /**
+     * Removes a piece on a point from the boardmap and adds it to the deadpieces list and draws it in the interface
+     * @param pointToTake the point the piece is removed from
+     */
     private void takePiece(Point pointToTake) {
         deadPieces.add(boardMap.remove(pointToTake));
         notifyDrawDeadPieces();
     }
 
+    /**
+     * checks if a king is taken and if so determines who won by taking the opponents king
+     */
     private void checkKingTaken(){
         if (!(deadPieces.size() == 0)) {
             Piece lastPieceTaken = deadPieces.get(deadPieces.size()-1);
@@ -193,7 +203,6 @@ public class Game implements TimerObserver {
     }
 
     //Should this go through chessFacade
-
     /**
      * handles forfeits, makes the current player lose the game
      */
@@ -203,13 +212,22 @@ public class Game implements TimerObserver {
     }
 
 
-
+    /**
+     * sets the white player as winner
+     */
     private void whitePlayerWin(){
         notifyEndGameObservers("white");
     }
+    /**
+     * sets the black player as winner
+     */
     private void blackPlayerWin(){
         notifyEndGameObservers("black");
     }
+
+    /**
+     * sets the game to a draw
+     */
     //Is there a way to make this private and still work
     public void gameDraw(){
         notifyEndGameObservers("draw");
@@ -268,7 +286,7 @@ public class Game implements TimerObserver {
     }
 
     @Override
-     public void updateTimer() {
+    public void updateTimer() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.updateTimer();
         }

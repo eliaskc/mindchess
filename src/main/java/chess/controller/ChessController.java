@@ -116,22 +116,32 @@ public class ChessController implements Initializable, GameObserver {
         model.getCurrentGame().onePlayerForfeit();
     }
 
+    /**
+     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
+     * stops players from moving their pieces while the interface is up
+     */
     @FXML
-    void drawGameClicked(MouseEvent event) {
+    void drawGameClicked() {
         //Cascading
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
         model.getCurrentGame().setAllowedToMovePieces(false);
     }
 
+    /**
+     * if the opponent refuses the interface will close and allows the player to move their pieces
+     */
     @FXML
-    void refuseGameDraw(MouseEvent event) {
+    void refuseGameDraw() {
         model.getCurrentGame().setAllowedToMovePieces(true);
         drawAnchorPane.toBack();
     }
 
+    /**
+     * sets the game to a draw
+     */
     @FXML
-    void acceptGameDraw(MouseEvent event) {
+    void acceptGameDraw() {
         model.getCurrentGame().gameDraw();
     }
 
