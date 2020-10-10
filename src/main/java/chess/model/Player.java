@@ -45,4 +45,5 @@ public class Player {
     public Player getOpponent() {
         return opponent;
     }
+
 }

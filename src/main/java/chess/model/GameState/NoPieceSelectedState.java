@@ -1,59 +1,40 @@
 package chess.model.GameState;
 
-import chess.GameObserver;
 import chess.model.*;
-import chess.model.GameState.GameState;
 
 import java.awt.*;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class NoPieceSelectedState implements GameState {
-    private Map<Point, Piece> boardMap;
-    private List<Ply> plies;
-    private Movement movement;
-    private List<Point> legalPoints;
-    private IGameStateChanger context;
-    private Player currentPlayer;
-    private List<Piece> deadPieces;
-    private IGameStateChanger.GameStates gameState = IGameStateChanger.GameStates.NoPieceSelected;
+    private IGameContext context;
     private Point markedPoint;
 
-
-    public NoPieceSelectedState(Map<Point, Piece> boardMap, List<Ply> plies,Movement movement,List<Point> legalPoints,List<Piece> deadPieces,Player currentPlayer, IGameStateChanger context) {
-        this.boardMap = boardMap;
-        this.plies = plies;
+    public NoPieceSelectedState(IGameContext context) {
         this.context = context;
-        this.movement = movement;
-        this.currentPlayer = currentPlayer;
-        this.legalPoints = legalPoints;
-        this.deadPieces = deadPieces;
-        
-
     }
+
 
     @Override
     public void handleInput(int x, int y) {
         markedPoint = new Point(x,y);
-        if(pointContainsPiece(markedPoint) && isPieceMyColor(markedPoint)) {
+        if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
             fetchLegalMoves(markedPoint);
-            if(legalPoints.size() == 0) return;
+            if(context.getLegalPoints().size() == 0) return;
             notifyDrawLegalMoves();
-            context.setGameState(IGameStateChanger.GameStates.PieceSelected);
+            context.setGameState(IGameContext.GameStates.PieceSelected);
             context.getGameState().setMarkedPoint(new Point(x,y));
         }
     }
 
+    /**
+     * Adds all legal points the marked piece can move to to the legalPoints list
+     */
     private void fetchLegalMoves(Point pointSelected) {
-        legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(pointSelected), pointSelected));
+        context.getLegalPoints().addAll(context.getMovement().pieceMoveDelegation(context.getBoardMap().get(pointSelected), pointSelected));
     }
 
 
-    private boolean pointContainsPiece(Point point){
-        if(boardMap.containsKey(point)) return true;
+    private boolean pointIsAPiece(Point point){
+        if(context.getBoardMap().containsKey(point)) return true;
         return false;
     }
 
@@ -62,7 +43,7 @@ public class NoPieceSelectedState implements GameState {
     }
 
     private boolean isPieceMyColor(Point point){
-        return boardMap.get(point).getColor() == currentPlayer.getColor();
+        return context.getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
     }
 
     @Override

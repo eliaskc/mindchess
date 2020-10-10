@@ -14,7 +14,7 @@ import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.PAWN;
 
-public class Game implements TimerObserver,IGameStateChanger {
+public class Game implements TimerObserver, IGameContext {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final Board board = new Board();
     private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
@@ -52,8 +52,8 @@ public class Game implements TimerObserver,IGameStateChanger {
     }
 
     private void initGameStates(){
-        noPiecesSelected = new NoPieceSelectedState(boardMap,plies,movement, legalPoints,deadPieces,currentPlayer,this);
-        pieceSelected = new PieceSelectedState(boardMap,plies,movement,legalPoints, deadPieces,currentPlayer,this);
+        noPiecesSelected = new NoPieceSelectedState(this);
+        pieceSelected = new PieceSelectedState(this);
         gameState = noPiecesSelected;
     }
 
@@ -89,137 +89,11 @@ public class Game implements TimerObserver,IGameStateChanger {
      * @param y
      */
     void handleBoardClick(int x, int y) {
-        /*
-        if (pawnPromotionInProgress) {
-            return;
-        }
-
-        //The last point/square that has been clicked on
-        Point clickedPoint = new Point(x, y);
-
-        //Only marks a clicked piece if it is your own
-        if (clickedOwnPiece(clickedPoint)) {
-            if (checkDeselection(clickedPoint)) return;
-            markedPoint = new Point(x, y);
-        }
-
-        if (legalPoints.size() == 0 && boardMap.get(markedPoint) != null) {
-            fetchLegalMoves();
-        } else {
-            checkMove(clickedPoint);
-        }
-
-        notifyDrawLegalMoves();
-         */
-
-
-        /**
-         * -----------------------------------------------
-         */
-
         gameState.handleInput(x,y);
-        System.out.println(currentPlayer);
-
-
-    }
-
-    private boolean clickedOwnPiece(Point p) {
-        if (boardMap.containsKey(p)) {
-            return (boardMap.get(p).getColor() == currentPlayer.getColor());
-        }
-        return false;
-    }
-
-    private boolean checkDeselection(Point clickedPoint) {
-        if (markedPoint != null) {
-            legalPoints.clear();
-            if (markedPoint.equals(clickedPoint)){
-                markedPoint = null;
-                notifyDrawLegalMoves();
-                return true;
-            }
-        }
-        return false;
-    }
-    /**
-     * Adds all legal points the marked piece can move to to the legalPoints list
-     */
-    private void fetchLegalMoves() {
-        legalPoints.addAll(movement.pieceMoveDelegation(boardMap.get(markedPoint), markedPoint));
-
-        //This is needed otherwise an empty list wouldn't nullify markedPoint
-        if (legalPoints.size() == 0) {
-            markedPoint = null;
-        }
     }
 
     private void winConditionCheck(){
         checkKingTaken();
-    }
-
-    /**
-     * Checks if the latest click was on a point that is legal to move to
-     * If it is, the move is made
-     *
-     * @param clickedPoint
-     */
-    private void checkMove(Point clickedPoint) {
-        if (legalPoints.contains(clickedPoint)) {
-            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
-            makeSpecialMoves(markedPoint, clickedPoint);
-            move(markedPoint, clickedPoint);
-            if (!checkPawnPromotion(clickedPoint)) {
-                switchPlayer();
-            }
-            winConditionCheck();
-            notifyDrawPieces();
-        }
-        legalPoints.clear();
-        markedPoint = null;
-    }
-
-    /**
-     * Checks if any special moves are attempted and if so, performs the necessary actions
-     *
-     * @param markedPoint
-     * @param clickedPoint
-     */
-    private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
-        //castling
-        if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
-            if (clickedPoint.x > markedPoint.x) {
-                move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
-            } else if (clickedPoint.x < markedPoint.x) {
-                move(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
-            }
-        }
-
-        //en passant
-        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
-            if (boardMap.get(markedPoint).getColor() == WHITE) {
-                takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
-            } else if (boardMap.get(markedPoint).getColor() == BLACK) {
-                takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
-            }
-        }
-    }
-
-    /**
-     * Moves the marked piece to the clicked point
-     * <p>
-     */
-    private void move(Point moveFrom, Point moveTo) {
-        if (boardMap.get(moveTo) != null) {
-            takePiece(moveTo);
-        }
-
-        boardMap.put(moveTo, boardMap.get(moveFrom));
-        boardMap.remove(moveFrom);
-    }
-
-    private void takePiece(Point pointToTake) {
-        deadPieces.add(boardMap.remove(pointToTake));
-        notifyDrawDeadPieces();
     }
 
     private void checkKingTaken(){
@@ -283,7 +157,6 @@ public class Game implements TimerObserver,IGameStateChanger {
             currentPlayer = playerWhite;
         }
         currentPlayer.getTimer().setActive(true);
-        notifySwitchedPlayer();
     }
 
     void stopAllTimers(){
@@ -325,6 +198,7 @@ public class Game implements TimerObserver,IGameStateChanger {
     }
 
     public void notifySwitchedPlayer() {
+        switchPlayer();
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.switchedPlayer();
         }
@@ -352,6 +226,10 @@ public class Game implements TimerObserver,IGameStateChanger {
         return board;
     }
 
+    public Map<Point, Piece> getBoardMap() {
+        return boardMap;
+    }
+
     public Player getPlayerWhite() {
         return playerWhite;
     }
@@ -370,5 +248,9 @@ public class Game implements TimerObserver,IGameStateChanger {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    public Movement getMovement() {
+        return movement;
     }
 }

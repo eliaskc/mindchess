@@ -1,36 +1,22 @@
 package chess.model.GameState;
 
 import chess.model.*;
-import chess.model.GameState.GameState;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
-import static chess.model.PieceType.PAWN;
 
 public class PieceSelectedState implements GameState {
 
     private Point markedPoint;
-    private Map<Point, Piece> boardMap;
-    private List<Ply> plies;
-    private Movement movement;
-    private List<Point> legalPoints;
-    private IGameStateChanger context;
-    private Player currentPlayer;
-    private List<Piece> deadPieces;
+    private IGameContext context;
 
-    public PieceSelectedState(Map<Point, Piece> boardMap, List<Ply> plies, Movement movement, List<Point> legalPoints,List<Piece> deadPieces, Player currentPlayer ,IGameStateChanger context) {
-        this.boardMap = boardMap;
-        this.plies = plies;
-        this.movement = movement;
-        this.legalPoints = legalPoints;
+
+    public PieceSelectedState(IGameContext context) {
         this.context = context;
-        this.deadPieces = deadPieces;
-        this.currentPlayer = currentPlayer;
     }
 
     @Override
@@ -38,23 +24,36 @@ public class PieceSelectedState implements GameState {
         checkMove(x,y);
     }
 
+    /**
+     * Checks if the latest click was on a point that is legal to move to
+     * If it is, the move is made
+     *
+     * @param x
+     * @param y
+     */
     private void checkMove(int x, int y) {
         Point selectedPoint = new Point(x,y);
-        if (legalPoints.contains(selectedPoint)) {
-            plies.add(new Ply(markedPoint, selectedPoint, boardMap.get(markedPoint), currentPlayer));
+        if (context.getLegalPoints().contains(selectedPoint)) {
+            context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
             notifyDrawPieces();
-            switchPlayer();
+            notifySwitchedPlayer();
         }
-        context.setGameState(IGameStateChanger.GameStates.NoPieceSelected);
-        legalPoints.clear();
+        context.setGameState(IGameContext.GameStates.NoPieceSelected);
+        context.getLegalPoints().clear();
         notifyDrawLegalMoves();
     }
 
+    /**
+     * Checks if any special moves are attempted and if so, performs the necessary actions
+     *
+     * @param markedPoint
+     * @param clickedPoint
+     */
     private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
         //castling
-        if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
+        if (context.getMovement().getCastlingPoints().size() != 0 && context.getMovement().getCastlingPoints().contains(clickedPoint)) {
             if (clickedPoint.x > markedPoint.x) {
                 move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
             } else if (clickedPoint.x < markedPoint.x) {
@@ -63,34 +62,31 @@ public class PieceSelectedState implements GameState {
         }
 
         //en passant
-        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
-            if (boardMap.get(markedPoint).getColor() == WHITE) {
+        if (context.getMovement().getEnPassantPoints().size() != 0 && context.getMovement().getEnPassantPoints().contains(clickedPoint)) {
+            if (context.getBoardMap().get(markedPoint).getColor() == WHITE) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
-            } else if (boardMap.get(markedPoint).getColor() == BLACK) {
+            } else if (context.getBoardMap().get(markedPoint).getColor() == BLACK) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
             }
         }
     }
-
+    /**
+     * Moves the marked piece to the clicked point
+     * <p>
+     */
     private void move(Point moveFrom, Point moveTo) {
-        if (boardMap.containsKey(moveTo)) {
+        if (context.getBoardMap().containsKey(moveTo)) {
             takePiece(moveTo);
         }
 
-        boardMap.put(moveTo, boardMap.get(moveFrom));
-        boardMap.remove(moveFrom);
+        context.getBoardMap().put(moveTo, context.getBoardMap().get(moveFrom));
+        context.getBoardMap().remove(moveFrom);
     }
 
     private void takePiece(Point pointToTake) {
-        deadPieces.add(boardMap.remove(pointToTake));
+        context.getDeadPieces().add(context.getBoardMap().remove(pointToTake));
         notifyDrawDeadPieces();
     }
-
-    public void switchPlayer(){
-        currentPlayer = currentPlayer.getOpponent();
-        notifySwitchedPlayer();
-    }
-
 
     private void notifyDrawPieces(){
         context.notifyDrawPieces();
@@ -100,7 +96,7 @@ public class PieceSelectedState implements GameState {
         context.notifyDrawDeadPieces();
     }
 
-    private void notifySwitchedPlayer(){
+    public void notifySwitchedPlayer(){
         context.notifySwitchedPlayer();
     }
 
