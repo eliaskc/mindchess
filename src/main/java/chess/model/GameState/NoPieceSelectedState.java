@@ -17,26 +17,34 @@ public class NoPieceSelectedState implements GameState {
     private Movement movement;
     private List<Point> legalPoints;
     private IGameStateChanger context;
+    private Player currentPlayer;
+    private List<Piece> deadPieces;
+    private IGameStateChanger.GameStates gameState = IGameStateChanger.GameStates.NoPieceSelected;
+    private Point markedPoint;
 
-    public NoPieceSelectedState(Map<Point, Piece> boardMap, List<Ply> plies,Movement movement,List<Point> legalPoints, IGameStateChanger context) {
+
+    public NoPieceSelectedState(Map<Point, Piece> boardMap, List<Ply> plies,Movement movement,List<Point> legalPoints,List<Piece> deadPieces,Player currentPlayer, IGameStateChanger context) {
         this.boardMap = boardMap;
         this.plies = plies;
         this.context = context;
         this.movement = movement;
+        this.currentPlayer = currentPlayer;
         this.legalPoints = legalPoints;
+        this.deadPieces = deadPieces;
+        
+
     }
 
     @Override
     public void handleInput(int x, int y) {
-        Point pointSelected = new Point(x,y);
-        if(pointContainsPiece(pointSelected)) {
-            fetchLegalMoves(pointSelected);
+        markedPoint = new Point(x,y);
+        if(pointContainsPiece(markedPoint) && isPieceMyColor(markedPoint)) {
+            fetchLegalMoves(markedPoint);
             if(legalPoints.size() == 0) return;
             notifyDrawLegalMoves();
-            context.setGameState(new PieceSelectedState(pointSelected,boardMap,plies,movement,legalPoints,context));
-            return;
+            context.setGameState(IGameStateChanger.GameStates.PieceSelected);
+            context.getGameState().setMarkedPoint(new Point(x,y));
         }
-
     }
 
     private void fetchLegalMoves(Point pointSelected) {
@@ -51,5 +59,24 @@ public class NoPieceSelectedState implements GameState {
 
     private void notifyDrawLegalMoves() {
         context.notifyDrawLegalMoves();
+    }
+
+    private boolean isPieceMyColor(Point point){
+        return boardMap.get(point).getColor() == currentPlayer.getColor();
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return false;
+    }
+
+    @Override
+    public String getWinnerName() {
+        return "null";
+    }
+
+    @Override
+    public void setMarkedPoint(Point markedPoint) {
+        this.markedPoint = markedPoint;
     }
 }

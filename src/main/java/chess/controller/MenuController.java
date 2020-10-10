@@ -75,7 +75,6 @@ public class MenuController implements Initializable {
     void goToBoard(MouseEvent event) {
         //Does not create a new boardmap
         model.createNewGame();
-        model.getCurrentGame().initGame();
 
         chessController.updateImageHandler();
 

@@ -34,17 +34,37 @@ public class Game implements TimerObserver,IGameStateChanger {
 
     private final Movement movement = new Movement(boardMap,plies);
 
-    GameState gameState = new NoPieceSelectedState(boardMap,plies,movement,legalPoints,this);
+    GameState gameState;
+    GameState noPiecesSelected;
+    GameState pieceSelected;
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
+    @Override
+    public void setGameState(GameStates gameState) {
+        switch (gameState){
+            case NoPieceSelected -> this.gameState = noPiecesSelected;
+            case PieceSelected -> this.gameState =  pieceSelected;
+        }
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    private void initGameStates(){
+        noPiecesSelected = new NoPieceSelectedState(boardMap,plies,movement, legalPoints,deadPieces,currentPlayer,this);
+        pieceSelected = new PieceSelectedState(boardMap,plies,movement,legalPoints, deadPieces,currentPlayer,this);
+        gameState = noPiecesSelected;
     }
 
     public void initGame() {
         board.initBoard();
         playerWhite.setPieces(board.getPiecesByColor(WHITE));
         playerBlack.setPieces(board.getPiecesByColor(BLACK));
+        playerWhite.setOpponent(playerBlack);
+        playerBlack.setOpponent(playerWhite);
         currentPlayer = playerWhite;
+        initGameStates();
     }
 
     public void initTimers() {
@@ -69,6 +89,7 @@ public class Game implements TimerObserver,IGameStateChanger {
      * @param y
      */
     void handleBoardClick(int x, int y) {
+        /*
         if (pawnPromotionInProgress) {
             return;
         }
@@ -89,7 +110,7 @@ public class Game implements TimerObserver,IGameStateChanger {
         }
 
         notifyDrawLegalMoves();
-
+         */
 
 
         /**
@@ -97,6 +118,9 @@ public class Game implements TimerObserver,IGameStateChanger {
          */
 
         gameState.handleInput(x,y);
+        System.out.println(currentPlayer);
+
+
     }
 
     private boolean clickedOwnPiece(Point p) {
@@ -300,7 +324,7 @@ public class Game implements TimerObserver,IGameStateChanger {
         }
     }
 
-    private void notifySwitchedPlayer() {
+    public void notifySwitchedPlayer() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.switchedPlayer();
         }

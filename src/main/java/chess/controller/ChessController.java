@@ -103,7 +103,7 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
-        promotionAnchorPane.toBack();
+        //promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -131,7 +131,7 @@ public class ChessController implements Initializable, GameObserver {
     void init() {
         media.setMediaPlayer(mediaPlayer);
         media.setEffect(new GaussianBlur(18));
-        endGamePane.toBack();
+        //endGamePane.toBack();
 
         updateSquareDimensions();
 

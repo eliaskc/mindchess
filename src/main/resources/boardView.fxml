@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,77 +11,39 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.ChessController">
    <children>
-      <AnchorPane fx:id="endGamePane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Rectangle fx:id="player1TimerBox" arcHeight="5.0" arcWidth="5.0" fill="GREENYELLOW" height="105.0" layoutX="340.0" layoutY="596.0" stroke="BLACK" strokeType="INSIDE" width="69.0" />
+      <Rectangle fx:id="player2TimerBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="81.0" layoutX="877.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+      <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="800.0" layoutY="660.0" prefHeight="42.0" prefWidth="140.0" text="Player 1">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="343.0" layoutY="18.0" prefHeight="42.0" prefWidth="140.0" text="Player 2">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="player2Timer" alignment="CENTER" layoutX="877.0" layoutY="21.0" prefHeight="35.0" prefWidth="63.0" text="9:52">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="player1Timer" alignment="CENTER" layoutX="343.0" layoutY="659.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="chessBoardContainer" layoutX="340.0" layoutY="60.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="60.0">
          <children>
-            <AnchorPane fx:id="whiteWinAnchorPane" opacity="0.7" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: WhiteSmoke;" AnchorPane.leftAnchor="440.0" AnchorPane.topAnchor="240.0">
-               <children>
-                  <Label fx:id="endGameLabel" alignment="CENTER" prefHeight="120.0" prefWidth="400.0" styleClass="endgame" text="Player 1 Wins" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="System Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="218.0" layoutY="140.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="150.0" text="Analyze" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="40.0">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Button>
-                  <ImageView fitHeight="70.0" fitWidth="150.0" layoutX="38.0" layoutY="143.0" onMouseClicked="#goToMenu" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@guiFiles/buttons/back_button.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane style="-fx-background-color: WHITESMOKE;">
-         <children>
-            <AnchorPane fx:id="promotionAnchorPane" prefHeight="250.0" prefWidth="350.0" styleClass="pawnPromotionBox" AnchorPane.bottomAnchor="235.0" AnchorPane.leftAnchor="465.0" AnchorPane.rightAnchor="465.0" AnchorPane.topAnchor="235.0">
-               <children>
-                  <ImageView fx:id="promotionQueen" fitHeight="90.0" fitWidth="90.0" layoutX="85.0" layoutY="55.0" onMouseClicked="#handleQueenPromotion" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="promotionKnight" fitHeight="90.0" fitWidth="90.0" layoutX="175.0" layoutY="55.0" onMouseClicked="#handleKnightPromotion" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="promotionRook" fitHeight="90.0" fitWidth="90.0" layoutX="85.0" layoutY="145.0" onMouseClicked="#handleRookPromotion" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="promotionBishop" fitHeight="90.0" fitWidth="90.0" layoutX="175.0" layoutY="145.0" onMouseClicked="#handleBishopPromotion" pickOnBounds="true" preserveRatio="true" />
-                  <Label layoutX="94.0" layoutY="23.0" text="Pawn promotion" />
-               </children>
-            </AnchorPane>
-            <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
-            <Rectangle fx:id="player1TimerBox" arcHeight="5.0" arcWidth="5.0" fill="GREENYELLOW" height="105.0" layoutX="340.0" layoutY="596.0" stroke="BLACK" strokeType="INSIDE" width="69.0" />
-            <Rectangle fx:id="player2TimerBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="81.0" layoutX="877.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="63.0" />
-            <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="800.0" layoutY="660.0" prefHeight="42.0" prefWidth="140.0" text="Player 1">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="343.0" layoutY="18.0" prefHeight="42.0" prefWidth="140.0" text="Player 2">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="player2Timer" alignment="CENTER" layoutX="877.0" layoutY="21.0" prefHeight="35.0" prefWidth="63.0" text="9:52">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="player1Timer" alignment="CENTER" layoutX="343.0" layoutY="659.0" prefHeight="35.0" prefWidth="57.0" text="10:00">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <AnchorPane fx:id="chessBoardContainer" layoutX="340.0" layoutY="60.0">
-               <children>
-                  <ImageView fx:id="chessBoardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@guiFiles/chess_board_high_res_green.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <FlowPane fx:id="flowPaneWhitePieces" layoutX="985.0" layoutY="60.0" prefHeight="150.0" prefWidth="250.0" styleClass="whiteDeadPiecesPane" />
-            <ImageView fx:id="btnBack" fitHeight="49.0" fitWidth="108.0" layoutX="45.0" layoutY="60.0" onMouseClicked="#goToMenu" pickOnBounds="true" preserveRatio="true" styleClass="backButton" />
-            <FlowPane fx:id="flowPaneBlackPieces" layoutX="45.0" layoutY="510.0" prefHeight="150.0" prefWidth="250.0" styleClass="blackDeadPiecesPane" />
-         </children>
-      </AnchorPane>
+            <ImageView fx:id="chessBoardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@guiFiles/chess_board_high_res_green.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+      <FlowPane fx:id="flowPaneWhitePieces" layoutX="999.0" layoutY="160.0" prefHeight="150.0" prefWidth="250.0" styleClass="whiteDeadPiecesPane" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="60.0" />
+      <ImageView fx:id="btnBack" fitHeight="49.0" fitWidth="108.0" layoutX="45.0" layoutY="56.0" onMouseClicked="#goToMenu" pickOnBounds="true" preserveRatio="true" styleClass="backButton" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="60.0" />
+      <FlowPane fx:id="flowPaneBlackPieces" layoutX="58.0" layoutY="360.0" prefHeight="150.0" prefWidth="250.0" styleClass="blackDeadPiecesPane" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="45.0" />
    </children>
 </AnchorPane>

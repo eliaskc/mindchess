@@ -41,4 +41,8 @@ public class Player {
     public void setOpponent(Player opponent) {
         this.opponent = opponent;
     }
+
+    public Player getOpponent() {
+        return opponent;
+    }
 }

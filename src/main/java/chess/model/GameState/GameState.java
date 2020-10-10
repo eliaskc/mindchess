@@ -1,6 +1,7 @@
 package chess.model.GameState;
 
 import chess.model.Piece;
+import chess.model.Player;
 import chess.model.Ply;
 
 import java.awt.Point;
@@ -10,4 +11,7 @@ import java.util.Map;
 
 public interface GameState {
     void handleInput(int x, int y);
+    boolean isGameOver();
+    String getWinnerName();
+    void setMarkedPoint(Point markedPoint);
 }
