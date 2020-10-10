@@ -193,14 +193,15 @@ public class Game implements TimerObserver {
     }
 
     //Should this go through chessFacade
+
+    /**
+     * handles forfeits, makes the current player lose the game
+     */
     public void onePlayerForfeit() {
         if(currentPlayer.getColor().equals(WHITE))blackPlayerWin();
         else whitePlayerWin();
     }
 
-    public void drawGameClicked() {
-        allowedToMovePieces = false;
-    }
 
 
     private void whitePlayerWin(){
@@ -228,7 +229,7 @@ public class Game implements TimerObserver {
         if (boardMap.get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && boardMap.get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && boardMap.get(clickedPoint).getColor() == BLACK)) {
                 notifyPawnPromotion(boardMap.get(clickedPoint).getColor());
-                allowedToMovePieces = false;
+                setAllowedToMovePieces(false);
                 pawnPromotionPoint = new Point(clickedPoint.x, clickedPoint.y);
             }
         }
@@ -242,7 +243,7 @@ public class Game implements TimerObserver {
      */
     public void pawnPromotion(PieceType pieceType) {
         boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
-        allowedToMovePieces = true;
+        setAllowedToMovePieces(true);
         pawnPromotionPoint = null;
 
         switchPlayer();
@@ -345,5 +346,9 @@ public class Game implements TimerObserver {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    public void setAllowedToMovePieces(boolean allowedToMovePieces) {
+        this.allowedToMovePieces = allowedToMovePieces;
     }
 }

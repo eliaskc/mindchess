@@ -121,11 +121,12 @@ public class ChessController implements Initializable, GameObserver {
         //Cascading
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
-        model.getCurrentGame().drawGameClicked();
+        model.getCurrentGame().setAllowedToMovePieces(false);
     }
 
     @FXML
     void refuseGameDraw(MouseEvent event) {
+        model.getCurrentGame().setAllowedToMovePieces(true);
         drawAnchorPane.toBack();
     }
 
