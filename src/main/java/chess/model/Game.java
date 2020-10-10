@@ -342,6 +342,10 @@ public class Game implements TimerObserver {
         return legalPoints;
     }
 
+    public Point getMarkedPoint() {
+        return markedPoint;
+    }
+
     public Board getBoard() {
         return board;
     }
