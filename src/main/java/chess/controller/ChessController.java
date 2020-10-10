@@ -370,7 +370,7 @@ public class ChessController implements Initializable, GameObserver {
      */
     private String formatTime(int seconds) {
         String sec = seconds % 60 >= 10 ? "" + (seconds % 3600) % 60 : "0" + (seconds % 3600) % 60;
-        String min = seconds >= 600 ? "" + (seconds % 3600) / 60 : "0" + (seconds % 3600) / 60;
+        String min = seconds >= 600 ? "" + seconds / 60 : "0" + seconds / 60;
         return min + ":" + sec;
     }
 
