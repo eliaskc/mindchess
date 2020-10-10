@@ -1,6 +1,9 @@
 package chess.model;
 
 import chess.GameObserver;
+import chess.model.GameState.GameState;
+import chess.model.GameState.NoPieceSelectedState;
+import chess.model.GameState.PieceSelectedState;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,10 +14,9 @@ import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.PAWN;
 
-public class Game implements TimerObserver {
+public class Game implements TimerObserver,IGameStateChanger {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final Board board = new Board();
-    private final Movement movement = new Movement();
     private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
     private final List<Piece> deadPieces = new ArrayList<>();
@@ -30,10 +32,16 @@ public class Game implements TimerObserver {
     private boolean pawnPromotionInProgress = false;
     private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
+    private final Movement movement = new Movement(boardMap,plies);
+
+    GameState gameState = new NoPieceSelectedState(boardMap,plies);
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     public void initGame() {
         board.initBoard();
-        movement.setBoardMap(boardMap);
-        movement.setPlies(plies);
         playerWhite.setPieces(board.getPiecesByColor(WHITE));
         playerBlack.setPieces(board.getPiecesByColor(BLACK));
         currentPlayer = playerWhite;
@@ -81,6 +89,12 @@ public class Game implements TimerObserver {
         }
 
         notifyDrawLegalMoves();
+
+        /**
+         * -----------------------------------------------
+         */
+
+        gameState.handleInput(x,y,boardMap,plies);
     }
 
     private boolean clickedOwnPiece(Point p) {
@@ -266,19 +280,19 @@ public class Game implements TimerObserver {
         }
     }
 
-    private void notifyDrawPieces() {
+    public void notifyDrawPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawPieces();
         }
     }
 
-    private void notifyDrawDeadPieces() {
+    public void notifyDrawDeadPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawDeadPieces();
         }
     }
 
-    private void notifyDrawLegalMoves() {
+    public void notifyDrawLegalMoves() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawLegalMoves();
         }

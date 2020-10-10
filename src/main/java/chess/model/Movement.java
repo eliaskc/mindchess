@@ -14,6 +14,14 @@ import static chess.model.PieceType.PAWN;
  * Is responisble for finding legal moves
  */
 public class Movement {
+    public Movement(Map<Point, Piece> boardMap, List<Ply> plies) {
+        this.boardMap = boardMap;
+        this.plies = plies;
+    }
+
+    public Movement() {
+    }
+
     private Map<Point, Piece> boardMap = new HashMap<>();
     private final List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
     private List<Ply> plies = new ArrayList<>();
