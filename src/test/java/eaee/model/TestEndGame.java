@@ -47,13 +47,15 @@ public class TestEndGame {
         assertEquals(null, model.getCurrentGame());
     }
 
-    //Test WhitePlayerWin
-
-
     //Test time running out method?
+    @Test
+    public void TestTimerRunningOut() {
+        model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
 
+        model.getCurrentGame().checkTimerRanOut();
 
-
+        assertEquals(null, model.getCurrentGame());
+    }
 
     //future tests for draw and surrender
 }

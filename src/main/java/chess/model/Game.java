@@ -293,16 +293,20 @@ public class Game implements TimerObserver {
 
     @Override
     public void updateTimer() {
-        for (GameObserver gameObserver : gameObservers) {
-            gameObserver.updateTimer();
-        }
+        notifyTimerUpdated();
     }
 
-    public void timerGameEnd() {
+    public void checkTimerRanOut() {
         if (playerWhite.getTimer().getTime() == 0) {
             notifyEndGameObservers("black");
         } else if (playerBlack.getTimer().getTime() == 0) {
             notifyEndGameObservers("white");
+        }
+    }
+
+    private void notifyTimerUpdated() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.updateTimer();
         }
     }
 

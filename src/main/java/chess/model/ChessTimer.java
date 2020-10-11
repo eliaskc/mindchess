@@ -48,7 +48,7 @@ public class ChessTimer {
         timer.cancel();
         setActive(false);
         for (TimerObserver o : observers) {
-            o.timerGameEnd();
+            o.checkTimerRanOut();
         }
     }
 
