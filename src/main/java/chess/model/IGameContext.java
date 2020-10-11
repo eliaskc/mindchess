@@ -14,6 +14,7 @@ public interface IGameContext {
     List<Ply> getPlies();
     Map<Point,Piece> getBoardMap();
     Movement getMovement();
+    void switchPlayer();
     void notifyDrawPieces();
     void notifyDrawDeadPieces();
     void notifyDrawLegalMoves();

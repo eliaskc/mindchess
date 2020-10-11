@@ -40,7 +40,7 @@ public class Game implements TimerObserver, IGameContext {
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
-    
+
     private void initGameStates(){
         gameState = new NoPieceSelectedState(this);
     }
@@ -134,10 +134,9 @@ public class Game implements TimerObserver, IGameContext {
 
         switchPlayer();
         notifyDrawPieces();
-
     }
 
-    private void switchPlayer() {
+    public void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
         if (currentPlayer == playerWhite) {
             currentPlayer = playerBlack;
@@ -186,7 +185,6 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     public void notifySwitchedPlayer() {
-        switchPlayer();
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.switchedPlayer();
         }

@@ -18,6 +18,7 @@ public class PieceSelectedState implements GameState {
     public PieceSelectedState(Point markedPoint, IGameContext context) {
         this.markedPoint = markedPoint;
         this.context = context;
+        System.out.println("Piece selected state");
     }
 
     @Override
@@ -38,8 +39,8 @@ public class PieceSelectedState implements GameState {
             context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
+            context.switchPlayer();
             context.notifyDrawPieces();
-            context.notifySwitchedPlayer();
         }
         context.setGameState(new NoPieceSelectedState(context));
         context.getLegalPoints().clear();

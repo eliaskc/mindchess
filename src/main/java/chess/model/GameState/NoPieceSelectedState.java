@@ -9,6 +9,7 @@ public class NoPieceSelectedState implements GameState {
 
     public NoPieceSelectedState(IGameContext context) {
         this.context = context;
+        System.out.println("No piece selected state");
     }
 
 
