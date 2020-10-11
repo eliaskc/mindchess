@@ -190,7 +190,7 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    private void notifyPawnPromotion(ChessColor chessColor) {
+    public void notifyPawnPromotion(ChessColor chessColor) {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.pawnPromotionSetup(chessColor);
         }

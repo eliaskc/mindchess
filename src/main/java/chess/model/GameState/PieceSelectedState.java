@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.PAWN;
 
 public class PieceSelectedState implements GameState {
 
@@ -39,8 +40,13 @@ public class PieceSelectedState implements GameState {
             context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
-            context.switchPlayer();
             context.notifyDrawPieces();
+            if(checkPawnPromotion(selectedPoint)){
+                context.setGameState(new PawnPromotionState(selectedPoint,context));
+                return;
+            }
+            context.switchPlayer();
+
         }
         context.setGameState(new NoPieceSelectedState(context));
         context.getLegalPoints().clear();
@@ -88,6 +94,21 @@ public class PieceSelectedState implements GameState {
     private void takePiece(Point pointToTake) {
         context.getDeadPieces().add(context.getBoardMap().remove(pointToTake));
         context.notifyDrawDeadPieces();
+    }
+
+    /**
+     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
+     *
+     * @param clickedPoint
+     */
+    private boolean checkPawnPromotion(Point clickedPoint) {
+        if (context.getBoardMap().get(clickedPoint).getPieceType() == PAWN) {
+            if ((clickedPoint.y == 0 && context.getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoardMap().get(clickedPoint).getColor() == BLACK)) {
+                context.notifyPawnPromotion(context.getBoardMap().get(clickedPoint).getColor());
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

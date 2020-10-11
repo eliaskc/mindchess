@@ -18,5 +18,5 @@ public interface IGameContext {
     void notifyDrawPieces();
     void notifyDrawDeadPieces();
     void notifyDrawLegalMoves();
-    void notifySwitchedPlayer();
+    void notifyPawnPromotion(ChessColor chessColor);
 }

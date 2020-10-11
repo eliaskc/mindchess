@@ -26,7 +26,9 @@ public class PawnPromotionState implements GameState{
     public void handleInput(int x, int y) {
         Point selectedPromotion = new Point(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
-            promote(context.getBoardMap().get(markedPoint),selectedPromotion);
+            promote(markedPoint,selectedPromotion);
+        } else {
+            throw new IllegalArgumentException();
         }
 
     }
@@ -38,7 +40,8 @@ public class PawnPromotionState implements GameState{
         promotionPieces.put(new Point(1,0), PieceType.KNIGHT);
     }
 
-    private void promote(Piece piece, Point selectedPromotion){
+    private void promote(Point markedPoint, Point selectedPromotion){
+        Piece piece = context.getBoardMap().get(markedPoint);
         piece.setPieceType(promotionPieces.get(selectedPromotion));
     }
 

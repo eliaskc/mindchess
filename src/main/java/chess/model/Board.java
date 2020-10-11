@@ -39,7 +39,7 @@ public class Board {
 
     private void placeBlackPieces() {
         //PieceType.values();
-        boardMap.put(new Point(0, 0), new Piece(true, BLACK, ROOK));
+        //boardMap.put(new Point(0, 0), new Piece(true, BLACK, ROOK));
         boardMap.put(new Point(1, 0), new Piece(true, BLACK, KNIGHT));
         boardMap.put(new Point(2, 0), new Piece(true, BLACK, BISHOP));
         boardMap.put(new Point(3, 0), new Piece(true, BLACK, QUEEN));
