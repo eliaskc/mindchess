@@ -43,6 +43,8 @@ public class PieceSelectedState implements GameState {
             context.notifyDrawPieces();
             if(checkPawnPromotion(selectedPoint)){
                 context.setGameState(new PawnPromotionState(selectedPoint,context));
+                context.getLegalPoints().clear();
+                context.notifyDrawLegalMoves();
                 return;
             }
             context.switchPlayer();
