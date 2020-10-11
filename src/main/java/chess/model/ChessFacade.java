@@ -1,5 +1,7 @@
 package chess.model;
 
+import chess.observers.EndGameObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +12,9 @@ import java.util.List;
  * <p>
  * (Composite pattern?)
  */
-public class ChessFacade {
+public class ChessFacade implements EndGameObserver {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
-
-    public ChessFacade() {
-    }
 
     public Player getPlayerWhite() {
         return currentGame.getPlayerWhite();
@@ -25,7 +24,7 @@ public class ChessFacade {
         return currentGame.getPlayerBlack();
     }
 
-    public Game getGame() {
+    public Game getCurrentGame() {
         return currentGame;
     }
 
@@ -49,16 +48,13 @@ public class ChessFacade {
     public void createNewGame() {
         currentGame = new Game();
         currentGame.initGame();
+        currentGame.addEndGameObserver(this);
         gameList.add(currentGame);
     }
 
-    public Game getCurrentGame() {
-        return currentGame;
-    }
-
-    public void endGame() {
+    @Override
+    public void endGame(String result) {
         currentGame.stopAllTimers();
-        gameList.remove(currentGame);
+        currentGame = null;
     }
-
 }
