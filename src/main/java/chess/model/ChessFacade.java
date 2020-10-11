@@ -55,6 +55,6 @@ public class ChessFacade implements EndGameObserver {
     @Override
     public void endGame(String result) {
         currentGame.stopAllTimers();
-        currentGame = null;
+        currentGame.setGameHasEnded(true);
     }
 }

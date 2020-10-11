@@ -117,7 +117,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @FXML
     void forfeit(ActionEvent event) {
-        model.getCurrentGame().onePlayerForfeit();
+        model.getCurrentGame().forfeit();
     }
 
     /**
@@ -136,7 +136,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void declineDraw(ActionEvent event) {
-        model.getCurrentGame().setAllowedToMovePieces(true);
+        model.getCurrentGame().declineDraw();
         drawAnchorPane.toBack();
     }
 
@@ -145,7 +145,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void acceptDraw(ActionEvent event) {
-        model.getCurrentGame().gameDraw();
+        model.getCurrentGame().acceptDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -156,7 +156,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     public Scene getMenuScene() {
         return scene;
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
