@@ -5,7 +5,10 @@ import chess.GameObserver;
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.PieceType;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -23,6 +26,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.List;
@@ -47,8 +51,6 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private MediaView media;
     @FXML
-    private ImageView btnBack;
-    @FXML
     private Label player1Name;
     @FXML
     private Label player2Name;
@@ -57,9 +59,13 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private Label player2Timer;
     @FXML
+    private Label lblDrawLabel;
+    @FXML
     private ImageView chessBoardImage;
     @FXML
     private AnchorPane chessBoardContainer;
+    @FXML
+    private AnchorPane drawAnchorPane;
     @FXML
     private FlowPane flowPaneBlackPieces;
     @FXML
@@ -68,8 +74,6 @@ public class ChessController implements Initializable, GameObserver {
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
-    @FXML
-    private Button btnMenuEndGame;
     @FXML
     private AnchorPane promotionAnchorPane;
     @FXML
@@ -80,6 +84,7 @@ public class ChessController implements Initializable, GameObserver {
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
+
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -103,10 +108,45 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
-        //promotionAnchorPane.toBack();
+        drawAnchorPane.toBack();
+        promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
+    }
+
+    @FXML
+    void forfeitClicked(MouseEvent event) {
+        //model.getCurrentGame().onePlayerForfeit();
+    }
+
+    /**
+     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
+     * stops players from moving their pieces while the interface is up
+     */
+    @FXML
+    void drawGameClicked() {
+        //Cascading
+        lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
+        drawAnchorPane.toFront();
+        //model.getCurrentGame().setAllowedToMovePieces(false);
+    }
+
+    /**
+     * if the opponent refuses the interface will close and allows the player to move their pieces
+     */
+    @FXML
+    void refuseGameDraw() {
+        //model.getCurrentGame().setAllowedToMovePieces(true);
+        drawAnchorPane.toBack();
+    }
+
+    /**
+     * sets the game to a draw
+     */
+    @FXML
+    void acceptGameDraw() {
+        //model.getCurrentGame().gameDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -131,7 +171,7 @@ public class ChessController implements Initializable, GameObserver {
     void init() {
         media.setMediaPlayer(mediaPlayer);
         media.setEffect(new GaussianBlur(18));
-        //endGamePane.toBack();
+        endGamePane.toBack();
 
         updateSquareDimensions();
 
@@ -179,7 +219,6 @@ public class ChessController implements Initializable, GameObserver {
                 model.endGame();
             }
         });
-
     }
 
     /**
@@ -264,6 +303,14 @@ public class ChessController implements Initializable, GameObserver {
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
         for (ImageView imageView : legalMoveImages) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView)), imageView);
+            st.setFromX(0.1);
+            st.setFromY(0.1);
+            st.setToX(1);
+            st.setToY(1);
+            st.setCycleCount(1);
+            st.play();
+
             chessBoardContainer.getChildren().add(imageView);
             chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
         }
@@ -291,9 +338,13 @@ public class ChessController implements Initializable, GameObserver {
     public void pawnPromotionSetup(ChessColor chessColor) {
         promotionAnchorPane.toFront();
         promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
+
         promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
+
         promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
+
         promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
+
     }
 
     private void pawnPromotion(PieceType pieceType) {
@@ -303,22 +354,26 @@ public class ChessController implements Initializable, GameObserver {
 
     @FXML
     public void handleQueenPromotion(){
-        pawnPromotion(QUEEN);
+        model.handleBoardClick(0,1);
+        promotionAnchorPane.toBack();
     }
 
     @FXML
     public void handleKnightPromotion(){
-        pawnPromotion(KNIGHT);
+        model.handleBoardClick(1,0);
+        promotionAnchorPane.toBack();
     }
 
     @FXML
     public void handleRookPromotion(){
-        pawnPromotion(ROOK);
+        model.handleBoardClick(1,1);
+        promotionAnchorPane.toBack();
     }
 
     @FXML
     public void handleBishopPromotion(){
-        pawnPromotion(BISHOP);
+        model.handleBoardClick(0,0);
+        promotionAnchorPane.toBack();
     }
 
     private void clearAllPieceImages() {
@@ -326,7 +381,22 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     private void clearAllLegalMoveImages() {
-        chessBoardContainer.getChildren().removeAll(legalMoveImages);
+        for (ImageView imageView : legalMoveImages) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(75), imageView);
+            st.setFromX(1);
+            st.setFromY(1);
+            st.setToX(0.1);
+            st.setToY(0.1);
+            st.setCycleCount(1);
+            st.play();
+
+            st.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    chessBoardContainer.getChildren().remove(imageView);
+                }
+            });
+        }
     }
 
     /**
@@ -346,7 +416,7 @@ public class ChessController implements Initializable, GameObserver {
      */
     private String formatTime(int seconds) {
         String sec = seconds % 60 >= 10 ? "" + (seconds % 3600) % 60 : "0" + (seconds % 3600) % 60;
-        String min = seconds >= 600 ? "" + (seconds % 3600) / 60 : "0" + (seconds % 3600) / 60;
+        String min = seconds >= 600 ? "" + seconds / 60 : "0" + seconds / 60;
         return min + ":" + sec;
     }
 

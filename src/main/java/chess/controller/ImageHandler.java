@@ -152,6 +152,22 @@ public class ImageHandler {
         return imageViews;
     }
 
+    double distanceFromMarkedPiece(ImageView imageView){
+        double yDelta;
+        double xDelta;
+        if(model.getCurrentGame().getPlies().size() > 0){
+            //double yDelta = imageView.getY() - model.getCurrentGame().getMarkedPoint().y*squareDimension;
+            yDelta = imageView.getY() - model.getCurrentGame().getPlies().get(model.getCurrentGame().getPlies().size()-1).getMovedTo().y*squareDimension;
+            //double xDelta = imageView.getX() - model.getCurrentGame().getMarkedPoint().x*squareDimension;
+             xDelta = imageView.getY() - model.getCurrentGame().getPlies().get(model.getCurrentGame().getPlies().size()-1).getMovedTo().x*squareDimension;
+        } else {
+            yDelta = 1;
+            xDelta = 1;
+        }
+
+        return Math.hypot(yDelta, xDelta);
+    }
+
     public double getSquareDimension() {
         return squareDimension;
     }
