@@ -1,5 +1,7 @@
 package chess.model;
 
+import chess.observers.TimerObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;

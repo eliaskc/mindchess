@@ -1,6 +1,8 @@
 package chess.model;
 
-import chess.GameObserver;
+import chess.observers.EndGameObserver;
+import chess.observers.GameObserver;
+import chess.observers.TimerObserver;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import static chess.model.PieceType.PAWN;
 
 public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
+    private final List<EndGameObserver> endGameObservers = new ArrayList<>();
+
     private final Board board = new Board();
     private final Movement movement = new Movement();
     private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
@@ -93,7 +97,7 @@ public class Game implements TimerObserver {
     private boolean checkDeselection(Point clickedPoint) {
         if (markedPoint != null) {
             legalPoints.clear();
-            if (markedPoint.equals(clickedPoint)){
+            if (markedPoint.equals(clickedPoint)) {
                 markedPoint = null;
                 notifyDrawLegalMoves();
                 return true;
@@ -101,6 +105,7 @@ public class Game implements TimerObserver {
         }
         return false;
     }
+
     /**
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
@@ -111,13 +116,6 @@ public class Game implements TimerObserver {
         if (legalPoints.size() == 0) {
             markedPoint = null;
         }
-    }
-
-    /**
-     * Checks the different winconditions that can happen during a game
-     */
-    private void winConditionCheck(){
-        checkKingTaken();
     }
 
     /**
@@ -182,6 +180,7 @@ public class Game implements TimerObserver {
 
     /**
      * Removes a piece on a point from the boardmap and adds it to the deadpieces list and draws it in the interface
+     *
      * @param pointToTake the point the piece is removed from
      */
     private void takePiece(Point pointToTake) {
@@ -190,11 +189,18 @@ public class Game implements TimerObserver {
     }
 
     /**
+     * Checks the different winconditions that can happen during a game
+     */
+    private void winConditionCheck() {
+        checkKingTaken();
+    }
+
+    /**
      * checks if a king is taken and if so determines who won by taking the opponents king
      */
-    private void checkKingTaken(){
+    private void checkKingTaken() {
         if (!(deadPieces.size() == 0)) {
-            Piece lastPieceTaken = deadPieces.get(deadPieces.size()-1);
+            Piece lastPieceTaken = deadPieces.get(deadPieces.size() - 1);
             if (lastPieceTaken.getPieceType() == PieceType.KING) {
                 if (lastPieceTaken.getColor() == BLACK) whitePlayerWin();
                 else if (lastPieceTaken.getColor() == WHITE) blackPlayerWin();
@@ -203,25 +209,26 @@ public class Game implements TimerObserver {
     }
 
     //Should this go through chessFacade
+
     /**
      * handles forfeits, makes the current player lose the game
      */
-    public void onePlayerForfeit() {
-        if(currentPlayer.getColor().equals(WHITE))blackPlayerWin();
+    public void playerForfeit() {
+        if (currentPlayer.getColor().equals(WHITE)) blackPlayerWin();
         else whitePlayerWin();
     }
-
 
     /**
      * sets the white player as winner
      */
-    private void whitePlayerWin(){
+    private void whitePlayerWin() {
         notifyEndGameObservers("white");
     }
+
     /**
      * sets the black player as winner
      */
-    private void blackPlayerWin(){
+    private void blackPlayerWin() {
         notifyEndGameObservers("black");
     }
 
@@ -229,15 +236,10 @@ public class Game implements TimerObserver {
      * sets the game to a draw
      */
     //Is there a way to make this private and still work
-    public void gameDraw(){
+    public void gameDraw() {
         notifyEndGameObservers("draw");
     }
 
-    void notifyEndGameObservers(String result) {
-        gameObservers.forEach(p -> {
-            p.checkEndGame(result);
-        });
-    }
     /**
      * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
      *
@@ -259,8 +261,12 @@ public class Game implements TimerObserver {
      *
      * @param pieceType
      */
-    public void pawnPromotion(PieceType pieceType) {
-        boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
+    public void pawnPromotion(PieceType pieceType) throws NullPointerException {
+        try {
+            boardMap.get(pawnPromotionPoint).setPieceType(pieceType);
+        } catch (NullPointerException e) {
+            System.out.println("No pawn to be promoted exists.");
+        }
         setAllowedToMovePieces(true);
         pawnPromotionPoint = null;
 
@@ -280,7 +286,7 @@ public class Game implements TimerObserver {
         notifySwitchedPlayer();
     }
 
-    void stopAllTimers(){
+    void stopAllTimers() {
         playerBlack.getTimer().setActive(false);
         playerWhite.getTimer().setActive(false);
     }
@@ -293,9 +299,9 @@ public class Game implements TimerObserver {
     }
 
     public void timerGameEnd() {
-        if(playerWhite.getTimer().getTime()==0){
+        if (playerWhite.getTimer().getTime() == 0) {
             notifyEndGameObservers("black");
-        } else if (playerBlack.getTimer().getTime()==0) {
+        } else if (playerBlack.getTimer().getTime() == 0) {
             notifyEndGameObservers("white");
         }
     }
@@ -330,12 +336,26 @@ public class Game implements TimerObserver {
         }
     }
 
-    public void addObserver(GameObserver gameObserver) {
+    void notifyEndGameObservers(String result) {
+        endGameObservers.forEach(p -> {
+            p.endGame(result);
+        });
+    }
+
+    public void addGameObserver(GameObserver gameObserver) {
         gameObservers.add(gameObserver);
     }
 
-    public void removeObserver(GameObserver gameObserver) {
+    public void removeGameObserver(GameObserver gameObserver) {
         gameObservers.remove(gameObserver);
+    }
+
+    public void addEndGameObserver(EndGameObserver endgameObserver) {
+        endGameObservers.add(endgameObserver);
+    }
+
+    public void removeEndGameObserver(EndGameObserver endgameObserver) {
+        endGameObservers.remove(endgameObserver);
     }
 
     public List<Point> getLegalPoints() {

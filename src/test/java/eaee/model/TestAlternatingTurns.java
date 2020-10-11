@@ -21,24 +21,24 @@ public class TestAlternatingTurns {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 
     @Test
     public void testAlternatingTurns(){
-        Player p1 = model.getGame().getPlayerWhite();
-        Player p2 = model.getGame().getPlayerBlack();
+        Player p1 = model.getCurrentGame().getPlayerWhite();
+        Player p2 = model.getCurrentGame().getPlayerBlack();
         model.handleBoardClick(0,6);
         model.handleBoardClick(0, 5);
 
-        Player currPlayer = model.getGame().getCurrentPlayer();
+        Player currPlayer = model.getCurrentGame().getCurrentPlayer();
         assertTrue(currPlayer.equals(p2) && !currPlayer.equals(p1));
     }
 
     @Test
     public void testTakePieceSuccess(){
-        Piece piece = model.getGame().getBoard().getBoardMap().get(new Point(3,7));
+        Piece piece = model.getCurrentGame().getBoard().getBoardMap().get(new Point(3,7));
 
         model.handleBoardClick(4,6);
         model.handleBoardClick(4,5);
@@ -52,16 +52,16 @@ public class TestAlternatingTurns {
         model.handleBoardClick(2,0);
         model.handleBoardClick(6,4);
 
-        assertTrue(model.getGame().getDeadPieces().contains(piece));
+        assertTrue(model.getCurrentGame().getDeadPieces().contains(piece));
     }
 
     @Test
     public void testTakePieceFail(){
-        Piece piece = model.getGame().getBoard().getBoardMap().get(new Point(4, 0));
+        Piece piece = model.getCurrentGame().getBoard().getBoardMap().get(new Point(4, 0));
 
         model.handleBoardClick(3,0);
         model.handleBoardClick(4,0);
 
-        assertFalse(model.getGame().getDeadPieces().contains(piece));
+        assertFalse(model.getCurrentGame().getDeadPieces().contains(piece));
     }
 }

@@ -132,7 +132,7 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getGame().getLegalPoints()) {
+        for (Point point : model.getCurrentGame().getLegalPoints()) {
             ImageView imageView = new ImageView();
 
             if (boardMap.get(point) != null) {

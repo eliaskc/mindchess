@@ -3,7 +3,6 @@ package eaee.model;
 import chess.model.ChessFacade;
 import chess.model.Movement;
 import chess.model.Piece;
-import chess.model.PieceType;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +20,7 @@ public class TestEndGame {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 
@@ -29,13 +28,14 @@ public class TestEndGame {
     //gamelist = 0 after taking a king
     @Test
     public void testCheckKingTaken(){
+        //Setup
         model.handleBoardClick(2,6);
         model.handleBoardClick(2,4);
 
         model.handleBoardClick(3,1);
         model.handleBoardClick(3,3);
 
-        model.handleBoardClick(4,7);
+        model.handleBoardClick(3,7);
         model.handleBoardClick(0,4);
 
         model.handleBoardClick(3,3);
@@ -44,7 +44,7 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardClick(0,4);
         model.handleBoardClick(4,0);
-        assertEquals(1, model.getGameList().size());
+        assertEquals(null, model.getCurrentGame());
     }
 
     //Test WhitePlayerWin
