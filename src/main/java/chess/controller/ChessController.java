@@ -338,12 +338,10 @@ public class ChessController implements Initializable, GameObserver {
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
         promotionAnchorPane.toFront();
+        chessBoardImage.setMouseTransparent(true);
         promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
-
         promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
-
         promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
-
         promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
 
     }
@@ -357,24 +355,28 @@ public class ChessController implements Initializable, GameObserver {
     public void handleQueenPromotion(){
         model.handleBoardClick(0,1);
         promotionAnchorPane.toBack();
+        chessBoardImage.setMouseTransparent(false);
     }
 
     @FXML
     public void handleKnightPromotion(){
         model.handleBoardClick(1,0);
         promotionAnchorPane.toBack();
+        chessBoardImage.setMouseTransparent(false);
     }
 
     @FXML
     public void handleRookPromotion(){
         model.handleBoardClick(1,1);
         promotionAnchorPane.toBack();
+        chessBoardImage.setMouseTransparent(false);
     }
 
     @FXML
     public void handleBishopPromotion(){
         model.handleBoardClick(0,0);
         promotionAnchorPane.toBack();
+        chessBoardImage.setMouseTransparent(false);
     }
 
     private void clearAllPieceImages() {
