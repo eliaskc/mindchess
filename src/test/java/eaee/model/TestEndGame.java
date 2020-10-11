@@ -44,7 +44,7 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardClick(0,4);
         model.handleBoardClick(4,0);
-        assertEquals(null, model.getCurrentGame());
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TestEndGame {
 
         model.getCurrentGame().checkTimerRanOut();
 
-        assertEquals(null, model.getCurrentGame());
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TestEndGame {
         model.getCurrentGame().offerDraw();
         model.getCurrentGame().acceptDraw();
 
-        assertEquals(null, model.getCurrentGame());
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 
     @Test
@@ -69,13 +69,13 @@ public class TestEndGame {
         model.getCurrentGame().offerDraw();
         model.getCurrentGame().declineDraw();
 
-        assertNotEquals(null, model.getCurrentGame());
+        assertEquals(false, model.getCurrentGame().isGameHasEnded());
     }
 
     @Test
     public void testForfeit() {
         model.getCurrentGame().forfeit();
 
-        assertEquals(null, model.getCurrentGame());
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 }

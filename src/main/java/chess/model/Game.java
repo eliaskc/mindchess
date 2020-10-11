@@ -34,6 +34,8 @@ public class Game implements TimerObserver {
     private boolean allowedToMovePieces = true;
     private Point pawnPromotionPoint; //The point at which a pawn is being promoted
 
+    private boolean gameHasEnded = false;
+
     public void initGame() {
         board.initBoard();
         movement.setBoardMap(boardMap);
@@ -396,6 +398,14 @@ public class Game implements TimerObserver {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    public boolean isGameHasEnded() {
+        return gameHasEnded;
+    }
+
+    public void setGameHasEnded(boolean gameHasEnded) {
+        this.gameHasEnded = gameHasEnded;
     }
 
     public void setAllowedToMovePieces(boolean allowedToMovePieces) {
