@@ -47,9 +47,8 @@ public class TestEndGame {
         assertEquals(null, model.getCurrentGame());
     }
 
-    //Test time running out method?
     @Test
-    public void TestTimerRunningOut() {
+    public void testTimerRunningOut() {
         model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
 
         model.getCurrentGame().checkTimerRanOut();
@@ -57,5 +56,26 @@ public class TestEndGame {
         assertEquals(null, model.getCurrentGame());
     }
 
-    //future tests for draw and surrender
+    @Test
+    public void testDrawAccepted() {
+        model.getCurrentGame().offerDraw();
+        model.getCurrentGame().acceptDraw();
+
+        assertEquals(null, model.getCurrentGame());
+    }
+
+    @Test
+    public void testDrawDeclined() {
+        model.getCurrentGame().offerDraw();
+        model.getCurrentGame().declineDraw();
+
+        assertNotEquals(null, model.getCurrentGame());
+    }
+
+    @Test
+    public void testForfeit() {
+        model.getCurrentGame().forfeit();
+
+        assertEquals(null, model.getCurrentGame());
+    }
 }

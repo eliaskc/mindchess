@@ -210,10 +210,22 @@ public class Game implements TimerObserver {
 
     //Should this go through chessFacade
 
+    public void offerDraw() {
+        allowedToMovePieces = false;
+    }
+
+    public void declineDraw() {
+        allowedToMovePieces = true;
+    }
+
+    public void acceptDraw() {
+        notifyEndGameObservers("draw");
+    }
+
     /**
      * handles forfeits, makes the current player lose the game
      */
-    public void playerForfeit() {
+    public void forfeit() {
         if (currentPlayer.getColor().equals(WHITE)) blackPlayerWin();
         else whitePlayerWin();
     }
@@ -230,14 +242,6 @@ public class Game implements TimerObserver {
      */
     private void blackPlayerWin() {
         notifyEndGameObservers("black");
-    }
-
-    /**
-     * sets the game to a draw
-     */
-    //Is there a way to make this private and still work
-    public void gameDraw() {
-        notifyEndGameObservers("draw");
     }
 
     /**

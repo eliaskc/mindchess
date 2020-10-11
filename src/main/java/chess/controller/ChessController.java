@@ -117,7 +117,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @FXML
     void forfeitClicked(MouseEvent event) {
-        model.getCurrentGame().playerForfeit();
+        model.getCurrentGame().forfeit();
     }
 
     /**
@@ -125,19 +125,19 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * stops players from moving their pieces while the interface is up
      */
     @FXML
-    void drawGameClicked() {
+    void offerDraw() {
         //Cascading
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
-        model.getCurrentGame().setAllowedToMovePieces(false);
+        model.getCurrentGame().offerDraw();
     }
 
     /**
      * if the opponent refuses the interface will close and allows the player to move their pieces
      */
     @FXML
-    void refuseGameDraw() {
-        model.getCurrentGame().setAllowedToMovePieces(true);
+    void declineGameDraw() {
+        model.getCurrentGame().declineDraw();
         drawAnchorPane.toBack();
     }
 
@@ -146,7 +146,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void acceptGameDraw() {
-        model.getCurrentGame().gameDraw();
+        model.getCurrentGame().acceptDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -213,7 +213,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
                 endGamePane.toFront();
             }
             else if(result.equals("draw")){
-                endGameLabel.setText("Game draw");
+                endGameLabel.setText("The game ended in a draw");
                 endGamePane.toFront();
             }
         });
