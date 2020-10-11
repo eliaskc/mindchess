@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.model.ChessFacade;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -72,7 +73,7 @@ public class MenuController implements Initializable {
      * @param event Clicked the button
      */
     @FXML
-    void goToBoard(MouseEvent event) {
+    void goToBoard(ActionEvent event) {
         //Does not create a new boardmap
         model.createNewGame();
         model.getCurrentGame().initGame();
@@ -104,7 +105,7 @@ public class MenuController implements Initializable {
      * @param event Pressed the button
      */
     @FXML
-    void Exit(MouseEvent event) {
+    void Exit(ActionEvent event) {
         System.exit(0);
     }
 

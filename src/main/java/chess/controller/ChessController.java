@@ -105,7 +105,7 @@ public class ChessController implements Initializable, GameObserver {
      * @param event Button click
      */
     @FXML
-    void goToMenu(MouseEvent event) {
+    void goToMenu(ActionEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
         drawAnchorPane.toBack();
@@ -116,7 +116,7 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     @FXML
-    void forfeitClicked(MouseEvent event) {
+    void forfeit(ActionEvent event) {
         model.getCurrentGame().onePlayerForfeit();
     }
 
@@ -125,8 +125,7 @@ public class ChessController implements Initializable, GameObserver {
      * stops players from moving their pieces while the interface is up
      */
     @FXML
-    void drawGameClicked() {
-        //Cascading
+    void offerDraw(ActionEvent event) {
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
         model.getCurrentGame().setAllowedToMovePieces(false);
@@ -136,7 +135,7 @@ public class ChessController implements Initializable, GameObserver {
      * if the opponent refuses the interface will close and allows the player to move their pieces
      */
     @FXML
-    void refuseGameDraw() {
+    void declineDraw(ActionEvent event) {
         model.getCurrentGame().setAllowedToMovePieces(true);
         drawAnchorPane.toBack();
     }
@@ -145,7 +144,7 @@ public class ChessController implements Initializable, GameObserver {
      * sets the game to a draw
      */
     @FXML
-    void acceptGameDraw() {
+    void acceptDraw(ActionEvent event) {
         model.getCurrentGame().gameDraw();
     }
 
@@ -204,12 +203,12 @@ public class ChessController implements Initializable, GameObserver {
     public void checkEndGame(String result) {
         Platform.runLater(() -> {
             if(result.equals("white")){
-                endGameLabel.setText(player1Name.getText() + " wins");
+                endGameLabel.setText(player1Name.getText() + " won");
                 endGamePane.toFront();
                 model.endGame();
             }
             else if(result.equals("black")){
-                endGameLabel.setText(player2Name.getText() + " wins");
+                endGameLabel.setText(player2Name.getText() + " won");
                 endGamePane.toFront();
                 model.endGame();
             }
