@@ -69,7 +69,7 @@ public class TestEndGame {
         model.getCurrentGame().offerDraw();
         model.getCurrentGame().declineDraw();
 
-        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+        assertEquals(false, model.getCurrentGame().isGameHasEnded());
     }
 
     @Test
