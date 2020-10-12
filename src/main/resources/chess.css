@@ -92,3 +92,11 @@
 .timeComboBox > .list-cell {
     -fx-text-fill: white;
 }
+
+.plyAnchorPane:hover {
+    -fx-background-color: #D3D3D3;
+}
+
+.plyAnchorPane: pressed {
+    -fx-background-color: #696969;
+}

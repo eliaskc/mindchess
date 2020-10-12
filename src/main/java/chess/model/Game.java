@@ -128,7 +128,9 @@ public class Game implements TimerObserver {
      */
     private void checkMove(Point clickedPoint) {
         if (legalPoints.contains(clickedPoint)) {
-            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+            Ply ply = new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer);
+            plies.add(ply);
+            ply.generateBoardSnapshot(boardMap);
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
             if (checkPawnPromotion(clickedPoint)) {

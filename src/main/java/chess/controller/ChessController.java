@@ -1,5 +1,6 @@
 package chess.controller;
 
+import chess.model.Ply;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,6 +32,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -48,6 +52,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
+    private List<ImageView> pliesImages = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
     @FXML
@@ -88,7 +93,16 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ImageView promotionBishop;
     @FXML
     private Button muteUnmuteButton;
-
+    @FXML
+    private AnchorPane pliesAnchorPane;
+    @FXML
+    private ScrollPane pliesScrollPane;
+    @FXML
+    private FlowPane pliesFlowPane;
+    @FXML
+    private AnchorPane pliesBoardAnchorPane;
+    @FXML
+    private ImageView pliesBoardImageView;
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
@@ -407,6 +421,51 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
                 public void handle(ActionEvent actionEvent) {
                     chessboardContainer.getChildren().remove(imageView);
                 }
+            });
+        }
+    }
+
+    private void clearAllPliesImages(){
+        pliesBoardAnchorPane.getChildren().removeAll(pliesImages);
+        pliesImages.clear();
+    }
+
+
+    /**
+     * Method is called when the "Analyze" button is pressed at the end screen
+     */
+    @FXML
+    public void analyzeGame() {
+        populatePliesFlowPane();
+        clearAllPliesImages();
+        pliesBoardImageView.setImage(imageHandler.getChessboardImage());
+        pliesAnchorPane.toFront();
+    }
+
+    @FXML
+    public void analyzeGameBack(){
+        pliesAnchorPane.toBack();
+    }
+
+    /**
+     * Creates a PlyController object for each ply and populates it with information about the ply
+     * Also takes the generated snapshot of that specific ply and creates an image that represents the board after that ply has been made
+     */
+    private void populatePliesFlowPane() {
+        pliesFlowPane.getChildren().clear();
+
+        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        for (Ply ply : model.getCurrentGame().getPlies()){
+            PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
+            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getPlayer().getColor()));
+            pliesFlowPane.getChildren().add(plyController);
+
+            //When a ply is clicked all the pieces on the ply board are removed and updated/animated
+            plyController.setOnMouseClicked(event -> {
+                clearAllPliesImages();
+                List<ImageView> plies = plyController.generateBoardImages();
+                pliesImages.addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(plies);
             });
         }
     }
