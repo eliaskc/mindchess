@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
@@ -48,6 +49,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
     private MediaPlayer mediaPlayer;
+    private MediaPlayer audioPlayer;
     @FXML
     private MediaView media;
     @FXML
@@ -61,9 +63,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private Label lblDrawLabel;
     @FXML
-    private ImageView chessBoardImage;
+    private ImageView chessboardImage;
     @FXML
-    private AnchorPane chessBoardContainer;
+    private AnchorPane chessboardContainer;
     @FXML
     private AnchorPane drawAnchorPane;
     @FXML
@@ -84,11 +86,17 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
+    @FXML
+    private Button muteUnmuteButton;
 
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
+    }
+
+    public void setAudioPlayer(MediaPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
     }
 
     public void setModel(ChessFacade model) {
@@ -159,8 +167,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chessboardContainerX = chessBoardContainer.getLayoutX();
-        chessboardContainerY = chessBoardContainer.getLayoutY();
+        chessboardContainerX = chessboardContainer.getLayoutX();
+        chessboardContainerY = chessboardContainer.getLayoutY();
     }
 
     /**
@@ -171,6 +179,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         media.setEffect(new GaussianBlur(18));
         endGamePane.toBack();
 
+        chessboardImage.setImage(imageHandler.getChessboardImage());
         updateSquareDimensions();
 
         pieceImages = imageHandler.fetchPieceImages();
@@ -192,7 +201,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * Gets the dimensions of the squares from the current size of the chessboard
      */
     private void updateSquareDimensions() {
-        squareDimension = chessBoardImage.getFitHeight() / 8;
+        squareDimension = chessboardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
     }
 
@@ -257,6 +266,21 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         throw new IllegalArgumentException("Outside board");
     }
 
+    @FXML
+    private void switchPieceStyle() {
+        imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+        chessboardImage.setImage(imageHandler.getChessboardImage());
+        drawLegalMoves();
+        drawPieces();
+        drawDeadPieces();
+    }
+
+    @FXML
+    private void muteUnmute() {
+        audioPlayer.setMute(!audioPlayer.isMute());
+        muteUnmuteButton.setText((muteUnmuteButton.getText().equals("Mute")) ? "Unmute" : "Mute");
+    }
+
     /**
      * Draws all pieces from the list of pieceImages from the ImageHandler
      */
@@ -272,8 +296,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         pieceImages = imageHandler.fetchPieceImages();
 
         for (ImageView pieceImage : pieceImages) {
-            chessBoardContainer.getChildren().add(pieceImage);
-            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
+            chessboardContainer.getChildren().add(pieceImage);
+            chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
     }
 
@@ -307,8 +331,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             st.setCycleCount(1);
             st.play();
 
-            chessBoardContainer.getChildren().add(imageView);
-            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
+            chessboardContainer.getChildren().add(imageView);
+            chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
         }
     }
 
@@ -365,7 +389,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void clearAllPieceImages() {
-        chessBoardContainer.getChildren().removeAll(pieceImages);
+        chessboardContainer.getChildren().removeAll(pieceImages);
     }
 
     private void clearAllLegalMoveImages() {
@@ -381,7 +405,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             st.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    chessBoardContainer.getChildren().remove(imageView);
+                    chessboardContainer.getChildren().remove(imageView);
                 }
             });
         }

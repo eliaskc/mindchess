@@ -4,6 +4,7 @@ import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.Piece;
 import chess.model.PieceType;
+import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -27,6 +28,7 @@ public class ImageHandler {
     private ChessFacade model;
     private Map<Point, Piece> boardMap;
     private double squareDimension;
+    private boolean minecraftPieceStyle = true;
 
     public List<ImageView> getBlackImageViews() {
         return blackImageViews;
@@ -42,6 +44,14 @@ public class ImageHandler {
 
     public void setModel(ChessFacade model) {
         this.model = model;
+    }
+
+    public boolean isMinecraftPieceStyle() {
+        return minecraftPieceStyle;
+    }
+
+    public void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
+        this.minecraftPieceStyle = minecraftPieceStyle;
     }
 
     /**
@@ -61,6 +71,7 @@ public class ImageHandler {
             }
 
             ImageView pieceImageView = new ImageView();
+            pieceImageView.setPreserveRatio(true);
             pieceImageView.setImage(createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 10);
@@ -76,13 +87,19 @@ public class ImageHandler {
     }
 
     Image createPieceImage(PieceType pieceType, ChessColor chessColor) {
-        String imageURL = String.format("/chesspieces/%s_%s.png", chessColor.toString(), pieceType.toString());
+        String imageURL;
+
+        if (minecraftPieceStyle) {
+            imageURL = String.format("/minecraftChesspieces/%sMinecraft%s.png", chessColor.toString(), pieceType.toString());
+        } else {
+            imageURL = String.format("/chesspieces/%s%s.png", chessColor.toString(), pieceType.toString());
+        }
 
         Image pieceImage;
         try {
             pieceImage = new Image(getClass().getResourceAsStream(imageURL));
         } catch (NullPointerException e) {
-            pieceImage = new Image(getClass().getResourceAsStream("/missing_texture.png"));
+            pieceImage = new Image(getClass().getResourceAsStream("/guiFiles/missingTexture.png"));
         }
 
         return pieceImage;
@@ -99,6 +116,7 @@ public class ImageHandler {
             }
 
             ImageView pieceImageView = new ImageView();
+            pieceImageView.setPreserveRatio(true);
             pieceImageView.setImage(createPieceImage(piece.getPieceType(), piece.getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 25);
@@ -136,9 +154,11 @@ public class ImageHandler {
             ImageView imageView = new ImageView();
 
             if (boardMap.get(point) != null) {
-                imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
+                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftlegalMoveBox.png")));
+                else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
-                imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMove.png")));
+                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftlegalMove.png")));
+                else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMove.png")));
             }
 
             imageView.setFitWidth(squareDimension);
@@ -169,5 +189,24 @@ public class ImageHandler {
     //Game
     public void init() {
         boardMap = model.getCurrentGame().getBoard().getBoardMap();
+    }
+
+    public Image getChessboardImage() {
+        String imageURL;
+
+        if (minecraftPieceStyle) {
+            imageURL = "/guiFiles/minecraftChessboard.png";
+        } else {
+            imageURL = "/guiFiles/chessboardBeigeAndBrown.png";
+        }
+
+        Image pieceImage;
+        try {
+            pieceImage = new Image(getClass().getResourceAsStream(imageURL));
+        } catch (NullPointerException e) {
+            pieceImage = new Image(getClass().getResourceAsStream("/guiFiles/missingTexture.png"));
+        }
+
+        return pieceImage;
     }
 }
