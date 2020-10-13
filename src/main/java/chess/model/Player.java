@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class Player {
     private final ChessTimer chessTimer = new ChessTimer();
-    private List<Piece> pieces = new ArrayList<>();
     private String name;
     private final ChessColor chessColor;
     private Player opponent;
@@ -32,10 +31,6 @@ public class Player {
 
     public ChessTimer getTimer() {
         return chessTimer;
-    }
-
-    public void setPieces(List<Piece> pieces) {
-        this.pieces = pieces;
     }
 
     public void setOpponent(Player opponent) {
