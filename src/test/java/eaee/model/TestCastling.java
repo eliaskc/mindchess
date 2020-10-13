@@ -28,8 +28,8 @@ public class TestCastling {
 
     @Test
     public void testCastlingNotPossible() {
-        model.handleBoardClick(4,7);
-        model.handleBoardClick(6,7);
+        model.handleBoardInput(4,7);
+        model.handleBoardInput(6,7);
 
         assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.BISHOP);
         assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KNIGHT);
@@ -38,27 +38,27 @@ public class TestCastling {
     @Test
     public void testCastlingPossible() {
         //Castling setup
-        model.handleBoardClick(6,7);
-        model.handleBoardClick(7,5);
+        model.handleBoardInput(6,7);
+        model.handleBoardInput(7,5);
 
-        model.handleBoardClick(4,1);
-        model.handleBoardClick(4,2);
+        model.handleBoardInput(4,1);
+        model.handleBoardInput(4,2);
 
-        model.handleBoardClick(4,6);
-        model.handleBoardClick(4,5);
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,5);
 
-        model.handleBoardClick(4,2);
-        model.handleBoardClick(4,3);
+        model.handleBoardInput(4,2);
+        model.handleBoardInput(4,3);
 
-        model.handleBoardClick(5,7);
-        model.handleBoardClick(4,6);
+        model.handleBoardInput(5,7);
+        model.handleBoardInput(4,6);
 
-        model.handleBoardClick(4,3);
-        model.handleBoardClick(4,4);
+        model.handleBoardInput(4,3);
+        model.handleBoardInput(4,4);
 
         //The actual castling
-        model.handleBoardClick(4,7);
-        model.handleBoardClick(6,7);
+        model.handleBoardInput(4,7);
+        model.handleBoardInput(6,7);
 
         assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.ROOK);
         assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KING);

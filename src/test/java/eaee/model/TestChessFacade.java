@@ -29,8 +29,8 @@ public class TestChessFacade {
 
         Piece testPieceBefore = boardMap.get(p1);
 
-        model.handleBoardClick(0,6);
-        model.handleBoardClick(0,5);
+        model.handleBoardInput(0,6);
+        model.handleBoardInput(0,5);
 
         Piece testPieceAfter = boardMap.get(p2);
 
@@ -54,7 +54,7 @@ public class TestChessFacade {
 
     @Test
     public void testClickOutsideBoard() {
-        model.handleBoardClick(10,11);
-        model.handleBoardClick(10,12);
+        model.handleBoardInput(10,11);
+        model.handleBoardInput(10,12);
     }
 }

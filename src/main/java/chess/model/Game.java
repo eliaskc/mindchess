@@ -66,7 +66,7 @@ public class Game implements TimerObserver {
      * @param x
      * @param y
      */
-    void handleBoardClick(int x, int y) {
+    void handleBoardInput(int x, int y) {
         if (!allowedToMovePieces) {
             return;
         }

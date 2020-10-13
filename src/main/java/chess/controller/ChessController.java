@@ -33,7 +33,6 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -247,7 +246,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     public void handleClick(MouseEvent event) {
-        model.handleBoardClick(translateX(event.getSceneX()), translateY(event.getSceneY()));
+        model.handleBoardInput(translateX(event.getSceneX()), translateY(event.getSceneY()));
     }
 
     /**

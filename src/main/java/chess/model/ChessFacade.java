@@ -38,8 +38,8 @@ public class ChessFacade implements EndGameObserver {
      * @param x the x coordinate for the mouse when it clicks
      * @param y the y coordinate for the mouse when it clicks
      */
-    public void handleBoardClick(int x, int y) {
-        currentGame.handleBoardClick(x, y);
+    public void handleBoardInput(int x, int y) {
+        currentGame.handleBoardInput(x, y);
     }
 
     //-------------------------------------------------------------------------------------
