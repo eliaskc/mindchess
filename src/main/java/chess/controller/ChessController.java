@@ -321,7 +321,6 @@ public class ChessController implements Initializable, GameObserver {
      */
     @Override
     public void switchedPlayer() {
-        System.out.println(model.getCurrentGame().getCurrentPlayer().getColor());
         if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()){
             player1TimerBox.setFill(Color.GREENYELLOW);
             player2TimerBox.setFill(Color.LIGHTGRAY);

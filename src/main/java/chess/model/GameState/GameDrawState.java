@@ -1,4 +1,4 @@
 package chess.model.GameState;
 
-public class GameInactiveState {
+public class GameDrawState {
 }

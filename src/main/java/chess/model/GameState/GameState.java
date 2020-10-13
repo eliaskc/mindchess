@@ -11,6 +11,8 @@ import java.util.Map;
 
 public interface GameState {
     void handleInput(int x, int y);
-    boolean isGameOver();
-    String getWinnerName();
+    boolean getIsGameOver();
+    boolean getIsGameDraw();
+    boolean getIsPlayerSwitch();
+    boolean getIsPawnPromotion();
 }

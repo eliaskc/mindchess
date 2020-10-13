@@ -6,9 +6,11 @@ import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
     private IGameContext context;
+    private boolean isPlayerSwitch;
 
-    public NoPieceSelectedState(IGameContext context) {
+    public NoPieceSelectedState(boolean isPlayerSwitch, IGameContext context) {
         this.context = context;
+        this.isPlayerSwitch = isPlayerSwitch;
         System.out.println("No piece selected state");
     }
 
@@ -19,9 +21,9 @@ public class NoPieceSelectedState implements GameState {
         if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
             fetchLegalMoves(markedPoint);
             if(context.getLegalPoints().size() == 0) return;
-            notifyDrawLegalMoves();
-            context.setGameState(new PieceSelectedState(markedPoint,context));
+            context.setGameState(new PieceSelectedState(markedPoint,false,context));
         }
+        isPlayerSwitch = false;
     }
 
     /**
@@ -37,21 +39,27 @@ public class NoPieceSelectedState implements GameState {
         return false;
     }
 
-    private void notifyDrawLegalMoves() {
-        context.notifyDrawLegalMoves();
-    }
-
     private boolean isPieceMyColor(Point point){
         return context.getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
     }
 
     @Override
-    public boolean isGameOver() {
+    public boolean getIsGameOver() {
         return false;
     }
 
     @Override
-    public String getWinnerName() {
-        return "null";
+    public boolean getIsPlayerSwitch() {
+        return isPlayerSwitch;
+    }
+
+    @Override
+    public boolean getIsGameDraw() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsPawnPromotion() {
+        return false;
     }
 }

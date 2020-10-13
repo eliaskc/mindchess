@@ -14,17 +14,14 @@ public class PieceSelectedState implements GameState {
 
     private Point markedPoint;
     private IGameContext context;
+    private boolean isPlayerSwitch;
 
 
-    public PieceSelectedState(Point markedPoint, IGameContext context) {
+    public PieceSelectedState(Point markedPoint,boolean isPlayerSwitch, IGameContext context) {
         this.markedPoint = markedPoint;
         this.context = context;
+        this.isPlayerSwitch = isPlayerSwitch;
         System.out.println("Piece selected state");
-    }
-
-    @Override
-    public void handleInput(int x, int y) {
-        checkMove(x,y);
     }
 
     /**
@@ -34,25 +31,23 @@ public class PieceSelectedState implements GameState {
      * @param x
      * @param y
      */
-    private void checkMove(int x, int y) {
+    @Override
+    public void handleInput(int x, int y) {
         Point selectedPoint = new Point(x,y);
+        isPlayerSwitch = false;
         if (context.getLegalPoints().contains(selectedPoint)) {
-            context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
+            addMoveToPlies(selectedPoint);
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
-            context.notifyDrawPieces();
+            isPlayerSwitch = true;
             if(checkPawnPromotion(selectedPoint)){
-                context.setGameState(new PawnPromotionState(selectedPoint,context));
+                context.setGameState(new PawnPromotionState(selectedPoint,false,context));
                 context.getLegalPoints().clear();
-                context.notifyDrawLegalMoves();
                 return;
             }
-            context.switchPlayer();
-
         }
-        context.setGameState(new NoPieceSelectedState(context));
+        context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
         context.getLegalPoints().clear();
-        context.notifyDrawLegalMoves();
     }
 
     /**
@@ -95,7 +90,6 @@ public class PieceSelectedState implements GameState {
 
     private void takePiece(Point pointToTake) {
         context.getDeadPieces().add(context.getBoardMap().remove(pointToTake));
-        context.notifyDrawDeadPieces();
     }
 
     /**
@@ -106,20 +100,33 @@ public class PieceSelectedState implements GameState {
     private boolean checkPawnPromotion(Point clickedPoint) {
         if (context.getBoardMap().get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && context.getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoardMap().get(clickedPoint).getColor() == BLACK)) {
-                context.notifyPawnPromotion(context.getBoardMap().get(clickedPoint).getColor());
                 return true;
             }
         }
         return false;
     }
 
+    private void addMoveToPlies(Point selectedPoint){
+        context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoardMap().get(markedPoint), context.getCurrentPlayer()));
+    }
+
     @Override
-    public boolean isGameOver() {
+    public boolean getIsGameOver() {
         return false;
     }
 
     @Override
-    public String getWinnerName() {
-        return "null";
+    public boolean getIsPlayerSwitch() {
+        return isPlayerSwitch;
+    }
+
+    @Override
+    public boolean getIsGameDraw() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsPawnPromotion() {
+        return false;
     }
 }

@@ -12,12 +12,14 @@ public class PawnPromotionState implements GameState{
 
     private Map<Point, PieceType> promotionPieces = new HashMap<>();
 
-    IGameContext context;
-    Point markedPoint;
+    private IGameContext context;
+    private Point markedPoint;
+    private boolean isPlayerSwitch;
 
-    public PawnPromotionState(Point markedPoint,IGameContext context) {
+    public PawnPromotionState(Point markedPoint,boolean isPlayerSwitch,IGameContext context) {
         this.context = context;
         this.markedPoint = markedPoint;
+        this.isPlayerSwitch = isPlayerSwitch;
         initPromotionPieces();
         System.out.println("Pawn promotion state");
     }
@@ -29,8 +31,7 @@ public class PawnPromotionState implements GameState{
             promote(markedPoint,selectedPromotion);
             context.notifyPawnPromotion(context.getCurrentPlayer().getColor());
             context.notifyDrawPieces();
-            context.switchPlayer();
-            context.setGameState(new NoPieceSelectedState(context));
+            context.setGameState(new NoPieceSelectedState(true,context));
         }
 
     }
@@ -44,18 +45,26 @@ public class PawnPromotionState implements GameState{
 
     private void promote(Point markedPoint, Point selectedPromotion){
         Piece piece = context.getBoardMap().get(markedPoint);
-        System.out.println(piece.getPieceType());
         piece.setPieceType(promotionPieces.get(selectedPromotion));
-        System.out.println(piece.getPieceType());
     }
 
     @Override
-    public boolean isGameOver() {
+    public boolean getIsGameOver() {
         return false;
     }
 
     @Override
-    public String getWinnerName() {
-        return "null";
+    public boolean getIsPlayerSwitch() {
+        return isPlayerSwitch;
+    }
+
+    @Override
+    public boolean getIsGameDraw() {
+        return false;
+    }
+
+    @Override
+    public boolean getIsPawnPromotion() {
+        return true;
     }
 }

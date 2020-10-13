@@ -42,7 +42,7 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     private void initGameStates(){
-        gameState = new NoPieceSelectedState(this);
+        gameState = new NoPieceSelectedState(false,this);
     }
 
     public void initGame() {
@@ -78,6 +78,24 @@ public class Game implements TimerObserver, IGameContext {
      */
     void handleBoardClick(int x, int y) {
         gameState.handleInput(x,y);
+        if(gameState.getIsPlayerSwitch()){
+            switchPlayer();
+        }
+        checkGameOver();
+        notifyDrawLegalMoves();
+        notifyDrawDeadPieces();
+        notifyDrawPieces();
+        if(gameState.getIsPawnPromotion()) notifyPawnPromotion(currentPlayer.getColor());
+    }
+
+    private void checkGameOver(){
+        if(gameState.getIsGameOver()){
+            if(gameState.getIsGameDraw()){
+                notifyEndGameObservers("Game ended in a draw");
+            } else {
+                notifyEndGameObservers(currentPlayer.getName() + " has won the game");
+            }
+        }
     }
 
     private void winConditionCheck(){
@@ -136,7 +154,7 @@ public class Game implements TimerObserver, IGameContext {
         notifyDrawPieces();
     }
 
-    public void switchPlayer() {
+    private void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
         if (currentPlayer == playerWhite) {
             currentPlayer = playerBlack;
