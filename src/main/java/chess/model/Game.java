@@ -45,8 +45,6 @@ public class Game implements TimerObserver, IGameContext {
 
     public void initGame() {
         board.initBoard();
-        playerWhite.setPieces(board.getPiecesByColor(WHITE));
-        playerBlack.setPieces(board.getPiecesByColor(BLACK));
         playerWhite.setOpponent(playerBlack);
         playerBlack.setOpponent(playerWhite);
         currentPlayer = playerWhite;
