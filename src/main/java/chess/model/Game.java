@@ -2,6 +2,7 @@ package chess.model;
 
 import chess.GameObserver;
 import chess.model.GameState.GameState;
+import chess.model.GameState.GameWonState;
 import chess.model.GameState.NoPieceSelectedState;
 import chess.model.GameState.PieceSelectedState;
 
@@ -82,19 +83,12 @@ public class Game implements TimerObserver, IGameContext {
             switchPlayer();
         }
         checkGameOver();
-        notifyDrawLegalMoves();
-        notifyDrawDeadPieces();
-        notifyDrawPieces();
-        if(gameState.getIsPawnPromotion()) notifyPawnPromotion(currentPlayer.getColor());
+        System.out.println(gameState.getGameStatus());
     }
 
     private void checkGameOver(){
         if(gameState.getIsGameOver()){
-            if(gameState.getIsGameDraw()){
-                notifyEndGameObservers("Game ended in a draw");
-            } else {
-                notifyEndGameObservers(currentPlayer.getName() + " has won the game");
-            }
+            notifyEndGameObservers(gameState.getGameStatus());
         }
     }
 
@@ -183,6 +177,7 @@ public class Game implements TimerObserver, IGameContext {
         } else if (playerBlack.getTimer().getTime()==0) {
             notifyEndGameObservers("white");
         }
+        setGameState(new GameWonState(this));
     }
 
     public void notifyDrawPieces() {

@@ -59,12 +59,7 @@ public class PawnPromotionState implements GameState{
     }
 
     @Override
-    public boolean getIsGameDraw() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPawnPromotion() {
-        return true;
+    public String getGameStatus() {
+        return "Game ongoing";
     }
 }

@@ -21,6 +21,7 @@ public class NoPieceSelectedState implements GameState {
         if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
             fetchLegalMoves(markedPoint);
             if(context.getLegalPoints().size() == 0) return;
+            context.notifyDrawLegalMoves();
             context.setGameState(new PieceSelectedState(markedPoint,false,context));
         }
         isPlayerSwitch = false;
@@ -54,12 +55,7 @@ public class NoPieceSelectedState implements GameState {
     }
 
     @Override
-    public boolean getIsGameDraw() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPawnPromotion() {
-        return false;
+    public String getGameStatus() {
+        return "Game ongoing";
     }
 }
