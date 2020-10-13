@@ -108,6 +108,7 @@ public class ChessController implements Initializable, GameObserver {
     void goToMenu(MouseEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        model.endGame();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -203,21 +204,8 @@ public class ChessController implements Initializable, GameObserver {
     @Override
     public void checkEndGame(String result) {
         Platform.runLater(() -> {
-            if(result.equals("white")){
-                endGameLabel.setText(player1Name.getText() + " wins");
-                endGamePane.toFront();
-                model.endGame();
-            }
-            else if(result.equals("black")){
-                endGameLabel.setText(player2Name.getText() + " wins");
-                endGamePane.toFront();
-                model.endGame();
-            }
-            else if(result.equals("draw")){
-                endGameLabel.setText("Game draw");
-                endGamePane.toFront();
-                model.endGame();
-            }
+            endGameLabel.setText(result);
+            endGamePane.toFront();
         });
     }
 
@@ -346,7 +334,7 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     private void pawnPromotion(PieceType pieceType) {
-        model.getCurrentGame().pawnPromotion(pieceType);
+        //model.getCurrentGame().pawnPromotion(pieceType);
         promotionAnchorPane.toBack();
     }
 

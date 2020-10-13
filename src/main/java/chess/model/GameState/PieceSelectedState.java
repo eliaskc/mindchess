@@ -39,6 +39,10 @@ public class PieceSelectedState implements GameState {
             addMoveToPlies(markedPoint, selectedPoint);
             makeSpecialMoves(markedPoint, selectedPoint);
             move(markedPoint, selectedPoint);
+            if(checkKingTaken()){
+                context.setGameState(new GameWonState(context));
+                return;
+            }
             context.notifyDrawPieces();
             isPlayerSwitch = true;
             if(checkPawnPromotion(selectedPoint)){
@@ -97,6 +101,13 @@ public class PieceSelectedState implements GameState {
     private void takePiece(Point pointToTake) {
         context.getDeadPieces().add(context.getBoardMap().remove(pointToTake));
         context.notifyDrawDeadPieces();
+    }
+
+    private boolean checkKingTaken(){
+        for (Piece p: context.getDeadPieces()) {
+            if(p.getPieceType() == PieceType.KING) return true;
+        }
+        return false;
     }
 
     /**
