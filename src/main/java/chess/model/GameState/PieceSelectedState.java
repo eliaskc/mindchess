@@ -48,9 +48,9 @@ public class PieceSelectedState implements GameState {
     }
 
     private void move(Point markedPoint, Point selectedPoint){
-        addMoveToPlies(markedPoint, selectedPoint);
-        makeMoves(markedPoint, selectedPoint);
         makeSpecialMoves(markedPoint, selectedPoint);
+        makeMoves(markedPoint, selectedPoint);
+        addMoveToPlies(markedPoint, selectedPoint);
         if(checkKingTaken()){
             context.setGameState(new GameWonState(context));
             return;
@@ -67,17 +67,18 @@ public class PieceSelectedState implements GameState {
      * @param clickedPoint
      */
     private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
+        if(!context.getBoard().getBoardMap().containsKey(markedPoint)) return;
+        System.out.println(context.getBoard().getBoardMap().get(markedPoint));
+
         //castling
-        if (movement.getCastlingPoints().size() != 0 && movement.getCastlingPoints().contains(clickedPoint)) {
+        if (movement.getCastlingPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).size() != 0 && movement.getCastlingPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).contains(clickedPoint)) {
             if (clickedPoint.x > markedPoint.x) {
                 makeMoves(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
             } else if (clickedPoint.x < markedPoint.x) {
                 makeMoves(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
             }
         }
-
-        //en passant
-        if (movement.getEnPassantPoints().size() != 0 && movement.getEnPassantPoints().contains(clickedPoint)) {
+        if (movement.getEnPassantPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).size() != 0 && movement.getEnPassantPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).contains(clickedPoint)) {
             if (context.getBoard().getBoardMap().get(markedPoint).getColor() == WHITE) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
             } else if (context.getBoard().getBoardMap().get(markedPoint).getColor() == BLACK) {
@@ -131,7 +132,7 @@ public class PieceSelectedState implements GameState {
     }
 
     private void addMoveToPlies(Point markedPoint,Point selectedPoint){
-        context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoard().getBoardMap().get(markedPoint), context.getCurrentPlayer()));
+        context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoard().getBoardMap().get(selectedPoint), context.getCurrentPlayer()));
     }
 
     @Override
