@@ -89,7 +89,7 @@ public class ImageHandler {
     }
 
     public void fetchDeadPieceImages() {
-        List<Piece> deadPieces = model.getCurrentGame().getDeadPieces();
+        List<Piece> deadPieces = model.getCurrentGame().getBoard().getDeadPieces();
         whiteImageViews.clear();
         blackImageViews.clear();
 
