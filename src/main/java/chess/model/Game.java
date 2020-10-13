@@ -15,22 +15,14 @@ import static chess.model.PieceType.PAWN;
 public class Game implements TimerObserver, IGameContext {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final Board board = new Board();
-    private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
+    //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
-    private final List<Piece> deadPieces = new ArrayList<>();
     private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
     private final Player playerWhite = new Player("Player 1", WHITE);
     private final Player playerBlack = new Player("Player 2", BLACK);
     private Player currentPlayer;
-
-    private Point markedPoint = null; //Used to keep track of the currently marked point/piece so that it can be moved
-
-    private boolean pawnPromotionInProgress = false;
-    private Point pawnPromotionPoint; //The point at which a pawn is being promoted
-
-    private final Movement movement = new Movement(boardMap,plies);
 
     GameState gameState;
 
@@ -72,7 +64,7 @@ public class Game implements TimerObserver, IGameContext {
      * @param x
      * @param y
      */
-    void handleBoardClick(int x, int y) {
+    void handleBoardInput(int x, int y) {
         gameState.handleInput(x,y);
         if(gameState.getIsPlayerSwitch()){
             switchPlayer();
@@ -172,10 +164,6 @@ public class Game implements TimerObserver, IGameContext {
         return board;
     }
 
-    public Map<Point, Piece> getBoardMap() {
-        return boardMap;
-    }
-
     public Player getPlayerWhite() {
         return playerWhite;
     }
@@ -188,15 +176,7 @@ public class Game implements TimerObserver, IGameContext {
         return currentPlayer;
     }
 
-    public List<Piece> getDeadPieces() {
-        return deadPieces;
-    }
-
     public List<Ply> getPlies() {
         return plies;
-    }
-
-    public Movement getMovement() {
-        return movement;
     }
 }

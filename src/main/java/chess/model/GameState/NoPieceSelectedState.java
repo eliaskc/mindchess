@@ -7,10 +7,12 @@ import java.awt.*;
 public class NoPieceSelectedState implements GameState {
     private IGameContext context;
     private boolean isPlayerSwitch;
+    private Movement movement;
 
     public NoPieceSelectedState(boolean isPlayerSwitch, IGameContext context) {
         this.context = context;
         this.isPlayerSwitch = isPlayerSwitch;
+        this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
         System.out.println("No piece selected state");
     }
 
@@ -31,17 +33,17 @@ public class NoPieceSelectedState implements GameState {
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
     private void fetchLegalMoves(Point pointSelected) {
-        context.getLegalPoints().addAll(context.getMovement().pieceMoveDelegation(context.getBoardMap().get(pointSelected), pointSelected));
+        context.getLegalPoints().addAll(movement.pieceMoveDelegation(context.getBoard().getBoardMap().get(pointSelected), pointSelected));
     }
 
 
     private boolean pointIsAPiece(Point point){
-        if(context.getBoardMap().containsKey(point)) return true;
+        if(context.getBoard().getBoardMap().containsKey(point)) return true;
         return false;
     }
 
     private boolean isPieceMyColor(Point point){
-        return context.getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
+        return context.getBoard().getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
     }
 
     @Override

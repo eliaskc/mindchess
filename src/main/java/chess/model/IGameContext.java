@@ -10,10 +10,8 @@ public interface IGameContext {
     void setGameState(GameState gameState);
     Player getCurrentPlayer();
     List<Point> getLegalPoints();
-    List<Piece> getDeadPieces();
     List<Ply> getPlies();
-    Map<Point,Piece> getBoardMap();
-    Movement getMovement();
+    Board getBoard();
     void notifyDrawPieces();
     void notifyDrawDeadPieces();
     void notifyDrawLegalMoves();

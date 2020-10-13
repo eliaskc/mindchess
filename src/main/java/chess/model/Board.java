@@ -15,7 +15,7 @@ import static chess.model.PieceType.*;
  */
 public class Board {
     private final Map<Point, Piece> boardMap = new HashMap<>();
-
+    private final List<Piece> deadPieces = new ArrayList<>();
     public Board() {
     }
 
@@ -74,5 +74,9 @@ public class Board {
             }
         }
         return returnList;
+    }
+
+    public List<Piece> getDeadPieces() {
+        return deadPieces;
     }
 }
