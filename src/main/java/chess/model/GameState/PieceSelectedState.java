@@ -3,8 +3,6 @@ package chess.model.GameState;
 import chess.model.*;
 
 import java.awt.*;
-import java.util.List;
-import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
@@ -36,15 +34,7 @@ public class PieceSelectedState implements GameState {
         Point selectedPoint = new Point(x,y);
         isPlayerSwitch = false;
         if (context.getLegalPoints().contains(selectedPoint)) {
-            addMoveToPlies(markedPoint, selectedPoint);
-            makeSpecialMoves(markedPoint, selectedPoint);
-            move(markedPoint, selectedPoint);
-            if(checkKingTaken()){
-                context.setGameState(new GameWonState(context));
-                return;
-            }
-            context.notifyDrawPieces();
-            isPlayerSwitch = true;
+            move(markedPoint,selectedPoint);
             if(checkPawnPromotion(selectedPoint)){
                 context.setGameState(new PawnPromotionState(selectedPoint,false,context));
                 clearDrawLegalMoves();
@@ -53,6 +43,19 @@ public class PieceSelectedState implements GameState {
         }
         context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
         clearDrawLegalMoves();
+    }
+
+    private void move(Point markedPoint, Point selectedPoint){
+        addMoveToPlies(markedPoint, selectedPoint);
+        makeMoves(markedPoint, selectedPoint);
+        makeSpecialMoves(markedPoint, selectedPoint);
+        if(checkKingTaken()){
+            context.setGameState(new GameWonState(context));
+            return;
+        }
+        context.notifyDrawPieces();
+        isPlayerSwitch = true;
+
     }
 
     /**
@@ -65,9 +68,9 @@ public class PieceSelectedState implements GameState {
         //castling
         if (context.getMovement().getCastlingPoints().size() != 0 && context.getMovement().getCastlingPoints().contains(clickedPoint)) {
             if (clickedPoint.x > markedPoint.x) {
-                move(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
+                makeMoves(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
             } else if (clickedPoint.x < markedPoint.x) {
-                move(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
+                makeMoves(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
             }
         }
 
@@ -84,7 +87,7 @@ public class PieceSelectedState implements GameState {
      * Moves the marked piece to the clicked point
      * <p>
      */
-    private void move(Point moveFrom, Point moveTo) {
+    private void makeMoves(Point moveFrom, Point moveTo) {
         if (context.getBoardMap().containsKey(moveTo)) {
             takePiece(moveTo);
         }
@@ -118,7 +121,7 @@ public class PieceSelectedState implements GameState {
     private boolean checkPawnPromotion(Point clickedPoint) {
         if (context.getBoardMap().get(clickedPoint).getPieceType() == PAWN) {
             if ((clickedPoint.y == 0 && context.getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoardMap().get(clickedPoint).getColor() == BLACK)) {
-                context.notifyPawnPromotion(context.getBoardMap().get(clickedPoint).getColor());
+                context.notifyPawnPromotion();
                 return true;
             }
         }

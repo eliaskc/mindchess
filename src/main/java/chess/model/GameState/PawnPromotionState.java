@@ -29,7 +29,7 @@ public class PawnPromotionState implements GameState{
         Point selectedPromotion = new Point(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
             promote(markedPoint,selectedPromotion);
-            context.notifyPawnPromotion(context.getCurrentPlayer().getColor());
+            context.notifyPawnPromotion();
             context.notifyDrawPieces();
             context.setGameState(new NoPieceSelectedState(true,context));
         }

@@ -1,10 +1,7 @@
 package chess.model;
 
 import chess.GameObserver;
-import chess.model.GameState.GameState;
-import chess.model.GameState.GameWonState;
-import chess.model.GameState.NoPieceSelectedState;
-import chess.model.GameState.PieceSelectedState;
+import chess.model.GameState.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -115,6 +112,10 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
+    public void gameIsADraw(){
+        setGameState(new GameDrawState());
+    }
+
 
     void notifyEndGameObservers(String result) {
         gameObservers.forEach(p -> {
@@ -151,9 +152,9 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    public void notifyPawnPromotion(ChessColor chessColor) {
+    public void notifyPawnPromotion() {
         for (GameObserver gameObserver : gameObservers) {
-            gameObserver.pawnPromotionSetup(chessColor);
+            gameObserver.pawnPromotionSetup(currentPlayer.getColor());
         }
     }
 
