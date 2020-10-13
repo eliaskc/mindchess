@@ -66,7 +66,7 @@ public class Game implements TimerObserver {
      * @param x
      * @param y
      */
-    void handleBoardClick(int x, int y) {
+    void handleBoardInput(int x, int y) {
         if (!allowedToMovePieces) {
             return;
         }
@@ -128,7 +128,9 @@ public class Game implements TimerObserver {
      */
     private void checkMove(Point clickedPoint) {
         if (legalPoints.contains(clickedPoint)) {
-            plies.add(new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer));
+            Ply ply = new Ply(markedPoint, clickedPoint, boardMap.get(markedPoint), currentPlayer);
+            plies.add(ply);
+            ply.generateBoardSnapshot(boardMap);
             makeSpecialMoves(markedPoint, clickedPoint);
             move(markedPoint, clickedPoint);
             if (checkPawnPromotion(clickedPoint)) {

@@ -29,21 +29,21 @@ public class TestEndGame {
     @Test
     public void testCheckKingTaken(){
         //Setup
-        model.handleBoardClick(2,6);
-        model.handleBoardClick(2,4);
+        model.handleBoardInput(2,6);
+        model.handleBoardInput(2,4);
 
-        model.handleBoardClick(3,1);
-        model.handleBoardClick(3,3);
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,3);
 
-        model.handleBoardClick(3,7);
-        model.handleBoardClick(0,4);
+        model.handleBoardInput(3,7);
+        model.handleBoardInput(0,4);
 
-        model.handleBoardClick(3,3);
-        model.handleBoardClick(2,4);
+        model.handleBoardInput(3,3);
+        model.handleBoardInput(2,4);
 
         //white queen takes takes black king
-        model.handleBoardClick(0,4);
-        model.handleBoardClick(4,0);
+        model.handleBoardInput(0,4);
+        model.handleBoardInput(4,0);
         assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 

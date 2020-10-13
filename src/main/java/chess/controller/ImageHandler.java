@@ -28,7 +28,7 @@ public class ImageHandler {
     private ChessFacade model;
     private Map<Point, Piece> boardMap;
     private double squareDimension;
-    private boolean minecraftPieceStyle = true;
+    private boolean minecraftPieceStyle = false;
 
     public List<ImageView> getBlackImageViews() {
         return blackImageViews;

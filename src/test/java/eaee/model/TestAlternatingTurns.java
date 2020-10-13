@@ -29,8 +29,8 @@ public class TestAlternatingTurns {
     public void testAlternatingTurns(){
         Player p1 = model.getCurrentGame().getPlayerWhite();
         Player p2 = model.getCurrentGame().getPlayerBlack();
-        model.handleBoardClick(0,6);
-        model.handleBoardClick(0, 5);
+        model.handleBoardInput(0,6);
+        model.handleBoardInput(0, 5);
 
         Player currPlayer = model.getCurrentGame().getCurrentPlayer();
         assertTrue(currPlayer.equals(p2) && !currPlayer.equals(p1));
@@ -40,17 +40,17 @@ public class TestAlternatingTurns {
     public void testTakePieceSuccess(){
         Piece piece = model.getCurrentGame().getBoard().getBoardMap().get(new Point(3,7));
 
-        model.handleBoardClick(4,6);
-        model.handleBoardClick(4,5);
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,5);
 
-        model.handleBoardClick(3,1);
-        model.handleBoardClick(3,2);
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,2);
 
-        model.handleBoardClick(3,7);
-        model.handleBoardClick(6,4);
+        model.handleBoardInput(3,7);
+        model.handleBoardInput(6,4);
 
-        model.handleBoardClick(2,0);
-        model.handleBoardClick(6,4);
+        model.handleBoardInput(2,0);
+        model.handleBoardInput(6,4);
 
         assertTrue(model.getCurrentGame().getDeadPieces().contains(piece));
     }
@@ -59,8 +59,8 @@ public class TestAlternatingTurns {
     public void testTakePieceFail(){
         Piece piece = model.getCurrentGame().getBoard().getBoardMap().get(new Point(4, 0));
 
-        model.handleBoardClick(3,0);
-        model.handleBoardClick(4,0);
+        model.handleBoardInput(3,0);
+        model.handleBoardInput(4,0);
 
         assertFalse(model.getCurrentGame().getDeadPieces().contains(piece));
     }

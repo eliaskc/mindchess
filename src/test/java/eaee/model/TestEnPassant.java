@@ -31,21 +31,21 @@ public class TestEnPassant {
     @Test
     public void testEnPassantPossible() {
         //En Passant setup
-        model.handleBoardClick(4,6);
-        model.handleBoardClick(4,4);
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,4);
 
-        model.handleBoardClick(0,1);
-        model.handleBoardClick(0,2);
+        model.handleBoardInput(0,1);
+        model.handleBoardInput(0,2);
 
-        model.handleBoardClick(4,4);
-        model.handleBoardClick(4,3);
+        model.handleBoardInput(4,4);
+        model.handleBoardInput(4,3);
 
-        model.handleBoardClick(3,1);
-        model.handleBoardClick(3,3);
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,3);
 
         //The actual en passant
-        model.handleBoardClick(4,3);
-        model.handleBoardClick(3,2);
+        model.handleBoardInput(4,3);
+        model.handleBoardInput(3,2);
 
         assertEquals(PieceType.PAWN, boardMap.get(new Point(3,2)).getPieceType());
         assertEquals(ChessColor.WHITE, boardMap.get(new Point(3,2)).getColor());
