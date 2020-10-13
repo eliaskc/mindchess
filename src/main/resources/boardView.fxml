@@ -53,12 +53,12 @@
             <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
             <Rectangle fx:id="player1TimerBox" arcHeight="5.0" arcWidth="5.0" fill="GREENYELLOW" height="45.0" layoutX="340.0" layoutY="662.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
             <Rectangle fx:id="player2TimerBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="45.0" layoutX="840.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-            <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="800.0" layoutY="660.0" prefHeight="42.0" prefWidth="140.0" text="Player 1">
+            <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="800.0" layoutY="667.0" prefHeight="35.0" prefWidth="140.0" text="Player 1">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="343.0" layoutY="18.0" prefHeight="42.0" prefWidth="140.0" text="Player 2">
+            <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="343.0" layoutY="18.0" prefHeight="35.0" prefWidth="140.0" text="Player 2">
                <font>
                   <Font size="24.0" />
                </font>
@@ -73,13 +73,12 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="chessBoardContainer" layoutX="340.0" layoutY="60.0">
+            <AnchorPane fx:id="chessboardContainer" layoutX="340.0" layoutY="60.0">
                <children>
-                  <ImageView fx:id="chessBoardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fx:id="chessboardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@guiFiles/chess_board_high_res_green.png" />
-                     </image>
-                  </ImageView>
+                        <Image url="@guiFiles/chessboardBeigeAndBrown.png" />
+                     </image></ImageView>
                </children>
             </AnchorPane>
             <FlowPane fx:id="flowPaneWhitePieces" layoutX="985.0" layoutY="60.0" prefHeight="150.0" prefWidth="250.0" styleClass="whiteDeadPiecesPane" />
@@ -87,6 +86,8 @@
             <Button layoutX="45.0" layoutY="60.0" mnemonicParsing="false" onAction="#goToMenu" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Back" />
             <Button layoutX="1056.0" layoutY="535.0" mnemonicParsing="false" onAction="#offerDraw" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Draw" />
             <Button layoutX="1056.0" layoutY="611.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Forfeit" />
+            <Button layoutX="45.0" layoutY="266.0" mnemonicParsing="false" onAction="#switchPieceStyle" prefHeight="50.0" prefWidth="170.0" styleClass="minecraftStyleButton" text="Switch Style" />
+            <Button fx:id="muteUnmuteButton" layoutX="45.0" layoutY="329.0" mnemonicParsing="false" onAction="#muteUnmute" prefHeight="50.0" prefWidth="170.0" styleClass="minecraftStyleButton" text="Mute" />
          </children>
       </AnchorPane>
    </children>

@@ -37,7 +37,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="chessBoardContainer" layoutX="340.0" layoutY="60.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="60.0">
+      <AnchorPane fx:id="chessboardContainer" layoutX="340.0" layoutY="60.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="340.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="60.0">
          <children>
             <ImageView fx:id="chessBoardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <image>

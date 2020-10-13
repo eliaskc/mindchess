@@ -36,7 +36,13 @@ public class MenuController implements Initializable {
     private final String media_URL_4 = "/backgroundVideos/background_video_4.mp4";
     List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
 
+    private final String audio_URL_1 = "/backgroundMusic/C418_Sweden.mp3";
+    private final String audio_URL_2 = "/backgroundMusic/C418_SubwooferLullaby.mp3";
+    //private final String audio_URL_3 = "/backgroundMusic/CaptainSparklez_Revenge.mp3";
+    List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2);
+
     private MediaPlayer mediaPlayer;
+    private MediaPlayer audioPlayer;
 
     private ChessController chessController;
     private final HashMap<String, Integer> timerMap = new LinkedHashMap<>();
@@ -90,6 +96,7 @@ public class MenuController implements Initializable {
         window.show();
 
         chessController.setMediaPlayer(mediaPlayer);
+        chessController.setAudioPlayer(audioPlayer);
         chessController.init();
         chessController.drawPieces();
     }
@@ -110,16 +117,36 @@ public class MenuController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeBackgroundMusic();
+        initializeBackgroundVideo();
+        initTimer();
+    }
 
-        //Fetches a random video from /background_videos/ and sets it as the background in our root
+    /**
+     * Fetches a random video from /background_videos/ and sets it as the background in our root
+     */
+    private void initializeBackgroundVideo() {
         Random ran = new Random();
         int videoIndex = ran.nextInt(4);
         mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(1000);
         media.setMediaPlayer(mediaPlayer);
+    }
 
-        initTimer();
+    /**
+     * Fetches a random music from /background_music/ and sets it as background music
+     */
+    private void initializeBackgroundMusic() {
+        Random ran = new Random();
+        int videoIndex = ran.nextInt(2);
+        audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(videoIndex)).toExternalForm()));
+        audioPlayer.setAutoPlay(true);
+        audioPlayer.setVolume(0.5);
+        audioPlayer.setOnEndOfMedia(() -> {
+            int videoIndex2 = ran.nextInt(2);
+            audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(videoIndex2)).toExternalForm()));
+        });
     }
 
     /**
