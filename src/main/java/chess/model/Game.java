@@ -112,6 +112,7 @@ public class Game implements TimerObserver, IGameContext {
     public void gameForfeit(){
         switchPlayer();
         setGameState(new GameWonState(this));
+        notifyEndGame();
     }
 
 
