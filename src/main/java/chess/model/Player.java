@@ -10,7 +10,6 @@ public class Player {
     private final ChessTimer chessTimer = new ChessTimer();
     private String name;
     private final ChessColor chessColor;
-    private Player opponent;
 
     public Player(String name, ChessColor chessColor) {
         this.name = name;
@@ -32,13 +31,5 @@ public class Player {
     public ChessTimer getTimer() {
         return chessTimer;
     }
-
-    public void setOpponent(Player opponent) {
-        this.opponent = opponent;
-    }
-
-    public Player getOpponent() {
-        return opponent;
-    }
-
+    
 }
