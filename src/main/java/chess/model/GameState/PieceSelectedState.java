@@ -57,7 +57,6 @@ public class PieceSelectedState implements GameState {
         }
         context.notifyDrawPieces();
         isPlayerSwitch = true;
-
     }
 
     /**

@@ -1,19 +1,20 @@
 package chess.model;
 
-import chess.GameObserver;
+import chess.observers.EndGameObserver;
+import chess.observers.GameObserver;
 import chess.model.GameState.*;
+import chess.observers.TimerObserver;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
-import static chess.model.PieceType.PAWN;
 
 public class Game implements TimerObserver, IGameContext {
     private final List<GameObserver> gameObservers = new ArrayList<>();
+    private final List<EndGameObserver> endGameObservers = new ArrayList<>();
     private final Board board = new Board();
     //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
@@ -37,8 +38,6 @@ public class Game implements TimerObserver, IGameContext {
 
     public void initGame() {
         board.initBoard();
-        playerWhite.setOpponent(playerBlack);
-        playerBlack.setOpponent(playerWhite);
         currentPlayer = playerWhite;
         initGameStates();
     }
@@ -75,7 +74,7 @@ public class Game implements TimerObserver, IGameContext {
 
     private void checkGameOver(){
         if(gameState.getIsGameOver()){
-            notifyEndGameObservers(gameState.getGameStatus());
+            notifyEndGame();
         }
     }
 
@@ -106,16 +105,25 @@ public class Game implements TimerObserver, IGameContext {
         setGameState(new GameDrawState());
     }
 
+    public void gameIsWon(){
+        setGameState(new GameWonState(this));
+    }
 
-    void notifyEndGameObservers(String result) {
+    public void gameForfeit(){
+        switchPlayer();
+        setGameState(new GameWonState(this));
+    }
+
+
+    public void notifyEndGame() {
         gameObservers.forEach(p -> {
-            p.checkEndGame(result);
+            p.checkEndGame(gameState.getGameStatus());
         });
     }
 
     public void notifyTimerEnded() {
         setGameState(new GameWonState(this));
-        notifyEndGameObservers(gameState.getGameStatus());
+        notifyEndGame();
     }
 
     public void notifyDrawPieces() {
@@ -148,11 +156,15 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    public void addObserver(GameObserver gameObserver) {
+    public void addEndGameObserver(EndGameObserver endGameObserver){
+        endGameObservers.add(endGameObserver);
+    }
+
+    public void addGameObserver(GameObserver gameObserver) {
         gameObservers.add(gameObserver);
     }
 
-    public void removeObserver(GameObserver gameObserver) {
+    public void removeGameObserver(GameObserver gameObserver) {
         gameObservers.remove(gameObserver);
     }
 

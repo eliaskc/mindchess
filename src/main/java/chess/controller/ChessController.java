@@ -1,10 +1,11 @@
 package chess.controller;
 
-import chess.GameObserver;
+import chess.observers.EndGameObserver;
+import chess.observers.GameObserver;
+import chess.model.Ply;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
-import chess.model.PieceType;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,7 +40,7 @@ import static chess.model.PieceType.*;
 /**
  * ChessController handles the chess board
  */
-public class ChessController implements Initializable, GameObserver {
+public class ChessController implements Initializable, GameObserver, EndGameObserver {
     double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
@@ -47,7 +50,9 @@ public class ChessController implements Initializable, GameObserver {
     private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
+    private List<ImageView> pliesImages = new ArrayList<>();
     private MediaPlayer mediaPlayer;
+    private MediaPlayer audioPlayer;
     @FXML
     private MediaView media;
     @FXML
@@ -61,9 +66,9 @@ public class ChessController implements Initializable, GameObserver {
     @FXML
     private Label lblDrawLabel;
     @FXML
-    private ImageView chessBoardImage;
+    private ImageView chessboardImage;
     @FXML
-    private AnchorPane chessBoardContainer;
+    private AnchorPane chessboardContainer;
     @FXML
     private AnchorPane drawAnchorPane;
     @FXML
@@ -84,11 +89,26 @@ public class ChessController implements Initializable, GameObserver {
     private ImageView promotionRook;
     @FXML
     private ImageView promotionBishop;
-
+    @FXML
+    private Button muteUnmuteButton;
+    @FXML
+    private AnchorPane pliesAnchorPane;
+    @FXML
+    private ScrollPane pliesScrollPane;
+    @FXML
+    private FlowPane pliesFlowPane;
+    @FXML
+    private AnchorPane pliesBoardAnchorPane;
+    @FXML
+    private ImageView pliesBoardImageView;
 
 
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
+    }
+
+    public void setAudioPlayer(MediaPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
     }
 
     public void setModel(ChessFacade model) {
@@ -105,10 +125,9 @@ public class ChessController implements Initializable, GameObserver {
      * @param event Button click
      */
     @FXML
-    void goToMenu(MouseEvent event) {
+    void goToMenu(ActionEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
-        model.endGame();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -117,8 +136,8 @@ public class ChessController implements Initializable, GameObserver {
     }
 
     @FXML
-    void forfeitClicked(MouseEvent event) {
-        //model.getCurrentGame().onePlayerForfeit();
+    void forfeit(ActionEvent event) {
+        model.getCurrentGame().gameForfeit();
     }
 
     /**
@@ -126,19 +145,16 @@ public class ChessController implements Initializable, GameObserver {
      * stops players from moving their pieces while the interface is up
      */
     @FXML
-    void drawGameClicked() {
-        //Cascading
+    void offerDraw(ActionEvent event) {
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
-        //model.getCurrentGame().setAllowedToMovePieces(false);
     }
 
     /**
      * if the opponent refuses the interface will close and allows the player to move their pieces
      */
     @FXML
-    void refuseGameDraw() {
-        //model.getCurrentGame().setAllowedToMovePieces(true);
+    void declineDraw(ActionEvent event) {
         drawAnchorPane.toBack();
     }
 
@@ -146,8 +162,8 @@ public class ChessController implements Initializable, GameObserver {
      * sets the game to a draw
      */
     @FXML
-    void acceptGameDraw() {
-        //model.getCurrentGame().gameDraw();
+    void acceptDraw(ActionEvent event) {
+        model.getCurrentGame().gameIsADraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -159,11 +175,10 @@ public class ChessController implements Initializable, GameObserver {
         return scene;
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        chessboardContainerX = chessBoardContainer.getLayoutX();
-        chessboardContainerY = chessBoardContainer.getLayoutY();
+        chessboardContainerX = chessboardContainer.getLayoutX();
+        chessboardContainerY = chessboardContainer.getLayoutY();
     }
 
     /**
@@ -174,6 +189,7 @@ public class ChessController implements Initializable, GameObserver {
         media.setEffect(new GaussianBlur(18));
         endGamePane.toBack();
 
+        chessboardImage.setImage(imageHandler.getChessboardImage());
         updateSquareDimensions();
 
         pieceImages = imageHandler.fetchPieceImages();
@@ -181,7 +197,8 @@ public class ChessController implements Initializable, GameObserver {
         drawPieces();
         drawDeadPieces();
 
-        model.getCurrentGame().addObserver(this);
+        model.getCurrentGame().addGameObserver(this);
+        model.getCurrentGame().addEndGameObserver(this);
 
         player1Name.setText(model.getPlayerWhite().getName());
         player2Name.setText(model.getPlayerBlack().getName());
@@ -194,7 +211,7 @@ public class ChessController implements Initializable, GameObserver {
      * Gets the dimensions of the squares from the current size of the chessboard
      */
     private void updateSquareDimensions() {
-        squareDimension = chessBoardImage.getFitHeight() / 8;
+        squareDimension = chessboardImage.getFitHeight() / 8;
         imageHandler.setSquareDimension(squareDimension);
     }
 
@@ -204,10 +221,12 @@ public class ChessController implements Initializable, GameObserver {
     @Override
     public void checkEndGame(String result) {
         Platform.runLater(() -> {
-            endGameLabel.setText(result);
-            endGamePane.toFront();
+                endGameLabel.setText(result);
+                endGamePane.toFront();
         });
     }
+
+
 
     /**
      * Sends to the board that it has been clicked on
@@ -249,6 +268,21 @@ public class ChessController implements Initializable, GameObserver {
         throw new IllegalArgumentException("Outside board");
     }
 
+    @FXML
+    private void switchPieceStyle() {
+        imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+        chessboardImage.setImage(imageHandler.getChessboardImage());
+        drawLegalMoves();
+        drawPieces();
+        drawDeadPieces();
+    }
+
+    @FXML
+    private void muteUnmute() {
+        audioPlayer.setMute(!audioPlayer.isMute());
+        muteUnmuteButton.setText((muteUnmuteButton.getText().equals("Mute")) ? "Unmute" : "Mute");
+    }
+
     /**
      * Draws all pieces from the list of pieceImages from the ImageHandler
      */
@@ -264,8 +298,8 @@ public class ChessController implements Initializable, GameObserver {
         pieceImages = imageHandler.fetchPieceImages();
 
         for (ImageView pieceImage : pieceImages) {
-            chessBoardContainer.getChildren().add(pieceImage);
-            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
+            chessboardContainer.getChildren().add(pieceImage);
+            chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(pieceImage)).setMouseTransparent(true);
         }
     }
 
@@ -299,8 +333,8 @@ public class ChessController implements Initializable, GameObserver {
             st.setCycleCount(1);
             st.play();
 
-            chessBoardContainer.getChildren().add(imageView);
-            chessBoardContainer.getChildren().get(chessBoardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
+            chessboardContainer.getChildren().add(imageView);
+            chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
         }
     }
 
@@ -325,49 +359,39 @@ public class ChessController implements Initializable, GameObserver {
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
         promotionAnchorPane.toFront();
-        chessBoardImage.setMouseTransparent(true);
         promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
         promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
         promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
         promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
-
     }
 
-    private void pawnPromotion(PieceType pieceType) {
-        //model.getCurrentGame().pawnPromotion(pieceType);
+    private void pawnPromotion(int x, int y) {
+        model.handleBoardClick(x,y);
         promotionAnchorPane.toBack();
     }
 
     @FXML
     public void handleQueenPromotion(){
-        model.handleBoardClick(0,1);
-        promotionAnchorPane.toBack();
-        chessBoardImage.setMouseTransparent(false);
+        pawnPromotion(0,1);
     }
 
     @FXML
     public void handleKnightPromotion(){
-        model.handleBoardClick(1,0);
-        promotionAnchorPane.toBack();
-        chessBoardImage.setMouseTransparent(false);
+        pawnPromotion(1,0);
     }
 
     @FXML
     public void handleRookPromotion(){
-        model.handleBoardClick(1,1);
-        promotionAnchorPane.toBack();
-        chessBoardImage.setMouseTransparent(false);
+        pawnPromotion(1,1);
     }
 
     @FXML
     public void handleBishopPromotion(){
-        model.handleBoardClick(0,0);
-        promotionAnchorPane.toBack();
-        chessBoardImage.setMouseTransparent(false);
+        pawnPromotion(0,0);
     }
 
     private void clearAllPieceImages() {
-        chessBoardContainer.getChildren().removeAll(pieceImages);
+        chessboardContainer.getChildren().removeAll(pieceImages);
     }
 
     private void clearAllLegalMoveImages() {
@@ -383,8 +407,53 @@ public class ChessController implements Initializable, GameObserver {
             st.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    chessBoardContainer.getChildren().remove(imageView);
+                    chessboardContainer.getChildren().remove(imageView);
                 }
+            });
+        }
+    }
+
+    private void clearAllPliesImages(){
+        pliesBoardAnchorPane.getChildren().removeAll(pliesImages);
+        pliesImages.clear();
+    }
+
+
+    /**
+     * Method is called when the "Analyze" button is pressed at the end screen
+     */
+    @FXML
+    public void analyzeGame() {
+        populatePliesFlowPane();
+        clearAllPliesImages();
+        pliesBoardImageView.setImage(imageHandler.getChessboardImage());
+        pliesAnchorPane.toFront();
+    }
+
+    @FXML
+    public void analyzeGameBack(){
+        pliesAnchorPane.toBack();
+    }
+
+    /**
+     * Creates a PlyController object for each ply and populates it with information about the ply
+     * Also takes the generated snapshot of that specific ply and creates an image that represents the board after that ply has been made
+     */
+    private void populatePliesFlowPane() {
+        pliesFlowPane.getChildren().clear();
+
+        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        for (Ply ply : model.getCurrentGame().getPlies()){
+            PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
+            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
+            pliesFlowPane.getChildren().add(plyController);
+
+            //When a ply is clicked all the pieces on the ply board are removed and updated/animated
+            plyController.setOnMouseClicked(event -> {
+                clearAllPliesImages();
+                List<ImageView> plies = plyController.generateBoardImages();
+                pliesImages.addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(plies);
             });
         }
     }

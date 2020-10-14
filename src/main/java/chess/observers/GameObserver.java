@@ -1,4 +1,4 @@
-package chess;
+package chess.observers;
 
 import chess.model.ChessColor;
 

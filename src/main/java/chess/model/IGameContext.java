@@ -16,4 +16,5 @@ public interface IGameContext {
     void notifyDrawDeadPieces();
     void notifyDrawLegalMoves();
     void notifyPawnPromotion();
+    void notifyEndGame();
 }
