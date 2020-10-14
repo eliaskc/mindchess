@@ -17,6 +17,8 @@ public class NoPieceSelectedState implements GameState {
     }
 
 
+
+
     @Override
     public void handleInput(int x, int y) {
         Point markedPoint = new Point(x,y);

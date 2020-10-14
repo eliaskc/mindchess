@@ -132,7 +132,7 @@ public class PieceSelectedState implements GameState {
     }
 
     private void addMoveToPlies(Point markedPoint,Point selectedPoint){
-        context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoard().getBoardMap().get(selectedPoint), context.getCurrentPlayer()));
+        context.getPlies().add(new Ply(markedPoint, selectedPoint, context.getBoard().getBoardMap().get(selectedPoint)));
     }
 
     @Override

@@ -9,13 +9,11 @@ public class Ply {
     Point movedFrom;
     Point movedTo;
     Piece movedPiece;
-    Player player;
 
-    public Ply(Point movedFrom, Point movedTo, Piece movedPiece, Player player) {
+    public Ply(Point movedFrom, Point movedTo, Piece movedPiece) {
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
         this.movedPiece = movedPiece;
-        this.player = player;
     }
 
     public Point getMovedFrom() {
@@ -28,9 +26,5 @@ public class Ply {
 
     public Piece getMovedPiece() {
         return movedPiece;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 }
