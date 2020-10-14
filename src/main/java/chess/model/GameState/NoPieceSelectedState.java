@@ -22,13 +22,13 @@ public class NoPieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point markedPoint = new Point(x,y);
+        isPlayerSwitch = false;
         if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
             fetchLegalMoves(markedPoint);
             if(context.getLegalPoints().size() == 0) return;
             context.notifyDrawLegalMoves();
             context.setGameState(new PieceSelectedState(markedPoint,false,context));
         }
-        isPlayerSwitch = false;
     }
 
     /**
@@ -55,6 +55,7 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public boolean getIsPlayerSwitch() {
+        System.out.println(isPlayerSwitch);
         return isPlayerSwitch;
     }
 

@@ -87,6 +87,7 @@ public class Game implements TimerObserver, IGameContext {
         }
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
+        System.out.println("switched player to " + currentPlayer.getName());
     }
 
     void stopAllTimers(){

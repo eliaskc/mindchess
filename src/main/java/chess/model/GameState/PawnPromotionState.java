@@ -31,7 +31,7 @@ public class PawnPromotionState implements GameState{
             promote(markedPoint,selectedPromotion);
             context.notifyPawnPromotion();
             context.notifyDrawPieces();
-            context.setGameState(new NoPieceSelectedState(true,context));
+            context.setGameState(new NoPieceSelectedState(false,context));
         }
 
     }

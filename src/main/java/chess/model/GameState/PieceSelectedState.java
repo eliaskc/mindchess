@@ -35,7 +35,7 @@ public class PieceSelectedState implements GameState {
     public void handleInput(int x, int y) {
         Point selectedPoint = new Point(x,y);
         isPlayerSwitch = false;
-        if (context.getLegalPoints().contains(selectedPoint)) {
+        if (context.getLegalPoints().contains(selectedPoint) && selectedPoint != markedPoint) {
             move(markedPoint,selectedPoint);
             if(checkPawnPromotion(selectedPoint)){
                 context.setGameState(new PawnPromotionState(selectedPoint,false,context));
