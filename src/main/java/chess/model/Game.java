@@ -124,7 +124,7 @@ public class Game implements TimerObserver, IGameContext {
     @Override
     public void notifyEndGame() {
         for (EndGameObserver p : endGameObservers) {
-            p.endGame(gameState.getGameStatus());
+            p.showEndGameResult(gameState.getGameStatus());
         }
     }
 

@@ -127,6 +127,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     void goToMenu(ActionEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        model.stopAllTimers();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -220,7 +221,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     Label endGameLabel;
 
     @Override
-    public void endGame(String result) {
+    public void showEndGameResult(String result) {
         Platform.runLater(() -> {
             endGameLabel.setText(result);
             endGamePane.toFront();
