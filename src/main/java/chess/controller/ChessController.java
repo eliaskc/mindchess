@@ -437,7 +437,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     public void analyzeGame() {
         populatePliesFlowPane();
-        clearAllPliesImages();
         pliesBoardImageView.setImage(imageHandler.getChessboardImage());
         pliesAnchorPane.toFront();
     }
@@ -453,6 +452,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private void populatePliesFlowPane() {
         pliesFlowPane.getChildren().clear();
+        clearAllPliesImages();
         List<PlyController> plyControllers = new ArrayList<>();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
