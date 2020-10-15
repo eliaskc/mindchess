@@ -36,9 +36,9 @@ public class PawnPromotionState implements GameState{
 
     private void initPromotionPieces(){
         promotionPieces.put(new Point(20,0), PieceType.QUEEN);
-        promotionPieces.put(new Point(21,0), PieceType.ROOK);
-        promotionPieces.put(new Point(22,0), PieceType.BISHOP);
-        promotionPieces.put(new Point(23,0), PieceType.KNIGHT);
+        promotionPieces.put(new Point(21,0), PieceType.KNIGHT);
+        promotionPieces.put(new Point(22,0), PieceType.ROOK);
+        promotionPieces.put(new Point(23,0), PieceType.BISHOP);
     }
 
     private void promote(Point markedPoint, Point selectedPromotion){

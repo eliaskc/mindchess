@@ -271,10 +271,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private void switchPieceStyle() {
         imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+
         chessboardImage.setImage(imageHandler.getChessboardImage());
         drawLegalMoves();
         drawPieces();
         drawDeadPieces();
+        drawPawnPromotionSetup(model.getCurrentGame().getCurrentPlayer().getColor());
     }
 
     @FXML
@@ -361,6 +363,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
         promotionAnchorPane.toFront();
+        drawPawnPromotionSetup(chessColor);
+    }
+
+    private void drawPawnPromotionSetup(ChessColor chessColor) {
         promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
         promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
         promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
