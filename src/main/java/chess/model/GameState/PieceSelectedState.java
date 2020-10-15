@@ -52,7 +52,7 @@ public class PieceSelectedState implements GameState {
         makeMoves(markedPoint, selectedPoint);
         addMoveToPlies(markedPoint, selectedPoint);
         if(checkKingTaken()){
-            context.setGameState(new GameWonState(context));
+            context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
             return;
         }
         context.notifyDrawPieces();

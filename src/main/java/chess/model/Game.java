@@ -103,16 +103,15 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     public void gameIsADraw(){
-        setGameState(new GameDrawState());
-    }
-
-    public void gameIsWon(){
-        setGameState(new GameWonState(this));
+        setGameState(new GameOverState("Game ended in draw", this));
+        stopAllTimers();
+        notifyEndGame();
     }
 
     public void gameForfeit(){
         switchPlayer();
-        setGameState(new GameWonState(this));
+        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
+        stopAllTimers();
         notifyEndGame();
     }
 
@@ -124,7 +123,9 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     public void notifyTimerEnded() {
-        setGameState(new GameWonState(this));
+        switchPlayer();
+        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
+        stopAllTimers();
         notifyEndGame();
     }
 

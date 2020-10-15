@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GameWonState implements GameState {
+public class GameOverState implements GameState {
     private IGameContext context;
+    private String resultStatus;
 
-    public GameWonState(IGameContext context) {
+    public GameOverState(String resultStatus,IGameContext context) {
         this.context = context;
+        this.resultStatus = resultStatus;
     }
 
     @Override
@@ -34,6 +36,6 @@ public class GameWonState implements GameState {
 
     @Override
     public String getGameStatus() {
-        return context.getCurrentPlayer().getName() + " has won the game";
+        return resultStatus;
     }
 }
