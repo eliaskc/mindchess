@@ -50,4 +50,8 @@ public class ChessFacade {
         currentGame.initGame();
         gameList.add(currentGame);
     }
+
+    public void stopAllTimers(){
+        currentGame.stopAllTimers();
+    }
 }

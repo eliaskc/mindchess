@@ -44,7 +44,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane style="-fx-background-color: WHITESMOKE;">
+      <AnchorPane styleClass="background">
          <children>
             <AnchorPane fx:id="drawAnchorPane" prefHeight="250.0" prefWidth="400.0" styleClass="lightBoxPane" AnchorPane.bottomAnchor="235.0" AnchorPane.leftAnchor="440.0" AnchorPane.rightAnchor="440.0" AnchorPane.topAnchor="235.0">
                <children>

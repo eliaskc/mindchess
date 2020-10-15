@@ -37,7 +37,7 @@ public class PieceSelectedState implements GameState {
         if (context.getLegalPoints().contains(selectedPoint) && selectedPoint != markedPoint) {
             move(markedPoint,selectedPoint);
             if(checkPawnPromotion(selectedPoint)){
-                context.setGameState(new PawnPromotionState(selectedPoint,true,context));
+                context.setGameState(new PawnPromotionState(selectedPoint,false,context));
                 clearDrawLegalMoves();
                 return;
             }

@@ -80,13 +80,17 @@ public class Game implements TimerObserver, IGameContext {
 
     private void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
-        if (currentPlayer == playerWhite) {
-            currentPlayer = playerBlack;
-        } else if (currentPlayer == playerBlack) {
-            currentPlayer = playerWhite;
-        }
+        currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
+    }
+
+    private Player getOtherPlayer(){
+        if (currentPlayer == playerWhite) {
+            return playerBlack;
+        } else {
+            return playerWhite;
+        }
     }
 
     public void endGameAsDraw(){
@@ -96,8 +100,7 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     public void endGameAsForfeit(){
-        switchPlayer();
-        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
+        setGameState(new GameOverState(getOtherPlayer().getName() + " has won the game",this));
         stopAllTimers();
         notifyEndGame();
     }
@@ -121,7 +124,7 @@ public class Game implements TimerObserver, IGameContext {
     @Override
     public void notifyEndGame() {
         for (EndGameObserver p : endGameObservers) {
-            p.endGame(gameState.getGameStatus());
+            p.showEndGameResult(gameState.getGameStatus());
         }
     }
 
