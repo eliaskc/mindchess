@@ -21,7 +21,6 @@ public class PawnPromotionState implements GameState{
         this.markedPoint = markedPoint;
         this.isPlayerSwitch = isPlayerSwitch;
         initPromotionPieces();
-        System.out.println("Pawn promotion state");
     }
 
     @Override

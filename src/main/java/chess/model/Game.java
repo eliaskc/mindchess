@@ -70,7 +70,6 @@ public class Game implements TimerObserver, IGameContext {
             switchPlayer();
         }
         checkGameOver();
-        System.out.println(gameState.getGameStatus());
     }
 
     private void checkGameOver(){
@@ -88,7 +87,6 @@ public class Game implements TimerObserver, IGameContext {
         }
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
-        System.out.println("switched player to " + currentPlayer.getName());
     }
 
     public void endGameAsDraw(){

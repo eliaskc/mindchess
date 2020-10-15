@@ -21,7 +21,6 @@ public class PieceSelectedState implements GameState {
         this.context = context;
         this.isPlayerSwitch = isPlayerSwitch;
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
-        System.out.println("Piece selected state");
     }
 
     /**
@@ -68,7 +67,6 @@ public class PieceSelectedState implements GameState {
      */
     private void makeSpecialMoves(Point markedPoint, Point clickedPoint) {
         if(!context.getBoard().getBoardMap().containsKey(markedPoint)) return;
-        System.out.println(context.getBoard().getBoardMap().get(markedPoint));
 
         //castling
         if (movement.getCastlingPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).size() != 0 && movement.getCastlingPoints(context.getBoard().getBoardMap().get(markedPoint),markedPoint).contains(clickedPoint)) {

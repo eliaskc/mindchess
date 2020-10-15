@@ -13,7 +13,6 @@ public class NoPieceSelectedState implements GameState {
         this.context = context;
         this.isPlayerSwitch = isPlayerSwitch;
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
-        System.out.println("No piece selected state");
     }
 
 
@@ -55,7 +54,6 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public boolean getIsPlayerSwitch() {
-        System.out.println(isPlayerSwitch);
         return isPlayerSwitch;
     }
 
