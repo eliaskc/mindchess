@@ -15,6 +15,7 @@ import static chess.model.ChessColor.WHITE;
 public class Game implements TimerObserver, IGameContext {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
+
     private final Board board = new Board();
     //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
@@ -35,6 +36,8 @@ public class Game implements TimerObserver, IGameContext {
     private void initGameStates(){
         gameState = new NoPieceSelectedState(false,this);
     }
+
+    private boolean gameHasEnded = false;
 
     public void initGame() {
         board.initBoard();
@@ -96,10 +99,8 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     @Override
-     public void updateTimer() {
-        for (GameObserver gameObserver : gameObservers) {
-            gameObserver.updateTimer();
-        }
+    public void updateTimer() {
+        notifyTimerUpdated();
     }
 
     public void gameIsADraw(){
@@ -171,8 +172,20 @@ public class Game implements TimerObserver, IGameContext {
         gameObservers.remove(gameObserver);
     }
 
+    public void addEndGameObserver(EndGameObserver endgameObserver) {
+        endGameObservers.add(endgameObserver);
+    }
+
+    public void removeEndGameObserver(EndGameObserver endgameObserver) {
+        endGameObservers.remove(endgameObserver);
+    }
+
     public List<Point> getLegalPoints() {
         return legalPoints;
+    }
+
+    public Point getMarkedPoint() {
+        return markedPoint;
     }
 
     public Board getBoard() {
@@ -193,5 +206,17 @@ public class Game implements TimerObserver, IGameContext {
 
     public List<Ply> getPlies() {
         return plies;
+    }
+
+    public boolean isGameHasEnded() {
+        return gameHasEnded;
+    }
+
+    public void setGameHasEnded(boolean gameHasEnded) {
+        this.gameHasEnded = gameHasEnded;
+    }
+
+    public void setAllowedToMovePieces(boolean allowedToMovePieces) {
+        this.allowedToMovePieces = allowedToMovePieces;
     }
 }

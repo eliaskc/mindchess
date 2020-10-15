@@ -3,7 +3,6 @@ package eaee.model;
 import chess.model.ChessFacade;
 import chess.model.Movement;
 import chess.model.Piece;
-import chess.model.PieceType;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +20,7 @@ public class TestEndGame {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 
@@ -29,31 +28,54 @@ public class TestEndGame {
     //gamelist = 0 after taking a king
     @Test
     public void testCheckKingTaken(){
-        model.handleBoardClick(2,6);
-        model.handleBoardClick(2,4);
+        //Setup
+        model.handleBoardInput(2,6);
+        model.handleBoardInput(2,4);
 
-        model.handleBoardClick(3,1);
-        model.handleBoardClick(3,3);
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,3);
 
-        model.handleBoardClick(4,7);
-        model.handleBoardClick(0,4);
+        model.handleBoardInput(3,7);
+        model.handleBoardInput(0,4);
 
-        model.handleBoardClick(3,3);
-        model.handleBoardClick(2,4);
+        model.handleBoardInput(3,3);
+        model.handleBoardInput(2,4);
 
         //white queen takes takes black king
-        model.handleBoardClick(0,4);
-        model.handleBoardClick(4,0);
-        assertEquals(1, model.getGameList().size());
+        model.handleBoardInput(0,4);
+        model.handleBoardInput(4,0);
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
     }
 
-    //Test WhitePlayerWin
+    @Test
+    public void testTimerRunningOut() {
+        model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
 
+        model.getCurrentGame().checkTimerRanOut();
 
-    //Test time running out method?
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+    }
 
+    @Test
+    public void testDrawAccepted() {
+        model.getCurrentGame().offerDraw();
+        model.getCurrentGame().acceptDraw();
 
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+    }
 
+    @Test
+    public void testDrawDeclined() {
+        model.getCurrentGame().offerDraw();
+        model.getCurrentGame().declineDraw();
 
-    //future tests for draw and surrender
+        assertEquals(false, model.getCurrentGame().isGameHasEnded());
+    }
+
+    @Test
+    public void testForfeit() {
+        model.getCurrentGame().forfeit();
+
+        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+    }
 }
