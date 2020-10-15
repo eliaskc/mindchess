@@ -31,7 +31,7 @@ public class TestMovement {
     public void testCheckLegalQueen() {
         Point queenPosition = new Point(3,0);
         Piece queen = boardMap.get(queenPosition);
-        List<Point> points = movement.pieceMoveDelegation(queen, queenPosition);
+        List<Point> points = movement.fetchLegalMoves(queen, queenPosition);
 
         assertTrue(points.size() == 0);
     }
@@ -40,7 +40,7 @@ public class TestMovement {
     public void testCheckLegalBlackPawn() {
         Point pawnPosition = new Point(5,1);
         Piece pawn = boardMap.get(pawnPosition);
-        List<Point> points = movement.pieceMoveDelegation(pawn, pawnPosition);
+        List<Point> points = movement.fetchLegalMoves(pawn, pawnPosition);
 
         List<Point> comparisonList = new ArrayList<>();
         comparisonList.add(new Point(5,2));
@@ -54,7 +54,7 @@ public class TestMovement {
     public void testCheckLegalWhitePawn() {
         Point pawnPosition = new Point(0,6);
         Piece pawn = boardMap.get(pawnPosition);
-        List<Point> points = movement.pieceMoveDelegation(pawn, pawnPosition);
+        List<Point> points = movement.fetchLegalMoves(pawn, pawnPosition);
 
         List<Point> comparisonList = new ArrayList<>();
         comparisonList.add(new Point(0,5));
@@ -68,7 +68,7 @@ public class TestMovement {
     public void testCheckLegalKnight() {
         Point knightPosition = new Point(1,0);
         Piece knight = boardMap.get(knightPosition);
-        List<Point> points = movement.pieceMoveDelegation(knight, knightPosition);
+        List<Point> points = movement.fetchLegalMoves(knight, knightPosition);
 
         assertTrue(points.get(0).x == 2 && points.get(0).y == 2);
     }

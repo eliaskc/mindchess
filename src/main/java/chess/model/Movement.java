@@ -30,7 +30,7 @@ public class Movement {
         this.boardMap = boardMap;
     }
 
-    public List<Point> pieceMoveDelegation(Piece pieceToMove, Point selectedPoint) {
+    public List<Point> fetchLegalMoves(Piece pieceToMove, Point selectedPoint) {
         points.clear();
 
         switch (pieceToMove.getPieceType()) {

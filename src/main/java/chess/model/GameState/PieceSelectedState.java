@@ -34,6 +34,14 @@ public class PieceSelectedState implements GameState {
     public void handleInput(int x, int y) {
         Point targetPoint = new Point(x,y);
         isPlayerSwitch = false;
+        if (context.getBoard().getBoardMap().containsKey(targetPoint)) {
+            if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
+                clearDrawLegalMoves();
+                context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
+                context.getGameState().handleInput(targetPoint.x, targetPoint.y);
+                return;
+            }
+        }
         if (context.getLegalPoints().contains(targetPoint) && targetPoint != selectedPoint) {
             addMoveToPlies(selectedPoint, targetPoint);
             move(selectedPoint,targetPoint);

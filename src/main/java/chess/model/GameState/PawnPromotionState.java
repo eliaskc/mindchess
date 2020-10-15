@@ -42,8 +42,8 @@ public class PawnPromotionState implements GameState{
     }
 
     private void promote(Point selectedPoint, Point selectedPromotion){
-        Piece piece = context.getBoard().getBoardMap().get(selectedPoint);
-        piece.setPieceType(promotionPieces.get(selectedPromotion));
+        Piece piece = new Piece(context.getBoard().getBoardMap().get(selectedPoint).getColor(), promotionPieces.get(selectedPromotion));
+        context.getBoard().getBoardMap().put(selectedPoint, piece);
     }
 
     @Override

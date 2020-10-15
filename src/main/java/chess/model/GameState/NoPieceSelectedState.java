@@ -34,7 +34,7 @@ public class NoPieceSelectedState implements GameState {
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
     private void fetchLegalMoves(Point pointSelected) {
-        context.getLegalPoints().addAll(movement.pieceMoveDelegation(context.getBoard().getBoardMap().get(pointSelected), pointSelected));
+        context.getLegalPoints().addAll(movement.fetchLegalMoves(context.getBoard().getBoardMap().get(pointSelected), pointSelected));
     }
 
 

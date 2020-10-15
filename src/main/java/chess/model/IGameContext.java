@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface IGameContext {
     void setGameState(GameState gameState);
+    GameState getGameState();
     Player getCurrentPlayer();
     List<Point> getLegalPoints();
     List<Ply> getPlies();
