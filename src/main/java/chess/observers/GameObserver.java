@@ -9,7 +9,6 @@ public interface GameObserver {
     void drawDeadPieces();
     void drawLegalMoves();
     void switchedPlayer();
-    void checkEndGame(String result);
     void updateTimer();
     void pawnPromotionSetup(ChessColor chessColor);
 }

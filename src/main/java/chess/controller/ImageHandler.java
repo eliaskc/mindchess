@@ -175,7 +175,8 @@ public class ImageHandler {
     double distanceFromMarkedPiece(ImageView imageView){
         //double yDelta = imageView.getY() - model.getCurrentGame().getMarkedPoint().y*squareDimension;
         //double xDelta = imageView.getX() - model.getCurrentGame().getMarkedPoint().x*squareDimension;
-        return Math.hypot(yDelta, xDelta);
+        //return Math.hypot(yDelta, xDelta);
+        return 250;
     }
 
     public double getSquareDimension() {

@@ -38,9 +38,9 @@ public class TestChessFacade {
 
         assertEquals(testPieceBefore, testPieceAfter);
       
-        assertEquals(model.getGame().getPlies().get(0).getMovedFrom(), ply.getMovedFrom());
-        assertEquals(model.getGame().getPlies().get(0).getMovedTo(), ply.getMovedTo());
-        assertEquals(model.getGame().getPlies().get(0).getMovedPiece(), ply.getMovedPiece());
+        assertEquals(model.getCurrentGame().getPlies().get(0).getMovedFrom(), ply.getMovedFrom());
+        assertEquals(model.getCurrentGame().getPlies().get(0).getMovedTo(), ply.getMovedTo());
+        assertEquals(model.getCurrentGame().getPlies().get(0).getMovedPiece(), ply.getMovedPiece());
         //assertEquals(model.getGame().getPlies().get(0).getPlayer(), ply.getPlayer());
 
     }

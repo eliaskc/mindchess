@@ -126,7 +126,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void goToMenu(ActionEvent event) {
-        model.endGame();
         clearAllPieceImages();
         clearAllLegalMoveImages();
         drawAnchorPane.toBack();
@@ -138,7 +137,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @FXML
     void forfeit(ActionEvent event) {
-        model.getCurrentGame().gameForfeit();
+        model.getCurrentGame().endGameAsForfeit();
     }
 
     /**
@@ -164,7 +163,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void acceptDraw(ActionEvent event) {
-        model.getCurrentGame().gameIsADraw();
+        model.getCurrentGame().endGameAsDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -327,7 +326,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         //TODO longer time for longer distance from markedPoint
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(250, imageView);
+            ScaleTransition st = new ScaleTransition(Duration.millis(250));
             st.setFromX(0.1);
             st.setFromY(0.1);
             st.setToX(1);
@@ -368,7 +367,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void pawnPromotion(int x, int y) {
-        model.handleBoardClick(x,y);
+        model.handleBoardInput(x,y);
         promotionAnchorPane.toBack();
     }
 

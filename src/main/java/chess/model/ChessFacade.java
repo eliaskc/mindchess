@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * (Composite pattern?)
  */
-public class ChessFacade implements EndGameObserver {
+public class ChessFacade {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class ChessFacade implements EndGameObserver {
      * @param x the x coordinate for the mouse when it clicks
      * @param y the y coordinate for the mouse when it clicks
      */
-    public void handleBoardClick(int x, int y) {
+    public void handleBoardInput(int x, int y) {
         currentGame.handleBoardInput(x, y);
     }
 
@@ -48,12 +48,6 @@ public class ChessFacade implements EndGameObserver {
     public void createNewGame() {
         currentGame = new Game();
         currentGame.initGame();
-        currentGame.addEndGameObserver(this);
         gameList.add(currentGame);
-    }
-
-    @Override
-    public void endGame(String result) {
-        currentGame.stopAllTimers();
     }
 }

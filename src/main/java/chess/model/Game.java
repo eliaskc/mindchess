@@ -37,8 +37,6 @@ public class Game implements TimerObserver, IGameContext {
         gameState = new NoPieceSelectedState(false,this);
     }
 
-    private boolean gameHasEnded = false;
-
     public void initGame() {
         board.initBoard();
         currentPlayer = playerWhite;
@@ -93,6 +91,19 @@ public class Game implements TimerObserver, IGameContext {
         System.out.println("switched player to " + currentPlayer.getName());
     }
 
+    public void endGameAsDraw(){
+        setGameState(new GameOverState("Game ended in draw", this));
+        stopAllTimers();
+        notifyEndGame();
+    }
+
+    public void endGameAsForfeit(){
+        switchPlayer();
+        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
+        stopAllTimers();
+        notifyEndGame();
+    }
+
     void stopAllTimers(){
         playerBlack.getTimer().stopTimer();
         playerWhite.getTimer().stopTimer();
@@ -103,26 +114,20 @@ public class Game implements TimerObserver, IGameContext {
         notifyTimerUpdated();
     }
 
-    public void gameIsADraw(){
-        setGameState(new GameOverState("Game ended in draw", this));
-        stopAllTimers();
-        notifyEndGame();
+    private void notifyTimerUpdated() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.updateTimer();
+        }
     }
 
-    public void gameForfeit(){
-        switchPlayer();
-        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
-        stopAllTimers();
-        notifyEndGame();
-    }
-
-
+    @Override
     public void notifyEndGame() {
-        gameObservers.forEach(p -> {
-            p.checkEndGame(gameState.getGameStatus());
-        });
+        for (EndGameObserver p : endGameObservers) {
+            p.endGame(gameState.getGameStatus());
+        }
     }
 
+    @Override
     public void notifyTimerEnded() {
         switchPlayer();
         setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
@@ -130,18 +135,21 @@ public class Game implements TimerObserver, IGameContext {
         notifyEndGame();
     }
 
+    @Override
     public void notifyDrawPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawPieces();
         }
     }
 
+    @Override
     public void notifyDrawDeadPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawDeadPieces();
         }
     }
 
+    @Override
     public void notifyDrawLegalMoves() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawLegalMoves();
@@ -158,10 +166,6 @@ public class Game implements TimerObserver, IGameContext {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.pawnPromotionSetup(currentPlayer.getColor());
         }
-    }
-
-    public void addEndGameObserver(EndGameObserver endGameObserver){
-        endGameObservers.add(endGameObserver);
     }
 
     public void addGameObserver(GameObserver gameObserver) {
@@ -184,10 +188,6 @@ public class Game implements TimerObserver, IGameContext {
         return legalPoints;
     }
 
-    public Point getMarkedPoint() {
-        return markedPoint;
-    }
-
     public Board getBoard() {
         return board;
     }
@@ -208,15 +208,7 @@ public class Game implements TimerObserver, IGameContext {
         return plies;
     }
 
-    public boolean isGameHasEnded() {
-        return gameHasEnded;
-    }
-
-    public void setGameHasEnded(boolean gameHasEnded) {
-        this.gameHasEnded = gameHasEnded;
-    }
-
-    public void setAllowedToMovePieces(boolean allowedToMovePieces) {
-        this.allowedToMovePieces = allowedToMovePieces;
+    public GameState getGameState() {
+        return gameState;
     }
 }

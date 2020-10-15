@@ -39,12 +39,4 @@ public class Ply {
     public Map<Point, Piece> getBoardSnapshot() {
         return boardSnapshot;
     }
-
-    public void generateBoardSnapshot(Map<Point, Piece> boardMap){
-        this.boardSnapshot = new HashMap<>(boardMap);
-    }
-
-    public Map<Point, Piece> getBoardSnapshot() {
-        return boardSnapshot;
-    }
 }

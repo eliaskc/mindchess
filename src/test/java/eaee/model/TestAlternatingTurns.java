@@ -52,7 +52,7 @@ public class TestAlternatingTurns {
         model.handleBoardInput(2,0);
         model.handleBoardInput(6,4);
 
-        assertTrue(model.getGame().getBoard().getDeadPieces().contains(piece));
+        assertTrue(model.getCurrentGame().getBoard().getDeadPieces().contains(piece));
     }
 
     @Test
@@ -62,6 +62,6 @@ public class TestAlternatingTurns {
         model.handleBoardInput(3,0);
         model.handleBoardInput(4,0);
 
-        assertFalse(model.getGame().getBoard().getDeadPieces().contains(piece));
+        assertFalse(model.getCurrentGame().getBoard().getDeadPieces().contains(piece));
     }
 }

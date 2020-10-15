@@ -33,7 +33,6 @@ public class PawnPromotionState implements GameState{
             context.notifyDrawPieces();
             context.setGameState(new NoPieceSelectedState(false,context));
         }
-
     }
 
     private void initPromotionPieces(){
