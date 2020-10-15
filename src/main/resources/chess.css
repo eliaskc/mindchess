@@ -79,6 +79,10 @@
     -fx-border-color: #AAAAAA #565656 #565656 #AAAAAA;
 }
 
+.background {
+    -fx-background-color: #202020;
+}
+
 .label .text {
     -fx-stroke: white;
     -fx-stroke-width: 2px;

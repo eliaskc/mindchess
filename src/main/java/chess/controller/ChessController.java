@@ -185,7 +185,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     void init() {
         media.setMediaPlayer(mediaPlayer);
-        media.setEffect(new GaussianBlur(18));
+        media.setEffect(new GaussianBlur(16));
         endGamePane.toBack();
 
         chessboardImage.setImage(imageHandler.getChessboardImage());
