@@ -42,6 +42,10 @@ public class PieceSelectedState implements GameState {
                 clearDrawLegalMoves();
                 return;
             }
+            if(checkKingTaken()){
+                context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
+                return;
+            }
         }
         context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
         clearDrawLegalMoves();
@@ -51,10 +55,7 @@ public class PieceSelectedState implements GameState {
         makeSpecialMoves(markedPoint, selectedPoint);
         makeMoves(markedPoint, selectedPoint);
         addMoveToPlies(markedPoint, selectedPoint);
-        if(checkKingTaken()){
-            context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
-            return;
-        }
+
         context.notifyDrawPieces();
         isPlayerSwitch = true;
     }
