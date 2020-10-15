@@ -22,7 +22,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>chess.starterClass</mainClass>
+              <mainClass>chess.StarterClass</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

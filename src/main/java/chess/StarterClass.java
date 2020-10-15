@@ -1,6 +1,6 @@
 package chess;
 
-public class starterClass {
+public class StarterClass {
     public static void main(String[] args) {
         ChessApplication.main(args);
     }
