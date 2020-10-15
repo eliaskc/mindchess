@@ -17,7 +17,7 @@ public class Ply {
     public Ply(Point movedFrom, Point movedTo, Piece movedPiece) {
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
-        this.movedPiece = movedPiece;
+        this.movedPiece = new Piece(movedPiece.getColor(), movedPiece.getPieceType());
     }
 
     public Point getMovedFrom() {

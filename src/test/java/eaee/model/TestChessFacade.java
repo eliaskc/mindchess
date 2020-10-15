@@ -40,7 +40,7 @@ public class TestChessFacade {
       
         assertEquals(model.getCurrentGame().getPlies().get(0).getMovedFrom(), ply.getMovedFrom());
         assertEquals(model.getCurrentGame().getPlies().get(0).getMovedTo(), ply.getMovedTo());
-        assertEquals(model.getCurrentGame().getPlies().get(0).getMovedPiece(), ply.getMovedPiece());
+        assertEquals(model.getCurrentGame().getPlies().get(0).getMovedPiece().getPieceType(), ply.getMovedPiece().getPieceType());
         //assertEquals(model.getGame().getPlies().get(0).getPlayer(), ply.getPlayer());
 
     }

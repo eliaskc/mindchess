@@ -30,28 +30,28 @@ public class Movement {
         this.boardMap = boardMap;
     }
 
-    public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
+    public List<Point> pieceMoveDelegation(Piece pieceToMove, Point selectedPoint) {
         points.clear();
 
         switch (pieceToMove.getPieceType()) {
-            case ROOK -> legalMovesRook(pieceToMove, markedPoint);
+            case ROOK -> legalMovesRook(pieceToMove, selectedPoint);
 
-            case BISHOP -> legalMovesBishop(pieceToMove, markedPoint);
+            case BISHOP -> legalMovesBishop(pieceToMove, selectedPoint);
 
-            case KNIGHT -> legalMovesKnight(pieceToMove, markedPoint);
+            case KNIGHT -> legalMovesKnight(pieceToMove, selectedPoint);
 
-            case QUEEN -> legalMovesQueen(pieceToMove, markedPoint);
+            case QUEEN -> legalMovesQueen(pieceToMove, selectedPoint);
 
-            case KING -> legalMovesKing(pieceToMove, markedPoint);
+            case KING -> legalMovesKing(pieceToMove, selectedPoint);
 
-            case PAWN -> legalMovesPawn(pieceToMove, markedPoint);
+            case PAWN -> legalMovesPawn(pieceToMove, selectedPoint);
         }
         return new ArrayList<>(points);
     }
 
-    private void legalMovesPawn(Piece pieceToMove, Point markedPoint) {
-        int x = markedPoint.x;
-        int y = markedPoint.y;
+    private void legalMovesPawn(Piece pieceToMove, Point selectedPoint) {
+        int x = selectedPoint.x;
+        int y = selectedPoint.y;
 
         if (pieceToMove.getColor() == WHITE) {
 
@@ -80,26 +80,26 @@ public class Movement {
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
 
-        addPoints(getEnPassantPoints(pieceToMove,markedPoint));
+        addPoints(getEnPassantPoints(pieceToMove,selectedPoint));
     }
 
-    private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove, markedPoint, 7);
-        down(pieceToMove, markedPoint, 7);
-        left(pieceToMove, markedPoint, 7);
-        right(pieceToMove, markedPoint, 7);
+    private void legalMovesRook(Piece pieceToMove, Point selectedPoint) {
+        up(pieceToMove, selectedPoint, 7);
+        down(pieceToMove, selectedPoint, 7);
+        left(pieceToMove, selectedPoint, 7);
+        right(pieceToMove, selectedPoint, 7);
     }
 
-    private void legalMovesBishop(Piece pieceToMove, Point markedPoint) {
-        upLeft(pieceToMove, markedPoint, 7);
-        upRight(pieceToMove, markedPoint, 7);
-        downRight(pieceToMove, markedPoint, 7);
-        downLeft(pieceToMove, markedPoint, 7);
+    private void legalMovesBishop(Piece pieceToMove, Point selectedPoint) {
+        upLeft(pieceToMove, selectedPoint, 7);
+        upRight(pieceToMove, selectedPoint, 7);
+        downRight(pieceToMove, selectedPoint, 7);
+        downLeft(pieceToMove, selectedPoint, 7);
     }
 
-    private void legalMovesKnight(Piece pieceToMove, Point markedPoint) {
-        int x = markedPoint.x;
-        int y = markedPoint.y;
+    private void legalMovesKnight(Piece pieceToMove, Point selectedPoint) {
+        int x = selectedPoint.x;
+        int y = selectedPoint.y;
 
         addPoint(new Point(x + 1, y - 2), pieceToMove);
         addPoint(new Point(x + 2, y - 1), pieceToMove);
@@ -111,62 +111,62 @@ public class Movement {
         addPoint(new Point(x - 1, y - 2), pieceToMove);
     }
 
-    private void legalMovesKing(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove, markedPoint, 1);
-        right(pieceToMove, markedPoint, 1);
-        down(pieceToMove, markedPoint, 1);
-        left(pieceToMove, markedPoint, 1);
+    private void legalMovesKing(Piece pieceToMove, Point selectedPoint) {
+        up(pieceToMove, selectedPoint, 1);
+        right(pieceToMove, selectedPoint, 1);
+        down(pieceToMove, selectedPoint, 1);
+        left(pieceToMove, selectedPoint, 1);
 
-        upLeft(pieceToMove, markedPoint, 1);
-        upRight(pieceToMove, markedPoint, 1);
-        downLeft(pieceToMove, markedPoint, 1);
-        downRight(pieceToMove, markedPoint, 1);
+        upLeft(pieceToMove, selectedPoint, 1);
+        upRight(pieceToMove, selectedPoint, 1);
+        downLeft(pieceToMove, selectedPoint, 1);
+        downRight(pieceToMove, selectedPoint, 1);
 
-        addPoints(getCastlingPoints(pieceToMove, markedPoint));
+        addPoints(getCastlingPoints(pieceToMove, selectedPoint));
     }
 
-    private void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
-        up(pieceToMove, markedPoint, 7);
-        down(pieceToMove, markedPoint, 7);
-        left(pieceToMove, markedPoint, 7);
-        right(pieceToMove, markedPoint, 7);
+    private void legalMovesQueen(Piece pieceToMove, Point selectedPoint) {
+        up(pieceToMove, selectedPoint, 7);
+        down(pieceToMove, selectedPoint, 7);
+        left(pieceToMove, selectedPoint, 7);
+        right(pieceToMove, selectedPoint, 7);
 
-        upLeft(pieceToMove, markedPoint, 7);
-        upRight(pieceToMove, markedPoint, 7);
-        downRight(pieceToMove, markedPoint, 7);
-        downLeft(pieceToMove, markedPoint, 7);
+        upLeft(pieceToMove, selectedPoint, 7);
+        upRight(pieceToMove, selectedPoint, 7);
+        downRight(pieceToMove, selectedPoint, 7);
+        downLeft(pieceToMove, selectedPoint, 7);
     }
 
-    private void up(Piece pieceToMove, Point markedPoint, int iterations) {
-        for (int i = markedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(markedPoint.x, i);
+    private void up(Piece pieceToMove, Point selectedPoint, int iterations) {
+        for (int i = selectedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Point p = new Point(selectedPoint.x, i);
             if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void down(Piece pieceToMove, Point markedPoint, int iterations) {
-        for (int i = markedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(markedPoint.x, i);
+    private void down(Piece pieceToMove, Point selectedPoint, int iterations) {
+        for (int i = selectedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Point p = new Point(selectedPoint.x, i);
             if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void left(Piece pieceToMove, Point markedPoint, int iterations) {
-        for (int i = markedPoint.x - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(i, markedPoint.y);
+    private void left(Piece pieceToMove, Point selectedPoint, int iterations) {
+        for (int i = selectedPoint.x - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Point p = new Point(i, selectedPoint.y);
             if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void right(Piece pieceToMove, Point markedPoint, int iterations) {
-        for (int i = markedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(i, markedPoint.y);
+    private void right(Piece pieceToMove, Point selectedPoint, int iterations) {
+        for (int i = selectedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Point p = new Point(i, selectedPoint.y);
             if (addPoint(p, pieceToMove)) break;
         }
     }
 
-    private void upLeft(Piece pieceToMove, Point markedPoint, int iterations) {
-        Point p = new Point(markedPoint.x, markedPoint.y);
+    private void upLeft(Piece pieceToMove, Point selectedPoint, int iterations) {
+        Point p = new Point(selectedPoint.x, selectedPoint.y);
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
             p.y--;
@@ -174,8 +174,8 @@ public class Movement {
         }
     }
 
-    private void upRight(Piece pieceToMove, Point markedPoint, int iterations) {
-        Point p = new Point(markedPoint.x, markedPoint.y);
+    private void upRight(Piece pieceToMove, Point selectedPoint, int iterations) {
+        Point p = new Point(selectedPoint.x, selectedPoint.y);
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x++;
             p.y--;
@@ -183,8 +183,8 @@ public class Movement {
         }
     }
 
-    private void downRight(Piece pieceToMove, Point markedPoint, int iterations) {
-        Point p = new Point(markedPoint.x, markedPoint.y);
+    private void downRight(Piece pieceToMove, Point selectedPoint, int iterations) {
+        Point p = new Point(selectedPoint.x, selectedPoint.y);
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x++;
             p.y++;
@@ -192,8 +192,8 @@ public class Movement {
         }
     }
 
-    private void downLeft(Piece pieceToMove, Point markedPoint, int iterations) {
-        Point p = new Point(markedPoint.x, markedPoint.y);
+    private void downLeft(Piece pieceToMove, Point selectedPoint, int iterations) {
+        Point p = new Point(selectedPoint.x, selectedPoint.y);
 
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
             p.x--;
@@ -242,14 +242,14 @@ public class Movement {
         return boardMap.containsKey(p);
     }
 
-    public List<Point> getCastlingPoints(Piece pieceToMove, Point markedPoint) {
+    public List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> castlingPoints = new ArrayList<>();
         if (!pieceHasMoved(pieceToMove)) {
-            if (checkRightCastling(markedPoint)) {
-                castlingPoints.add(new Point(markedPoint.x + 2, markedPoint.y));
+            if (checkRightCastling(selectedPoint)) {
+                castlingPoints.add(new Point(selectedPoint.x + 2, selectedPoint.y));
             }
-            if (checkLeftCastling(markedPoint)) {
-                castlingPoints.add(new Point(markedPoint.x - 2, markedPoint.y));
+            if (checkLeftCastling(selectedPoint)) {
+                castlingPoints.add(new Point(selectedPoint.x - 2, selectedPoint.y));
             }
         }
         return castlingPoints;
@@ -271,20 +271,20 @@ public class Movement {
     /**
      * Checks that the conditions for castling to the right are filled
      *
-     * @param markedPoint
+     * @param selectedPoint
      * @return
      */
-    private boolean checkRightCastling(Point markedPoint) {
-        for (int i = markedPoint.x + 1; i <= markedPoint.x + 2; i++) {
-            if (isOccupied(new Point(i, markedPoint.y))) {
+    private boolean checkRightCastling(Point selectedPoint) {
+        for (int i = selectedPoint.x + 1; i <= selectedPoint.x + 2; i++) {
+            if (isOccupied(new Point(i, selectedPoint.y))) {
                 return false;
             }
         }
 
-        Point p = new Point(markedPoint.x + 3, markedPoint.y);
+        Point p = new Point(selectedPoint.x + 3, selectedPoint.y);
         if (isOccupied(p)) {
             Piece piece = boardMap.get(p);
-            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor();
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedPoint).getColor();
         }
         return false;
     }
@@ -292,25 +292,25 @@ public class Movement {
     /**
      * Checks that the conditions for castling to the left are filled
      *
-     * @param markedPoint
+     * @param selectedPoint
      * @return
      */
-    private boolean checkLeftCastling(Point markedPoint) {
-        for (int i = markedPoint.x - 1; i >= markedPoint.x - 3; i--) {
-            if (isOccupied(new Point(i, markedPoint.y))) {
+    private boolean checkLeftCastling(Point selectedPoint) {
+        for (int i = selectedPoint.x - 1; i >= selectedPoint.x - 3; i--) {
+            if (isOccupied(new Point(i, selectedPoint.y))) {
                 return false;
             }
         }
 
-        Point p = new Point(markedPoint.x - 4, markedPoint.y);
+        Point p = new Point(selectedPoint.x - 4, selectedPoint.y);
         if (isOccupied(p)) {
             Piece piece = boardMap.get(p);
-            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(markedPoint).getColor();
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedPoint).getColor();
         }
         return false;
     }
 
-    public List<Point> getEnPassantPoints(Piece pieceToMove, Point markedPoint) {
+    public List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> enPassantPoints = new ArrayList<>();
         if (plies.size() == 0) return enPassantPoints;
 
@@ -319,8 +319,8 @@ public class Movement {
 
         if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
             if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
-                if (lastPly.movedTo.x == markedPoint.x + 1 || lastPly.movedTo.x == markedPoint.x - 1) {
-                    if (lastPly.movedTo.y == markedPoint.y) {
+                if (lastPly.movedTo.x == selectedPoint.x + 1 || lastPly.movedTo.x == selectedPoint.x - 1) {
+                    if (lastPly.movedTo.y == selectedPoint.y) {
                         if (lastMovedPiece.getColor() == BLACK) {
                             enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
                         } else if (lastMovedPiece.getColor() == WHITE) {

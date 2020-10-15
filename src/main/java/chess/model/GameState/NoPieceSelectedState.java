@@ -20,13 +20,13 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
-        Point markedPoint = new Point(x,y);
+        Point selectedPoint = new Point(x,y);
         isPlayerSwitch = false;
-        if(pointIsAPiece(markedPoint) && isPieceMyColor(markedPoint)) {
-            fetchLegalMoves(markedPoint);
+        if(pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
+            fetchLegalMoves(selectedPoint);
             if(context.getLegalPoints().size() == 0) return;
             context.notifyDrawLegalMoves();
-            context.setGameState(new PieceSelectedState(markedPoint,false,context));
+            context.setGameState(new PieceSelectedState(selectedPoint,false,context));
         }
     }
 

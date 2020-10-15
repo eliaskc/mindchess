@@ -327,7 +327,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
-        //TODO longer time for longer distance from markedPoint
+        //TODO longer time for longer distance from selectedPoint
         for (ImageView imageView : legalMoveImages) {
             ScaleTransition st = new ScaleTransition(Duration.millis(250));
             st.setFromX(0.1);
