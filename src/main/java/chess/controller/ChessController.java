@@ -1,11 +1,10 @@
 package chess.controller;
 
-import chess.observers.EndGameObserver;
-import chess.observers.GameObserver;
-import chess.model.Ply;
-
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.Ply;
+import chess.observers.EndGameObserver;
+import chess.observers.GameObserver;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -215,17 +214,18 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         imageHandler.setSquareDimension(squareDimension);
     }
 
-    @FXML AnchorPane endGamePane;
-    @FXML Label endGameLabel;
+    @FXML
+    AnchorPane endGamePane;
+    @FXML
+    Label endGameLabel;
 
     @Override
     public void endGame(String result) {
         Platform.runLater(() -> {
-                endGameLabel.setText(result);
-                endGamePane.toFront();
+            endGameLabel.setText(result);
+            endGamePane.toFront();
         });
     }
-
 
 
     /**
@@ -271,10 +271,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private void switchPieceStyle() {
         imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+
         chessboardImage.setImage(imageHandler.getChessboardImage());
         drawLegalMoves();
         drawPieces();
         drawDeadPieces();
+        drawPawnPromotionSetup(model.getCurrentGame().getCurrentPlayer().getColor());
     }
 
     @FXML
@@ -319,7 +321,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * Draws all legal moves from the list of legalMoves from the ImageHandler
      */
     @Override
-    public void drawLegalMoves(){
+    public void drawLegalMoves() {
         clearAllLegalMoveImages();
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
@@ -344,7 +346,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @Override
     public void switchedPlayer() {
-        if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()){
+        if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()) {
             player1TimerBox.setFill(Color.GREENYELLOW);
             player2TimerBox.setFill(Color.LIGHTGRAY);
         } else {
@@ -355,11 +357,16 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
+     *
      * @param chessColor
      */
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
         promotionAnchorPane.toFront();
+        drawPawnPromotionSetup(chessColor);
+    }
+
+    private void drawPawnPromotionSetup(ChessColor chessColor) {
         promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
         promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
         promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
@@ -367,28 +374,28 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void pawnPromotion(int x, int y) {
-        model.handleBoardInput(x,y);
+        model.handleBoardInput(x, y);
         promotionAnchorPane.toBack();
     }
 
     @FXML
-    public void handleQueenPromotion(){
-        pawnPromotion(0,1);
+    public void handleQueenPromotion() {
+        pawnPromotion(20, 0);
     }
 
     @FXML
-    public void handleKnightPromotion(){
-        pawnPromotion(1,0);
+    public void handleKnightPromotion() {
+        pawnPromotion(21, 0);
     }
 
     @FXML
-    public void handleRookPromotion(){
-        pawnPromotion(1,1);
+    public void handleRookPromotion() {
+        pawnPromotion(22, 0);
     }
 
     @FXML
-    public void handleBishopPromotion(){
-        pawnPromotion(0,0);
+    public void handleBishopPromotion() {
+        pawnPromotion(23, 0);
     }
 
     private void clearAllPieceImages() {
@@ -414,7 +421,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         }
     }
 
-    private void clearAllPliesImages(){
+    private void clearAllPliesImages() {
         pliesBoardAnchorPane.getChildren().removeAll(pliesImages);
         pliesImages.clear();
     }
@@ -432,7 +439,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     @FXML
-    public void analyzeGameBack(){
+    public void analyzeGameBack() {
         pliesAnchorPane.toBack();
     }
 
@@ -444,7 +451,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         pliesFlowPane.getChildren().clear();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
-        for (Ply ply : model.getCurrentGame().getPlies()){
+        for (Ply ply : model.getCurrentGame().getPlies()) {
             PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
             plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
             pliesFlowPane.getChildren().add(plyController);
