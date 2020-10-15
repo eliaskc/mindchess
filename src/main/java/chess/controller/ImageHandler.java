@@ -90,9 +90,9 @@ public class ImageHandler {
         String imageURL;
 
         if (minecraftPieceStyle) {
-            imageURL = String.format("/minecraftChesspieces/%sMinecraft%s.png", chessColor.toString(), pieceType.toString());
+            imageURL = String.format("/minecraftChesspieces/%s_minecraft_%s.png", chessColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         } else {
-            imageURL = String.format("/chesspieces/%s%s.png", chessColor.toString(), pieceType.toString());
+            imageURL = String.format("/chessPieces/%s_%s.png", chessColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         }
 
         Image pieceImage;
@@ -154,10 +154,10 @@ public class ImageHandler {
             ImageView imageView = new ImageView();
 
             if (boardMap.get(point) != null) {
-                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftlegalMoveBox.png")));
+                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMoveBox.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
-                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftlegalMove.png")));
+                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMove.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMove.png")));
             }
 

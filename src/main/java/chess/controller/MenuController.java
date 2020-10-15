@@ -38,8 +38,8 @@ public class MenuController implements Initializable {
 
     private final String audio_URL_1 = "/backgroundMusic/C418_Sweden.mp3";
     private final String audio_URL_2 = "/backgroundMusic/C418_SubwooferLullaby.mp3";
-    private final String audio_URL_3 = "/backgroundMusic/CaptainSparklez_Revenge.mp3";
-    List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2, audio_URL_3);
+    //private final String audio_URL_3 = "/backgroundMusic/CaptainSparklez_Revenge.mp3";
+    List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2);
 
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
@@ -139,13 +139,13 @@ public class MenuController implements Initializable {
      */
     private void initializeBackgroundMusic() {
         Random ran = new Random();
-        int videoIndex = ran.nextInt(2);
-        audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(2)).toExternalForm()));
+        int audioIndex = ran.nextInt(2);
+        audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(audioIndex)).toExternalForm()));
         audioPlayer.setAutoPlay(true);
         audioPlayer.setVolume(0.5);
         audioPlayer.setOnEndOfMedia(() -> {
-            int videoIndex2 = ran.nextInt(2);
-            audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(2)).toExternalForm()));
+            int audioIndex2 = ran.nextInt(2);
+            audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(audioIndex2)).toExternalForm()));
         });
     }
 
