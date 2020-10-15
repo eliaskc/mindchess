@@ -35,8 +35,9 @@ public class PieceSelectedState implements GameState {
         Point targetPoint = new Point(x,y);
         isPlayerSwitch = false;
         if (context.getLegalPoints().contains(targetPoint) && targetPoint != selectedPoint) {
-
+            addMoveToPlies(selectedPoint, targetPoint);
             move(selectedPoint,targetPoint);
+
             if(checkPawnPromotion(targetPoint)){
                 context.setGameState(new PawnPromotionState(targetPoint,false,context));
                 clearDrawLegalMoves();
@@ -54,7 +55,6 @@ public class PieceSelectedState implements GameState {
     private void move(Point selectedPoint, Point targetPoint){
         makeSpecialMoves(selectedPoint, targetPoint);
         makeMoves(selectedPoint, targetPoint);
-        addMoveToPlies(selectedPoint, targetPoint);
 
         context.notifyDrawPieces();
         isPlayerSwitch = true;
@@ -131,7 +131,9 @@ public class PieceSelectedState implements GameState {
     }
 
     private void addMoveToPlies(Point selectedPoint,Point targetPoint){
-        context.getPlies().add(new Ply(selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint)));
+        Ply ply = new Ply(selectedPoint, targetPoint, context.getBoard().getBoardMap().get(selectedPoint));
+        ply.generateBoardSnapshot(context.getBoard().getBoardMap());
+        context.getPlies().add(ply);
     }
 
     @Override

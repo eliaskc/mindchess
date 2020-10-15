@@ -450,6 +450,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private void populatePliesFlowPane() {
         pliesFlowPane.getChildren().clear();
+        List<PlyController> plyControllers = new ArrayList<>();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGame().getPlies()) {
@@ -460,11 +461,16 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
             plyController.setOnMouseClicked(event -> {
                 clearAllPliesImages();
-                List<ImageView> plies = plyController.generateBoardImages();
+                pliesFlowPane.getChildren().clear();
+                List<ImageView> plies = plyController.generateBoardImages(true);
                 pliesImages.addAll(plies);
                 pliesBoardAnchorPane.getChildren().addAll(plies);
             });
+
+            plyControllers.add(plyController);
         }
+        
+        pliesBoardAnchorPane.getChildren().addAll(plyControllers.get(0).generateBoardImages(false));
     }
 
     /**

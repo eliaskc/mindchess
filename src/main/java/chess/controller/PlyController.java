@@ -54,15 +54,26 @@ public class PlyController extends AnchorPane {
         this.labelPlayer.setText(String.format("%s", ply.getMovedPiece().getColor()));
     }
 
-    public List<ImageView> generateBoardImages(){
+    public List<ImageView> generateBoardImages(boolean animatePieces){
         List<ImageView> imageViewList = new ArrayList<>();
 
-        for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
-
-            //Only draw the pieces that weren't moved/attacked
-            if (entry.getKey().equals(ply.getMovedTo()) || entry.getKey().equals(ply.getMovedFrom())) {
-                imageViewList.addAll(animatePieceMove(ply));
-            } else {
+        if(animatePieces){
+            for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
+                //Only draw the pieces that weren't moved/attacked
+                if (entry.getKey().equals(ply.getMovedTo()) || entry.getKey().equals(ply.getMovedFrom())) {
+                    imageViewList.addAll(animatePieceMove(ply));
+                } else {
+                    ImageView imageView = new ImageView();
+                    imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
+                    imageView.setFitWidth(40);
+                    imageView.setFitHeight(40);
+                    imageView.setX(entry.getKey().x*40);
+                    imageView.setY(entry.getKey().y*40);
+                    imageViewList.add(imageView);
+                }
+            }
+        } else {
+            for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
                 ImageView imageView = new ImageView();
                 imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
                 imageView.setFitWidth(40);
@@ -70,13 +81,14 @@ public class PlyController extends AnchorPane {
                 imageView.setX(entry.getKey().x*40);
                 imageView.setY(entry.getKey().y*40);
                 imageViewList.add(imageView);
+
             }
         }
 
         return imageViewList;
     }
 
-    public List<ImageView> animatePieceMove(Ply ply){
+    private List<ImageView> animatePieceMove(Ply ply){
         List<ImageView> imageViewList = new ArrayList<>();
 
         ImageView movedPiece = new ImageView();
