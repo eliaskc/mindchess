@@ -43,8 +43,8 @@ public class PieceSelectedState implements GameState {
             }
         }
         if (context.getLegalPoints().contains(targetPoint) && targetPoint != selectedPoint) {
-            addMoveToPlies(selectedPoint, targetPoint);
             move(selectedPoint,targetPoint);
+            addMoveToPlies(selectedPoint, targetPoint);
 
             if(checkPawnPromotion(targetPoint)){
                 context.setGameState(new PawnPromotionState(targetPoint,false,context));
@@ -85,7 +85,7 @@ public class PieceSelectedState implements GameState {
                 makeMoves(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
             }
         }
-        if (movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint),selectedPoint).size() != 0 && movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint),selectedPoint).contains(clickedPoint)) {
+        if (movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).size() != 0 && movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint),selectedPoint).contains(clickedPoint)) {
             if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == WHITE) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
             } else if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == BLACK) {
@@ -139,7 +139,7 @@ public class PieceSelectedState implements GameState {
     }
 
     private void addMoveToPlies(Point selectedPoint,Point targetPoint){
-        Ply ply = new Ply(selectedPoint, targetPoint, context.getBoard().getBoardMap().get(selectedPoint));
+        Ply ply = new Ply(selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint));
         ply.generateBoardSnapshot(context.getBoard().getBoardMap());
         context.getPlies().add(ply);
     }
