@@ -220,7 +220,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML Label endGameLabel;
 
     @Override
-    public void checkEndGame(String result) {
+    public void endGame(String result) {
         Platform.runLater(() -> {
                 endGameLabel.setText(result);
                 endGamePane.toFront();
@@ -236,7 +236,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     public void handleClick(MouseEvent event) {
-        model.handleBoardClick(translateX(event.getSceneX()), translateY(event.getSceneY()));
+        model.handleBoardInput(translateX(event.getSceneX()), translateY(event.getSceneY()));
     }
 
     /**
@@ -325,8 +325,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
+        //TODO longer time for longer distance from markedPoint
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView)), imageView);
+            ScaleTransition st = new ScaleTransition(Duration.millis(250, imageView);
             st.setFromX(0.1);
             st.setFromY(0.1);
             st.setToX(1);

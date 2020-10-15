@@ -11,6 +11,7 @@ public class Ply {
     Point movedFrom;
     Point movedTo;
     Piece movedPiece;
+  
     Map<Point, Piece> boardSnapshot = new HashMap<>();
 
     public Ply(Point movedFrom, Point movedTo, Piece movedPiece) {
@@ -29,6 +30,14 @@ public class Ply {
 
     public Piece getMovedPiece() {
         return movedPiece;
+    }
+
+    public void generateBoardSnapshot(Map<Point, Piece> boardMap){
+        this.boardSnapshot = new HashMap<>(boardMap);
+    }
+
+    public Map<Point, Piece> getBoardSnapshot() {
+        return boardSnapshot;
     }
 
     public void generateBoardSnapshot(Map<Point, Piece> boardMap){

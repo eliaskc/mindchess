@@ -21,7 +21,7 @@ public class TestChessTimer {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 

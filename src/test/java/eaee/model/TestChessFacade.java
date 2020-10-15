@@ -23,35 +23,40 @@ public class TestChessFacade {
 
     @Test
     public void testMoveAndPly() {
-        Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
+        Map<Point, Piece> boardMap = model.getCurrentGame().getBoard().getBoardMap();
         Point p1 = new Point(0,6);
         Point p2 = new Point(0,5);
 
         Piece testPieceBefore = boardMap.get(p1);
 
-        model.handleBoardClick(0,6);
-        model.handleBoardClick(0,5);
+        model.handleBoardInput(0,6);
+        model.handleBoardInput(0,5);
 
         Piece testPieceAfter = boardMap.get(p2);
 
         Ply ply = new Ply(p1,p2,testPieceAfter);
 
         assertEquals(testPieceBefore, testPieceAfter);
+      
         assertEquals(model.getGame().getPlies().get(0).getMovedFrom(), ply.getMovedFrom());
         assertEquals(model.getGame().getPlies().get(0).getMovedTo(), ply.getMovedTo());
         assertEquals(model.getGame().getPlies().get(0).getMovedPiece(), ply.getMovedPiece());
         //assertEquals(model.getGame().getPlies().get(0).getPlayer(), ply.getPlayer());
+
     }
 
-    /**
-     * test the placeAllPieces method
-     */
     @Test
     public void testPlaceAllPieces(){
-        Map<Point, Piece> boardMap = model.getGame().getBoard().getBoardMap();
+        Map<Point, Piece> boardMap = model.getCurrentGame().getBoard().getBoardMap();
 
         assertTrue(boardMap.get(new Point(0,0)).getColor() == ChessColor.BLACK && boardMap.get(new Point(0,0)).getPieceType() == PieceType.ROOK);
         assertTrue(boardMap.get(new Point(6,6)).getColor() == ChessColor.WHITE && boardMap.get(new Point(6,6)).getPieceType() == PieceType.PAWN);
         assertTrue(boardMap.get(new Point(4,7)).getColor() == ChessColor.WHITE && boardMap.get(new Point(4,7)).getPieceType() == PieceType.KING);
+    }
+
+    @Test
+    public void testClickOutsideBoard() {
+        model.handleBoardInput(10,11);
+        model.handleBoardInput(10,12);
     }
 }

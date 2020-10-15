@@ -50,6 +50,7 @@ public class PlyController extends AnchorPane {
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
         this.labelMovedFrom.setText(String.format("x%d y%d", ply.getMovedFrom().x, ply.getMovedFrom().y));
         this.labelMovedTo.setText(String.format("x%d y%d", ply.getMovedTo().x, ply.getMovedTo().y));
+        //TODO add playerName string to Ply and use instead of Color
         this.labelPlayer.setText(String.format("%s", ply.getMovedPiece().getColor()));
     }
 
