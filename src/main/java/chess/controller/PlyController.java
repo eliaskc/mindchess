@@ -81,7 +81,6 @@ public class PlyController extends AnchorPane {
                 imageView.setX(entry.getKey().x*40);
                 imageView.setY(entry.getKey().y*40);
                 imageViewList.add(imageView);
-
             }
         }
 

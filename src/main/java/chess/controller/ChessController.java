@@ -43,6 +43,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
+    int lastClickedX;
+    int lastClickedY;
     private ChessFacade model;
     private Parent menuParent;
     private Scene scene;
@@ -236,7 +238,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     public void handleClick(MouseEvent event) {
-        model.handleBoardInput(translateX(event.getSceneX()), translateY(event.getSceneY()));
+        lastClickedX = translateX(event.getSceneX());
+        lastClickedY = translateY(event.getSceneY());
+        model.handleBoardInput(lastClickedX, lastClickedY);
     }
 
     /**
@@ -327,9 +331,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
-        //TODO longer time for longer distance from selectedPoint
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(250));
+            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY)), imageView);
             st.setFromX(0.1);
             st.setFromY(0.1);
             st.setToX(1);
@@ -461,16 +464,16 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
             plyController.setOnMouseClicked(event -> {
                 clearAllPliesImages();
-                pliesFlowPane.getChildren().clear();
                 List<ImageView> plies = plyController.generateBoardImages(true);
                 pliesImages.addAll(plies);
-                pliesBoardAnchorPane.getChildren().addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(pliesImages);
             });
 
             plyControllers.add(plyController);
         }
-        
-        pliesBoardAnchorPane.getChildren().addAll(plyControllers.get(0).generateBoardImages(false));
+
+        pliesImages.addAll(plyControllers.get(0).generateBoardImages(false));
+        pliesBoardAnchorPane.getChildren().addAll(pliesImages);
     }
 
     /**

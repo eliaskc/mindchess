@@ -172,9 +172,10 @@ public class ImageHandler {
         return imageViews;
     }
 
-    double distanceFromMarkedPiece(ImageView imageView){
-
-        return 250;
+    double distanceFromMarkedPiece(ImageView imageView, int x, int y){
+        double yDelta = imageView.getY() - y*squareDimension;
+        double xDelta = imageView.getX() - x*squareDimension;
+        return Math.hypot(yDelta, xDelta);
     }
 
     public double getSquareDimension() {
