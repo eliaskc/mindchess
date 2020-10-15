@@ -6,23 +6,12 @@ package chess.model;
  * Also fetches its own image
  */
 public class Piece {
-    private boolean isActive;
     private final ChessColor chessColor;
     private PieceType pieceType;
-    private final boolean mark = false;
 
-    public Piece(boolean isActive, ChessColor chessColor, PieceType pieceType) {
-        this.isActive = isActive;
+    public Piece(ChessColor chessColor, PieceType pieceType) {
         this.chessColor = chessColor;
         this.pieceType = pieceType;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public PieceType getPieceType() {

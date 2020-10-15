@@ -13,12 +13,12 @@ public class PawnPromotionState implements GameState{
     private Map<Point, PieceType> promotionPieces = new HashMap<>();
 
     private IGameContext context;
-    private Point markedPoint;
+    private Point selectedPoint;
     private boolean isPlayerSwitch;
 
-    public PawnPromotionState(Point markedPoint,boolean isPlayerSwitch,IGameContext context) {
+    public PawnPromotionState(Point selectedPoint, boolean isPlayerSwitch, IGameContext context) {
         this.context = context;
-        this.markedPoint = markedPoint;
+        this.selectedPoint = selectedPoint;
         this.isPlayerSwitch = isPlayerSwitch;
         initPromotionPieces();
     }
@@ -27,7 +27,7 @@ public class PawnPromotionState implements GameState{
     public void handleInput(int x, int y) {
         Point selectedPromotion = new Point(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
-            promote(markedPoint,selectedPromotion);
+            promote(selectedPoint,selectedPromotion);
             context.notifyPawnPromotion();
             context.notifyDrawPieces();
             context.setGameState(new NoPieceSelectedState(true,context));
@@ -41,9 +41,9 @@ public class PawnPromotionState implements GameState{
         promotionPieces.put(new Point(23,0), PieceType.BISHOP);
     }
 
-    private void promote(Point markedPoint, Point selectedPromotion){
-        Piece piece = context.getBoard().getBoardMap().get(markedPoint);
-        piece.setPieceType(promotionPieces.get(selectedPromotion));
+    private void promote(Point selectedPoint, Point selectedPromotion){
+        Piece piece = new Piece(context.getBoard().getBoardMap().get(selectedPoint).getColor(), promotionPieces.get(selectedPromotion));
+        context.getBoard().getBoardMap().put(selectedPoint, piece);
     }
 
     @Override

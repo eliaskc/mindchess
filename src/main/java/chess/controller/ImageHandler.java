@@ -172,11 +172,10 @@ public class ImageHandler {
         return imageViews;
     }
 
-    double distanceFromMarkedPiece(ImageView imageView){
-        //double yDelta = imageView.getY() - model.getCurrentGame().getMarkedPoint().y*squareDimension;
-        //double xDelta = imageView.getX() - model.getCurrentGame().getMarkedPoint().x*squareDimension;
-        //return Math.hypot(yDelta, xDelta);
-        return 250;
+    double distanceFromMarkedPiece(ImageView imageView, int x, int y){
+        double yDelta = imageView.getY() - y*squareDimension;
+        double xDelta = imageView.getX() - x*squareDimension;
+        return Math.hypot(yDelta, xDelta);
     }
 
     public double getSquareDimension() {

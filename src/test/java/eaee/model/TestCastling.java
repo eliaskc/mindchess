@@ -27,7 +27,7 @@ public class TestCastling {
     }
 
     @Test
-    public void testCastlingNotPossible() {
+    public void testCastlingNotPossibleWrongPosition() {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
@@ -62,5 +62,45 @@ public class TestCastling {
 
         assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.ROOK);
         assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KING);
+    }
+
+    @Test
+    public void testCastlingKingHasMoved() {
+        //Castling setup
+        model.handleBoardInput(6,7);
+        model.handleBoardInput(7,5);
+
+        model.handleBoardInput(4,1);
+        model.handleBoardInput(4,2);
+
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,5);
+
+        model.handleBoardInput(4,2);
+        model.handleBoardInput(4,3);
+
+        model.handleBoardInput(5,7);
+        model.handleBoardInput(4,6);
+
+        model.handleBoardInput(4,3);
+        model.handleBoardInput(4,4);
+
+        model.handleBoardInput(4,7);
+        model.handleBoardInput(5,7);
+
+        model.handleBoardInput(0,1);
+        model.handleBoardInput(0,2);
+
+        model.handleBoardInput(5,7);
+        model.handleBoardInput(4,7);
+
+        model.handleBoardInput(0,2);
+        model.handleBoardInput(0,3);
+
+        //The actual castling
+        model.handleBoardInput(4,7);
+        model.handleBoardInput(6,7);
+
+        assertEquals(PieceType.KING, boardMap.get(new Point(4,7)).getPieceType());
     }
 }

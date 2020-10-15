@@ -19,11 +19,9 @@ public class Board {
     public Board() {
     }
 
-
     public Map<Point, Piece> getBoardMap() {
         return boardMap;
     }
-
 
     public void initBoard() {
         placeAllPieces();
@@ -38,31 +36,31 @@ public class Board {
     }
 
     private void placeBlackPieces() {
-        boardMap.put(new Point(0, 0), new Piece(true, BLACK, ROOK));
-        boardMap.put(new Point(1, 0), new Piece(true, BLACK, KNIGHT));
-        boardMap.put(new Point(2, 0), new Piece(true, BLACK, BISHOP));
-        boardMap.put(new Point(3, 0), new Piece(true, BLACK, QUEEN));
-        boardMap.put(new Point(4, 0), new Piece(true, BLACK, KING));
-        boardMap.put(new Point(5, 0), new Piece(true, BLACK, BISHOP));
-        boardMap.put(new Point(6, 0), new Piece(true, BLACK, KNIGHT));
-        boardMap.put(new Point(7, 0), new Piece(true, BLACK, ROOK));
+        boardMap.put(new Point(0, 0), new Piece(BLACK, ROOK));
+        boardMap.put(new Point(1, 0), new Piece(BLACK, KNIGHT));
+        boardMap.put(new Point(2, 0), new Piece(BLACK, BISHOP));
+        boardMap.put(new Point(3, 0), new Piece(BLACK, QUEEN));
+        boardMap.put(new Point(4, 0), new Piece(BLACK, KING));
+        boardMap.put(new Point(5, 0), new Piece(BLACK, BISHOP));
+        boardMap.put(new Point(6, 0), new Piece(BLACK, KNIGHT));
+        boardMap.put(new Point(7, 0), new Piece(BLACK, ROOK));
         for (int i = 0; i <= 7; i++) {
-            boardMap.put(new Point(i, 1), new Piece(true, BLACK, PAWN));
+            boardMap.put(new Point(i, 1), new Piece(BLACK, PAWN));
         }
     }
 
     private void placeWhitePieces() {
         for (int i = 0; i <= 7; i++) {
-            boardMap.put(new Point(i, 6), new Piece(true, WHITE, PAWN));
+            boardMap.put(new Point(i, 6), new Piece(WHITE, PAWN));
         }
-        boardMap.put(new Point(0, 7), new Piece(true, WHITE, ROOK));
-        boardMap.put(new Point(1, 7), new Piece(true, WHITE, KNIGHT));
-        boardMap.put(new Point(2, 7), new Piece(true, WHITE, BISHOP));
-        boardMap.put(new Point(3, 7), new Piece(true, WHITE, QUEEN));
-        boardMap.put(new Point(4, 7), new Piece(true, WHITE, KING));
-        boardMap.put(new Point(5, 7), new Piece(true, WHITE, BISHOP));
-        boardMap.put(new Point(6, 7), new Piece(true, WHITE, KNIGHT));
-        boardMap.put(new Point(7, 7), new Piece(true, WHITE, ROOK));
+        boardMap.put(new Point(0, 7), new Piece(WHITE, ROOK));
+        boardMap.put(new Point(1, 7), new Piece(WHITE, KNIGHT));
+        boardMap.put(new Point(2, 7), new Piece(WHITE, BISHOP));
+        boardMap.put(new Point(3, 7), new Piece(WHITE, QUEEN));
+        boardMap.put(new Point(4, 7), new Piece(WHITE, KING));
+        boardMap.put(new Point(5, 7), new Piece(WHITE, BISHOP));
+        boardMap.put(new Point(6, 7), new Piece(WHITE, KNIGHT));
+        boardMap.put(new Point(7, 7), new Piece(WHITE, ROOK));
     }
 
     List<Piece> getPiecesByColor(ChessColor chessColor) {

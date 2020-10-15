@@ -43,6 +43,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     double squareDimension = 75;
     double chessboardContainerX;
     double chessboardContainerY;
+    int lastClickedX;
+    int lastClickedY;
     private ChessFacade model;
     private Parent menuParent;
     private Scene scene;
@@ -130,6 +132,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         model.stopAllTimers();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
+        pliesAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -223,6 +226,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void showEndGameResult(String result) {
         Platform.runLater(() -> {
+            model.stopAllTimers();
             endGameLabel.setText(result);
             endGamePane.toFront();
         });
@@ -236,7 +240,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     public void handleClick(MouseEvent event) {
-        model.handleBoardInput(translateX(event.getSceneX()), translateY(event.getSceneY()));
+        lastClickedX = translateX(event.getSceneX());
+        lastClickedY = translateY(event.getSceneY());
+        model.handleBoardInput(lastClickedX, lastClickedY);
     }
 
     /**
@@ -327,9 +333,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
-        //TODO longer time for longer distance from markedPoint
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(250));
+            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY)), imageView);
             st.setFromX(0.1);
             st.setFromY(0.1);
             st.setToX(1);
@@ -434,7 +439,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     public void analyzeGame() {
         populatePliesFlowPane();
-        clearAllPliesImages();
         pliesBoardImageView.setImage(imageHandler.getChessboardImage());
         pliesAnchorPane.toFront();
     }
@@ -450,20 +454,27 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private void populatePliesFlowPane() {
         pliesFlowPane.getChildren().clear();
+        clearAllPliesImages();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGame().getPlies()) {
             PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
-            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
             plyController.setOnMouseClicked(event -> {
                 clearAllPliesImages();
-                List<ImageView> plies = plyController.generateBoardImages();
+                List<ImageView> plies = plyController.generateBoardImages(true);
                 pliesImages.addAll(plies);
-                pliesBoardAnchorPane.getChildren().addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(pliesImages);
             });
+
+            //If this is the first ply, generate the board but dont move the first piece
+            if (model.getCurrentGame().getPlies().indexOf(ply) == 0){
+                List<ImageView> plies = plyController.generateBoardImages(false);
+                pliesImages.addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(pliesImages);
+            }
         }
     }
 
