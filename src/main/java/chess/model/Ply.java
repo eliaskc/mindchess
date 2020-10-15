@@ -8,15 +8,24 @@ import java.util.Map;
  * Representation of a move by either Player. In chess terms a half-move, or a ply
  */
 public class Ply {
+    String playerName;
     Point movedFrom;
     Point movedTo;
     Piece movedPiece;
-    Map<Point, Piece> boardSnapshot = new HashMap<>();
+    Piece takenPiece;
+    Map<Point, Piece> boardSnapshot;
 
-    public Ply(Point movedFrom, Point movedTo, Piece movedPiece) {
+    public Ply(String playerName, Point movedFrom, Point movedTo, Piece movedPiece, Piece takenPiece, Map<Point, Piece> boardMap) {
+        this.playerName = playerName;
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
         this.movedPiece = movedPiece;
+        this.takenPiece = takenPiece;
+        this.boardSnapshot = new HashMap<>(boardMap);
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     public Point getMovedFrom() {
@@ -31,8 +40,8 @@ public class Ply {
         return movedPiece;
     }
 
-    public void generateBoardSnapshot(Map<Point, Piece> boardMap){
-        this.boardSnapshot = new HashMap<>(boardMap);
+    public Piece getTakenPiece() {
+        return takenPiece;
     }
 
     public Map<Point, Piece> getBoardSnapshot() {

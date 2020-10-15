@@ -132,6 +132,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         model.stopAllTimers();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
+        pliesAnchorPane.toBack();
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
         window.show();
@@ -225,6 +226,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void showEndGameResult(String result) {
         Platform.runLater(() -> {
+            model.stopAllTimers();
             endGameLabel.setText(result);
             endGamePane.toFront();
         });
@@ -453,12 +455,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private void populatePliesFlowPane() {
         pliesFlowPane.getChildren().clear();
         clearAllPliesImages();
-        List<PlyController> plyControllers = new ArrayList<>();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGame().getPlies()) {
             PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
-            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
@@ -469,11 +469,13 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
             });
 
-            plyControllers.add(plyController);
+            //If this is the first ply, generate the board but dont move the first piece
+            if (model.getCurrentGame().getPlies().indexOf(ply) == 0){
+                List<ImageView> plies = plyController.generateBoardImages(false);
+                pliesImages.addAll(plies);
+                pliesBoardAnchorPane.getChildren().addAll(pliesImages);
+            }
         }
-
-        pliesImages.addAll(plyControllers.get(0).generateBoardImages(false));
-        pliesBoardAnchorPane.getChildren().addAll(pliesImages);
     }
 
     /**

@@ -14,7 +14,7 @@ public class PieceSelectedState implements GameState {
     private IGameContext context;
     private boolean isPlayerSwitch;
     private Movement movement;
-
+    private Piece takenPiece = null;
 
     public PieceSelectedState(Point selectedPoint,boolean isPlayerSwitch, IGameContext context) {
         this.selectedPoint = selectedPoint;
@@ -46,13 +46,14 @@ public class PieceSelectedState implements GameState {
             move(selectedPoint,targetPoint);
             addMoveToPlies(selectedPoint, targetPoint);
 
+            if(checkKingTaken()){
+                context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
+                return;
+            }
+
             if(checkPawnPromotion(targetPoint)){
                 context.setGameState(new PawnPromotionState(targetPoint,false,context));
                 clearDrawLegalMoves();
-                return;
-            }
-            if(checkKingTaken()){
-                context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
                 return;
             }
         }
@@ -112,7 +113,8 @@ public class PieceSelectedState implements GameState {
     }
 
     private void takePiece(Point pointToTake) {
-        context.getBoard().getDeadPieces().add(context.getBoard().getBoardMap().remove(pointToTake));
+        takenPiece = context.getBoard().getBoardMap().remove(pointToTake);
+        context.getBoard().getDeadPieces().add(takenPiece);
         context.notifyDrawDeadPieces();
     }
 
@@ -139,8 +141,7 @@ public class PieceSelectedState implements GameState {
     }
 
     private void addMoveToPlies(Point selectedPoint,Point targetPoint){
-        Ply ply = new Ply(selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint));
-        ply.generateBoardSnapshot(context.getBoard().getBoardMap());
+        Ply ply = new Ply(context.getCurrentPlayer().getName(), selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint), takenPiece, context.getBoard().getBoardMap());
         context.getPlies().add(ply);
     }
 

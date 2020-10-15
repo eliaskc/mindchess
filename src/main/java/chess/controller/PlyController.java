@@ -3,8 +3,6 @@ package chess.controller;
 import chess.model.Piece;
 import chess.model.Ply;
 import javafx.animation.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -47,88 +45,70 @@ public class PlyController extends AnchorPane {
 
         this.ply = ply;
         this.imageHandler = imageHandler;
+        this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
         this.labelMovedFrom.setText(String.format("x%d y%d", ply.getMovedFrom().x, ply.getMovedFrom().y));
         this.labelMovedTo.setText(String.format("x%d y%d", ply.getMovedTo().x, ply.getMovedTo().y));
-        //TODO add playerName string to Ply and use instead of Color
-        this.labelPlayer.setText(String.format("%s", ply.getMovedPiece().getColor()));
+        this.labelPlayer.setText(String.format("%s", ply.getPlayerName()));
     }
 
-    public List<ImageView> generateBoardImages(boolean animatePieces){
+    public List<ImageView> generateBoardImages(boolean performMove){
         List<ImageView> imageViewList = new ArrayList<>();
 
-        if(animatePieces){
-            for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
-                //Only draw the pieces that weren't moved/attacked
-                if (entry.getKey().equals(ply.getMovedTo()) || entry.getKey().equals(ply.getMovedFrom())) {
-                    imageViewList.addAll(animatePieceMove(ply));
+        for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
+            ImageView imageView = new ImageView();
+            imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
+            imageView.setFitWidth(40);
+            imageView.setFitHeight(40);
+            imageView.setX(entry.getKey().x*40);
+            imageView.setY(entry.getKey().y*40);
+            imageViewList.add(imageView);
+
+            if (entry.getValue().equals(ply.getMovedPiece())) {
+
+                if(performMove){
+                    addTranslateTransition(imageView);
                 } else {
-                    ImageView imageView = new ImageView();
-                    imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
-                    imageView.setFitWidth(40);
-                    imageView.setFitHeight(40);
-                    imageView.setX(entry.getKey().x*40);
-                    imageView.setY(entry.getKey().y*40);
-                    imageViewList.add(imageView);
+                    imageView.setX(ply.getMovedFrom().x*40);
+                    imageView.setY(ply.getMovedFrom().y*40);
                 }
-            }
-        } else {
-            for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
-                ImageView imageView = new ImageView();
-                imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
-                imageView.setX(entry.getKey().x*40);
-                imageView.setY(entry.getKey().y*40);
-                imageViewList.add(imageView);
+
+                if (ply.getTakenPiece() != null) {
+                    ImageView attackedImageView = new ImageView();
+                    attackedImageView.setImage(imageHandler.createPieceImage(ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor()));
+                    attackedImageView.setFitWidth(40);
+                    attackedImageView.setFitHeight(40);
+                    attackedImageView.setX(ply.getMovedTo().x*40);
+                    attackedImageView.setY(ply.getMovedTo().y*40);
+                    addScaleTransition(attackedImageView);
+                    imageViewList.add(attackedImageView);
+                }
             }
         }
 
         return imageViewList;
     }
 
-    private List<ImageView> animatePieceMove(Ply ply){
-        List<ImageView> imageViewList = new ArrayList<>();
+    private void addTranslateTransition(ImageView imageView){
+        imageView.setX(0);
+        imageView.setY(0);
 
-        ImageView movedPiece = new ImageView();
-        movedPiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
-        movedPiece.setFitWidth(40);
-        movedPiece.setFitHeight(40);
-
-        TranslateTransition tt = new TranslateTransition(Duration.millis(750), movedPiece);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(750), imageView);
         tt.setFromX(ply.getMovedFrom().x*40);
         tt.setFromY(ply.getMovedFrom().y*40);
         tt.setToX(ply.getMovedTo().x*40);
         tt.setToY(ply.getMovedTo().y*40);
         tt.setCycleCount(1);
+        tt.play();
+    }
 
-        ImageView attackedPiece = new ImageView();
-        if(ply.getBoardSnapshot().containsKey(ply.getMovedTo())){
-            attackedPiece.setImage(imageHandler.createPieceImage(ply.getBoardSnapshot().get(ply.getMovedTo()).getPieceType(), ply.getBoardSnapshot().get(ply.getMovedTo()).getColor()));
-            attackedPiece.setFitWidth(40);
-            attackedPiece.setFitHeight(40);
-            attackedPiece.setX(ply.getMovedTo().x*40);
-            attackedPiece.setY(ply.getMovedTo().y*40);
-        }
-
-        ScaleTransition st = new ScaleTransition(Duration.millis(750), attackedPiece);
+    private void addScaleTransition(ImageView imageView){
+        ScaleTransition st = new ScaleTransition(Duration.millis(750), imageView);
         st.setFromX(1.0);
         st.setFromY(1.0);
         st.setToX(0);
         st.setToY(0);
         st.setCycleCount(1);
-
-        ParallelTransition pt = new ParallelTransition(tt, st);
-
-        pt.setCycleCount(1);
-        pt.play();
-
-        imageViewList.add(movedPiece);
-        imageViewList.add(attackedPiece);
-        return imageViewList;
-    }
-
-    public void setImagePiece(Image image) {
-        this.imagePiece.setImage(image);
+        st.play();
     }
 }

@@ -19,11 +19,9 @@ public class Board {
     public Board() {
     }
 
-
     public Map<Point, Piece> getBoardMap() {
         return boardMap;
     }
-
 
     public void initBoard() {
         placeAllPieces();
