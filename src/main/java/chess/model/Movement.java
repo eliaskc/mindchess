@@ -14,32 +14,24 @@ import static chess.model.PieceType.PAWN;
  * Is responisble for finding legal moves
  */
 public class Movement {
+    public Movement(Map<Point, Piece> boardMap, List<Ply> plies) {
+        this.boardMap = boardMap;
+        this.plies = plies;
+    }
+
+    public Movement() {
+    }
+
     private Map<Point, Piece> boardMap = new HashMap<>();
     private final List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
     private List<Ply> plies = new ArrayList<>();
-    private final List<Point> castlingPoints = new ArrayList<>();
-    private final List<Point> enPassantPoints = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
     }
 
-    public void setPlies(List<Ply> plies) {
-        this.plies = plies;
-    }
-
-    public List<Point> getCastlingPoints() {
-        return castlingPoints;
-    }
-
-    public List<Point> getEnPassantPoints() {
-        return enPassantPoints;
-    }
-
     public List<Point> pieceMoveDelegation(Piece pieceToMove, Point markedPoint) {
         points.clear();
-        enPassantPoints.clear();
-        castlingPoints.clear();
 
         switch (pieceToMove.getPieceType()) {
             case ROOK -> legalMovesRook(pieceToMove, markedPoint);
@@ -88,8 +80,7 @@ public class Movement {
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
 
-        checkEnPassant(pieceToMove, markedPoint);
-        points.addAll(enPassantPoints);
+        addPoints(getEnPassantPoints(pieceToMove,markedPoint));
     }
 
     private void legalMovesRook(Piece pieceToMove, Point markedPoint) {
@@ -131,11 +122,10 @@ public class Movement {
         downLeft(pieceToMove, markedPoint, 1);
         downRight(pieceToMove, markedPoint, 1);
 
-        checkCastling(pieceToMove, markedPoint);
-        points.addAll(castlingPoints);
+        addPoints(getCastlingPoints(pieceToMove, markedPoint));
     }
 
-    public void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
+    private void legalMovesQueen(Piece pieceToMove, Point markedPoint) {
         up(pieceToMove, markedPoint, 7);
         down(pieceToMove, markedPoint, 7);
         left(pieceToMove, markedPoint, 7);
@@ -239,15 +229,21 @@ public class Movement {
         return breakLoop;
     }
 
+
+    private void addPoints(List<Point> points){
+        this.points.addAll(points);
+    }
+
     private boolean isUnoccupied(Point p) {
-        return boardMap.get(p) == null;
+        return !boardMap.containsKey(p);
     }
 
     private boolean isOccupied(Point p) {
-        return boardMap.get(p) != null;
+        return boardMap.containsKey(p);
     }
 
-    private void checkCastling(Piece pieceToMove, Point markedPoint) {
+    public List<Point> getCastlingPoints(Piece pieceToMove, Point markedPoint) {
+        List<Point> castlingPoints = new ArrayList<>();
         if (!pieceHasMoved(pieceToMove)) {
             if (checkRightCastling(markedPoint)) {
                 castlingPoints.add(new Point(markedPoint.x + 2, markedPoint.y));
@@ -256,6 +252,7 @@ public class Movement {
                 castlingPoints.add(new Point(markedPoint.x - 2, markedPoint.y));
             }
         }
+        return castlingPoints;
     }
 
     /**
@@ -313,8 +310,9 @@ public class Movement {
         return false;
     }
 
-    private void checkEnPassant(Piece pieceToMove, Point markedPoint) {
-        if (plies.size() == 0) return;
+    public List<Point> getEnPassantPoints(Piece pieceToMove, Point markedPoint) {
+        List<Point> enPassantPoints = new ArrayList<>();
+        if (plies.size() == 0) return enPassantPoints;
 
         Ply lastPly = plies.get(plies.size() - 1);
         Piece lastMovedPiece = lastPly.movedPiece;
@@ -332,5 +330,6 @@ public class Movement {
                 }
             }
         }
+        return enPassantPoints;
     }
 }

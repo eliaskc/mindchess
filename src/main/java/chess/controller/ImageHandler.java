@@ -106,7 +106,7 @@ public class ImageHandler {
     }
 
     public void fetchDeadPieceImages() {
-        List<Piece> deadPieces = model.getCurrentGame().getDeadPieces();
+        List<Piece> deadPieces = model.getCurrentGame().getBoard().getDeadPieces();
         whiteImageViews.clear();
         blackImageViews.clear();
 
@@ -173,9 +173,10 @@ public class ImageHandler {
     }
 
     double distanceFromMarkedPiece(ImageView imageView){
-        double yDelta = imageView.getY() - model.getCurrentGame().getMarkedPoint().y*squareDimension;
-        double xDelta = imageView.getX() - model.getCurrentGame().getMarkedPoint().x*squareDimension;
-        return Math.hypot(yDelta, xDelta);
+        //double yDelta = imageView.getY() - model.getCurrentGame().getMarkedPoint().y*squareDimension;
+        //double xDelta = imageView.getX() - model.getCurrentGame().getMarkedPoint().x*squareDimension;
+        //return Math.hypot(yDelta, xDelta);
+        return 250;
     }
 
     public double getSquareDimension() {

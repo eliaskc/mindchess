@@ -1,12 +1,11 @@
 package chess.controller;
 
-import chess.model.Ply;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
+import chess.model.Ply;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
-import chess.model.PieceType;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -138,7 +137,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @FXML
     void forfeit(ActionEvent event) {
-        model.getCurrentGame().forfeit();
+        model.getCurrentGame().endGameAsForfeit();
     }
 
     /**
@@ -149,7 +148,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     void offerDraw(ActionEvent event) {
         lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
         drawAnchorPane.toFront();
-        model.getCurrentGame().offerDraw();
     }
 
     /**
@@ -157,7 +155,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void declineDraw(ActionEvent event) {
-        model.getCurrentGame().declineDraw();
         drawAnchorPane.toBack();
     }
 
@@ -166,7 +163,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void acceptDraw(ActionEvent event) {
-        model.getCurrentGame().acceptDraw();
+        model.getCurrentGame().endGameAsDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -224,20 +221,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void endGame(String result) {
         Platform.runLater(() -> {
-            if(result.equals("white")){
-                endGameLabel.setText(player1Name.getText() + " won");
+                endGameLabel.setText(result);
                 endGamePane.toFront();
-            }
-            else if(result.equals("black")){
-                endGameLabel.setText(player2Name.getText() + " won");
-                endGamePane.toFront();
-            }
-            else if(result.equals("draw")){
-                endGameLabel.setText("The game ended in a draw");
-                endGamePane.toFront();
-            }
         });
     }
+
+
 
     /**
      * Sends to the board that it has been clicked on
@@ -335,8 +324,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
+        //TODO longer time for longer distance from markedPoint
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView)), imageView);
+            ScaleTransition st = new ScaleTransition(Duration.millis(250));
             st.setFromX(0.1);
             st.setFromY(0.1);
             st.setToX(1);
@@ -376,29 +366,29 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
     }
 
-    private void pawnPromotion(PieceType pieceType) {
-        model.getCurrentGame().pawnPromotion(pieceType);
+    private void pawnPromotion(int x, int y) {
+        model.handleBoardInput(x,y);
         promotionAnchorPane.toBack();
     }
 
     @FXML
     public void handleQueenPromotion(){
-        pawnPromotion(QUEEN);
+        pawnPromotion(0,1);
     }
 
     @FXML
     public void handleKnightPromotion(){
-        pawnPromotion(KNIGHT);
+        pawnPromotion(1,0);
     }
 
     @FXML
     public void handleRookPromotion(){
-        pawnPromotion(ROOK);
+        pawnPromotion(1,1);
     }
 
     @FXML
     public void handleBishopPromotion(){
-        pawnPromotion(BISHOP);
+        pawnPromotion(0,0);
     }
 
     private void clearAllPieceImages() {
@@ -456,7 +446,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGame().getPlies()){
             PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
-            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getPlayer().getColor()));
+            plyController.setImagePiece(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated

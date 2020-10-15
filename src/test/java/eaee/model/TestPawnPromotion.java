@@ -49,7 +49,7 @@ public class TestPawnPromotion {
         model.handleBoardInput(4,1);
         model.handleBoardInput(4,0);
 
-        model.getCurrentGame().pawnPromotion(PieceType.QUEEN);
+        model.handleBoardInput(0,1);
 
         assertEquals(model.getCurrentGame().getBoard().getBoardMap().get(new Point(4,0)).getPieceType(), PieceType.QUEEN);
     }
@@ -79,7 +79,7 @@ public class TestPawnPromotion {
         model.handleBoardInput(4,2);
         model.handleBoardInput(4,1);
 
-        model.getCurrentGame().pawnPromotion(PieceType.QUEEN);
+        model.handleBoardInput(0,1);
 
         assertEquals(model.getCurrentGame().getBoard().getBoardMap().get(new Point(4,1)).getPieceType(), PieceType.PAWN);
     }

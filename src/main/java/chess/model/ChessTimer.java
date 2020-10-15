@@ -1,6 +1,6 @@
 package chess.model;
 
-import chess.observers.TimerObserver;
+import chess.observers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ChessTimer {
     private final List<TimerObserver> observers = new ArrayList<>();
 
     public ChessTimer() {
-
+        timer.cancel();
     }
 
     /**
@@ -30,13 +30,13 @@ public class ChessTimer {
      * Creates and starts decrementing a new timer
      */
     public void startTimer() {
-        stopTimer();
+        timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (active) decrementTime();
-                if (getTime() <= 0) stopTimer();
+                if (getTime() <= 0) timerRunOut();
             }
         }, 0, 1000);
     }
@@ -44,12 +44,14 @@ public class ChessTimer {
     /**
      * stops timer,
      */
-    private void stopTimer() {
+    public void stopTimer() {
         timer.cancel();
         setActive(false);
-        for (TimerObserver o : observers) {
-            o.checkTimerRanOut();
-        }
+    }
+
+    private void timerRunOut(){
+        stopTimer();
+        notifyTimerEnded();
     }
 
     /**
@@ -66,6 +68,12 @@ public class ChessTimer {
     private void notifyObservers() {
         for (TimerObserver o : observers) {
             o.updateTimer();
+        }
+    }
+
+    private void notifyTimerEnded(){
+        for (TimerObserver o : observers) {
+            o.notifyTimerEnded();
         }
     }
 

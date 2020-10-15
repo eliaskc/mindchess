@@ -15,7 +15,7 @@ import static chess.model.PieceType.*;
  */
 public class Board {
     private final Map<Point, Piece> boardMap = new HashMap<>();
-
+    private final List<Piece> deadPieces = new ArrayList<>();
     public Board() {
     }
 
@@ -38,7 +38,6 @@ public class Board {
     }
 
     private void placeBlackPieces() {
-        //PieceType.values();
         boardMap.put(new Point(0, 0), new Piece(true, BLACK, ROOK));
         boardMap.put(new Point(1, 0), new Piece(true, BLACK, KNIGHT));
         boardMap.put(new Point(2, 0), new Piece(true, BLACK, BISHOP));
@@ -74,5 +73,9 @@ public class Board {
             }
         }
         return returnList;
+    }
+
+    public List<Piece> getDeadPieces() {
+        return deadPieces;
     }
 }

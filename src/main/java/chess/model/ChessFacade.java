@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * (Composite pattern?)
  */
-public class ChessFacade implements EndGameObserver {
+public class ChessFacade {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
 
@@ -48,13 +48,6 @@ public class ChessFacade implements EndGameObserver {
     public void createNewGame() {
         currentGame = new Game();
         currentGame.initGame();
-        currentGame.addEndGameObserver(this);
         gameList.add(currentGame);
-    }
-
-    @Override
-    public void endGame(String result) {
-        currentGame.stopAllTimers();
-        currentGame.setGameHasEnded(true);
     }
 }

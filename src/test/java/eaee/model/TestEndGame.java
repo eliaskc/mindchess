@@ -44,24 +44,26 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
-        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
     }
 
     @Test
     public void testTimerRunningOut() {
         model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
 
-        model.getCurrentGame().checkTimerRanOut();
+        model.getCurrentGame().notifyTimerEnded();
 
-        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
     }
 
+    //Currently the accepting/declining is not done by the model
+    /*
     @Test
     public void testDrawAccepted() {
         model.getCurrentGame().offerDraw();
         model.getCurrentGame().acceptDraw();
 
-        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
     }
 
     @Test
@@ -69,13 +71,13 @@ public class TestEndGame {
         model.getCurrentGame().offerDraw();
         model.getCurrentGame().declineDraw();
 
-        assertEquals(false, model.getCurrentGame().isGameHasEnded());
-    }
+        assertEquals(false, model.getCurrentGame().getGameState().getIsGameOver());
+    }*/
 
     @Test
     public void testForfeit() {
-        model.getCurrentGame().forfeit();
+        model.getCurrentGame().endGameAsForfeit();
 
-        assertEquals(true, model.getCurrentGame().isGameHasEnded());
+        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
     }
 }
