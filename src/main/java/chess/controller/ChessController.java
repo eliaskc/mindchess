@@ -126,6 +126,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void goToMenu(ActionEvent event) {
+        model.endGame();
         clearAllPieceImages();
         clearAllLegalMoveImages();
         drawAnchorPane.toBack();
