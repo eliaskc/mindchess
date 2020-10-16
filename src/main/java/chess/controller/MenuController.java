@@ -127,7 +127,7 @@ public class MenuController implements Initializable {
         Random ran = new Random();
         int videoIndex = ran.nextInt(4);
         mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
-        mediaPlayer.setAutoPlay(true);
+        //mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(1000);
         media.setMediaPlayer(mediaPlayer);
     }
@@ -139,7 +139,7 @@ public class MenuController implements Initializable {
         Random ran = new Random();
         int audioIndex = ran.nextInt(2);
         audioPlayer = new MediaPlayer(new Media(getClass().getResource(audio_list.get(audioIndex)).toExternalForm()));
-        audioPlayer.setAutoPlay(true);
+        //audioPlayer.setAutoPlay(true);
         audioPlayer.setVolume(0.5);
         audioPlayer.setOnEndOfMedia(() -> {
             int audioIndex2 = ran.nextInt(2);

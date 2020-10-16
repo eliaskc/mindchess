@@ -51,7 +51,7 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(20,0);
 
-        assertEquals(PieceType.QUEEN, model.getCurrentGame().getBoard().getBoardMap().get(new Point(4,0)).getPieceType());
+        assertEquals(PieceType.QUEEN, model.getCurrentBoardMap().get(new Point(4,0)).getPieceType());
     }
 
     @Test
@@ -81,6 +81,6 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(0,1);
 
-        assertEquals(model.getCurrentGame().getBoard().getBoardMap().get(new Point(4,1)).getPieceType(), PieceType.PAWN);
+        assertEquals(model.getCurrentBoardMap().get(new Point(4,1)).getPieceType(), PieceType.PAWN);
     }
 }

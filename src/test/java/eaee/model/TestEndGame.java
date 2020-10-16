@@ -49,7 +49,8 @@ public class TestEndGame {
 
     @Test
     public void testTimerRunningOut() {
-        model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
+        model.setCurrentBlackPlayerTimerTime(0);
+        model.setCurrentWhitePlayerTimerTime(0);
 
         model.getCurrentGame().notifyTimerEnded();
 
@@ -76,7 +77,7 @@ public class TestEndGame {
 
     @Test
     public void testForfeit() {
-        model.getCurrentGame().endGameAsForfeit();
+        model.forfeit();
 
         assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
     }

@@ -49,7 +49,6 @@ public class ChessFacade {
         return currentGame;
     }
 
-
     public void forfeit(){
         currentGame.endGameAsForfeit();
     }

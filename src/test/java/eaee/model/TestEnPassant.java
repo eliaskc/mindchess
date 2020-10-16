@@ -24,7 +24,6 @@ public class TestEnPassant {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
         movement.setBoardMap(boardMap);
     }
 
@@ -46,6 +45,8 @@ public class TestEnPassant {
         //The actual en passant
         model.handleBoardInput(4,3);
         model.handleBoardInput(3,2);
+
+        boardMap = model.getCurrentBoardMap();
 
         assertEquals(PieceType.PAWN, boardMap.get(new Point(3,2)).getPieceType());
         assertEquals(ChessColor.WHITE, boardMap.get(new Point(3,2)).getColor());

@@ -60,6 +60,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
+        boardMap = model.getCurrentBoardMap();
+
         assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.ROOK);
         assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KING);
     }
