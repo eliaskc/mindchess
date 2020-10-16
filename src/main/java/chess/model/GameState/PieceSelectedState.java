@@ -124,6 +124,8 @@ public class PieceSelectedState implements GameState {
         Point kingPoint = movement.fetchKingPoint(invertColor(context.getCurrentPlayer().getColor()));
         if (movement.isKingInCheck(kingPoint)) {
             context.notifyKingInCheck(kingPoint.x, kingPoint.y);
+        } else {
+            context.notifyKingNotInCheck();
         }
     }
 

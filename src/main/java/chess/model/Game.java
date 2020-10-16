@@ -164,6 +164,13 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
+    @Override
+    public void notifyKingNotInCheck() {
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.kingNotInCheck();
+        }
+    }
+
     public void notifySwitchedPlayer() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.switchedPlayer();

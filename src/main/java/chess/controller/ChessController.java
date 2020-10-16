@@ -361,7 +361,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             player2TimerBox.setFill(Color.GREENYELLOW);
             player1TimerBox.setFill(Color.LIGHTGRAY);
         }
-        chessboardContainer.getChildren().remove(kingInCheckImage);
     }
 
     /**
@@ -511,6 +510,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         kingInCheckImage.setMouseTransparent(true);
 
         chessboardContainer.getChildren().add(kingInCheckImage);
+        drawPieces();
+    }
+
+    @Override
+    public void kingNotInCheck() {
+        chessboardContainer.getChildren().remove(kingInCheckImage);
     }
 
     //Game
