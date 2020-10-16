@@ -51,14 +51,14 @@ public class PieceSelectedState implements GameState {
                 return;
             }
 
-            context.switchPlayer();
-            checkKingInCheck();
-
             if (checkPawnPromotion(targetPoint)) {
                 context.setGameState(new PawnPromotionState(targetPoint, context));
                 clearAndDrawLegalMoves();
                 return;
             }
+
+            context.switchPlayer();
+            checkKingInCheck();
         }
         context.setGameState(new NoPieceSelectedState(context));
         clearAndDrawLegalMoves();
