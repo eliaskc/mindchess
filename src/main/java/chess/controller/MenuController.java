@@ -86,10 +86,12 @@ public class MenuController implements Initializable {
 
         chessController.updateImageHandler();
 
-        if (!player1NameField.getText().equals("")) model.getPlayerWhite().setName(player1NameField.getText());
-        if (!player2NameField.getText().equals("")) model.getPlayerBlack().setName(player2NameField.getText());
-        model.getPlayerWhite().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
-        model.getPlayerBlack().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
+        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
+        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        //model.getPlayerBlack().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        //model.getPlayerWhite().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);

@@ -205,8 +205,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         model.getCurrentGame().addGameObserver(this);
         model.getCurrentGame().addEndGameObserver(this);
 
-        player1Name.setText(model.getPlayerWhite().getName());
-        player2Name.setText(model.getPlayerBlack().getName());
+        player1Name.setText(model.getCurrentPlayerWhiteName());
+        player2Name.setText(model.getCurrentPlayerBlackName());
         player1TimerBox.setFill(Color.GREENYELLOW);
         player2TimerBox.setFill(Color.LIGHTGRAY);
         model.getCurrentGame().initTimers();
@@ -354,7 +354,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @Override
     public void switchedPlayer() {
-        if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()) {
+        if (model.isCurrentPlayerWhite()) {
             player1TimerBox.setFill(Color.GREENYELLOW);
             player2TimerBox.setFill(Color.LIGHTGRAY);
         } else {
@@ -485,8 +485,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * Fetches the times for each timer from the model when called and updates the labels
      */
     public void updateTimer() {
-        Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayerWhite().getTimer().getTime())));
-        Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayerBlack().getTimer().getTime())));
+        Platform.runLater(() -> player1Timer.setText(formatTime(model.getCurrentWhiteTimerTime())));
+        Platform.runLater(() -> player2Timer.setText(formatTime(model.getCurrentBlackTimerTime())));
     }
 
     /**

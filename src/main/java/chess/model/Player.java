@@ -24,6 +24,14 @@ public class Player {
         this.name = name;
     }
 
+    public int getCurrentTime(){
+        return chessTimer.getTime();
+    }
+
+    public void setTime(int seconds){
+        chessTimer.setTime(seconds);
+    }
+
     public ChessColor getColor() {
         return chessColor;
     }

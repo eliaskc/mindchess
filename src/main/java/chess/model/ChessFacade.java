@@ -16,12 +16,24 @@ public class ChessFacade {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
 
-    public Player getPlayerWhite() {
-        return currentGame.getPlayerWhite();
+    public String getCurrentPlayerBlackName(){
+        return currentGame.getPlayerBlack().getName();
     }
 
-    public Player getPlayerBlack() {
-        return currentGame.getPlayerBlack();
+    public String getCurrentPlayerWhiteName(){
+        return currentGame.getPlayerWhite().getName();
+    }
+
+    public void setCurrentPlayerWhiteName(String name){
+        currentGame.getPlayerWhite().setName(name);
+    }
+
+    public void setCurrentPlayerBlackName(String name){
+        currentGame.getPlayerBlack().setName(name);
+    }
+
+    public boolean isCurrentPlayerWhite(){
+        return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
     public Game getCurrentGame() {
@@ -31,6 +43,23 @@ public class ChessFacade {
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
+
+    public int getCurrentWhiteTimerTime(){
+       return currentGame.getPlayerWhite().getCurrentTime();
+    }
+
+    public int getCurrentBlackTimerTime(){
+        return currentGame.getPlayerBlack().getCurrentTime();
+    }
+
+    public void setCurrentWhitePlayerTimerTime(int seconds){
+        currentGame.getPlayerWhite().setTime(seconds);
+    }
+
+    public void setCurrentBlackPlayerTimerTime(int seconds){
+        currentGame.getPlayerBlack().setTime(seconds);
+    }
+
 
     /**
      * sends the coordinates from the mouse click to the board to handle and notifies all observers a click has been made
