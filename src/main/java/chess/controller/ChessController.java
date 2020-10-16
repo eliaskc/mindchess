@@ -507,6 +507,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
         kingInCheckImage.setX(x*squareDimension);
         kingInCheckImage.setY(y*squareDimension);
+        kingInCheckImage.setFitHeight(squareDimension);
+        kingInCheckImage.setFitWidth(squareDimension);
         kingInCheckImage.setOpacity(0.6);
         kingInCheckImage.setMouseTransparent(true);
 
