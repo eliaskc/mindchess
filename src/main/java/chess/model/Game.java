@@ -34,7 +34,7 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     private void initGameStates(){
-        gameState = new NoPieceSelectedState(false,this);
+        gameState = new NoPieceSelectedState(this);
     }
 
     public void initGame() {
@@ -66,9 +66,6 @@ public class Game implements TimerObserver, IGameContext {
      */
     void handleBoardInput(int x, int y) {
         gameState.handleInput(x,y);
-        if(gameState.getIsPlayerSwitch()){
-            switchPlayer();
-        }
         checkGameOver();
     }
 
@@ -78,7 +75,7 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    private void switchPlayer() {
+    public void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
@@ -161,13 +158,6 @@ public class Game implements TimerObserver, IGameContext {
     public void notifyKingInCheck(int x, int y) {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.kingInCheck(x, y);
-        }
-    }
-
-    @Override
-    public void notifyKingNotInCheck() {
-        for (GameObserver gameObserver : gameObservers) {
-            gameObserver.kingNotInCheck();
         }
     }
 

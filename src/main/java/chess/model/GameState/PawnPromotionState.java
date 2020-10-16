@@ -16,10 +16,9 @@ public class PawnPromotionState implements GameState{
     private Point selectedPoint;
     private boolean isPlayerSwitch;
 
-    public PawnPromotionState(Point selectedPoint, boolean isPlayerSwitch, IGameContext context) {
+    public PawnPromotionState(Point selectedPoint, IGameContext context) {
         this.context = context;
         this.selectedPoint = selectedPoint;
-        this.isPlayerSwitch = isPlayerSwitch;
         initPromotionPieces();
     }
 
@@ -28,9 +27,10 @@ public class PawnPromotionState implements GameState{
         Point selectedPromotion = new Point(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
             promote(selectedPoint,selectedPromotion);
+            context.switchPlayer();
             context.notifyPawnPromotion();
             context.notifyDrawPieces();
-            context.setGameState(new NoPieceSelectedState(true,context));
+            context.setGameState(new NoPieceSelectedState(context));
         }
     }
 

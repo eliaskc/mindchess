@@ -16,10 +16,9 @@ public class PieceSelectedState implements GameState {
     private Movement movement;
     private Piece takenPiece = null;
 
-    public PieceSelectedState(Point selectedPoint, boolean isPlayerSwitch, IGameContext context) {
+    public PieceSelectedState(Point selectedPoint, IGameContext context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
-        this.isPlayerSwitch = isPlayerSwitch;
         this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
     }
 
@@ -37,7 +36,7 @@ public class PieceSelectedState implements GameState {
         if (context.getBoard().getBoardMap().containsKey(targetPoint)) {
             if (context.getBoard().getBoardMap().get(targetPoint).getColor() == context.getCurrentPlayer().getColor()) {
                 clearDrawLegalMoves();
-                context.setGameState(new NoPieceSelectedState(isPlayerSwitch, context));
+                context.setGameState(new NoPieceSelectedState(context));
                 context.getGameState().handleInput(targetPoint.x, targetPoint.y);
                 return;
             }
@@ -45,20 +44,22 @@ public class PieceSelectedState implements GameState {
         if (context.getLegalPoints().contains(targetPoint) && targetPoint != selectedPoint) {
             move(selectedPoint, targetPoint);
             addMoveToPlies(selectedPoint, targetPoint);
-            checkKingInCheck();
 
             if (checkKingTaken()) {
                 context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game", context));
                 return;
             }
 
+            context.switchPlayer();
+            checkKingInCheck();
+
             if (checkPawnPromotion(targetPoint)) {
-                context.setGameState(new PawnPromotionState(targetPoint, false, context));
+                context.setGameState(new PawnPromotionState(targetPoint, context));
                 clearDrawLegalMoves();
                 return;
             }
         }
-        context.setGameState(new NoPieceSelectedState(isPlayerSwitch, context));
+        context.setGameState(new NoPieceSelectedState(context));
         clearDrawLegalMoves();
     }
 
@@ -121,11 +122,9 @@ public class PieceSelectedState implements GameState {
     }
 
     private void checkKingInCheck() {
-        Point kingPoint = movement.fetchKingPoint(invertColor(context.getCurrentPlayer().getColor()));
+        Point kingPoint = movement.fetchKingPoint(context.getCurrentPlayer().getColor());
         if (movement.isKingInCheck(kingPoint)) {
             context.notifyKingInCheck(kingPoint.x, kingPoint.y);
-        } else {
-            context.notifyKingNotInCheck();
         }
     }
 
@@ -134,11 +133,6 @@ public class PieceSelectedState implements GameState {
             if (p.getPieceType() == PieceType.KING) return true;
         }
         return false;
-    }
-
-    private ChessColor invertColor(ChessColor color) {
-        if (color == WHITE) return BLACK;
-        else return WHITE;
     }
 
     /**

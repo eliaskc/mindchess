@@ -10,6 +10,7 @@ public interface IGameContext {
     void setGameState(GameState gameState);
     GameState getGameState();
     Player getCurrentPlayer();
+    void switchPlayer();
     List<Point> getLegalPoints();
     List<Ply> getPlies();
     Board getBoard();
@@ -19,5 +20,4 @@ public interface IGameContext {
     void notifyPawnPromotion();
     void notifyEndGame();
     void notifyKingInCheck(int x, int y);
-    void notifyKingNotInCheck();
 }

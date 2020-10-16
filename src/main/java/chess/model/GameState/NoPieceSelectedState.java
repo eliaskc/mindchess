@@ -9,9 +9,8 @@ public class NoPieceSelectedState implements GameState {
     private boolean isPlayerSwitch;
     private Movement movement;
 
-    public NoPieceSelectedState(boolean isPlayerSwitch, IGameContext context) {
+    public NoPieceSelectedState(IGameContext context) {
         this.context = context;
-        this.isPlayerSwitch = isPlayerSwitch;
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
     }
 
@@ -23,7 +22,7 @@ public class NoPieceSelectedState implements GameState {
             fetchLegalMoves(selectedPoint);
             if(context.getLegalPoints().size() == 0) return;
             context.notifyDrawLegalMoves();
-            context.setGameState(new PieceSelectedState(selectedPoint,false,context));
+            context.setGameState(new PieceSelectedState(selectedPoint, context));
         }
     }
 
