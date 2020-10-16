@@ -209,4 +209,12 @@ public class ImageHandler {
 
         return pieceImage;
     }
+
+    Image createKingInCheckImage() {
+        try {
+            return new Image(getClass().getResourceAsStream("/guiFiles/kingInCheck.png"));
+        } catch (NullPointerException e) {
+            return new Image(getClass().getResourceAsStream("/guiFiles/missingTexture.png"));
+        }
+    }
 }

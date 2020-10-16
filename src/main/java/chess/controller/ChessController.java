@@ -51,6 +51,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
+    private ImageView kingInCheckImage = new ImageView();
     private List<ImageView> pliesImages = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
@@ -129,6 +130,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     void goToMenu(ActionEvent event) {
         clearAllPieceImages();
         clearAllLegalMoveImages();
+        chessboardContainer.getChildren().remove(kingInCheckImage);
         model.stopAllTimers();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
@@ -359,6 +361,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             player2TimerBox.setFill(Color.GREENYELLOW);
             player1TimerBox.setFill(Color.LIGHTGRAY);
         }
+        chessboardContainer.getChildren().remove(kingInCheckImage);
     }
 
     /**
@@ -497,6 +500,18 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         String sec = seconds % 60 >= 10 ? "" + (seconds % 3600) % 60 : "0" + (seconds % 3600) % 60;
         String min = seconds >= 600 ? "" + seconds / 60 : "0" + seconds / 60;
         return min + ":" + sec;
+    }
+
+    @Override
+    public void kingInCheck(int x, int y) {
+        kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
+        kingInCheckImage.setX(x*squareDimension);
+        kingInCheckImage.setY(y*squareDimension);
+        kingInCheckImage.setOpacity(0.6);
+        kingInCheckImage.setMouseTransparent(true);
+
+        chessboardContainer.getChildren().add(kingInCheckImage);
+        drawPieces();
     }
 
     //Game
