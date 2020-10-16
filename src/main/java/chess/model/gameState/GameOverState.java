@@ -9,21 +9,12 @@ public class GameOverState implements GameState {
     public GameOverState(String resultStatus,IGameContext context) {
         this.context = context;
         this.resultStatus = resultStatus;
+        context.endGame();
     }
 
     @Override
     public void handleInput(int x, int y) {
         //Game over do nothing
-    }
-
-    @Override
-    public boolean getIsGameOver() {
-        return true;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return false;
     }
 
     @Override

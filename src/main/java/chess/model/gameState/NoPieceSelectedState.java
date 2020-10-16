@@ -6,7 +6,6 @@ import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
     private IGameContext context;
-    private boolean isPlayerSwitch;
     private Movement movement;
 
     public NoPieceSelectedState(IGameContext context) {
@@ -17,7 +16,6 @@ public class NoPieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point selectedPoint = new Point(x,y);
-        isPlayerSwitch = false;
         if(pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
             fetchLegalMoves(selectedPoint);
             if(context.getLegalPoints().size() == 0) return;
@@ -41,16 +39,6 @@ public class NoPieceSelectedState implements GameState {
 
     private boolean isPieceMyColor(Point point){
         return context.getBoard().getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
-    }
-
-    @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
     }
 
     @Override

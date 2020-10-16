@@ -14,7 +14,7 @@ public class PawnPromotionState implements GameState{
 
     private IGameContext context;
     private Point selectedPoint;
-    private boolean isPlayerSwitch;
+
 
     public PawnPromotionState(Point selectedPoint, IGameContext context) {
         this.context = context;
@@ -44,16 +44,6 @@ public class PawnPromotionState implements GameState{
     private void promote(Point selectedPoint, Point selectedPromotion){
         Piece piece = new Piece(context.getBoard().getBoardMap().get(selectedPoint).getColor(), promotionPieces.get(selectedPromotion));
         context.getBoard().getBoardMap().put(selectedPoint, piece);
-    }
-
-    @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
     }
 
     @Override

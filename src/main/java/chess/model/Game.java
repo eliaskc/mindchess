@@ -66,13 +66,6 @@ public class Game implements TimerObserver, IGameContext {
      */
     void handleBoardInput(int x, int y) {
         gameState.handleInput(x,y);
-        checkGameOver();
-    }
-
-    private void checkGameOver(){
-        if(gameState.getIsGameOver()){
-            notifyEndGame();
-        }
     }
 
     public void switchPlayer() {
@@ -80,6 +73,11 @@ public class Game implements TimerObserver, IGameContext {
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
+    }
+
+    public void endGame(){
+        stopAllTimers();
+        notifyEndGame();
     }
 
     private Player getOtherPlayer(){

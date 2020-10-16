@@ -13,6 +13,7 @@ public interface IGameContext {
     List<Point> getLegalPoints();
     List<Ply> getPlies();
     Board getBoard();
+    void endGame();
     void notifyDrawPieces();
     void notifyDrawDeadPieces();
     void notifyDrawLegalMoves();

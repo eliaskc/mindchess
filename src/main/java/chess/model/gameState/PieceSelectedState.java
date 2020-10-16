@@ -12,7 +12,6 @@ public class PieceSelectedState implements GameState {
 
     private Point selectedPoint;
     private IGameContext context;
-    private boolean isPlayerSwitch;
     private Movement movement;
     private Piece takenPiece = null;
 
@@ -32,7 +31,6 @@ public class PieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point targetPoint = new Point(x, y);
-        isPlayerSwitch = false;
         if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint)) {
             if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
                 clearAndDrawLegalMoves();
@@ -69,7 +67,6 @@ public class PieceSelectedState implements GameState {
         makeMoves(selectedPoint, targetPoint);
 
         context.notifyDrawPieces();
-        isPlayerSwitch = true;
     }
 
     /**
@@ -154,16 +151,6 @@ public class PieceSelectedState implements GameState {
     private void addMoveToPlies(Point selectedPoint, Point targetPoint) {
         Ply ply = new Ply(context.getCurrentPlayer().getName(), selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint), takenPiece, context.getBoard().getBoardMap());
         context.getPlies().add(ply);
-    }
-
-    @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
     }
 
     @Override

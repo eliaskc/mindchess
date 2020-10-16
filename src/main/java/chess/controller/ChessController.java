@@ -201,7 +201,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         legalMoveImages = imageHandler.fetchLegalMoveImages();
         drawPieces();
         drawDeadPieces();
-
         model.addGameObserverToCurrentGame(this);
         model.addEndGameObserverToCurrentGame(this);
 
