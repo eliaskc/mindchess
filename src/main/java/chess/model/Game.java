@@ -2,7 +2,7 @@ package chess.model;
 
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
-import chess.model.GameState.*;
+import chess.model.gameState.*;
 import chess.observers.TimerObserver;
 
 import java.awt.*;
