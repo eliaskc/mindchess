@@ -1,14 +1,6 @@
-package chess.model.GameState;
+package chess.model.gameState;
 
-import chess.model.GameState.GameState;
 import chess.model.IGameContext;
-import chess.model.Piece;
-import chess.model.Ply;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class GameOverState implements GameState {
     private IGameContext context;

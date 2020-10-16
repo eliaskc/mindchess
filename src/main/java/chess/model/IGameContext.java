@@ -1,10 +1,9 @@
 package chess.model;
 
-import chess.model.GameState.GameState;
+import chess.model.gameState.GameState;
 
 import java.awt.Point;
 import java.util.List;
-import java.util.Map;
 
 public interface IGameContext {
     void setGameState(GameState gameState);

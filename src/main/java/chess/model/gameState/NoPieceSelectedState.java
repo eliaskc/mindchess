@@ -1,4 +1,4 @@
-package chess.model.GameState;
+package chess.model.gameState;
 
 import chess.model.*;
 

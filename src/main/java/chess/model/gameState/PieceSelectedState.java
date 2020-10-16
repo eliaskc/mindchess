@@ -1,4 +1,4 @@
-package chess.model.GameState;
+package chess.model.gameState;
 
 import chess.model.*;
 
@@ -34,15 +34,15 @@ public class PieceSelectedState implements GameState {
     public void handleInput(int x, int y) {
         Point targetPoint = new Point(x,y);
         isPlayerSwitch = false;
-        if (context.getBoard().getBoardMap().containsKey(targetPoint)) {
+        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint)) {
             if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
-                clearDrawLegalMoves();
+                clearAndDrawLegalMoves();
                 context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
                 context.getGameState().handleInput(targetPoint.x, targetPoint.y);
                 return;
             }
         }
-        if (context.getLegalPoints().contains(targetPoint) && targetPoint != selectedPoint) {
+        if (context.getLegalPoints().contains(targetPoint)) {
             move(selectedPoint,targetPoint);
             addMoveToPlies(selectedPoint, targetPoint);
 
@@ -53,12 +53,12 @@ public class PieceSelectedState implements GameState {
 
             if(checkPawnPromotion(targetPoint)){
                 context.setGameState(new PawnPromotionState(targetPoint,false,context));
-                clearDrawLegalMoves();
+                clearAndDrawLegalMoves();
                 return;
             }
         }
         context.setGameState(new NoPieceSelectedState(isPlayerSwitch,context));
-        clearDrawLegalMoves();
+        clearAndDrawLegalMoves();
     }
 
     private void move(Point selectedPoint, Point targetPoint){
@@ -107,7 +107,7 @@ public class PieceSelectedState implements GameState {
         context.getBoard().getBoardMap().remove(moveFrom);
     }
 
-    private void clearDrawLegalMoves(){
+    private void clearAndDrawLegalMoves(){
         context.getLegalPoints().clear();
         context.notifyDrawLegalMoves();
     }
