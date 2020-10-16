@@ -25,6 +25,8 @@ public class Movement {
     private Map<Point, Piece> boardMap = new HashMap<>();
     private List<Ply> plies = new ArrayList<>();
 
+    boolean checkingOpponentLegalPointsInProgress = false;
+
     public void setBoardMap(Map<Point, Piece> boardMap) {
         this.boardMap = boardMap;
     }
@@ -117,8 +119,10 @@ public class Movement {
         downRight(pieceToMove, selectedPoint, 1, legalPoints);
 
         legalPoints.addAll(getCastlingPoints(pieceToMove, selectedPoint));
-        //List<Point> opponentMoves = getOpponentLegalPoints(pieceToMove.getColor());
-        //legalPoints.removeIf(p -> opponentMoves.contains(p));
+        if (!checkingOpponentLegalPointsInProgress) {
+            List<Point> opponentLegalPoints = fetchOpponentLegalPoints(pieceToMove.getColor());
+            legalPoints.removeIf(p -> opponentLegalPoints.contains(p));
+        }
     }
 
     private void legalMovesQueen(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
@@ -324,15 +328,17 @@ public class Movement {
         return enPassantPoints;
     }
 
-    private List<Point> getOpponentLegalPoints(ChessColor color){
-        List<Point> opponentMoves = new ArrayList<>();
+    private List<Point> fetchOpponentLegalPoints(ChessColor color){
+        List<Point> opponentLegalPoints = new ArrayList<>();
+        checkingOpponentLegalPointsInProgress = true;
 
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             if(!(entry.getValue().getColor().equals(color))){
-                opponentMoves.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
+                opponentLegalPoints.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
             }
         }
 
-        return opponentMoves;
+        checkingOpponentLegalPointsInProgress = false;
+        return opponentLegalPoints;
     }
 }
