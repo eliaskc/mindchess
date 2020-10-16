@@ -23,7 +23,7 @@ public class Movement {
     }
 
     private Map<Point, Piece> boardMap = new HashMap<>();
-    private final List<Point> points = new ArrayList<>(); // Holds points which are valid to move to
+    private final List<Point> legalPoints = new ArrayList<>(); // Holds points which are valid to move to
     private List<Ply> plies = new ArrayList<>();
 
     public void setBoardMap(Map<Point, Piece> boardMap) {
@@ -31,7 +31,7 @@ public class Movement {
     }
 
     public List<Point> fetchLegalMoves(Piece pieceToMove, Point selectedPoint) {
-        points.clear();
+        legalPoints.clear();
 
         switch (pieceToMove.getPieceType()) {
             case ROOK -> legalMovesRook(pieceToMove, selectedPoint);
@@ -46,7 +46,7 @@ public class Movement {
 
             case PAWN -> legalMovesPawn(pieceToMove, selectedPoint);
         }
-        return new ArrayList<>(points);
+        return new ArrayList<>(legalPoints);
     }
 
     private void legalMovesPawn(Piece pieceToMove, Point selectedPoint) {
@@ -123,6 +123,8 @@ public class Movement {
         downRight(pieceToMove, selectedPoint, 1);
 
         addPoints(getCastlingPoints(pieceToMove, selectedPoint));
+        List<Point> opponentMoves = getOpponentLegalPoints(pieceToMove.getColor());
+        legalPoints.removeIf(p -> opponentMoves.contains(p));
     }
 
     private void legalMovesQueen(Piece pieceToMove, Point selectedPoint) {
@@ -215,10 +217,10 @@ public class Movement {
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
         if (p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
             if (boardMap.get(p) == null) {
-                points.add(new Point(p.x, p.y));
+                legalPoints.add(new Point(p.x, p.y));
                 breakLoop = false;
             } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                points.add(new Point(p.x, p.y));
+                legalPoints.add(new Point(p.x, p.y));
                 breakLoop = true;
             } else {
                 breakLoop = true;
@@ -231,7 +233,7 @@ public class Movement {
 
 
     private void addPoints(List<Point> points){
-        this.points.addAll(points);
+        this.legalPoints.addAll(points);
     }
 
     private boolean isUnoccupied(Point p) {
@@ -331,5 +333,18 @@ public class Movement {
             }
         }
         return enPassantPoints;
+    }
+
+    private List<Point> getOpponentLegalPoints(ChessColor color){
+        List<Point> opponentMoves = new ArrayList<>();
+
+        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+            if(!(entry.getValue().getColor().equals(color))){
+                fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey());
+                opponentMoves.addAll(legalPoints);
+            }
+        }
+
+        return opponentMoves;
     }
 }
