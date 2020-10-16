@@ -67,31 +67,31 @@
                </children>
             </AnchorPane>
             <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
-            <Rectangle fx:id="player1TimerBox" arcHeight="5.0" arcWidth="5.0" fill="GREENYELLOW" height="45.0" layoutX="340.0" layoutY="662.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-            <Rectangle fx:id="player2TimerBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="45.0" layoutX="840.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-            <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="800.0" layoutY="667.0" prefHeight="35.0" prefWidth="140.0" text="Player 1">
+            <Label fx:id="player1Name" alignment="TOP_RIGHT" layoutX="780.0" layoutY="667.0" prefHeight="35.0" prefWidth="140.0" text="Player 1">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="343.0" layoutY="18.0" prefHeight="35.0" prefWidth="140.0" text="Player 2">
+            <Label fx:id="player2Name" alignment="BOTTOM_LEFT" layoutX="360.0" layoutY="18.0" prefHeight="35.0" prefWidth="140.0" text="Player 2">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="player2Timer" alignment="CENTER" layoutX="843.0" layoutY="18.0" prefHeight="35.0" prefWidth="94.0" text="9:52">
+            <Rectangle fx:id="player1TimerBox" arcHeight="5.0" arcWidth="5.0" fill="GREENYELLOW" height="45.0" layoutX="360.0" layoutY="662.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+            <Rectangle fx:id="player2TimerBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="45.0" layoutX="820.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+            <Label fx:id="player2Timer" alignment="CENTER" layoutX="820.0" layoutY="18.0" prefHeight="35.0" prefWidth="100.0" text="9:52">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="player1Timer" alignment="CENTER" layoutX="343.0" layoutY="667.0" prefHeight="35.0" prefWidth="94.0" text="10:00">
+            <Label fx:id="player1Timer" alignment="CENTER" layoutX="360.0" layoutY="667.0" prefHeight="35.0" prefWidth="94.0" text="10:00">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="chessboardContainer" layoutX="340.0" layoutY="60.0">
+            <AnchorPane fx:id="chessboardContainer" layoutX="360.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="560.0" prefWidth="560.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <ImageView fx:id="chessboardImage" fitHeight="600.0" fitWidth="600.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fx:id="chessboardImage" fitHeight="560.0" fitWidth="560.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@guiFiles/chessboardBeigeAndBrown.png" />
                      </image></ImageView>
@@ -104,6 +104,22 @@
             <Button layoutX="1056.0" layoutY="611.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Forfeit" />
             <Button layoutX="45.0" layoutY="266.0" mnemonicParsing="false" onAction="#switchPieceStyle" prefHeight="50.0" prefWidth="170.0" styleClass="minecraftStyleButton" text="Switch Style" />
             <Button fx:id="muteUnmuteButton" layoutX="45.0" layoutY="329.0" mnemonicParsing="false" onAction="#muteUnmute" prefHeight="50.0" prefWidth="170.0" styleClass="minecraftStyleButton" text="Mute" />
+            <Label layoutX="330.0" layoutY="60.0" maxHeight="70.0" prefHeight="70.0" prefWidth="20.0" text="8" />
+            <Label layoutX="330.0" layoutY="130.0" maxHeight="70.0" prefHeight="70.0" text="7" />
+            <Label layoutX="330.0" layoutY="200.0" maxHeight="70.0" prefHeight="70.0" text="6" />
+            <Label layoutX="330.0" layoutY="270.0" maxHeight="70.0" prefHeight="70.0" text="5" />
+            <Label layoutX="330.0" layoutY="340.0" maxHeight="70.0" prefHeight="70.0" text="4" />
+            <Label layoutX="330.0" layoutY="410.0" maxHeight="70.0" prefHeight="70.0" text="3" />
+            <Label layoutX="330.0" layoutY="480.0" maxHeight="70.0" prefHeight="70.0" text="2" />
+            <Label layoutX="330.0" layoutY="550.0" maxHeight="70.0" prefHeight="70.0" text="1" />
+            <Label alignment="CENTER" layoutX="360.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="a" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="430.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="b" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="500.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="c" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="570.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="d" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="640.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="e" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="710.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="f" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="780.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="g" textAlignment="CENTER" />
+            <Label alignment="CENTER" layoutX="850.0" layoutY="625.0" maxHeight="70.0" prefHeight="20.0" prefWidth="70.0" text="h" textAlignment="CENTER" />
          </children>
       </AnchorPane>
    </children>

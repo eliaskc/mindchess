@@ -47,8 +47,8 @@ public class PlyController extends AnchorPane {
         this.imageHandler = imageHandler;
         this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
-        this.labelMovedFrom.setText(String.format("x%d y%d", ply.getMovedFrom().x, ply.getMovedFrom().y));
-        this.labelMovedTo.setText(String.format("x%d y%d", ply.getMovedTo().x, ply.getMovedTo().y));
+        this.labelMovedFrom.setText(String.format("%s%s", translateXCoordinate(ply.getMovedFrom().x), translateYCoordinate(ply.getMovedFrom().y)));
+        this.labelMovedTo.setText(String.format("%s%s", translateXCoordinate(ply.getMovedTo().x), translateYCoordinate(ply.getMovedTo().y)));
         this.labelPlayer.setText(String.format("%s", ply.getPlayerName()));
     }
 
@@ -110,5 +110,15 @@ public class PlyController extends AnchorPane {
         st.setToY(0);
         st.setCycleCount(1);
         st.play();
+    }
+
+    private String translateXCoordinate(int x) {
+        String[] translation = {"a", "b", "c", "d", "e", "f", "g", "h"};
+        return translation[x];
+    }
+
+    private String translateYCoordinate(int y) {
+        String[] translation = {"8", "7", "6", "5", "4", "3", "2", "1"};
+        return translation[y];
     }
 }
