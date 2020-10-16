@@ -15,9 +15,6 @@ public class NoPieceSelectedState implements GameState {
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
     }
 
-
-
-
     @Override
     public void handleInput(int x, int y) {
         Point selectedPoint = new Point(x,y);

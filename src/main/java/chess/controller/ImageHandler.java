@@ -209,4 +209,8 @@ public class ImageHandler {
 
         return pieceImage;
     }
+
+    public Image createKingInCheckImage() {
+        return new Image(getClass().getResourceAsStream("/guiFiles/kingInCheck.png"));
+    }
 }

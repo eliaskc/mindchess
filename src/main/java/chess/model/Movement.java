@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.KING;
 import static chess.model.PieceType.PAWN;
 
 /**
@@ -340,5 +341,18 @@ public class Movement {
 
         checkingOpponentLegalPointsInProgress = false;
         return opponentLegalPoints;
+    }
+
+    public boolean isKingInCheck(Point kingPoint) {
+        return fetchOpponentLegalPoints(boardMap.get(kingPoint).getColor()).contains(kingPoint);
+    }
+
+    public Point fetchKingPoint(ChessColor color) {
+        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+            if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(KING)){
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

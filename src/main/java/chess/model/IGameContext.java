@@ -18,4 +18,5 @@ public interface IGameContext {
     void notifyDrawLegalMoves();
     void notifyPawnPromotion();
     void notifyEndGame();
+    void notifyKingInCheck(int x, int y);
 }

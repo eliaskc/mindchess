@@ -11,4 +11,5 @@ public interface GameObserver {
     void switchedPlayer();
     void updateTimer();
     void pawnPromotionSetup(ChessColor chessColor);
+    void kingInCheck(int x, int y);
 }
