@@ -54,28 +54,23 @@ public class Movement {
         int y = selectedPoint.y;
 
         if (pieceToMove.getColor() == WHITE) {
-
             if (isUnoccupied(new Point(x, y - 1))) {
-                addPoint(new Point(x, y - 1), pieceToMove);
+                up(pieceToMove, selectedPoint, 1);
 
                 if (isUnoccupied(new Point(x, y - 2)) && !pieceHasMoved(pieceToMove)) {
                     addPoint(new Point(x, y - 2), pieceToMove);
                 }
             }
-
             if (isOccupied(new Point(x + 1, y - 1))) addPoint(new Point(x + 1, y - 1), pieceToMove);
             if (isOccupied(new Point(x - 1, y - 1))) addPoint(new Point(x - 1, y - 1), pieceToMove);
-
         } else if (pieceToMove.getColor() == BLACK) {
-
             if (isUnoccupied(new Point(x, y + 1))) {
-                addPoint(new Point(x, y + 1), pieceToMove);
+                down(pieceToMove, selectedPoint, 1);
 
                 if (isUnoccupied(new Point(x, y + 2)) && !pieceHasMoved(pieceToMove)) {
                     addPoint(new Point(x, y + 2), pieceToMove);
                 }
             }
-
             if (isOccupied(new Point(x + 1, y + 1))) addPoint(new Point(x + 1, y + 1), pieceToMove);
             if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
         }
