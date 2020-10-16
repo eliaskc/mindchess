@@ -141,8 +141,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     @FXML
-    void forfeit(ActionEvent event) {
-        model.getCurrentGame().endGameAsForfeit();
+    void forfeit() {
+        model.forfeit();
     }
 
     /**
@@ -151,7 +151,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void offerDraw(ActionEvent event) {
-        lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
+        lblDrawLabel.setText(model.getCurrentPlayerName() + " offered you a draw");
         drawAnchorPane.toFront();
     }
 
@@ -159,7 +159,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * if the opponent refuses the interface will close and allows the player to move their pieces
      */
     @FXML
-    void declineDraw(ActionEvent event) {
+    void declineDraw() {
         drawAnchorPane.toBack();
     }
 
@@ -167,8 +167,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * sets the game to a draw
      */
     @FXML
-    void acceptDraw(ActionEvent event) {
-        model.getCurrentGame().endGameAsDraw();
+    void acceptDraw() {
+        model.acceptDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -202,14 +202,14 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         drawPieces();
         drawDeadPieces();
 
-        model.getCurrentGame().addGameObserver(this);
-        model.getCurrentGame().addEndGameObserver(this);
+        model.addGameObserverToCurrentGame(this);
+        model.addEndGameObserverToCurrentGame(this);
 
         player1Name.setText(model.getCurrentPlayerWhiteName());
         player2Name.setText(model.getCurrentPlayerBlackName());
         player1TimerBox.setFill(Color.GREENYELLOW);
         player2TimerBox.setFill(Color.LIGHTGRAY);
-        model.getCurrentGame().initTimers();
+        model.initTimersInCurrentGame();
     }
 
     /**
@@ -285,7 +285,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         drawLegalMoves();
         drawPieces();
         drawDeadPieces();
-        drawPawnPromotionSetup(model.getCurrentGame().getCurrentPlayer().getColor());
+        drawPawnPromotionSetup(model.getCurrentPlayerColor());
     }
 
     @FXML
@@ -460,8 +460,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         clearAllPliesImages();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
-        for (Ply ply : model.getCurrentGame().getPlies()) {
-            PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
+        for (Ply ply : model.getCurrentGamePlies()) {
+            PlyController plyController = new PlyController(ply, model.getCurrentGamePlies().indexOf(ply) + 1, imageHandler);
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
@@ -473,7 +473,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             });
 
             //If this is the first ply, generate the board but dont move the first piece
-            if (model.getCurrentGame().getPlies().indexOf(ply) == 0){
+            if (model.getCurrentGamePlies().indexOf(ply) == 0){
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);

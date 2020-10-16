@@ -173,6 +173,10 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
+    public ChessColor getCurrentPlayerColor() {
+        return currentPlayer.getColor();
+    }
+
     public void addGameObserver(GameObserver gameObserver) {
         gameObservers.add(gameObserver);
     }

@@ -1,9 +1,13 @@
 package chess.model;
 
 import chess.observers.EndGameObserver;
+import chess.observers.GameObserver;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Chess represents the model to the rest of the application
@@ -15,6 +19,10 @@ import java.util.List;
 public class ChessFacade {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
+
+    public String getCurrentPlayerName(){
+        return currentGame.getCurrentPlayer().getName();
+    }
 
     public String getCurrentPlayerBlackName(){
         return currentGame.getPlayerBlack().getName();
@@ -36,13 +44,50 @@ public class ChessFacade {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
+    //has to be there until we fix tests
     public Game getCurrentGame() {
         return currentGame;
     }
 
+
+    public void forfeit(){
+        currentGame.endGameAsForfeit();
+    }
+
+    public void acceptDraw(){
+        currentGame.endGameAsDraw();
+    }
+    public void addGameObserverToCurrentGame(GameObserver gameObserver){
+        currentGame.addGameObserver(gameObserver);
+    }
+    public void addEndGameObserverToCurrentGame(EndGameObserver endgameObserver){
+        currentGame.addEndGameObserver(endgameObserver);
+    }
+    public void initTimersInCurrentGame(){
+        currentGame.initTimers();
+    }
+    public ChessColor getCurrentPlayerColor(){
+        return currentGame.getCurrentPlayerColor();
+    }
+    //----------------------------Returns copies-----------------------------------------
+    public List<Ply> getCurrentGamePlies(){
+        return new ArrayList<>(currentGame.getPlies());
+    }
+    public Map<Point,Piece> getCurrentBoardMap(){
+        return new HashMap<>(currentGame.getBoard().getBoardMap());
+    }
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
+    public List<Piece> getCurrentDeadPieces(){
+        return new ArrayList<>(currentGame.getBoard().getDeadPieces());
+    }
+    public List<Point> getCurrentLegalPoints(){
+        return new ArrayList<>(currentGame.getLegalPoints());
+    }
+
+
+
 
     public int getCurrentWhiteTimerTime(){
        return currentGame.getPlayerWhite().getCurrentTime();
@@ -83,4 +128,5 @@ public class ChessFacade {
     public void stopAllTimers(){
         currentGame.stopAllTimers();
     }
+
 }
