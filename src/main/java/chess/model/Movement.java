@@ -61,8 +61,8 @@ public class Movement {
                     addPoint(new Point(x, y - 2), pieceToMove);
                 }
             }
-            if (isOccupied(new Point(x + 1, y - 1))) addPoint(new Point(x + 1, y - 1), pieceToMove);
-            if (isOccupied(new Point(x - 1, y - 1))) addPoint(new Point(x - 1, y - 1), pieceToMove);
+            if (isOccupied(new Point(x + 1, y - 1))) upRight(pieceToMove, selectedPoint, 1);
+            if (isOccupied(new Point(x - 1, y - 1))) upLeft(pieceToMove, selectedPoint, 1);
         } else if (pieceToMove.getColor() == BLACK) {
             if (isUnoccupied(new Point(x, y + 1))) {
                 down(pieceToMove, selectedPoint, 1);
@@ -71,8 +71,8 @@ public class Movement {
                     addPoint(new Point(x, y + 2), pieceToMove);
                 }
             }
-            if (isOccupied(new Point(x + 1, y + 1))) addPoint(new Point(x + 1, y + 1), pieceToMove);
-            if (isOccupied(new Point(x - 1, y + 1))) addPoint(new Point(x - 1, y + 1), pieceToMove);
+            if (isOccupied(new Point(x + 1, y + 1))) downRight(pieceToMove, selectedPoint, 1);
+            if (isOccupied(new Point(x - 1, y + 1))) downLeft(pieceToMove, selectedPoint, 1);
         }
 
         addPoints(getEnPassantPoints(pieceToMove,selectedPoint));
