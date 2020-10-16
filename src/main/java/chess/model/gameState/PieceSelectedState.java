@@ -15,7 +15,7 @@ public class PieceSelectedState implements GameState {
     private Movement movement;
     private Piece takenPiece = null;
 
-    public PieceSelectedState(Point selectedPoint, IGameContext context) {
+    PieceSelectedState(Point selectedPoint, IGameContext context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
@@ -34,7 +34,7 @@ public class PieceSelectedState implements GameState {
         if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint)) {
             if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
                 clearAndDrawLegalMoves();
-                context.setGameState(new NoPieceSelectedState(context));
+                context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
                 context.getGameState().handleInput(targetPoint.x, targetPoint.y);
                 return;
             }
@@ -45,7 +45,7 @@ public class PieceSelectedState implements GameState {
             addMoveToPlies(selectedPoint, targetPoint);
 
             if (checkKingTaken()) {
-                context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game", context));
+                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
                 return;
             }
 
@@ -53,12 +53,13 @@ public class PieceSelectedState implements GameState {
             checkKingInCheck();
 
             if (checkPawnPromotion(targetPoint)) {
-                context.setGameState(new PawnPromotionState(targetPoint, context));
+                context.switchPlayer();
+                context.setGameState(GameStateFactory.createPawnPromotionState(targetPoint,context));
                 clearAndDrawLegalMoves();
                 return;
             }
         }
-        context.setGameState(new NoPieceSelectedState(context));
+        context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         clearAndDrawLegalMoves();
     }
 

@@ -34,7 +34,7 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     private void initGameStates(){
-        gameState = new NoPieceSelectedState(this);
+        gameState = GameStateFactory.createNoPieceSelectedState(this);
     }
 
     public void initGame() {
@@ -89,13 +89,13 @@ public class Game implements TimerObserver, IGameContext {
     }
 
     public void endGameAsDraw(){
-        setGameState(new GameOverState("Game ended in draw", this));
+        setGameState(GameStateFactory.createGameOverState("Game ended in draw", this));
         stopAllTimers();
         notifyEndGame();
     }
 
     public void endGameAsForfeit(){
-        setGameState(new GameOverState(getOtherPlayer().getName() + " has won the game",this));
+        setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game",this));
         stopAllTimers();
         notifyEndGame();
     }
@@ -126,7 +126,7 @@ public class Game implements TimerObserver, IGameContext {
     @Override
     public void notifyTimerEnded() {
         switchPlayer();
-        setGameState(new GameOverState(currentPlayer.getName() + " has won the game",this));
+        setGameState(GameStateFactory.createGameOverState(currentPlayer.getName() + " has won the game",this));
         stopAllTimers();
         notifyEndGame();
     }

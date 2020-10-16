@@ -16,7 +16,7 @@ public class PawnPromotionState implements GameState{
     private Point selectedPoint;
 
 
-    public PawnPromotionState(Point selectedPoint, IGameContext context) {
+    PawnPromotionState(Point selectedPoint, IGameContext context) {
         this.context = context;
         this.selectedPoint = selectedPoint;
         initPromotionPieces();
@@ -30,7 +30,7 @@ public class PawnPromotionState implements GameState{
             context.switchPlayer();
             context.notifyPawnPromotion();
             context.notifyDrawPieces();
-            context.setGameState(new NoPieceSelectedState(context));
+            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         }
     }
 

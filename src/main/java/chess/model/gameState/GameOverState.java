@@ -6,7 +6,7 @@ public class GameOverState implements GameState {
     private IGameContext context;
     private String resultStatus;
 
-    public GameOverState(String resultStatus,IGameContext context) {
+    GameOverState(String resultStatus,IGameContext context) {
         this.context = context;
         this.resultStatus = resultStatus;
         context.endGame();
