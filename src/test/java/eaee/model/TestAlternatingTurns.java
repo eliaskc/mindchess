@@ -64,4 +64,5 @@ public class TestAlternatingTurns {
 
         assertFalse(model.getCurrentDeadPieces().contains(piece));
     }
+
 }

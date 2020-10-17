@@ -33,7 +33,7 @@ public class PieceSelectedState implements GameState {
             if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
                 clearAndDrawLegalMoves();
                 context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
-                context.getGameState().handleInput(targetPoint.x, targetPoint.y);
+                context.handleBoardInput(targetPoint.x, targetPoint.y);
                 return;
             }
         }

@@ -206,8 +206,7 @@ public class Game implements TimerObserver {
         return plies;
     }
 
-    //public becouse of tests
-    public GameState getGameState() {
-        return gameState;
+    boolean isGameOngoing() {
+        return gameState.isGameOngoing();
     }
 }

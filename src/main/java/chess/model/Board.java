@@ -16,14 +16,14 @@ import static chess.model.PieceType.*;
 public class Board {
     private final Map<Point, Piece> boardMap = new HashMap<>();
     private final List<Piece> deadPieces = new ArrayList<>();
-    public Board() {
+    Board() {
     }
 
-    public Map<Point, Piece> getBoardMap() {
+    Map<Point, Piece> getBoardMap() {
         return boardMap;
     }
 
-    public void initBoard() {
+    void initBoard() {
         placeAllPieces();
     }
 
@@ -73,7 +73,7 @@ public class Board {
         return returnList;
     }
 
-    public List<Piece> getDeadPieces() {
+    List<Piece> getDeadPieces() {
         return deadPieces;
     }
 }
