@@ -2,7 +2,6 @@ package chess.model;
 
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
-import chess.model.gameState.*;
 import chess.observers.TimerObserver;
 
 import java.awt.*;
@@ -12,7 +11,7 @@ import java.util.List;
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 
-public class Game implements TimerObserver, IGameContext {
+public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
@@ -26,10 +25,9 @@ public class Game implements TimerObserver, IGameContext {
     private final Player playerBlack = new Player("Player 2", BLACK);
     private Player currentPlayer;
 
-    GameState gameState;
+    private GameState gameState;
 
-    @Override
-    public void setGameState(GameState gameState) {
+    void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
@@ -37,13 +35,13 @@ public class Game implements TimerObserver, IGameContext {
         gameState = GameStateFactory.createNoPieceSelectedState(this);
     }
 
-    public void initGame() {
+    void initGame() {
         board.initBoard();
         currentPlayer = playerWhite;
         initGameStates();
     }
 
-    public void initTimers() {
+    void initTimers() {
         playerWhite.getTimer().addObserver(this);
         playerBlack.getTimer().addObserver(this);
         playerWhite.getTimer().startTimer();
@@ -66,18 +64,16 @@ public class Game implements TimerObserver, IGameContext {
      */
     void handleBoardInput(int x, int y) {
         gameState.handleInput(x,y);
+        if (!gameState.isGameOngoing()) {
+            notifyEndGame();
+        }
     }
 
-    public void switchPlayer() {
+    void switchPlayer() {
         currentPlayer.getTimer().setActive(false);
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
         notifySwitchedPlayer();
-    }
-
-    public void endGame(){
-        stopAllTimers();
-        notifyEndGame();
     }
 
     private Player getOtherPlayer(){
@@ -88,13 +84,13 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    public void endGameAsDraw(){
+    void endGameAsDraw(){
         setGameState(GameStateFactory.createGameOverState("Game ended in draw", this));
         stopAllTimers();
         notifyEndGame();
     }
 
-    public void endGameAsForfeit(){
+    void endGameAsForfeit(){
         setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game",this));
         stopAllTimers();
         notifyEndGame();
@@ -116,7 +112,6 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    @Override
     public void notifyEndGame() {
         for (EndGameObserver p : endGameObservers) {
             p.showEndGameResult(gameState.getGameStatus());
@@ -131,28 +126,24 @@ public class Game implements TimerObserver, IGameContext {
         notifyEndGame();
     }
 
-    @Override
     public void notifyDrawPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawPieces();
         }
     }
 
-    @Override
     public void notifyDrawDeadPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawDeadPieces();
         }
     }
 
-    @Override
     public void notifyDrawLegalMoves() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawLegalMoves();
         }
     }
 
-    @Override
     public void notifyKingInCheck(int x, int y) {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.kingInCheck(x, y);
@@ -171,50 +162,51 @@ public class Game implements TimerObserver, IGameContext {
         }
     }
 
-    public ChessColor getCurrentPlayerColor() {
+    ChessColor getCurrentPlayerColor() {
         return currentPlayer.getColor();
     }
 
-    public void addGameObserver(GameObserver gameObserver) {
+    void addGameObserver(GameObserver gameObserver) {
         gameObservers.add(gameObserver);
     }
 
-    public void removeGameObserver(GameObserver gameObserver) {
+    void removeGameObserver(GameObserver gameObserver) {
         gameObservers.remove(gameObserver);
     }
 
-    public void addEndGameObserver(EndGameObserver endgameObserver) {
+    void addEndGameObserver(EndGameObserver endgameObserver) {
         endGameObservers.add(endgameObserver);
     }
 
-    public void removeEndGameObserver(EndGameObserver endgameObserver) {
+    void removeEndGameObserver(EndGameObserver endgameObserver) {
         endGameObservers.remove(endgameObserver);
     }
 
-    public List<Point> getLegalPoints() {
+    List<Point> getLegalPoints() {
         return legalPoints;
     }
 
-    public Board getBoard() {
+    Board getBoard() {
         return board;
     }
 
-    public Player getPlayerWhite() {
+    Player getPlayerWhite() {
         return playerWhite;
     }
 
-    public Player getPlayerBlack() {
+    Player getPlayerBlack() {
         return playerBlack;
     }
 
-    public Player getCurrentPlayer() {
+    Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public List<Ply> getPlies() {
+    List<Ply> getPlies() {
         return plies;
     }
 
+    //public becouse of tests
     public GameState getGameState() {
         return gameState;
     }

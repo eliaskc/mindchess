@@ -3,8 +3,6 @@ package eaee.model;
 import chess.model.ChessFacade;
 import chess.model.Movement;
 import chess.model.Piece;
-import chess.model.gameState.GameOverState;
-import chess.model.gameState.GameState;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -47,7 +45,7 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
-        assertTrue( model.getCurrentGame().getGameState() instanceof GameOverState);
+        assertFalse(model.isGameOngoing());
     }
 
 
@@ -57,14 +55,14 @@ public class TestEndGame {
         model.setCurrentWhitePlayerTimerTime(0);
         model.initTimersInCurrentGame();
         TimeUnit.SECONDS.sleep(1);
-        assertTrue(model.getCurrentGame().getGameState() instanceof GameOverState);
+        assertFalse(model.isGameOngoing());
     }
 
     @Test
     public void testTimerNotRunningOut() {
         model.setCurrentWhitePlayerTimerTime(5);
         model.initTimersInCurrentGame();
-        assertFalse(model.getCurrentGame().getGameState() instanceof GameOverState);
+        assertTrue(model.isGameOngoing());
     }
 
 
@@ -90,6 +88,6 @@ public class TestEndGame {
     public void testForfeit() {
         model.forfeit();
 
-        assertTrue(model.getCurrentGame().getGameState() instanceof GameOverState);
+        assertFalse(model.isGameOngoing());
     }
 }

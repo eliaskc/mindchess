@@ -44,11 +44,6 @@ public class ChessFacade {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
-    //has to be there until we fix tests
-    public Game getCurrentGame() {
-        return currentGame;
-    }
-
     public void forfeit(){
         currentGame.endGameAsForfeit();
     }
@@ -86,8 +81,6 @@ public class ChessFacade {
     }
 
 
-
-
     public int getCurrentWhiteTimerTime(){
        return currentGame.getPlayerWhite().getCurrentTime();
     }
@@ -122,6 +115,10 @@ public class ChessFacade {
         currentGame = new Game();
         currentGame.initGame();
         gameList.add(currentGame);
+    }
+
+    public boolean isGameOngoing() {
+        return currentGame.getGameState().isGameOngoing();
     }
 
     public void stopAllTimers(){

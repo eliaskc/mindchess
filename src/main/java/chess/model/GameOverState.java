@@ -1,15 +1,12 @@
-package chess.model.gameState;
-
-import chess.model.IGameContext;
+package chess.model;
 
 public class GameOverState implements GameState {
-    private IGameContext context;
+    private Game context;
     private String resultStatus;
 
-    GameOverState(String resultStatus,IGameContext context) {
+    GameOverState(String resultStatus,Game context) {
         this.context = context;
         this.resultStatus = resultStatus;
-        context.endGame();
     }
 
     @Override
@@ -20,5 +17,10 @@ public class GameOverState implements GameState {
     @Override
     public String getGameStatus() {
         return resultStatus;
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return false;
     }
 }

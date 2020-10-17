@@ -1,6 +1,4 @@
-package chess.model.gameState;
-
-import chess.model.*;
+package chess.model;
 
 import java.awt.*;
 
@@ -11,11 +9,11 @@ import static chess.model.PieceType.PAWN;
 public class PieceSelectedState implements GameState {
 
     private Point selectedPoint;
-    private IGameContext context;
+    private Game context;
     private Movement movement;
     private Piece takenPiece = null;
 
-    PieceSelectedState(Point selectedPoint, IGameContext context) {
+    PieceSelectedState(Point selectedPoint, Game context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
@@ -157,5 +155,10 @@ public class PieceSelectedState implements GameState {
     @Override
     public String getGameStatus() {
         return "Game ongoing";
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return true;
     }
 }

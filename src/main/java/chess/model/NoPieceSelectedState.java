@@ -1,14 +1,12 @@
-package chess.model.gameState;
-
-import chess.model.*;
+package chess.model;
 
 import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
-    private IGameContext context;
+    private Game context;
     private Movement movement;
 
-    NoPieceSelectedState(IGameContext context) {
+    NoPieceSelectedState(Game context) {
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
     }
@@ -44,5 +42,10 @@ public class NoPieceSelectedState implements GameState {
     @Override
     public String getGameStatus() {
         return "Game ongoing";
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return true;
     }
 }
