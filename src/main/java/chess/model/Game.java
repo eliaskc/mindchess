@@ -158,7 +158,7 @@ public class Game implements TimerObserver {
 
     public void notifyPawnPromotion() {
         for (GameObserver gameObserver : gameObservers) {
-            gameObserver.pawnPromotionSetup(getOtherPlayer().getColor());
+            gameObserver.pawnPromotionSetup(getCurrentPlayerColor());
         }
     }
 

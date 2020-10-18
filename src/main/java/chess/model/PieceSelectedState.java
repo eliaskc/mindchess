@@ -46,7 +46,6 @@ public class PieceSelectedState implements GameState {
             }
 
             if (checkPawnPromotion(targetPoint)) {
-                context.switchPlayer();
                 context.setGameState(GameStateFactory.createPawnPromotionState(targetPoint,context));
                 clearAndDrawLegalMoves();
                 return;
