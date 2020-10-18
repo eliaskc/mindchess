@@ -18,7 +18,7 @@ public class PieceSelectedState implements GameState {
     PieceSelectedState(Point selectedPoint, Game context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
-        this.pieceMovementLogic = new PieceMovementLogic(context.getBoard());
+        this.pieceMovementLogic = new PieceMovementLogic();
     }
 
     /**

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King implements IPiece {
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
-    String pieceName = "King";
-    ChessColor chessColor;
-    boolean hasMoved = false;
+    private PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    private String pieceName = "King";
+    private ChessColor chessColor;
+    private boolean hasMoved = false;
 
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;

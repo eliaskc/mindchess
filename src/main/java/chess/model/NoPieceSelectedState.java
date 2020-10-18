@@ -10,7 +10,7 @@ public class NoPieceSelectedState implements GameState {
 
     NoPieceSelectedState(Game context) {
         this.context = context;
-        this.pieceMovementLogic = new PieceMovementLogic(context.getBoard());
+        this.pieceMovementLogic = new PieceMovementLogic();
     }
 
     @Override

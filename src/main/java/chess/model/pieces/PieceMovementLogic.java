@@ -10,11 +10,7 @@ import java.util.List;
  * Is responisble for finding legal moves
  */
 public class PieceMovementLogic {
-    Board board;
-
-    public PieceMovementLogic(Board board) {
-        this.board = board;
-    }
+    Board board = Board.getInstance();
     
     public PieceMovementLogic() {}
 

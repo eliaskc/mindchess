@@ -18,14 +18,23 @@ import static chess.model.ChessColor.WHITE;
 public class Board {
     private final Map<Point, IPiece> boardMap = new HashMap<>();
     private final List<IPiece> deadIPieces = new ArrayList<>();
-    Board() {
+    private static Board instance = null;
+
+    public static Board getInstance() {
+        if (instance == null) {
+            instance = new Board();
+        }
+        return instance;
     }
+    private Board() {}
 
     Map<Point, IPiece> getBoardMap() {
         return boardMap;
     }
 
     void initBoard() {
+        boardMap.clear();
+        deadIPieces.clear();
         placeAllPieces();
     }
 

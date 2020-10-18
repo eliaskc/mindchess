@@ -47,7 +47,7 @@ public class Pawn implements IPiece {
         int x = selectedPoint.x;
         int y = selectedPoint.y;
 
-        if (this.getColor() == WHITE) {
+        if (chessColor == WHITE) {
             if (pieceMovementLogic.isUnoccupied(new Point(x, y - 1))) {
                 pieceMovementLogic.up(chessColor, selectedPoint, 1, legalPoints);
 
@@ -57,7 +57,7 @@ public class Pawn implements IPiece {
             }
             if (pieceMovementLogic.isOccupied(new Point(x + 1, y - 1))) pieceMovementLogic.upRight(chessColor, selectedPoint, 1, legalPoints);
             if (pieceMovementLogic.isOccupied(new Point(x - 1, y - 1))) pieceMovementLogic.upLeft(chessColor, selectedPoint, 1, legalPoints);
-        } else if (this.getColor() == BLACK) {
+        } else if (chessColor == BLACK) {
             if (pieceMovementLogic.isUnoccupied(new Point(x, y + 1))) {
                 pieceMovementLogic.down(chessColor, selectedPoint, 1, legalPoints);
 

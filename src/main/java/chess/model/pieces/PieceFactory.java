@@ -26,7 +26,7 @@ public class PieceFactory {
     }
 
     public static IPiece createKnight(ChessColor chessColor) {
-        return new King(chessColor);
+        return new Knight(chessColor);
     }
 
     public static IPiece createBishop(ChessColor chessColor) {
