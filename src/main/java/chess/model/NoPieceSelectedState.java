@@ -48,19 +48,7 @@ public class NoPieceSelectedState implements GameState {
 
         ChessColor pieceToMoveColor = context.getBoard().fetchPieceOnPointColor(selectedPoint);
 
-        if (pieceName.equals("Pawn") && !context.getBoard().pieceOnPointColorEquals(movedTo, pieceToMoveColor) && Math.abs(movedFrom.y - movedTo.y) == 2) {
-            if ((movedTo.x == selectedPoint.x + 1 || movedFrom.x == selectedPoint.x - 1) && movedTo.y == selectedPoint.y) {
-                if (context.getBoard().pieceOnPointColorEquals(movedTo, BLACK)) {
-                    enPassantPoints.add(new Point(movedTo.x, movedTo.y - 1));
-                } else if (context.getBoard().pieceOnPointColorEquals(movedTo, WHITE)) {
-                    enPassantPoints.add(new Point(movedTo.x, movedTo.y + 1));
-                }
-                pieceMovementLogic.setEnPassantPossible(true);
-            } else {
-                pieceMovementLogic.setEnPassantPossible(false);
-            }
-        }
-        return enPassantPoints;
+        return pieceMovementLogic.getEnPassantPoints(selectedPoint, movedFrom, movedTo, pieceName, pieceToMoveColor);
     }
 
 

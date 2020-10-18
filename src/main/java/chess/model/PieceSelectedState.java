@@ -86,7 +86,6 @@ public class PieceSelectedState implements GameState {
             pieceMovementLogic.setCastlingPossible(false);
         }
 
-
         if (pieceMovementLogic.isEnPassantPossible()) {
             if (context.getBoard().pieceOnPointColorEquals(selectedPoint, WHITE)) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));

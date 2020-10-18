@@ -174,4 +174,22 @@ public class PieceMovementLogic {
     boolean isPieceOnPointRook(Point point) {
         return board.isPieceOnPointRook(point);
     }
+
+    public List<Point> getEnPassantPoints(Point selectedPoint, Point movedFrom, Point movedTo, String pieceName, ChessColor pieceToMoveColor){
+        List<Point> enPassantPoints = new ArrayList<>();
+        if (pieceName.equals("Pawn") && !board.pieceOnPointColorEquals(movedTo, pieceToMoveColor) && Math.abs(movedFrom.y - movedTo.y) == 2) {
+            if ((movedTo.x == selectedPoint.x + 1 || movedFrom.x == selectedPoint.x - 1) && movedTo.y == selectedPoint.y) {
+                if (board.pieceOnPointColorEquals(movedTo, BLACK)) {
+                    enPassantPoints.add(new Point(movedTo.x, movedTo.y - 1));
+                } else if (board.pieceOnPointColorEquals(movedTo, WHITE)) {
+                    enPassantPoints.add(new Point(movedTo.x, movedTo.y + 1));
+                }
+                enPassantPossible = true;
+            } else {
+               enPassantPossible = false;
+            }
+        }
+        return enPassantPoints;
+    }
+
 }
