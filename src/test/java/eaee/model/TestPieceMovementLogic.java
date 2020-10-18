@@ -1,8 +1,9 @@
 package eaee.model;
 
+import chess.model.Board;
 import chess.model.ChessFacade;
-import chess.model.Movement;
-import chess.model.Piece;
+import chess.model.pieces.IPiece;
+import chess.model.pieces.PieceMovementLogic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,24 +15,24 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class TestMovement {
+public class TestPieceMovementLogic {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
+    Board board;
+    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentBoardMap();
-        movement.setBoardMap(boardMap);
+        board = model.getCurrentBoard();
+        pieceMovementLogic.setBoard(board);
     }
 
     @Test
     public void testCheckLegalQueen() {
         Point queenPosition = new Point(3,0);
-        Piece queen = boardMap.get(queenPosition);
-        List<Point> points = movement.fetchLegalMoves(queen, queenPosition);
+        IPiece queen = board.fetchPieceOnPoint(queenPosition);
+        List<Point> points = queen.fetchLegalMoves(queenPosition);
 
         assertTrue(points.size() == 0);
     }
@@ -39,8 +40,8 @@ public class TestMovement {
     @Test
     public void testCheckLegalBlackPawn() {
         Point pawnPosition = new Point(5,1);
-        Piece pawn = boardMap.get(pawnPosition);
-        List<Point> points = movement.fetchLegalMoves(pawn, pawnPosition);
+        IPiece pawn = board.fetchPieceOnPoint(pawnPosition);
+        List<Point> points = pawn.fetchLegalMoves(pawnPosition);
 
         List<Point> comparisonList = new ArrayList<>();
         comparisonList.add(new Point(5,2));
@@ -53,8 +54,8 @@ public class TestMovement {
     @Test
     public void testCheckLegalWhitePawn() {
         Point pawnPosition = new Point(0,6);
-        Piece pawn = boardMap.get(pawnPosition);
-        List<Point> points = movement.fetchLegalMoves(pawn, pawnPosition);
+        IPiece pawn = board.fetchPieceOnPoint(pawnPosition);
+        List<Point> points = pawn.fetchLegalMoves(pawnPosition);
 
         List<Point> comparisonList = new ArrayList<>();
         comparisonList.add(new Point(0,5));
@@ -67,8 +68,8 @@ public class TestMovement {
     @Test
     public void testCheckLegalKnight() {
         Point knightPosition = new Point(1,0);
-        Piece knight = boardMap.get(knightPosition);
-        List<Point> points = movement.fetchLegalMoves(knight, knightPosition);
+        IPiece knight = board.fetchPieceOnPoint(knightPosition);
+        List<Point> points = knight.fetchLegalMoves(knightPosition);
 
         assertTrue(points.get(0).x == 2 && points.get(0).y == 2);
     }

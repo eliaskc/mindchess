@@ -1,5 +1,6 @@
 package chess.model;
 
+import chess.model.pieces.IPiece;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
@@ -67,13 +68,17 @@ public class ChessFacade {
     public List<Ply> getCurrentGamePlies(){
         return new ArrayList<>(currentGame.getPlies());
     }
-    public Map<Point,Piece> getCurrentBoardMap(){
-        return new HashMap<>(currentGame.getBoard().getBoardMap());
+    public Map<Point, IPiece> getCurrentBoardMap(){
+        return currentGame.getBoard().getBoardMap();
+    }
+
+    public Board getCurrentBoard(){
+        return currentGame.getBoard();
     }
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
-    public List<Piece> getCurrentDeadPieces(){
+    public List<IPiece> getCurrentDeadPieces(){
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }
     public List<Point> getCurrentLegalPoints(){

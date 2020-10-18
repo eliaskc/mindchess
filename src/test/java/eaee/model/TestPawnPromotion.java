@@ -1,7 +1,8 @@
 package eaee.model;
 
+import chess.model.Board;
 import chess.model.ChessFacade;
-import chess.model.PieceType;
+import chess.model.pieces.PieceMovementLogic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,12 +11,16 @@ import java.awt.*;
 import static org.junit.Assert.assertEquals;
 
 public class TestPawnPromotion {
-    private ChessFacade model;
+    ChessFacade model;
+    Board board;
+    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
+        board = model.getCurrentBoard();
+        pieceMovementLogic.setBoard(board);
     }
 
     @Test
@@ -51,7 +56,7 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(20,0);
 
-        assertEquals(PieceType.QUEEN, model.getCurrentBoardMap().get(new Point(4,0)).getPieceType());
+        assertEquals("Queen", board.fetchPieceOnPoint(new Point(4,0)).getPieceName());
     }
 
     @Test
@@ -81,6 +86,6 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(0,1);
 
-        assertEquals(model.getCurrentBoardMap().get(new Point(4,1)).getPieceType(), PieceType.PAWN);
+        assertEquals("Pawn", board.fetchPieceOnPoint(new Point(4,1)).getPieceName());
     }
 }

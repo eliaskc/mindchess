@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static chess.model.PieceType.*;
-
 /**
  * ChessController handles the chess board
  */
@@ -375,10 +373,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void drawPawnPromotionSetup(ChessColor chessColor) {
-        promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
-        promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
-        promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
-        promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
+        promotionQueen.setImage(imageHandler.createPieceImage("Queen", chessColor));
+        promotionKnight.setImage(imageHandler.createPieceImage("Knight", chessColor));
+        promotionRook.setImage(imageHandler.createPieceImage("Rook", chessColor));
+        promotionBishop.setImage(imageHandler.createPieceImage("Bishop", chessColor));
     }
 
     private void pawnPromotion(int x, int y) {

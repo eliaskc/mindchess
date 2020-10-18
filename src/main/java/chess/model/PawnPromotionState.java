@@ -1,12 +1,15 @@
 package chess.model;
 
+import chess.model.pieces.IPiece;
+import chess.model.pieces.PieceFactory;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PawnPromotionState implements GameState{
+public class PawnPromotionState implements GameState {
 
-    private Map<Point, PieceType> promotionPieces = new HashMap<>();
+    private Map<Point, String> promotionPieces = new HashMap<>();
 
     private Game context;
     private Point selectedPoint;
@@ -20,29 +23,35 @@ public class PawnPromotionState implements GameState{
 
     @Override
     public void handleInput(int x, int y) {
-        Point selectedPromotion = new Point(x,y);
-        if(promotionPieces.containsKey(selectedPromotion)){
-            promote(selectedPoint,selectedPromotion);
+        Point selectedPromotion = new Point(x, y);
+        if (promotionPieces.containsKey(selectedPromotion)) {
+            promote(selectedPoint, selectedPromotion);
             context.switchPlayer();
             context.notifyDrawPieces();
             context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         }
     }
 
-    private void initPromotionPieces(){
-        promotionPieces.put(new Point(20,0), PieceType.QUEEN);
-        promotionPieces.put(new Point(21,0), PieceType.KNIGHT);
-        promotionPieces.put(new Point(22,0), PieceType.ROOK);
-        promotionPieces.put(new Point(23,0), PieceType.BISHOP);
+    private void initPromotionPieces() {
+        promotionPieces.put(new Point(20, 0), "Queen");
+        promotionPieces.put(new Point(21, 0), "Knight");
+        promotionPieces.put(new Point(22, 0), "Rook");
+        promotionPieces.put(new Point(23, 0), "Bishop");
     }
 
-    private void promote(Point selectedPoint, Point selectedPromotion){
-        Piece piece = new Piece(context.getBoard().getBoardMap().get(selectedPoint).getColor(), promotionPieces.get(selectedPromotion));
-        context.getBoard().getBoardMap().put(selectedPoint, piece);
+    private void promote(Point selectedPoint, Point selectedPromotion) {
+        IPiece IPiece = null;
+        try {
+            IPiece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid Piece Name");
+        }
+        
+        context.getBoard().getBoardMap().put(selectedPoint, IPiece);
     }
 
     @Override
-    public String getGameStatus() {
+    public java.lang.String getGameStatus() {
         return "Game ongoing";
     }
 

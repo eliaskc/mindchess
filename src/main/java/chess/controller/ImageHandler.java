@@ -2,8 +2,7 @@ package chess.controller;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
-import chess.model.Piece;
-import chess.model.PieceType;
+import chess.model.pieces.IPiece;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -23,9 +22,9 @@ public class ImageHandler {
     List<ImageView> blackImageViews = new ArrayList<>();
     List<ImageView> whiteImageViews = new ArrayList<>();
     private final List<ImageView> pieceImages = new ArrayList<>();
-    private final Map<Piece, ImageView> pieceImageViewMap = new HashMap<>();
+    private final Map<IPiece, ImageView> pieceImageViewMap = new HashMap<>();
     private ChessFacade model;
-    private Map<Point, Piece> boardMap;
+    private Map<Point, IPiece> boardMap;
     private double squareDimension;
     private boolean minecraftPieceStyle = false;
 
@@ -64,14 +63,14 @@ public class ImageHandler {
         boardMap = model.getCurrentBoardMap();
 
         pieceImageViewMap.clear();
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+        for (Map.Entry<Point, IPiece> entry : boardMap.entrySet()) {
             if (entry.getValue() == null) {
                 break;
             }
 
             ImageView pieceImageView = new ImageView();
             pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
+            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceName(), entry.getValue().getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 10);
             pieceImageView.setFitHeight(squareDimension - 10);
@@ -85,13 +84,13 @@ public class ImageHandler {
         return pieceImages;
     }
 
-    Image createPieceImage(PieceType pieceType, ChessColor chessColor) {
-        String imageURL;
+    Image createPieceImage(String pieceName, ChessColor chessColor) {
+        java.lang.String imageURL;
 
         if (minecraftPieceStyle) {
-            imageURL = String.format("/minecraftChesspieces/%s_minecraft_%s.png", chessColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
+            imageURL = java.lang.String.format("/minecraftChesspieces/%s_minecraft_%s.png", chessColor.toString().toLowerCase(), pieceName);
         } else {
-            imageURL = String.format("/chessPieces/%s_%s.png", chessColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
+            imageURL = java.lang.String.format("/chessPieces/%s_%s.png", chessColor.toString().toLowerCase(), pieceName);
         }
 
         Image pieceImage;
@@ -105,25 +104,25 @@ public class ImageHandler {
     }
 
     public void fetchDeadPieceImages() {
-        List<Piece> deadPieces = model.getCurrentDeadPieces();
+        List<IPiece> deadIPieces = model.getCurrentDeadPieces();
         whiteImageViews.clear();
         blackImageViews.clear();
 
-        for (Piece piece : deadPieces) {
-            if (piece == null) {
+        for (IPiece IPiece : deadIPieces) {
+            if (IPiece == null) {
                 break;
             }
 
             ImageView pieceImageView = new ImageView();
             pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(piece.getPieceType(), piece.getColor()));
+            pieceImageView.setImage(createPieceImage(IPiece.getPieceName(), IPiece.getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 25);
             pieceImageView.setFitHeight(squareDimension - 25);
 
-            if (piece.getColor() == WHITE) {
+            if (IPiece.getColor() == WHITE) {
                 whiteImageViews.add(pieceImageView);
-            } else if (piece.getColor() == BLACK) {
+            } else if (IPiece.getColor() == BLACK) {
                 blackImageViews.add(pieceImageView);
             }
 
@@ -136,7 +135,7 @@ public class ImageHandler {
      */
     public void updateImageCoordinates() {
         boardMap = model.getCurrentBoardMap();
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+        for (Map.Entry<Point, IPiece> entry : boardMap.entrySet()) {
             pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
             pieceImageViewMap.get(entry.getValue()).setY(entry.getKey().y * squareDimension + 5);
         }
@@ -191,7 +190,7 @@ public class ImageHandler {
     }
 
     public Image getChessboardImage() {
-        String imageURL;
+        java.lang.String imageURL;
 
         if (minecraftPieceStyle) {
             imageURL = "/guiFiles/minecraftChessboard.png";

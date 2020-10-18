@@ -1,5 +1,8 @@
 package chess.model;
 
+import chess.model.pieces.IPiece;
+import chess.model.pieces.PieceFactory;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,18 +11,17 @@ import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
-import static chess.model.PieceType.*;
 
 /**
  * Board represents the chess board and contains the information and methods to interact with the chess board
  */
 public class Board {
-    private final Map<Point, Piece> boardMap = new HashMap<>();
-    private final List<Piece> deadPieces = new ArrayList<>();
+    private final Map<Point, IPiece> boardMap = new HashMap<>();
+    private final List<IPiece> deadIPieces = new ArrayList<>();
     Board() {
     }
 
-    Map<Point, Piece> getBoardMap() {
+    Map<Point, IPiece> getBoardMap() {
         return boardMap;
     }
 
@@ -36,44 +38,63 @@ public class Board {
     }
 
     private void placeBlackPieces() {
-        boardMap.put(new Point(0, 0), new Piece(BLACK, ROOK));
-        boardMap.put(new Point(1, 0), new Piece(BLACK, KNIGHT));
-        boardMap.put(new Point(2, 0), new Piece(BLACK, BISHOP));
-        boardMap.put(new Point(3, 0), new Piece(BLACK, QUEEN));
-        boardMap.put(new Point(4, 0), new Piece(BLACK, KING));
-        boardMap.put(new Point(5, 0), new Piece(BLACK, BISHOP));
-        boardMap.put(new Point(6, 0), new Piece(BLACK, KNIGHT));
-        boardMap.put(new Point(7, 0), new Piece(BLACK, ROOK));
+        boardMap.put(new Point(0, 0), PieceFactory.createRook(BLACK));
+        boardMap.put(new Point(1, 0), PieceFactory.createKnight(BLACK));
+        boardMap.put(new Point(2, 0), PieceFactory.createBishop(BLACK));
+        boardMap.put(new Point(3, 0), PieceFactory.createQueen(BLACK));
+        boardMap.put(new Point(4, 0), PieceFactory.createKing(BLACK));
+        boardMap.put(new Point(5, 0), PieceFactory.createBishop(BLACK));
+        boardMap.put(new Point(6, 0), PieceFactory.createKnight(BLACK));
+        boardMap.put(new Point(7, 0), PieceFactory.createRook(BLACK));
         for (int i = 0; i <= 7; i++) {
-            boardMap.put(new Point(i, 1), new Piece(BLACK, PAWN));
+            boardMap.put(new Point(i, 1), PieceFactory.createPawn(BLACK));
         }
     }
 
     private void placeWhitePieces() {
+        boardMap.put(new Point(0, 7), PieceFactory.createRook(WHITE));
+        boardMap.put(new Point(1, 7), PieceFactory.createKnight(WHITE));
+        boardMap.put(new Point(2, 7), PieceFactory.createBishop(WHITE));
+        boardMap.put(new Point(3, 7), PieceFactory.createQueen(WHITE));
+        boardMap.put(new Point(4, 7), PieceFactory.createKing(WHITE));
+        boardMap.put(new Point(5, 7), PieceFactory.createBishop(WHITE));
+        boardMap.put(new Point(6, 7), PieceFactory.createKnight(WHITE));
+        boardMap.put(new Point(7, 7), PieceFactory.createRook(WHITE));
         for (int i = 0; i <= 7; i++) {
-            boardMap.put(new Point(i, 6), new Piece(WHITE, PAWN));
+            boardMap.put(new Point(i, 6), PieceFactory.createPawn(WHITE));
         }
-        boardMap.put(new Point(0, 7), new Piece(WHITE, ROOK));
-        boardMap.put(new Point(1, 7), new Piece(WHITE, KNIGHT));
-        boardMap.put(new Point(2, 7), new Piece(WHITE, BISHOP));
-        boardMap.put(new Point(3, 7), new Piece(WHITE, QUEEN));
-        boardMap.put(new Point(4, 7), new Piece(WHITE, KING));
-        boardMap.put(new Point(5, 7), new Piece(WHITE, BISHOP));
-        boardMap.put(new Point(6, 7), new Piece(WHITE, KNIGHT));
-        boardMap.put(new Point(7, 7), new Piece(WHITE, ROOK));
     }
 
-    List<Piece> getPiecesByColor(ChessColor chessColor) {
-        List<Piece> returnList = new ArrayList<>();
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
-            if (entry.getValue().getColor() == chessColor) {
-                returnList.add(entry.getValue());
+    List<chess.model.pieces.IPiece> getDeadPieces() {
+        return deadIPieces;
+    }
+
+    public ChessColor fetchPieceOnPointColor(Point point) {
+        return boardMap.get(point).getColor();
+    }
+
+    public boolean isPieceOnPointRook(Point point) {
+        return boardMap.get(point).getPieceName().equals("Rook");
+    }
+
+    public IPiece fetchPieceOnPoint(Point pointSelected) {
+        return boardMap.get(pointSelected);
+    }
+
+    public Point fetchKingPoint(ChessColor color) {
+        for (Map.Entry<Point, chess.model.pieces.IPiece> entry : boardMap.entrySet()) {
+            if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceName().equals("King")){
+                return entry.getKey();
             }
         }
-        return returnList;
+        return null;
     }
 
-    List<Piece> getDeadPieces() {
-        return deadPieces;
+    public boolean isOccupied(Point p) {
+        return boardMap.containsKey(p);
+    }
+
+    public boolean pieceOnPointColorMatching(Point p, ChessColor pieceToMoveColor) {
+        return boardMap.get(p).getColor().equals(pieceToMoveColor);
     }
 }

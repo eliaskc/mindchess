@@ -1,5 +1,7 @@
 package chess.model;
 
+import chess.model.pieces.IPiece;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,16 +13,16 @@ public class Ply {
     private String playerName;
     private Point movedFrom;
     private Point movedTo;
-    private Piece movedPiece;
-    private Piece takenPiece;
-    private Map<Point, Piece> boardSnapshot;
+    private IPiece movedIPiece;
+    private IPiece takenIPiece;
+    private Map<Point, IPiece> boardSnapshot;
 
-    public Ply(String playerName, Point movedFrom, Point movedTo, Piece movedPiece, Piece takenPiece, Map<Point, Piece> boardMap) {
+    public Ply(String playerName, Point movedFrom, Point movedTo, IPiece movedIPiece, IPiece takenIPiece, Map<Point, IPiece> boardMap) {
         this.playerName = playerName;
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
-        this.movedPiece = movedPiece;
-        this.takenPiece = takenPiece;
+        this.movedIPiece = movedIPiece;
+        this.takenIPiece = takenIPiece;
         this.boardSnapshot = new HashMap<>(boardMap);
     }
 
@@ -36,15 +38,15 @@ public class Ply {
         return movedTo;
     }
 
-    public Piece getMovedPiece() {
-        return movedPiece;
+    public IPiece getMovedPiece() {
+        return movedIPiece;
     }
 
-    public Piece getTakenPiece() {
-        return takenPiece;
+    public IPiece getTakenPiece() {
+        return takenIPiece;
     }
 
-    public Map<Point, Piece> getBoardSnapshot() {
+    public Map<Point, IPiece> getBoardSnapshot() {
         return boardSnapshot;
     }
 }

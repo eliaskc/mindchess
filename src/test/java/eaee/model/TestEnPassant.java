@@ -1,10 +1,9 @@
 package eaee.model;
 
+import chess.model.Board;
 import chess.model.ChessFacade;
 import chess.model.ChessColor;
-import chess.model.Movement;
-import chess.model.Piece;
-import chess.model.PieceType;
+import chess.model.pieces.PieceMovementLogic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,18 +12,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestEnPassant {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
+    Board board;
+    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        movement.setBoardMap(boardMap);
+        board = model.getCurrentBoard();
+        pieceMovementLogic.setBoard(board);
     }
 
     @Test
@@ -46,10 +47,8 @@ public class TestEnPassant {
         model.handleBoardInput(4,3);
         model.handleBoardInput(3,2);
 
-        boardMap = model.getCurrentBoardMap();
-
-        assertEquals(PieceType.PAWN, boardMap.get(new Point(3,2)).getPieceType());
-        assertEquals(ChessColor.WHITE, boardMap.get(new Point(3,2)).getColor());
-        assertEquals(null, boardMap.get(new Point(3,3)));
+        assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
+        assertTrue(board.pieceOnPointColorMatching(new Point(3,2), ChessColor.WHITE));
+        assertEquals(null, board.fetchPieceOnPoint(new Point(3,3)));
     }
 }

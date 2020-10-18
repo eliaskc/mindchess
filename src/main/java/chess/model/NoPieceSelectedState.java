@@ -1,14 +1,16 @@
 package chess.model;
 
+import chess.model.pieces.PieceMovementLogic;
+
 import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
     private Game context;
-    private Movement movement;
+    private PieceMovementLogic pieceMovementLogic;
 
     NoPieceSelectedState(Game context) {
         this.context = context;
-        this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
+        this.pieceMovementLogic = new PieceMovementLogic(context.getBoard());
     }
 
     @Override
@@ -25,8 +27,9 @@ public class NoPieceSelectedState implements GameState {
     /**
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
+    //TODO
     private void fetchLegalMoves(Point pointSelected) {
-        context.getLegalPoints().addAll(movement.fetchLegalMoves(context.getBoard().getBoardMap().get(pointSelected), pointSelected));
+        context.getLegalPoints().addAll(context.getBoard().fetchPieceOnPoint(pointSelected).fetchLegalMoves(pointSelected));
     }
 
 

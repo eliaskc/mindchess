@@ -1,7 +1,7 @@
 package chess.controller;
 
-import chess.model.Piece;
 import chess.model.Ply;
+import chess.model.pieces.IPiece;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +44,7 @@ public class PlyController extends AnchorPane {
 
         this.ply = ply;
         this.imageHandler = imageHandler;
-        this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
+        this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceName(), ply.getMovedPiece().getColor()));
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
         this.labelMovedFrom.setText(String.format("%s%s", translateXCoordinate(ply.getMovedFrom().x), translateYCoordinate(ply.getMovedFrom().y)));
         this.labelMovedTo.setText(String.format("%s%s", translateXCoordinate(ply.getMovedTo().x), translateYCoordinate(ply.getMovedTo().y)));
@@ -54,9 +54,9 @@ public class PlyController extends AnchorPane {
     public List<ImageView> generateBoardImages(boolean performMove){
         List<ImageView> imageViewList = new ArrayList<>();
 
-        for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
+        for (Map.Entry<Point, IPiece> entry : ply.getBoardSnapshot().entrySet()){
             ImageView imageView = new ImageView();
-            imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
+            imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceName(), entry.getValue().getColor()));
             imageView.setFitWidth(40);
             imageView.setFitHeight(40);
             imageView.setX(entry.getKey().x*40);
@@ -74,7 +74,7 @@ public class PlyController extends AnchorPane {
 
                 if (ply.getTakenPiece() != null) {
                     ImageView attackedImageView = new ImageView();
-                    attackedImageView.setImage(imageHandler.createPieceImage(ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor()));
+                    attackedImageView.setImage(imageHandler.createPieceImage(ply.getTakenPiece().getPieceName(), ply.getTakenPiece().getColor()));
                     attackedImageView.setFitWidth(40);
                     attackedImageView.setFitHeight(40);
                     attackedImageView.setX(ply.getMovedTo().x*40);
