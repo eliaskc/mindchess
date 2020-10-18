@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class King implements IPiece {
-    private PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    private PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
     private String pieceName = "King";
     private ChessColor chessColor;
     private boolean hasMoved = false;
@@ -50,7 +50,11 @@ public class King implements IPiece {
         pieceMovementLogic.downRight(chessColor, selectedPoint, 1, legalPoints);
         pieceMovementLogic.downLeft(chessColor, selectedPoint, 1, legalPoints);
 
-//        legalPoints.addAll(getCastlingPoints(this, selectedPoint));
+        List<Point> castlingPoints = getCastlingPoints(selectedPoint);
+        if (castlingPoints.size() > 0){
+            pieceMovementLogic.setCastlingPossible(true);
+            legalPoints.addAll(castlingPoints);
+        }
 
         /*if (!checkingOpponentLegalPointsInProgress) {
             List<Point> opponentLegalPoints = fetchOpponentLegalPoints(this.getColor());
@@ -86,7 +90,7 @@ public class King implements IPiece {
 
         Point p = new Point(selectedPoint.x + 3, selectedPoint.y);
         if (pieceMovementLogic.isOccupied(p)) {
-            return pieceMovementLogic.isPieceOnPointRook(p) && !hasMoved && chessColor == pieceMovementLogic.fetchPieceOnPointColor(p);
+            return pieceMovementLogic.isPieceOnPointRook(p) && !hasMoved && pieceMovementLogic.pieceOnPointColorEquals(p,chessColor);
         }
         return false;
     }
@@ -106,7 +110,7 @@ public class King implements IPiece {
 
         Point p = new Point(selectedPoint.x - 4, selectedPoint.y);
         if (pieceMovementLogic.isOccupied(p)) {
-            return pieceMovementLogic.isPieceOnPointRook(p) && !hasMoved && chessColor == pieceMovementLogic.fetchPieceOnPointColor(p);
+            return pieceMovementLogic.isPieceOnPointRook(p) && !hasMoved && pieceMovementLogic.pieceOnPointColorEquals(p,chessColor);
         }
         return false;
     }

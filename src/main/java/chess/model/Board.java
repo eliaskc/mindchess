@@ -103,7 +103,13 @@ public class Board {
         return boardMap.containsKey(p);
     }
 
-    public boolean pieceOnPointColorMatching(Point p, ChessColor pieceToMoveColor) {
-        return boardMap.get(p).getColor().equals(pieceToMoveColor);
+    public boolean pieceOnPointColorEquals(Point p, ChessColor chessColor) {
+        return boardMap.get(p).getColor().equals(chessColor);
+    }
+
+    public void markPieceOnPointHasMoved(Point p){
+        //if (fetchPieceOnPoint(p) != null){
+            fetchPieceOnPoint(p).setHasMoved(true);
+        //}
     }
 }

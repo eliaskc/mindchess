@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class TestEnPassant {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
@@ -48,7 +46,7 @@ public class TestEnPassant {
         model.handleBoardInput(3,2);
 
 //        assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
-        assertTrue(board.pieceOnPointColorMatching(new Point(3,2), ChessColor.WHITE));
+        assertTrue(board.pieceOnPointColorEquals(new Point(3,2), ChessColor.WHITE));
         assertEquals(null, board.fetchPieceOnPoint(new Point(3,3)));
     }
 }

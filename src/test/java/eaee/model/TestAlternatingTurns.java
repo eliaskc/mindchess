@@ -15,7 +15,7 @@ import java.util.Map;
 public class TestAlternatingTurns {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {

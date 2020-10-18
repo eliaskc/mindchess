@@ -12,13 +12,12 @@ public class PieceSelectedState implements GameState {
 
     private Point selectedPoint;
     private Game context;
-    private PieceMovementLogic pieceMovementLogic;
     private IPiece takenIPiece = null;
+    private PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     PieceSelectedState(Point selectedPoint, Game context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
-        this.pieceMovementLogic = new PieceMovementLogic();
     }
 
     /**
@@ -61,8 +60,8 @@ public class PieceSelectedState implements GameState {
     }
 
     private void move(Point selectedPoint, Point targetPoint) {
-        //makeSpecialMoves(selectedPoint, targetPoint);
-        makeMoves(selectedPoint, targetPoint);
+        makeSpecialMoves(selectedPoint, targetPoint);
+        makeMove(selectedPoint, targetPoint);
 
         context.notifyDrawPieces();
     }
@@ -74,35 +73,39 @@ public class PieceSelectedState implements GameState {
      * @param clickedPoint
      */
     //TODO
-/*    private void makeSpecialMoves(Point selectedPoint, Point clickedPoint) {
+    private void makeSpecialMoves(Point selectedPoint, Point clickedPoint) {
         if (!context.getBoard().getBoardMap().containsKey(selectedPoint)) return;
 
         //castling
-        if (pieceMovementLogic.getCastlingPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).size() != 0 && pieceMovementLogic.getCastlingPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).contains(clickedPoint)) {
+        if (pieceMovementLogic.isCastlingPossible()) {
             if (clickedPoint.x > selectedPoint.x) {
-                makeMoves(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
+                makeMove(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
             } else if (clickedPoint.x < selectedPoint.x) {
-                makeMoves(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
+                makeMove(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
             }
+            pieceMovementLogic.setCastlingPossible(false);
         }
-        if (pieceMovementLogic.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).size() != 0 && pieceMovementLogic.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).contains(clickedPoint)) {
-            if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == WHITE) {
+
+
+        if (pieceMovementLogic.isEnPassantPossible()) {
+            if (context.getBoard().pieceOnPointColorEquals(selectedPoint, WHITE)) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
-            } else if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == BLACK) {
+            } else if (context.getBoard().pieceOnPointColorEquals(selectedPoint, BLACK)) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
             }
+            pieceMovementLogic.setEnPassantPossible(false);
         }
-    }*/
+    }
 
     /**
      * Moves the marked piece to the clicked point
      * <p>
      */
-    private void makeMoves(Point moveFrom, Point moveTo) {
+    private void makeMove(Point moveFrom, Point moveTo) {
         if (context.getBoard().getBoardMap().containsKey(moveTo)) {
             takePiece(moveTo);
         }
-
+        context.getBoard().markPieceOnPointHasMoved(moveFrom);
         context.getBoard().getBoardMap().put(moveTo, context.getBoard().getBoardMap().get(moveFrom));
         context.getBoard().getBoardMap().remove(moveFrom);
     }

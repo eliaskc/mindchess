@@ -49,9 +49,9 @@ public class TestChessFacade {
     public void testPlaceAllPieces(){
         Map<Point, IPiece> boardMap = model.getCurrentBoardMap();
 
-        assertTrue(board.pieceOnPointColorMatching(new Point(0,0), ChessColor.BLACK) && board.fetchPieceOnPoint(new Point(0,0)).getPieceName().equals("Rook"));
-        assertTrue(board.pieceOnPointColorMatching(new Point(6,6), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(6,6)).getPieceName().equals("Pawn"));
-        assertTrue(board.pieceOnPointColorMatching(new Point(4,7), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(4,7)).getPieceName().equals("King"));
+        assertTrue(board.pieceOnPointColorEquals(new Point(0,0), ChessColor.BLACK) && board.fetchPieceOnPoint(new Point(0,0)).getPieceName().equals("Rook"));
+        assertTrue(board.pieceOnPointColorEquals(new Point(6,6), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(6,6)).getPieceName().equals("Pawn"));
+        assertTrue(board.pieceOnPointColorEquals(new Point(4,7), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(4,7)).getPieceName().equals("King"));
     }
 
     @Test

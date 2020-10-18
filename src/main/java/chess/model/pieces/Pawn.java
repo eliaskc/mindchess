@@ -10,11 +10,10 @@ import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 
 public class Pawn implements IPiece {
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
-
-    String pieceName = "Pawn";
-    ChessColor chessColor;
-    boolean hasMoved = false;
+    private PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
+    private String pieceName = "Pawn";
+    private ChessColor chessColor;
+    private boolean hasMoved = false;
 
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
@@ -71,25 +70,4 @@ public class Pawn implements IPiece {
 
 //        legalPoints.addAll(getEnPassantPoints(selectedPoint));
     }
-
-
-    //TODO
-    /*List<Point> getEnPassantPoints(Point selectedPoint) {
-        List<Point> enPassantPoints = new ArrayList<>();
-        if (plies.size() == 0) return enPassantPoints;
-
-        Ply lastPly = plies.get(plies.size() - 1);
-        Piece lastMovedPiece = lastPly.getMovedPiece();
-
-        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != this.getColor() && Math.abs(lastPly.getMovedFrom().y - lastPly.getMovedTo().y) == 2) {
-            if ((lastPly.getMovedTo().x == selectedPoint.x + 1 || lastPly.getMovedTo().x == selectedPoint.x - 1) && lastPly.getMovedTo().y == selectedPoint.y) {
-                if (lastMovedPiece.getColor() == BLACK) {
-                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
-                } else if (lastMovedPiece.getColor() == WHITE) {
-                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
-                }
-            }
-        }
-        return enPassantPoints;
-    }*/
 }

@@ -4,20 +4,49 @@ import chess.model.Board;
 import chess.model.ChessColor;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
+import static chess.model.ChessColor.*;
+
 /**
- * Is responisble for finding legal moves
+ * Is responsible for finding legal moves
  */
 public class PieceMovementLogic {
-    Board board = Board.getInstance();
-    
-    public PieceMovementLogic() {}
+    private Board board = Board.getInstance();
+    private boolean checkingOpponentLegalPointsInProgress = false;
+    private boolean castlingPossible = false;
+    private boolean enPassantPossible = false;
 
-    boolean checkingOpponentLegalPointsInProgress = false;
+    private static PieceMovementLogic instance = null;
+
+    public static PieceMovementLogic getInstance() {
+        if (instance == null) {
+            instance = new PieceMovementLogic();
+        }
+        return instance;
+    }
+
+    private PieceMovementLogic() {}
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    public boolean isCastlingPossible() {
+        return castlingPossible;
+    }
+
+    public boolean isEnPassantPossible() {
+        return enPassantPossible;
+    }
+
+    public void setCastlingPossible(boolean castlingPossible) {
+        this.castlingPossible = castlingPossible;
+    }
+
+    public void setEnPassantPossible(boolean enPassantPossible) {
+        this.enPassantPossible = enPassantPossible;
     }
 
     void up(ChessColor pieceToMoveColor, Point selectedPoint, int iterations, List<Point> legalPoints) {
@@ -100,7 +129,7 @@ public class PieceMovementLogic {
             if (isUnoccupied(p)) {
                 listToAddTo.add(new Point(p.x, p.y));
                 breakLoop = false;
-            } else if (!board.pieceOnPointColorMatching(p, pieceToMoveColor)) {
+            } else if (!board.pieceOnPointColorEquals(p, pieceToMoveColor)) {
                 listToAddTo.add(new Point(p.x, p.y));
                 breakLoop = true;
             } else {
@@ -138,11 +167,11 @@ public class PieceMovementLogic {
         return board.fetchKingPoint(color);
     }
 
-    ChessColor fetchPieceOnPointColor(Point point) {
-        return board.fetchPieceOnPointColor(point);
+    boolean pieceOnPointColorEquals(Point p, ChessColor chessColor) {
+        return board.pieceOnPointColorEquals(p, chessColor);
     }
 
-    public boolean isPieceOnPointRook(Point point) {
+    boolean isPieceOnPointRook(Point point) {
         return board.isPieceOnPointRook(point);
     }
 }

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 public class TestPieceMovementLogic {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {

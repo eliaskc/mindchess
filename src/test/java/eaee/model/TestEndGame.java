@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestEndGame {
     ChessFacade model;
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {

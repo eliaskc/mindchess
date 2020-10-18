@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class TestPawnPromotion {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = new PieceMovementLogic();
+    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
