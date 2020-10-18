@@ -86,7 +86,7 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <configuration>
           <!-- failOnViolation is actually true by default, but can be disabled -->
-          <failOnViolation>true</failOnViolation>
+          <failOnViolation>false</failOnViolation>
           <!-- printFailingErrors is pretty useful -->
           <printFailingErrors>true</printFailingErrors>
           <targetJdk>14</targetJdk>
