@@ -40,14 +40,14 @@ public class PawnPromotionState implements GameState {
     }
 
     private void promote(Point selectedPoint, Point selectedPromotion) {
-        IPiece IPiece = null;
+        IPiece piece = null;
         try {
-            IPiece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
+            piece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid Piece Name");
         }
         
-        context.getBoard().getBoardMap().put(selectedPoint, IPiece);
+        context.getBoard().getBoardMap().put(selectedPoint, piece);
     }
 
     @Override

@@ -288,7 +288,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private void muteUnmute() {
         audioPlayer.setMute(!audioPlayer.isMute());
-        muteUnmuteButton.setText(muteUnmuteButton.getText().equals("Mute") ? "Unmute" : "Mute");
+        muteUnmuteButton.setText(audioPlayer.isMute() ? "Unmute" : "Mute");
     }
 
     /**
