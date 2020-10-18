@@ -8,12 +8,12 @@ import java.util.Map;
  * Representation of a move by either Player. In chess terms a half-move, or a ply
  */
 public class Ply {
-    String playerName;
-    Point movedFrom;
-    Point movedTo;
-    Piece movedPiece;
-    Piece takenPiece;
-    Map<Point, Piece> boardSnapshot;
+    private String playerName;
+    private Point movedFrom;
+    private Point movedTo;
+    private Piece movedPiece;
+    private Piece takenPiece;
+    private Map<Point, Piece> boardSnapshot;
 
     public Ply(String playerName, Point movedFrom, Point movedTo, Piece movedPiece, Piece takenPiece, Map<Point, Piece> boardMap) {
         this.playerName = playerName;

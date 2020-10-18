@@ -81,6 +81,10 @@ public class ChessFacade {
     }
 
 
+
+
+
+
     public int getCurrentWhiteTimerTime(){
        return currentGame.getPlayerWhite().getCurrentTime();
     }
@@ -118,7 +122,7 @@ public class ChessFacade {
     }
 
     public boolean isGameOngoing() {
-        return currentGame.getGameState().isGameOngoing();
+        return currentGame.isGameOngoing();
     }
 
     public void stopAllTimers(){

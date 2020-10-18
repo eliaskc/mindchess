@@ -7,19 +7,16 @@ package chess.model;
  */
 public class Piece {
     private final ChessColor chessColor;
-    private PieceType pieceType;
+    private final PieceType pieceType;
 
     public Piece(ChessColor chessColor, PieceType pieceType) {
         this.chessColor = chessColor;
         this.pieceType = pieceType;
     }
 
+    //public becouse of imagehandeler
     public PieceType getPieceType() {
         return pieceType;
-    }
-
-    public void setPieceType(PieceType pieceType) {
-        this.pieceType = pieceType;
     }
 
     public ChessColor getColor() {

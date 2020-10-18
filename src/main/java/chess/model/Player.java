@@ -8,32 +8,32 @@ public class Player {
     private String name;
     private final ChessColor chessColor;
 
-    public Player(String name, ChessColor chessColor) {
+    Player(String name, ChessColor chessColor) {
         this.name = name;
         this.chessColor = chessColor;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public int getCurrentTime(){
+    int getCurrentTime(){
         return chessTimer.getTime();
     }
 
-    public void setTime(int seconds){
+    void setTime(int seconds){
         chessTimer.setTime(seconds);
     }
 
-    public ChessColor getColor() {
+    ChessColor getColor() {
         return chessColor;
     }
 
-    public ChessTimer getTimer() {
+    ChessTimer getTimer() {
         return chessTimer;
     }
     

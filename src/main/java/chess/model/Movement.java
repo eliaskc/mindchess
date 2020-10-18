@@ -238,7 +238,7 @@ public class Movement {
         return boardMap.containsKey(p);
     }
 
-    public List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
+    List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> castlingPoints = new ArrayList<>();
         if (!pieceHasMoved(pieceToMove)) {
             if (checkRightCastling(selectedPoint)) {
@@ -306,7 +306,7 @@ public class Movement {
         return false;
     }
 
-    public List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
+    List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> enPassantPoints = new ArrayList<>();
         if (plies.size() == 0) return enPassantPoints;
 
@@ -339,11 +339,11 @@ public class Movement {
         return opponentLegalPoints;
     }
 
-    public boolean isKingInCheck(Point kingPoint) {
+    boolean isKingInCheck(Point kingPoint) {
         return fetchOpponentLegalPoints(boardMap.get(kingPoint).getColor()).contains(kingPoint);
     }
 
-    public Point fetchKingPoint(ChessColor color) {
+    Point fetchKingPoint(ChessColor color) {
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(KING)){
                 return entry.getKey();
