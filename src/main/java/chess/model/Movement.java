@@ -311,14 +311,14 @@ public class Movement {
         if (plies.size() == 0) return enPassantPoints;
 
         Ply lastPly = plies.get(plies.size() - 1);
-        Piece lastMovedPiece = lastPly.movedPiece;
+        Piece lastMovedPiece = lastPly.getMovedPiece();
 
-        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
-            if ((lastPly.movedTo.x == selectedPoint.x + 1 || lastPly.movedTo.x == selectedPoint.x - 1) && lastPly.movedTo.y == selectedPoint.y) {
+        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.getMovedFrom().y - lastPly.getMovedTo().y) == 2) {
+            if ((lastPly.getMovedTo().x == selectedPoint.x + 1 || lastPly.getMovedTo().x == selectedPoint.x - 1) && lastPly.getMovedTo().y == selectedPoint.y) {
                 if (lastMovedPiece.getColor() == BLACK) {
-                    enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
+                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
                 } else if (lastMovedPiece.getColor() == WHITE) {
-                    enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
+                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
                 }
             }
         }
