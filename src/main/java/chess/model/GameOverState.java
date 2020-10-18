@@ -1,11 +1,9 @@
 package chess.model;
 
 public class GameOverState implements GameState {
-    private Game context;
     private String resultStatus;
 
-    GameOverState(String resultStatus,Game context) {
-        this.context = context;
+    GameOverState(String resultStatus) {
         this.resultStatus = resultStatus;
     }
 

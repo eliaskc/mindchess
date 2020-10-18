@@ -2,8 +2,6 @@ package chess.observers;
 
 import chess.model.ChessColor;
 
-import java.awt.*;
-
 public interface GameObserver {
     void drawPieces();
     void drawDeadPieces();

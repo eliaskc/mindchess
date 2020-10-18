@@ -1,8 +1,5 @@
 package chess.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Class Player represents a player playing chess and contains attributes for that player
  */

@@ -85,13 +85,13 @@ public class Game implements TimerObserver {
     }
 
     void endGameAsDraw(){
-        setGameState(GameStateFactory.createGameOverState("Game ended in draw", this));
+        setGameState(GameStateFactory.createGameOverState("Game ended in draw"));
         stopAllTimers();
         notifyEndGame();
     }
 
     void endGameAsForfeit(){
-        setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game",this));
+        setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }
@@ -121,7 +121,7 @@ public class Game implements TimerObserver {
     @Override
     public void notifyTimerEnded() {
         switchPlayer();
-        setGameState(GameStateFactory.createGameOverState(currentPlayer.getName() + " has won the game",this));
+        setGameState(GameStateFactory.createGameOverState(currentPlayer.getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }

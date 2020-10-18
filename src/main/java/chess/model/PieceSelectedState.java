@@ -29,13 +29,11 @@ public class PieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point targetPoint = new Point(x, y);
-        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint)) {
-            if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
-                clearAndDrawLegalMoves();
-                context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
-                context.getGameState().handleInput(targetPoint.x, targetPoint.y);
-                return;
-            }
+        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint) && context.getBoard().getBoardMap().get(targetPoint).getColor() == context.getCurrentPlayer().getColor()) {
+            clearAndDrawLegalMoves();
+            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
+            context.getGameState().handleInput(targetPoint.x, targetPoint.y);
+            return;
         }
 
         if (context.getLegalPoints().contains(targetPoint)) {
@@ -43,7 +41,7 @@ public class PieceSelectedState implements GameState {
             addMoveToPlies(selectedPoint, targetPoint);
 
             if (checkKingTaken()) {
-                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game",context));
+                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game"));
                 return;
             }
 
@@ -138,11 +136,9 @@ public class PieceSelectedState implements GameState {
      * @param clickedPoint
      */
     private boolean checkPawnPromotion(Point clickedPoint) {
-        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType() == PAWN) {
-            if ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK)) {
-                context.notifyPawnPromotion();
-                return true;
-            }
+        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType() == PAWN && ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK))) {
+            context.notifyPawnPromotion();
+            return true;
         }
         return false;
     }

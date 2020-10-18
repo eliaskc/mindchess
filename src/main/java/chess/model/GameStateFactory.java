@@ -13,7 +13,7 @@ public class GameStateFactory {
     public static GameState createPawnPromotionState(Point selectedPoint, Game context){
         return new PawnPromotionState(selectedPoint,context);
     }
-    public static GameState createGameOverState(String resultStatus, Game context){
-        return new GameOverState(resultStatus,context);
+    public static GameState createGameOverState(String resultStatus){
+        return new GameOverState(resultStatus);
     }
 }

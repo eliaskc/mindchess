@@ -254,7 +254,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private int translateX(double x) {
         for (int i = 0; i < 8; i++) {
-            if ((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension * (i + 1))) {
+            if (i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension * (i + 1)) {
                 return i;
             }
         }
@@ -269,7 +269,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private int translateY(double y) {
         for (int i = 0; i < 8; i++) {
-            if ((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1))) {
+            if (i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1)) {
                 return i;
             }
         }
@@ -290,7 +290,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private void muteUnmute() {
         audioPlayer.setMute(!audioPlayer.isMute());
-        muteUnmuteButton.setText((muteUnmuteButton.getText().equals("Mute")) ? "Unmute" : "Mute");
+        muteUnmuteButton.setText(muteUnmuteButton.getText().equals("Mute") ? "Unmute" : "Mute");
     }
 
     /**

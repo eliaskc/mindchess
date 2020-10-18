@@ -4,7 +4,6 @@ import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.Piece;
 import chess.model.PieceType;
-import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
