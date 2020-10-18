@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class TestChessTimer {
     ChessFacade model;
@@ -21,18 +22,16 @@ public class TestChessTimer {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
         movement.setBoardMap(boardMap);
     }
 
     @Test
     public void testTimer() throws InterruptedException {
-        ChessTimer chessTimer = new ChessTimer();
-        chessTimer.setTime(10);
-        chessTimer.startTimer();
-        chessTimer.setActive(true);
-        Thread.sleep(1000);
-        assertTrue(chessTimer.getTime() < 10);
-        chessTimer.setActive(false);
+        model.setCurrentWhitePlayerTimerTime(10);
+        model.initTimersInCurrentGame();
+        TimeUnit.SECONDS.sleep(1);
+        assertTrue(model.getCurrentWhiteTimerTime() < 10);
+        model.stopAllTimers();
     }
 }

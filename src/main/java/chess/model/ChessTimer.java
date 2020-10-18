@@ -29,7 +29,8 @@ public class ChessTimer {
      * <p>
      * Creates and starts decrementing a new timer
      */
-    public void startTimer() {
+    //Public for tests
+    void startTimer() {
         timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -44,7 +45,7 @@ public class ChessTimer {
     /**
      * stops timer,
      */
-    public void stopTimer() {
+    void stopTimer() {
         timer.cancel();
         setActive(false);
     }
@@ -77,21 +78,19 @@ public class ChessTimer {
         }
     }
 
-    public int getTime() {
+    int getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    void setTime(int time) {
         this.time = time;
     }
 
-    public void setActive(boolean active) {
+    void setActive(boolean active) {
         this.active = active;
     }
 
-    public void addObserver(TimerObserver t) {
+    void addObserver(TimerObserver t) {
         observers.add(t);
     }
-
-
 }

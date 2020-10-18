@@ -1,8 +1,4 @@
-package chess.model.gameState;
-
-import chess.model.IGameContext;
-import chess.model.Piece;
-import chess.model.PieceType;
+package chess.model;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -12,11 +8,11 @@ public class PawnPromotionState implements GameState{
 
     private Map<Point, PieceType> promotionPieces = new HashMap<>();
 
-    private IGameContext context;
+    private Game context;
     private Point selectedPoint;
-    private boolean isPlayerSwitch;
 
-    public PawnPromotionState(Point selectedPoint, IGameContext context) {
+
+    PawnPromotionState(Point selectedPoint, Game context) {
         this.context = context;
         this.selectedPoint = selectedPoint;
         initPromotionPieces();
@@ -29,7 +25,7 @@ public class PawnPromotionState implements GameState{
             promote(selectedPoint,selectedPromotion);
             context.switchPlayer();
             context.notifyDrawPieces();
-            context.setGameState(new NoPieceSelectedState(context));
+            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         }
     }
 
@@ -46,17 +42,12 @@ public class PawnPromotionState implements GameState{
     }
 
     @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
-    }
-
-    @Override
     public String getGameStatus() {
         return "Game ongoing";
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return true;
     }
 }

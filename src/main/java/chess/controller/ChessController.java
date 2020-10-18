@@ -141,8 +141,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     @FXML
-    void forfeit(ActionEvent event) {
-        model.getCurrentGame().endGameAsForfeit();
+    void forfeit() {
+        model.forfeit();
     }
 
     /**
@@ -151,7 +151,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @FXML
     void offerDraw(ActionEvent event) {
-        lblDrawLabel.setText(model.getCurrentGame().getCurrentPlayer().getName() + " offered you a draw");
+        lblDrawLabel.setText(model.getCurrentPlayerName() + " offered you a draw");
         drawAnchorPane.toFront();
     }
 
@@ -159,7 +159,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * if the opponent refuses the interface will close and allows the player to move their pieces
      */
     @FXML
-    void declineDraw(ActionEvent event) {
+    void declineDraw() {
         drawAnchorPane.toBack();
     }
 
@@ -167,8 +167,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * sets the game to a draw
      */
     @FXML
-    void acceptDraw(ActionEvent event) {
-        model.getCurrentGame().endGameAsDraw();
+    void acceptDraw() {
+        model.acceptDraw();
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -201,15 +201,14 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         legalMoveImages = imageHandler.fetchLegalMoveImages();
         drawPieces();
         drawDeadPieces();
+        model.addGameObserverToCurrentGame(this);
+        model.addEndGameObserverToCurrentGame(this);
 
-        model.getCurrentGame().addGameObserver(this);
-        model.getCurrentGame().addEndGameObserver(this);
-
-        player1Name.setText(model.getPlayerWhite().getName());
-        player2Name.setText(model.getPlayerBlack().getName());
+        player1Name.setText(model.getCurrentPlayerWhiteName());
+        player2Name.setText(model.getCurrentPlayerBlackName());
         player1TimerBox.setFill(Color.GREENYELLOW);
         player2TimerBox.setFill(Color.LIGHTGRAY);
-        model.getCurrentGame().initTimers();
+        model.initTimersInCurrentGame();
     }
 
     /**
@@ -255,7 +254,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private int translateX(double x) {
         for (int i = 0; i < 8; i++) {
-            if ((i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension * (i + 1))) {
+            if (i * squareDimension + chessboardContainerX <= x && x <= chessboardContainerX + squareDimension * (i + 1)) {
                 return i;
             }
         }
@@ -270,7 +269,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private int translateY(double y) {
         for (int i = 0; i < 8; i++) {
-            if ((i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1))) {
+            if (i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1)) {
                 return i;
             }
         }
@@ -285,13 +284,13 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         drawLegalMoves();
         drawPieces();
         drawDeadPieces();
-        drawPawnPromotionSetup(model.getCurrentGame().getCurrentPlayer().getColor());
+        drawPawnPromotionSetup(model.getCurrentPlayerColor());
     }
 
     @FXML
     private void muteUnmute() {
         audioPlayer.setMute(!audioPlayer.isMute());
-        muteUnmuteButton.setText((muteUnmuteButton.getText().equals("Mute")) ? "Unmute" : "Mute");
+        muteUnmuteButton.setText(muteUnmuteButton.getText().equals("Mute") ? "Unmute" : "Mute");
     }
 
     /**
@@ -354,7 +353,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @Override
     public void switchedPlayer() {
-        if (model.getCurrentGame().getCurrentPlayer() == model.getPlayerWhite()) {
+        if (model.isCurrentPlayerWhite()) {
             player1TimerBox.setFill(Color.GREENYELLOW);
             player2TimerBox.setFill(Color.LIGHTGRAY);
         } else {
@@ -460,8 +459,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         clearAllPliesImages();
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
-        for (Ply ply : model.getCurrentGame().getPlies()) {
-            PlyController plyController = new PlyController(ply, model.getCurrentGame().getPlies().indexOf(ply) + 1, imageHandler);
+        for (Ply ply : model.getCurrentGamePlies()) {
+            PlyController plyController = new PlyController(ply, model.getCurrentGamePlies().indexOf(ply) + 1, imageHandler);
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
@@ -473,7 +472,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             });
 
             //If this is the first ply, generate the board but dont move the first piece
-            if (model.getCurrentGame().getPlies().indexOf(ply) == 0){
+            if (model.getCurrentGamePlies().indexOf(ply) == 0){
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
@@ -485,8 +484,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * Fetches the times for each timer from the model when called and updates the labels
      */
     public void updateTimer() {
-        Platform.runLater(() -> player1Timer.setText(formatTime(model.getPlayerWhite().getTimer().getTime())));
-        Platform.runLater(() -> player2Timer.setText(formatTime(model.getPlayerBlack().getTimer().getTime())));
+        Platform.runLater(() -> player1Timer.setText(formatTime(model.getCurrentWhiteTimerTime())));
+        Platform.runLater(() -> player2Timer.setText(formatTime(model.getCurrentBlackTimerTime())));
     }
 
     /**

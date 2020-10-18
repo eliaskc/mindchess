@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class TestEndGame {
     ChessFacade model;
@@ -20,7 +21,7 @@ public class TestEndGame {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
         movement.setBoardMap(boardMap);
     }
 
@@ -44,17 +45,26 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
-        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
+        assertFalse(model.isGameOngoing());
+    }
+
+
+
+    @Test
+    public void testTimerRunningOut() throws InterruptedException {
+        model.setCurrentWhitePlayerTimerTime(0);
+        model.initTimersInCurrentGame();
+        TimeUnit.SECONDS.sleep(1);
+        assertFalse(model.isGameOngoing());
     }
 
     @Test
-    public void testTimerRunningOut() {
-        model.getCurrentGame().getPlayerWhite().getTimer().setTime(0);
-
-        model.getCurrentGame().notifyTimerEnded();
-
-        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
+    public void testTimerNotRunningOut() {
+        model.setCurrentWhitePlayerTimerTime(5);
+        model.initTimersInCurrentGame();
+        assertTrue(model.isGameOngoing());
     }
+
 
     //Currently the accepting/declining is not done by the model
     /*
@@ -76,8 +86,8 @@ public class TestEndGame {
 
     @Test
     public void testForfeit() {
-        model.getCurrentGame().endGameAsForfeit();
+        model.forfeit();
 
-        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
+        assertFalse(model.isGameOngoing());
     }
 }

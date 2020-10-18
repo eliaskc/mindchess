@@ -11,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -80,16 +79,14 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard(ActionEvent event) {
-        //Does not create a new boardmap
         model.createNewGame();
-        model.getCurrentGame().initGame();
 
         chessController.updateImageHandler();
 
-        if (!player1NameField.getText().equals("")) model.getPlayerWhite().setName(player1NameField.getText());
-        if (!player2NameField.getText().equals("")) model.getPlayerBlack().setName(player2NameField.getText());
-        model.getPlayerWhite().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
-        model.getPlayerBlack().getTimer().setTime(timerMap.get(btnTimerDrop.getValue()));
+        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
+        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
+        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -129,7 +126,7 @@ public class MenuController implements Initializable {
         Random ran = new Random();
         int videoIndex = ran.nextInt(4);
         mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
-        mediaPlayer.setAutoPlay(true);
+        //mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(1000);
         media.setMediaPlayer(mediaPlayer);
     }

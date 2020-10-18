@@ -1,6 +1,4 @@
-package chess.model.gameState;
-
-import chess.model.*;
+package chess.model;
 
 import java.awt.*;
 
@@ -11,12 +9,11 @@ import static chess.model.PieceType.PAWN;
 public class PieceSelectedState implements GameState {
 
     private Point selectedPoint;
-    private IGameContext context;
-    private boolean isPlayerSwitch;
+    private Game context;
     private Movement movement;
     private Piece takenPiece = null;
 
-    public PieceSelectedState(Point selectedPoint, IGameContext context) {
+    PieceSelectedState(Point selectedPoint, Game context) {
         this.selectedPoint = selectedPoint;
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
@@ -32,14 +29,11 @@ public class PieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point targetPoint = new Point(x, y);
-        isPlayerSwitch = false;
-        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint)) {
-            if (context.getBoard().getBoardMap().get(targetPoint).getColor()== context.getCurrentPlayer().getColor()) {
-                clearAndDrawLegalMoves();
-                context.setGameState(new NoPieceSelectedState(context));
-                context.getGameState().handleInput(targetPoint.x, targetPoint.y);
-                return;
-            }
+        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint) && context.getBoard().getBoardMap().get(targetPoint).getColor() == context.getCurrentPlayer().getColor()) {
+            clearAndDrawLegalMoves();
+            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
+            context.handleBoardInput(targetPoint.x, targetPoint.y);
+            return;
         }
 
         if (context.getLegalPoints().contains(targetPoint)) {
@@ -47,12 +41,13 @@ public class PieceSelectedState implements GameState {
             addMoveToPlies(selectedPoint, targetPoint);
 
             if (checkKingTaken()) {
-                context.setGameState(new GameOverState(context.getCurrentPlayer().getName() + " has won the game", context));
+                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game"));
                 return;
             }
 
             if (checkPawnPromotion(targetPoint)) {
-                context.setGameState(new PawnPromotionState(targetPoint, context));
+                context.switchPlayer();
+                context.setGameState(GameStateFactory.createPawnPromotionState(targetPoint,context));
                 clearAndDrawLegalMoves();
                 return;
             }
@@ -60,7 +55,7 @@ public class PieceSelectedState implements GameState {
             context.switchPlayer();
             checkKingInCheck();
         }
-        context.setGameState(new NoPieceSelectedState(context));
+        context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         clearAndDrawLegalMoves();
     }
 
@@ -69,7 +64,6 @@ public class PieceSelectedState implements GameState {
         makeMoves(selectedPoint, targetPoint);
 
         context.notifyDrawPieces();
-        isPlayerSwitch = true;
     }
 
     /**
@@ -142,11 +136,9 @@ public class PieceSelectedState implements GameState {
      * @param clickedPoint
      */
     private boolean checkPawnPromotion(Point clickedPoint) {
-        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType() == PAWN) {
-            if ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK)) {
-                context.notifyPawnPromotion();
-                return true;
-            }
+        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType() == PAWN && ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK))) {
+            context.notifyPawnPromotion();
+            return true;
         }
         return false;
     }
@@ -157,17 +149,12 @@ public class PieceSelectedState implements GameState {
     }
 
     @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
-    }
-
-    @Override
     public String getGameStatus() {
         return "Game ongoing";
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return true;
     }
 }

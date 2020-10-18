@@ -1,15 +1,12 @@
-package chess.model.gameState;
-
-import chess.model.*;
+package chess.model;
 
 import java.awt.*;
 
 public class NoPieceSelectedState implements GameState {
-    private IGameContext context;
-    private boolean isPlayerSwitch;
+    private Game context;
     private Movement movement;
 
-    public NoPieceSelectedState(IGameContext context) {
+    NoPieceSelectedState(Game context) {
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(),context.getPlies());
     }
@@ -17,12 +14,11 @@ public class NoPieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Point selectedPoint = new Point(x,y);
-        isPlayerSwitch = false;
         if(pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
             fetchLegalMoves(selectedPoint);
             if(context.getLegalPoints().size() == 0) return;
             context.notifyDrawLegalMoves();
-            context.setGameState(new PieceSelectedState(selectedPoint, context));
+            context.setGameState(GameStateFactory.createPieceSelectedState(selectedPoint,context));
         }
     }
 
@@ -44,17 +40,12 @@ public class NoPieceSelectedState implements GameState {
     }
 
     @Override
-    public boolean getIsGameOver() {
-        return false;
-    }
-
-    @Override
-    public boolean getIsPlayerSwitch() {
-        return isPlayerSwitch;
-    }
-
-    @Override
     public String getGameStatus() {
         return "Game ongoing";
+    }
+
+    @Override
+    public boolean isGameOngoing() {
+        return true;
     }
 }

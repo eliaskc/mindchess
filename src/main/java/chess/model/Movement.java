@@ -238,7 +238,7 @@ public class Movement {
         return boardMap.containsKey(p);
     }
 
-    public List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
+    List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> castlingPoints = new ArrayList<>();
         if (!pieceHasMoved(pieceToMove)) {
             if (checkRightCastling(selectedPoint)) {
@@ -306,23 +306,19 @@ public class Movement {
         return false;
     }
 
-    public List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
+    List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
         List<Point> enPassantPoints = new ArrayList<>();
         if (plies.size() == 0) return enPassantPoints;
 
         Ply lastPly = plies.get(plies.size() - 1);
-        Piece lastMovedPiece = lastPly.movedPiece;
+        Piece lastMovedPiece = lastPly.getMovedPiece();
 
-        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor()) {
-            if (Math.abs(lastPly.movedFrom.y - lastPly.movedTo.y) == 2) {
-                if (lastPly.movedTo.x == selectedPoint.x + 1 || lastPly.movedTo.x == selectedPoint.x - 1) {
-                    if (lastPly.movedTo.y == selectedPoint.y) {
-                        if (lastMovedPiece.getColor() == BLACK) {
-                            enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y - 1));
-                        } else if (lastMovedPiece.getColor() == WHITE) {
-                            enPassantPoints.add(new Point(lastPly.movedTo.x, lastPly.movedTo.y + 1));
-                        }
-                    }
+        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.getMovedFrom().y - lastPly.getMovedTo().y) == 2) {
+            if ((lastPly.getMovedTo().x == selectedPoint.x + 1 || lastPly.getMovedTo().x == selectedPoint.x - 1) && lastPly.getMovedTo().y == selectedPoint.y) {
+                if (lastMovedPiece.getColor() == BLACK) {
+                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
+                } else if (lastMovedPiece.getColor() == WHITE) {
+                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
                 }
             }
         }
@@ -343,11 +339,11 @@ public class Movement {
         return opponentLegalPoints;
     }
 
-    public boolean isKingInCheck(Point kingPoint) {
+    boolean isKingInCheck(Point kingPoint) {
         return fetchOpponentLegalPoints(boardMap.get(kingPoint).getColor()).contains(kingPoint);
     }
 
-    public Point fetchKingPoint(ChessColor color) {
+    Point fetchKingPoint(ChessColor color) {
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(KING)){
                 return entry.getKey();

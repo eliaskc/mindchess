@@ -1,8 +1,5 @@
 package chess.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Class Player represents a player playing chess and contains attributes for that player
  */
@@ -11,24 +8,32 @@ public class Player {
     private String name;
     private final ChessColor chessColor;
 
-    public Player(String name, ChessColor chessColor) {
+    Player(String name, ChessColor chessColor) {
         this.name = name;
         this.chessColor = chessColor;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public ChessColor getColor() {
+    int getCurrentTime(){
+        return chessTimer.getTime();
+    }
+
+    void setTime(int seconds){
+        chessTimer.setTime(seconds);
+    }
+
+    ChessColor getColor() {
         return chessColor;
     }
 
-    public ChessTimer getTimer() {
+    ChessTimer getTimer() {
         return chessTimer;
     }
     

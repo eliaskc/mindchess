@@ -1,8 +1,7 @@
-package chess.model.gameState;
+package chess.model;
 
 public interface GameState {
     void handleInput(int x, int y);
-    boolean getIsGameOver();
-    boolean getIsPlayerSwitch();
     String getGameStatus();
+    boolean isGameOngoing();
 }

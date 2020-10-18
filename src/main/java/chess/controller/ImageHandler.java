@@ -4,7 +4,6 @@ import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.Piece;
 import chess.model.PieceType;
-import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -62,7 +61,7 @@ public class ImageHandler {
      * @return List of piece images
      */
     public List<ImageView> fetchPieceImages() {
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
 
         pieceImageViewMap.clear();
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
@@ -106,7 +105,7 @@ public class ImageHandler {
     }
 
     public void fetchDeadPieceImages() {
-        List<Piece> deadPieces = model.getCurrentGame().getBoard().getDeadPieces();
+        List<Piece> deadPieces = model.getCurrentDeadPieces();
         whiteImageViews.clear();
         blackImageViews.clear();
 
@@ -136,7 +135,7 @@ public class ImageHandler {
      * Uses the map created in fetchPieceImages to calculate the coordinates that the images are supposed to have
      */
     public void updateImageCoordinates() {
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
         for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
             pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
             pieceImageViewMap.get(entry.getValue()).setY(entry.getKey().y * squareDimension + 5);
@@ -150,7 +149,7 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getCurrentGame().getLegalPoints()) {
+        for (Point point : model.getCurrentLegalPoints()) {
             ImageView imageView = new ImageView();
 
             if (boardMap.get(point) != null) {
@@ -188,7 +187,7 @@ public class ImageHandler {
 
     //Game
     public void init() {
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
     }
 
     public Image getChessboardImage() {

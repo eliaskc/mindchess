@@ -22,7 +22,7 @@ public class TestCastling {
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentGame().getBoard().getBoardMap();
+        boardMap = model.getCurrentBoardMap();
         movement.setBoardMap(boardMap);
     }
 
@@ -59,6 +59,8 @@ public class TestCastling {
         //The actual castling
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
+
+        boardMap = model.getCurrentBoardMap();
 
         assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.ROOK);
         assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KING);
