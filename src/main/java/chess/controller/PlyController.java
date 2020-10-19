@@ -55,60 +55,28 @@ public class PlyController extends AnchorPane {
         List<ImageView> imageViewList = new ArrayList<>();
 
         for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
-            ImageView imageView = new ImageView();
-            imageView.setImage(imageHandler.createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
-            imageView.setFitWidth(40);
-            imageView.setFitHeight(40);
-            imageView.setX(entry.getKey().x*40);
-            imageView.setY(entry.getKey().y*40);
+            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
+
             imageViewList.add(imageView);
 
             if (entry.getValue().equals(ply.getMovedPiece())) {
 
                 if(performMove){
-                    addTranslateTransition(imageView);
+                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40);
                 } else {
                     imageView.setX(ply.getMovedFrom().x*40);
                     imageView.setY(ply.getMovedFrom().y*40);
                 }
 
                 if (ply.getTakenPiece() != null) {
-                    ImageView attackedImageView = new ImageView();
-                    attackedImageView.setImage(imageHandler.createPieceImage(ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor()));
-                    attackedImageView.setFitWidth(40);
-                    attackedImageView.setFitHeight(40);
-                    attackedImageView.setX(ply.getMovedTo().x*40);
-                    attackedImageView.setY(ply.getMovedTo().y*40);
-                    addScaleTransition(attackedImageView);
+                    ImageView attackedImageView = imageHandler.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
+                    imageHandler.addScaleTransition(attackedImageView, 750, false);
                     imageViewList.add(attackedImageView);
                 }
             }
         }
 
         return imageViewList;
-    }
-
-    private void addTranslateTransition(ImageView imageView){
-        imageView.setX(0);
-        imageView.setY(0);
-
-        TranslateTransition tt = new TranslateTransition(Duration.millis(750), imageView);
-        tt.setFromX(ply.getMovedFrom().x*40);
-        tt.setFromY(ply.getMovedFrom().y*40);
-        tt.setToX(ply.getMovedTo().x*40);
-        tt.setToY(ply.getMovedTo().y*40);
-        tt.setCycleCount(1);
-        tt.play();
-    }
-
-    private void addScaleTransition(ImageView imageView){
-        ScaleTransition st = new ScaleTransition(Duration.millis(750), imageView);
-        st.setFromX(1.0);
-        st.setFromY(1.0);
-        st.setToX(0);
-        st.setToY(0);
-        st.setCycleCount(1);
-        st.play();
     }
 
     private String translateXCoordinate(int x) {

@@ -2,6 +2,7 @@ package chess.controller;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.Piece;
 import chess.model.Ply;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
@@ -29,9 +30,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import static chess.model.PieceType.*;
@@ -197,7 +200,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         chessboardImage.setImage(imageHandler.getChessboardImage());
         updateSquareDimensions();
 
-        pieceImages = imageHandler.fetchPieceImages();
+        pieceImages = fetchPieceImages();
         legalMoveImages = imageHandler.fetchLegalMoveImages();
         drawPieces();
         drawDeadPieces();
@@ -293,19 +296,31 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         muteUnmuteButton.setText(muteUnmuteButton.getText().equals("Mute") ? "Unmute" : "Mute");
     }
 
+
+    private List<ImageView> fetchPieceImages() {
+         List<ImageView> pieceImages = new ArrayList<>();
+         for (Map.Entry<Point, Piece> entry : model.getCurrentBoardMap().entrySet()){
+             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
+             pieceImages.add(imageView);
+             if(model.getCurrentGamePlies().size() > 0){
+                 if(entry.getKey().equals(model.getLastPlyMovedToPoint())){
+                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromPoint(), model.getLastPlyMovedToPoint(), (int) chessboardContainer.getHeight()/8);
+                 }
+             }
+         }
+         return pieceImages;
+    }
+
     /**
      * Draws all pieces from the list of pieceImages from the ImageHandler
      */
     @Override
     public void drawPieces() {
-        imageHandler.fetchPieceImages();
-        imageHandler.updateImageCoordinates();
-
         clearAllPieceImages();
 
-        //Clears the list of old piece locations/images and updates it with the new one
-        imageHandler.getPieceImages().clear();
-        pieceImages = imageHandler.fetchPieceImages();
+        pieceImages.clear();
+
+        pieceImages = fetchPieceImages();
 
         for (ImageView pieceImage : pieceImages) {
             chessboardContainer.getChildren().add(pieceImage);
@@ -318,11 +333,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     @Override
     public void drawDeadPieces() {
-        imageHandler.fetchDeadPieceImages();
         flowPaneWhitePieces.getChildren().clear();
         flowPaneBlackPieces.getChildren().clear();
-        flowPaneWhitePieces.getChildren().addAll(imageHandler.getWhiteImageViews());
-        flowPaneBlackPieces.getChildren().addAll(imageHandler.getBlackImageViews());
+        flowPaneWhitePieces.getChildren().addAll(imageHandler.fetchDeadPieceImages(ChessColor.WHITE));
+        flowPaneBlackPieces.getChildren().addAll(imageHandler.fetchDeadPieceImages(ChessColor.BLACK));
     }
 
     /**
@@ -335,13 +349,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         legalMoveImages = imageHandler.fetchLegalMoveImages();
 
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(imageHandler.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY)), imageView);
-            st.setFromX(0.1);
-            st.setFromY(0.1);
-            st.setToX(1);
-            st.setToY(1);
-            st.setCycleCount(1);
-            st.play();
+            imageHandler.addScaleTransition(imageView, imageHandler.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY), true);
 
             chessboardContainer.getChildren().add(imageView);
             chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
@@ -513,10 +521,5 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         chessboardContainer.getChildren().add(kingInCheckImage);
         drawPieces();
-    }
-
-    //Game
-    public void updateImageHandler() {
-        imageHandler.init();
     }
 }

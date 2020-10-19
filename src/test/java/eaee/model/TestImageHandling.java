@@ -16,7 +16,6 @@ public class TestImageHandling {
         model = new ChessFacade();
         model.createNewGame();
         imageHandler = new ImageHandler();
-        imageHandler.fetchPieceImages();
     }
 
     //Input stream error. File paths in imagehandler don't work with travis
