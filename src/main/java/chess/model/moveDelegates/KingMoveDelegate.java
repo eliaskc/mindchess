@@ -33,7 +33,7 @@ public class KingMoveDelegate implements IMoveDelegate {
 
         if (!hasMoved) {
             if (checkRightCastling(board, pointToCheck, hasMoved)) {
-                castlingPoints.add(new Point(pointToCheck.x + 2, pointToCheck.y, true));
+                castlingPoints.add(new Point(pointToCheck.x + 2, pointToCheck.y));
             }
             if (checkLeftCastling(board, pointToCheck, hasMoved)) {
                 castlingPoints.add(new Point(pointToCheck.x - 2, pointToCheck.y));
