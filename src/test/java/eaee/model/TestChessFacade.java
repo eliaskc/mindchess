@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.Map;
 
+import static chess.model.PieceType.*;
 import static org.junit.Assert.*;
 
 public class TestChessFacade {
@@ -49,9 +50,9 @@ public class TestChessFacade {
     public void testPlaceAllPieces(){
         Map<Point, IPiece> boardMap = model.getCurrentBoardMap();
 
-        assertTrue(board.pieceOnPointColorEquals(new Point(0,0), ChessColor.BLACK) && board.fetchPieceOnPoint(new Point(0,0)).getPieceName().equals("Rook"));
-        assertTrue(board.pieceOnPointColorEquals(new Point(6,6), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(6,6)).getPieceName().equals("Pawn"));
-        assertTrue(board.pieceOnPointColorEquals(new Point(4,7), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(4,7)).getPieceName().equals("King"));
+        assertTrue(board.pieceOnPointColorEquals(new Point(0,0), ChessColor.BLACK) && board.fetchPieceOnPoint(new Point(0,0)).getPieceType().equals(ROOK));
+        assertTrue(board.pieceOnPointColorEquals(new Point(6,6), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(6,6)).getPieceType().equals(PAWN));
+        assertTrue(board.pieceOnPointColorEquals(new Point(4,7), ChessColor.WHITE) && board.fetchPieceOnPoint(new Point(4,7)).getPieceType().equals(KING));
     }
 
     @Test

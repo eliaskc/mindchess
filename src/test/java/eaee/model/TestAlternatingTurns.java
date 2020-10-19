@@ -3,26 +3,22 @@ package eaee.model;
 import chess.model.Board;
 import chess.model.ChessFacade;
 import chess.model.pieces.IPiece;
-import chess.model.pieces.PieceMovementLogic;
+import chess.model.util.MovementLogicUtil;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TestAlternatingTurns {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
         board = model.getCurrentBoard();
-        pieceMovementLogic.setBoard(board);
     }
 
     @Test

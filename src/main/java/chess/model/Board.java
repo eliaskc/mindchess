@@ -18,15 +18,6 @@ import static chess.model.ChessColor.WHITE;
 public class Board {
     private final Map<Point, IPiece> boardMap = new HashMap<>();
     private final List<IPiece> deadIPieces = new ArrayList<>();
-    private static Board instance = null;
-
-    public static Board getInstance() {
-        if (instance == null) {
-            instance = new Board();
-        }
-        return instance;
-    }
-    private Board() {}
 
     Map<Point, IPiece> getBoardMap() {
         return boardMap;
@@ -83,7 +74,7 @@ public class Board {
     }
 
     public boolean isPieceOnPointRook(Point point) {
-        return boardMap.get(point).getPieceName().equals("Rook");
+        return boardMap.get(point).getPieceType().equals(PieceType.ROOK);
     }
 
     public IPiece fetchPieceOnPoint(Point pointSelected) {
@@ -92,7 +83,7 @@ public class Board {
 
     public Point fetchKingPoint(ChessColor color) {
         for (Map.Entry<Point, chess.model.pieces.IPiece> entry : boardMap.entrySet()) {
-            if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceName().equals("King")){
+            if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(PieceType.KING)){
                 return entry.getKey();
             }
         }

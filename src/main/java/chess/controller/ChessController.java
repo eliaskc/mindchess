@@ -2,6 +2,7 @@ package chess.controller;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.PieceType;
 import chess.model.Ply;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
@@ -373,10 +374,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void drawPawnPromotionSetup(ChessColor chessColor) {
-        promotionQueen.setImage(imageHandler.createPieceImage("Queen", chessColor));
-        promotionKnight.setImage(imageHandler.createPieceImage("Knight", chessColor));
-        promotionRook.setImage(imageHandler.createPieceImage("Rook", chessColor));
-        promotionBishop.setImage(imageHandler.createPieceImage("Bishop", chessColor));
+        promotionQueen.setImage(imageHandler.createPieceImage(PieceType.QUEEN, chessColor));
+        promotionKnight.setImage(imageHandler.createPieceImage(PieceType.KNIGHT, chessColor));
+        promotionRook.setImage(imageHandler.createPieceImage(PieceType.ROOK, chessColor));
+        promotionBishop.setImage(imageHandler.createPieceImage(PieceType.BISHOP, chessColor));
     }
 
     private void pawnPromotion(int x, int y) {

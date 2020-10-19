@@ -1,47 +1,63 @@
 package chess.model.pieces;
 
 import chess.model.ChessColor;
+import chess.model.PieceType;
+import chess.model.moveDelegates.*;
+
+import static chess.model.PieceType.*;
 
 public class PieceFactory {
 
-    public static IPiece createPiece(String pieceName, ChessColor chessColor) throws IllegalArgumentException {
-        switch (pieceName) {
-            case "Rook" -> { return createRook(chessColor); }
+    public static IPiece createPiece(PieceType pieceType, ChessColor chessColor) throws IllegalArgumentException {
+        switch (pieceType) {
+            case ROOK -> {
+                return createRook(chessColor);
+            }
 
-            case "Knight" -> { return createKnight(chessColor); }
+            case KNIGHT -> {
+                return createKnight(chessColor);
+            }
 
-            case "Bishop" -> { return createBishop(chessColor); }
+            case BISHOP -> {
+                return createBishop(chessColor);
+            }
 
-            case "Queen" -> { return createQueen(chessColor); }
+            case QUEEN -> {
+                return createQueen(chessColor);
+            }
 
-            case "Pawn" -> { return createPawn(chessColor); }
+            case PAWN -> {
+                return createPawn(chessColor);
+            }
 
-            case "King" -> { return createKing(chessColor); }
+            case KING -> {
+                return createKing(chessColor);
+            }
         }
         throw new IllegalArgumentException();
     }
 
     public static IPiece createRook(ChessColor chessColor) {
-        return new Rook(chessColor);
+        return new Piece(chessColor, ROOK, new RookMoveDelegate());
     }
 
     public static IPiece createKnight(ChessColor chessColor) {
-        return new Knight(chessColor);
+        return new Piece(chessColor, KNIGHT, new KnightMoveDelegate());
     }
 
     public static IPiece createBishop(ChessColor chessColor) {
-        return new Bishop(chessColor);
+        return new Piece(chessColor, BISHOP, new BishopMoveDelegate());
     }
 
     public static IPiece createQueen(ChessColor chessColor) {
-        return new Queen(chessColor);
+        return new Piece(chessColor, QUEEN, new QueenMoveDelegate());
     }
 
     public static IPiece createKing(ChessColor chessColor) {
-        return new King(chessColor);
+        return new Piece(chessColor, KING, new KingMoveDelegate());
     }
 
     public static IPiece createPawn(ChessColor chessColor) {
-        return new Pawn(chessColor);
+        return new Piece(chessColor, PAWN, new PawnMoveDelegate());
     }
 }

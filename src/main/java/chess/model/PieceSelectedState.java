@@ -1,19 +1,17 @@
 package chess.model;
 
 import chess.model.pieces.IPiece;
-import chess.model.pieces.PieceMovementLogic;
 
 import java.awt.*;
 
-import static chess.model.ChessColor.BLACK;
-import static chess.model.ChessColor.WHITE;
+import static chess.model.ChessColor.*;
+import static chess.model.PieceType.*;
 
 public class PieceSelectedState implements GameState {
 
     private Point selectedPoint;
     private Game context;
     private IPiece takenIPiece = null;
-    private PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     PieceSelectedState(Point selectedPoint, Game context) {
         this.selectedPoint = selectedPoint;
@@ -77,23 +75,23 @@ public class PieceSelectedState implements GameState {
         if (!context.getBoard().getBoardMap().containsKey(selectedPoint)) return;
 
         //castling
-        if (pieceMovementLogic.isCastlingPossible()) {
+        /*if (movementLogicUtil.isCastlingPossible()) {
             if (clickedPoint.x > selectedPoint.x) {
                 makeMove(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
             } else if (clickedPoint.x < selectedPoint.x) {
                 makeMove(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
             }
-            pieceMovementLogic.setCastlingPossible(false);
+            movementLogicUtil.setCastlingPossible(false);
         }
 
-        if (pieceMovementLogic.isEnPassantPossible()) {
+        if (movementLogicUtil.isEnPassantPossible()) {
             if (context.getBoard().pieceOnPointColorEquals(selectedPoint, WHITE)) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
             } else if (context.getBoard().pieceOnPointColorEquals(selectedPoint, BLACK)) {
                 takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
             }
-            pieceMovementLogic.setEnPassantPossible(false);
-        }
+            movementLogicUtil.setEnPassantPossible(false);
+        }*/
     }
 
     /**
@@ -130,7 +128,7 @@ public class PieceSelectedState implements GameState {
 
     private boolean checkKingTaken() {
         for (IPiece p : context.getBoard().getDeadPieces()) {
-            if (p.getPieceName().equals("King")) return true;
+            if (p.getPieceType().equals(KING)) return true;
         }
         return false;
     }
@@ -141,7 +139,7 @@ public class PieceSelectedState implements GameState {
      * @param clickedPoint
      */
     private boolean checkPawnPromotion(Point clickedPoint) {
-        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceName().equals("Pawn") && ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK))) {
+        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType().equals(PAWN) && ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK))) {
             context.notifyPawnPromotion();
             return true;
         }

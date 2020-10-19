@@ -1,7 +1,7 @@
 package eaee.model;
 
 import chess.model.ChessFacade;
-import chess.model.pieces.PieceMovementLogic;
+import chess.model.util.MovementLogicUtil;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -10,13 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 public class TestEndGame {
     ChessFacade model;
-    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        pieceMovementLogic.setBoard(model.getCurrentBoard());
     }
 
     //Test taking the king

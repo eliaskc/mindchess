@@ -2,6 +2,7 @@ package chess.controller;
 
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
+import chess.model.PieceType;
 import chess.model.pieces.IPiece;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,7 +71,7 @@ public class ImageHandler {
 
             ImageView pieceImageView = new ImageView();
             pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceName(), entry.getValue().getColor()));
+            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 10);
             pieceImageView.setFitHeight(squareDimension - 10);
@@ -84,13 +85,13 @@ public class ImageHandler {
         return pieceImages;
     }
 
-    Image createPieceImage(String pieceName, ChessColor chessColor) {
+    Image createPieceImage(PieceType pieceType, ChessColor pieceColor) {
         java.lang.String imageURL;
 
         if (minecraftPieceStyle) {
-            imageURL = java.lang.String.format("/minecraftChesspieces/%s_minecraft_%s.png", chessColor.toString().toLowerCase(), pieceName);
+            imageURL = java.lang.String.format("/minecraftChesspieces/%s_minecraft_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         } else {
-            imageURL = java.lang.String.format("/chessPieces/%s_%s.png", chessColor.toString().toLowerCase(), pieceName);
+            imageURL = java.lang.String.format("/chessPieces/%s_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         }
 
         Image pieceImage;
@@ -115,7 +116,7 @@ public class ImageHandler {
 
             ImageView pieceImageView = new ImageView();
             pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(IPiece.getPieceName(), IPiece.getColor()));
+            pieceImageView.setImage(createPieceImage(IPiece.getPieceType(), IPiece.getColor()));
 
             pieceImageView.setFitWidth(squareDimension - 25);
             pieceImageView.setFitHeight(squareDimension - 25);

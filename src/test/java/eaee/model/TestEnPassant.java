@@ -3,7 +3,7 @@ package eaee.model;
 import chess.model.Board;
 import chess.model.ChessFacade;
 import chess.model.ChessColor;
-import chess.model.pieces.PieceMovementLogic;
+import chess.model.util.MovementLogicUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,14 +16,12 @@ import static org.junit.Assert.assertTrue;
 public class TestEnPassant {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
         board = model.getCurrentBoard();
-        pieceMovementLogic.setBoard(board);
     }
 
     @Test

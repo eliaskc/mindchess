@@ -2,15 +2,12 @@ package eaee.model;
 
 import chess.model.Board;
 import chess.model.ChessFacade;
-import chess.model.pieces.IPiece;
-import chess.model.pieces.PieceMovementLogic;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
+import static chess.model.PieceType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -18,14 +15,12 @@ import static org.junit.Assert.assertNotEquals;
 public class TestCastling {
     ChessFacade model;
     Board board;
-    PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
         board = model.getCurrentBoard();
-        pieceMovementLogic.setBoard(board);
     }
 
     @Test
@@ -33,8 +28,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(board.fetchPieceOnPoint(new Point(5, 7)).getPieceName(), "Bishop");
-        assertEquals(board.fetchPieceOnPoint(new Point(6, 7)).getPieceName(), "Knight");
+        assertEquals(board.fetchPieceOnPoint(new Point(5, 7)).getPieceType(), BISHOP);
+        assertEquals(board.fetchPieceOnPoint(new Point(6, 7)).getPieceType(), KNIGHT);
     }
 
     @Test
@@ -62,8 +57,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals("Rook", board.fetchPieceOnPoint(new Point(5, 7)).getPieceName());
-        assertEquals("King", board.fetchPieceOnPoint(new Point(6, 7)).getPieceName());
+        assertEquals(ROOK, board.fetchPieceOnPoint(new Point(5, 7)).getPieceType());
+        assertEquals(KING, board.fetchPieceOnPoint(new Point(6, 7)).getPieceType());
     }
 
     @Test

@@ -15,7 +15,7 @@ public class Game implements TimerObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
-    private final Board board = Board.getInstance();
+    private final Board board = new Board();
     //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
     private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point

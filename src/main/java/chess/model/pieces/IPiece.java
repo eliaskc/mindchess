@@ -1,13 +1,13 @@
 package chess.model.pieces;
 
 import chess.model.ChessColor;
-
-import java.awt.*;
-import java.util.List;
+import chess.model.PieceType;
+import chess.model.moveDelegates.IMoveDelegate;
 
 public interface IPiece {
-    List<Point> fetchLegalMoves(Point selectedPoint);
     void setHasMoved(boolean hasMoved);
+    boolean getHasMoved();
     ChessColor getColor();
-    String getPieceName();
+    PieceType getPieceType();
+    IMoveDelegate getMoveDelegate();
 }

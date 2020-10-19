@@ -1,17 +1,14 @@
 package chess.model;
 
-import chess.model.pieces.PieceMovementLogic;
+import chess.model.pieces.IPiece;
+import chess.model.util.MovementLogicUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static chess.model.ChessColor.BLACK;
-import static chess.model.ChessColor.WHITE;
-
 public class NoPieceSelectedState implements GameState {
     private Game context;
-    private PieceMovementLogic pieceMovementLogic = PieceMovementLogic.getInstance();
 
     NoPieceSelectedState(Game context) {
         this.context = context;
@@ -19,45 +16,42 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
-        Point selectedPoint = new Point(x,y);
-        if(pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
+        Point selectedPoint = new Point(x, y);
+        if (pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
             fetchLegalMoves(selectedPoint);
-            if(context.getLegalPoints().size() == 0) return;
+            if (context.getLegalPoints().size() == 0) return;
             context.notifyDrawLegalMoves();
-            context.setGameState(GameStateFactory.createPieceSelectedState(selectedPoint,context));
+            context.setGameState(GameStateFactory.createPieceSelectedState(selectedPoint, context));
         }
     }
 
     /**
      * Adds all legal points the marked piece can move to to the legalPoints list
      */
-    //TODO
     private void fetchLegalMoves(Point selectedPoint) {
-        context.getLegalPoints().addAll(context.getBoard().fetchPieceOnPoint(selectedPoint).fetchLegalMoves(selectedPoint));
-        context.getLegalPoints().addAll(getEnPassantPoints(selectedPoint));
+        IPiece pieceToCheck = context.getBoard().fetchPieceOnPoint(selectedPoint);
+        context.getLegalPoints().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedPoint, pieceToCheck.getHasMoved()));
+        //context.getLegalPoints().addAll(getEnPassantPoints(selectedPoint));
     }
 
-    private List<Point> getEnPassantPoints(Point selectedPoint) {
+    /*private List<Point> getEnPassantPoints(Point selectedPoint) {
         List<Point> enPassantPoints = new ArrayList<>();
         if (context.getPlies().size() == 0) return enPassantPoints;
 
         Ply lastPly = context.getPlies().get(context.getPlies().size() - 1);
-        Point movedFrom = lastPly.getMovedFrom();
-        Point movedTo = lastPly.getMovedTo();
-        String pieceName = lastPly.getMovedPiece().getPieceName();
 
         ChessColor pieceToMoveColor = context.getBoard().fetchPieceOnPointColor(selectedPoint);
 
-        return pieceMovementLogic.getEnPassantPoints(selectedPoint, movedFrom, movedTo, pieceName, pieceToMoveColor);
-    }
+        return MovementLogicUtil.getEnPassantPoints(selectedPoint, movedFrom, movedTo, pieceName, pieceToMoveColor);
+    }*/
 
 
-    private boolean pointIsAPiece(Point point){
-        if(context.getBoard().getBoardMap().containsKey(point)) return true;
+    private boolean pointIsAPiece(Point point) {
+        if (context.getBoard().getBoardMap().containsKey(point)) return true;
         return false;
     }
 
-    private boolean isPieceMyColor(Point point){
+    private boolean isPieceMyColor(Point point) {
         return context.getBoard().getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
     }
 
