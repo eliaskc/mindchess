@@ -268,8 +268,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * @return
      */
     private int translateY(double y) {
-        System.out.println(y);
-
         for (int i = 0; i < 8; i++) {
             if (i * squareDimension + chessboardContainerY <= y && y <= chessboardContainerY + squareDimension * (i + 1)) {
                 return i;
