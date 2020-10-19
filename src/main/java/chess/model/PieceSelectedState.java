@@ -20,7 +20,7 @@ public class PieceSelectedState implements GameState {
     }
 
     /**
-     * Checks if the latest click was on a point that is legal to move to
+     * Checks if the latest click was on a square that is legal to move to
      * If it is, the move is made
      *
      * @param x
@@ -91,7 +91,7 @@ public class PieceSelectedState implements GameState {
     }
 
     /**
-     * Moves the marked piece to the clicked point
+     * Moves the marked piece to the clicked square
      * <p>
      */
     private void makeMoves(Square moveFrom, Square moveTo) {

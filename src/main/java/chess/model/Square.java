@@ -1,5 +1,7 @@
 package chess.model;
 
+import java.util.Objects;
+
 //point
 public class Square {
     private int x;
@@ -24,5 +26,19 @@ public class Square {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Square square = (Square) o;
+        return x == square.x &&
+                y == square.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

@@ -204,13 +204,13 @@ public class Movement {
     }
 
     /**
-     * Adds point to the list of legal moves if the point is inside the board AND:
-     * - the point is empty
-     * - the point has a piece of the opposite color
+     * Adds square to the list of legal moves if the square is inside the board AND:
+     * - the square is empty
+     * - the square has a piece of the opposite color
      *
-     * @param p           point to move to
+     * @param square           square to move to
      * @param pieceToMove
-     * @return returns boolean that breaks the loop where the method was called, if a point has been added
+     * @return returns boolean that breaks the loop where the method was called, if a square has been added
      */
     private boolean addSquare(Square square, Piece pieceToMove, List<Square> listToAddTo) {
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
@@ -313,12 +313,12 @@ public class Movement {
         Ply lastPly = plies.get(plies.size() - 1);
         Piece lastMovedPiece = lastPly.getMovedPiece();
 
-        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.getMovedFrom().y - lastPly.getMovedTo().y) == 2) {
-            if ((lastPly.getMovedTo().x == selectedSquare.getX() + 1 || lastPly.getMovedTo().x == selectedSquare.getX() - 1) && lastPly.getMovedTo().y == selectedSquare.getY()) {
+        if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.getMovedFrom().getY() - lastPly.getMovedTo().getY()) == 2) {
+            if ((lastPly.getMovedTo().getX() == selectedSquare.getX() + 1 || lastPly.getMovedTo().getX() == selectedSquare.getX() - 1) && lastPly.getMovedTo().getY() == selectedSquare.getY()) {
                 if (lastMovedPiece.getColor() == BLACK) {
-                    enPassantSquares.add(new Square(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
+                    enPassantSquares.add(new Square(lastPly.getMovedTo().getX(), lastPly.getMovedTo().getY() - 1));
                 } else if (lastMovedPiece.getColor() == WHITE) {
-                    enPassantSquares.add(new Square(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
+                    enPassantSquares.add(new Square(lastPly.getMovedTo().getX(), lastPly.getMovedTo().getY() + 1));
                 }
             }
         }

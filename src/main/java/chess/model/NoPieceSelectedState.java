@@ -23,7 +23,7 @@ public class NoPieceSelectedState implements GameState {
     }
 
     /**
-     * Adds all legal points the marked piece can move to to the legalPoints list
+     * Adds all legal squares the marked piece can move to to the legalSquares list
      */
     private void fetchLegalMoves(Square squareSelected) {
         context.getLegalSquares().addAll(movement.fetchLegalMoves(context.getBoard().getBoardMap().get(squareSelected), squareSelected));

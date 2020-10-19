@@ -1,9 +1,6 @@
 package eaee.model;
 
-import chess.model.ChessFacade;
-import chess.model.Movement;
-import chess.model.Piece;
-import chess.model.Player;
+import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,7 +11,7 @@ import java.util.Map;
 
 public class TestAlternatingTurns {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
+    Map<Square, Piece> boardMap = new HashMap<>();
     Movement movement = new Movement();
 
     @Before
@@ -38,7 +35,7 @@ public class TestAlternatingTurns {
 
     @Test
     public void testTakePieceSuccess(){
-        Piece piece = model.getCurrentBoardMap().get(new Point(3,7));
+        Piece piece = model.getCurrentBoardMap().get(new Square(3,7));
 
         model.handleBoardInput(4,6);
         model.handleBoardInput(4,5);
@@ -57,7 +54,7 @@ public class TestAlternatingTurns {
 
     @Test
     public void testTakePieceFail(){
-        Piece piece = model.getCurrentBoardMap().get(new Point(4, 0));
+        Piece piece = model.getCurrentBoardMap().get(new Square(4, 0));
 
         model.handleBoardInput(3,0);
         model.handleBoardInput(4,0);

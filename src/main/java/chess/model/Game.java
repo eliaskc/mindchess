@@ -16,9 +16,9 @@ public class Game implements TimerObserver {
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
     private final Board board = new Board();
-    //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
+    //private final Map<Square, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between square (squares) and pieces on the board
 
-    private final List<Square> legalSquares = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
+    private final List<Square> legalSquares = new ArrayList<>(); //List of squares that are legal to move to for the currently marked square
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
     private final Player playerWhite = new Player("Player 1", WHITE);
