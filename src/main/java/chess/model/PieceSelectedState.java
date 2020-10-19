@@ -8,19 +8,19 @@ import static chess.model.PieceType.PAWN;
 
 public class PieceSelectedState implements GameState {
 
-    private Point selectedPoint;
+    private Square selectedSquare;
     private Game context;
     private Movement movement;
     private Piece takenPiece = null;
 
-    PieceSelectedState(Point selectedPoint, Game context) {
-        this.selectedPoint = selectedPoint;
+    PieceSelectedState(Square selectedSquare, Game context) {
+        this.selectedSquare = selectedSquare;
         this.context = context;
         this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
     }
 
     /**
-     * Checks if the latest click was on a point that is legal to move to
+     * Checks if the latest click was on a square that is legal to move to
      * If it is, the move is made
      *
      * @param x
@@ -28,17 +28,17 @@ public class PieceSelectedState implements GameState {
      */
     @Override
     public void handleInput(int x, int y) {
-        Point targetPoint = new Point(x, y);
-        if (context.getBoard().getBoardMap().containsKey(targetPoint) && !targetPoint.equals(selectedPoint) && context.getBoard().getBoardMap().get(targetPoint).getColor() == context.getCurrentPlayer().getColor()) {
+        Square targetSquare = new Square(x, y);
+        if (context.getBoard().getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && context.getBoard().getBoardMap().get(targetSquare).getColor() == context.getCurrentPlayer().getColor()) {
             clearAndDrawLegalMoves();
             context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
-            context.handleBoardInput(targetPoint.x, targetPoint.y);
+            context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return;
         }
 
-        if (context.getLegalPoints().contains(targetPoint)) {
-            move(selectedPoint,targetPoint);
-            addMoveToPlies(selectedPoint, targetPoint);
+        if (context.getLegalSquares().contains(targetSquare)) {
+            move(selectedSquare,targetSquare);
+            addMoveToPlies(selectedSquare, targetSquare);
             context.notifyDrawPieces();
 
             if (checkKingTaken()) {
@@ -46,8 +46,8 @@ public class PieceSelectedState implements GameState {
                 return;
             }
 
-            if (checkPawnPromotion(targetPoint)) {
-                context.setGameState(GameStateFactory.createPawnPromotionState(targetPoint,context));
+            if (checkPawnPromotion(targetSquare)) {
+                context.setGameState(GameStateFactory.createPawnPromotionState(targetSquare,context));
                 clearAndDrawLegalMoves();
                 return;
             }
@@ -59,42 +59,42 @@ public class PieceSelectedState implements GameState {
         clearAndDrawLegalMoves();
     }
 
-    private void move(Point selectedPoint, Point targetPoint) {
-        makeSpecialMoves(selectedPoint, targetPoint);
-        makeMoves(selectedPoint, targetPoint);
+    private void move(Square selectedSquare, Square targetSquare) {
+        makeSpecialMoves(selectedSquare, targetSquare);
+        makeMoves(selectedSquare, targetSquare);
     }
 
     /**
      * Checks if any special moves are attempted and if so, performs the necessary actions
      *
-     * @param selectedPoint
-     * @param clickedPoint
+     * @param selectedSquare
+     * @param targetSquare
      */
-    private void makeSpecialMoves(Point selectedPoint, Point clickedPoint) {
-        if (!context.getBoard().getBoardMap().containsKey(selectedPoint)) return;
+    private void makeSpecialMoves(Square selectedSquare, Square targetSquare) {
+        if (!context.getBoard().getBoardMap().containsKey(selectedSquare)) return;
 
         //castling
-        if (movement.getCastlingPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).size() != 0 && movement.getCastlingPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).contains(clickedPoint)) {
-            if (clickedPoint.x > selectedPoint.x) {
-                makeMoves(new Point(clickedPoint.x + 1, clickedPoint.y), new Point(clickedPoint.x - 1, clickedPoint.y));
-            } else if (clickedPoint.x < selectedPoint.x) {
-                makeMoves(new Point(clickedPoint.x - 2, clickedPoint.y), new Point(clickedPoint.x + 1, clickedPoint.y));
+        if (movement.getCastlingSquare(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).size() != 0 && movement.getCastlingSquare(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).contains(targetSquare)) {
+            if (targetSquare.getX() > selectedSquare.getX()) {
+                makeMoves(new Square(targetSquare.getX() + 1, targetSquare.getY()), new Square(targetSquare.getX() - 1, targetSquare.getY()));
+            } else if (targetSquare.getX() < selectedSquare.getX()) {
+                makeMoves(new Square(targetSquare.getX() - 2, targetSquare.getY()), new Square(targetSquare.getX() + 1, targetSquare.getY()));
             }
         }
-        if (movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).size() != 0 && movement.getEnPassantPoints(context.getBoard().getBoardMap().get(selectedPoint), selectedPoint).contains(clickedPoint)) {
-            if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == WHITE) {
-                takePiece(new Point(clickedPoint.x, clickedPoint.y + 1));
-            } else if (context.getBoard().getBoardMap().get(selectedPoint).getColor() == BLACK) {
-                takePiece(new Point(clickedPoint.x, clickedPoint.y - 1));
+        if (movement.getEnPassantSquares(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).size() != 0 && movement.getEnPassantSquares(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).contains(targetSquare)) {
+            if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == WHITE) {
+                takePiece(new Square(targetSquare.getX(), targetSquare.getY() + 1));
+            } else if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == BLACK) {
+                takePiece(new Square(targetSquare.getX(), targetSquare.getY() - 1));
             }
         }
     }
 
     /**
-     * Moves the marked piece to the clicked point
+     * Moves the marked piece to the clicked square
      * <p>
      */
-    private void makeMoves(Point moveFrom, Point moveTo) {
+    private void makeMoves(Square moveFrom, Square moveTo) {
         if (context.getBoard().getBoardMap().containsKey(moveTo)) {
             takePiece(moveTo);
         }
@@ -104,20 +104,20 @@ public class PieceSelectedState implements GameState {
     }
 
     private void clearAndDrawLegalMoves(){
-        context.getLegalPoints().clear();
+        context.getLegalSquares().clear();
         context.notifyDrawLegalMoves();
     }
 
-    private void takePiece(Point pointToTake) {
-        takenPiece = context.getBoard().getBoardMap().remove(pointToTake);
+    private void takePiece(Square pieceOnSquareToTake) {
+        takenPiece = context.getBoard().getBoardMap().remove(pieceOnSquareToTake);
         context.getBoard().getDeadPieces().add(takenPiece);
         context.notifyDrawDeadPieces();
     }
 
     private void checkKingInCheck() {
-        Point kingPoint = movement.fetchKingPoint(context.getCurrentPlayer().getColor());
-        if (movement.isKingInCheck(kingPoint)) {
-            context.notifyKingInCheck(kingPoint.x, kingPoint.y);
+        Square kingSquare = movement.fetchKingSquare(context.getCurrentPlayer().getColor());
+        if (movement.isKingInCheck(kingSquare)) {
+            context.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
         }
     }
 
@@ -131,18 +131,18 @@ public class PieceSelectedState implements GameState {
     /**
      * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
      *
-     * @param clickedPoint
+     * @param targetSquare
      */
-    private boolean checkPawnPromotion(Point clickedPoint) {
-        if (context.getBoard().getBoardMap().get(clickedPoint).getPieceType() == PAWN && ((clickedPoint.y == 0 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == WHITE) || (clickedPoint.y == 7 && context.getBoard().getBoardMap().get(clickedPoint).getColor() == BLACK))) {
+    private boolean checkPawnPromotion(Square targetSquare) {
+        if (context.getBoard().getBoardMap().get(targetSquare).getPieceType() == PAWN && ((targetSquare.getY() == 0 && context.getBoard().getBoardMap().get(targetSquare).getColor() == WHITE) || (targetSquare.getY() == 7 && context.getBoard().getBoardMap().get(targetSquare).getColor() == BLACK))) {
             context.notifyPawnPromotion();
             return true;
         }
         return false;
     }
 
-    private void addMoveToPlies(Point selectedPoint, Point targetPoint) {
-        Ply ply = new Ply(context.getCurrentPlayer().getName(), selectedPoint, targetPoint, context.getBoard().getBoardMap().get(targetPoint), takenPiece, context.getBoard().getBoardMap());
+    private void addMoveToPlies(Square selectedSquare, Square targetSquare) {
+        Ply ply = new Ply(context.getCurrentPlayer().getName(), selectedSquare, targetSquare, context.getBoard().getBoardMap().get(targetSquare), takenPiece, context.getBoard().getBoardMap());
         context.getPlies().add(ply);
     }
 

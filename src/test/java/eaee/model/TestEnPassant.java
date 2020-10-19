@@ -1,10 +1,6 @@
 package eaee.model;
 
-import chess.model.ChessFacade;
-import chess.model.ChessColor;
-import chess.model.Movement;
-import chess.model.Piece;
-import chess.model.PieceType;
+import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestEnPassant {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
+    Map<Square, Piece> boardMap = new HashMap<>();
     Movement movement = new Movement();
 
     @Before
@@ -48,8 +44,8 @@ public class TestEnPassant {
 
         boardMap = model.getCurrentBoardMap();
 
-        assertEquals(PieceType.PAWN, boardMap.get(new Point(3,2)).getPieceType());
-        assertEquals(ChessColor.WHITE, boardMap.get(new Point(3,2)).getColor());
-        assertEquals(null, boardMap.get(new Point(3,3)));
+        assertEquals(PieceType.PAWN, boardMap.get(new Square(3,2)).getPieceType());
+        assertEquals(ChessColor.WHITE, boardMap.get(new Square(3,2)).getColor());
+        assertEquals(null, boardMap.get(new Square(3,3)));
     }
 }

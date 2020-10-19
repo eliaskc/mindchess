@@ -1,9 +1,6 @@
 package chess.controller;
 
-import chess.model.ChessColor;
-import chess.model.ChessFacade;
-import chess.model.Piece;
-import chess.model.Ply;
+import chess.model.*;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 import javafx.animation.ScaleTransition;
@@ -299,12 +296,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     private List<ImageView> fetchPieceImages() {
          List<ImageView> pieceImages = new ArrayList<>();
-         for (Map.Entry<Point, Piece> entry : model.getCurrentBoardMap().entrySet()){
+         for (Map.Entry<Square, Piece> entry : model.getCurrentBoardMap().entrySet()){
              ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
              pieceImages.add(imageView);
              if(model.getCurrentGamePlies().size() > 0){
-                 if(entry.getKey().equals(model.getLastPlyMovedToPoint())){
-                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromPoint(), model.getLastPlyMovedToPoint(), (int) chessboardContainer.getHeight()/8);
+                 if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
+                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8);
                  }
              }
          }

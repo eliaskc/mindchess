@@ -3,6 +3,7 @@ package eaee.model;
 import chess.model.ChessFacade;
 import chess.model.Movement;
 import chess.model.Piece;
+import chess.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestEndGame {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
+    Map<Square, Piece> boardMap = new HashMap<>();
     Movement movement = new Movement();
 
     @Before

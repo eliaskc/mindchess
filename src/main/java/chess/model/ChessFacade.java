@@ -3,7 +3,6 @@ package chess.model;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +43,8 @@ public class ChessFacade {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
-    public boolean isPointOccupied(Point point){
-        return currentGame.getBoard().getBoardMap().containsKey(point);
+    public boolean isSquareOccupied(Square square){
+        return currentGame.getBoard().getBoardMap().containsKey(square);
     }
 
     public void forfeit() {
@@ -77,7 +76,7 @@ public class ChessFacade {
         return new ArrayList<>(currentGame.getPlies());
     }
 
-    public Map<Point, Piece> getCurrentBoardMap() {
+    public Map<Square, Piece> getCurrentBoardMap() {
         return new HashMap<>(currentGame.getBoard().getBoardMap());
     }
 
@@ -99,16 +98,16 @@ public class ChessFacade {
         return pieceTypes;
     }
 
-    public Point getLastPlyMovedFromPoint(){
+    public Square getLastPlyMovedFromSquare(){
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedFrom();
     }
 
-    public Point getLastPlyMovedToPoint(){
+    public Square getLastPlyMovedToSquare(){
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
     }
 
-    public List<Point> getCurrentLegalPoints() {
-        return new ArrayList<>(currentGame.getLegalPoints());
+    public List<Square> getCurrentLegalSquare() {
+        return new ArrayList<>(currentGame.getLegalSquares());
     }
 
     public int getCurrentWhiteTimerTime() {

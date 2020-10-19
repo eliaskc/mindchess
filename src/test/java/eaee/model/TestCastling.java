@@ -1,9 +1,6 @@
 package eaee.model;
 
-import chess.model.ChessFacade;
-import chess.model.Movement;
-import chess.model.Piece;
-import chess.model.PieceType;
+import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,7 +12,7 @@ import java.util.Map;
 
 public class TestCastling {
     ChessFacade model;
-    Map<Point, Piece> boardMap = new HashMap<>();
+    Map<Square, Piece> boardMap = new HashMap<>();
     Movement movement = new Movement();
 
     @Before
@@ -31,8 +28,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.BISHOP);
-        assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KNIGHT);
+        assertEquals(boardMap.get(new Square(5,7)).getPieceType(), PieceType.BISHOP);
+        assertEquals(boardMap.get(new Square(6,7)).getPieceType(), PieceType.KNIGHT);
     }
 
     @Test
@@ -62,8 +59,8 @@ public class TestCastling {
 
         boardMap = model.getCurrentBoardMap();
 
-        assertEquals(boardMap.get(new Point(5,7)).getPieceType(), PieceType.ROOK);
-        assertEquals(boardMap.get(new Point(6,7)).getPieceType(), PieceType.KING);
+        assertEquals(boardMap.get(new Square(5,7)).getPieceType(), PieceType.ROOK);
+        assertEquals(boardMap.get(new Square(6,7)).getPieceType(), PieceType.KING);
     }
 
     @Test
@@ -103,6 +100,6 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(PieceType.KING, boardMap.get(new Point(4,7)).getPieceType());
+        assertEquals(PieceType.KING, boardMap.get(new Square(4,7)).getPieceType());
     }
 }

@@ -2,6 +2,7 @@ package chess.controller;
 
 import chess.model.Piece;
 import chess.model.Ply;
+import chess.model.Square;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,15 +47,15 @@ public class PlyController extends AnchorPane {
         this.imageHandler = imageHandler;
         this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
-        this.labelMovedFrom.setText(String.format("%s%s", translateXCoordinate(ply.getMovedFrom().x), translateYCoordinate(ply.getMovedFrom().y)));
-        this.labelMovedTo.setText(String.format("%s%s", translateXCoordinate(ply.getMovedTo().x), translateYCoordinate(ply.getMovedTo().y)));
+        this.labelMovedFrom.setText(String.format("%s%s", translateXCoordinate(ply.getMovedFrom().getX()), translateYCoordinate(ply.getMovedFrom().getY())));
+        this.labelMovedTo.setText(String.format("%s%s", translateXCoordinate(ply.getMovedTo().getX()), translateYCoordinate(ply.getMovedTo().getY())));
         this.labelPlayer.setText(String.format("%s", ply.getPlayerName()));
     }
 
     public List<ImageView> generateBoardImages(boolean performMove){
         List<ImageView> imageViewList = new ArrayList<>();
 
-        for (Map.Entry<Point, Piece> entry : ply.getBoardSnapshot().entrySet()){
+        for (Map.Entry<Square, Piece> entry : ply.getBoardSnapshot().entrySet()){
             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
 
             imageViewList.add(imageView);
@@ -64,8 +65,8 @@ public class PlyController extends AnchorPane {
                 if(performMove){
                     imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40);
                 } else {
-                    imageView.setX(ply.getMovedFrom().x*40);
-                    imageView.setY(ply.getMovedFrom().y*40);
+                    imageView.setX(ply.getMovedFrom().getX()*40);
+                    imageView.setY(ply.getMovedFrom().getY()*40);
                 }
 
                 if (ply.getTakenPiece() != null) {

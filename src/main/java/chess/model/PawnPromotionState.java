@@ -6,23 +6,23 @@ import java.util.Map;
 
 public class PawnPromotionState implements GameState{
 
-    private Map<Point, PieceType> promotionPieces = new HashMap<>();
+    private Map<Square, PieceType> promotionPieces = new HashMap<>();
 
     private Game context;
-    private Point selectedPoint;
+    private Square selectedSquare;
 
 
-    PawnPromotionState(Point selectedPoint, Game context) {
+    PawnPromotionState(Square selectedSquare, Game context) {
         this.context = context;
-        this.selectedPoint = selectedPoint;
+        this.selectedSquare = selectedSquare;
         initPromotionPieces();
     }
 
     @Override
     public void handleInput(int x, int y) {
-        Point selectedPromotion = new Point(x,y);
+        Square selectedPromotion = new Square(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
-            promote(selectedPoint,selectedPromotion);
+            promote(selectedSquare,selectedPromotion);
             context.switchPlayer();
             context.notifyDrawPieces();
             context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
@@ -30,15 +30,15 @@ public class PawnPromotionState implements GameState{
     }
 
     private void initPromotionPieces(){
-        promotionPieces.put(new Point(20,0), PieceType.QUEEN);
-        promotionPieces.put(new Point(21,0), PieceType.KNIGHT);
-        promotionPieces.put(new Point(22,0), PieceType.ROOK);
-        promotionPieces.put(new Point(23,0), PieceType.BISHOP);
+        promotionPieces.put(new Square(20,0), PieceType.QUEEN);
+        promotionPieces.put(new Square(21,0), PieceType.KNIGHT);
+        promotionPieces.put(new Square(22,0), PieceType.ROOK);
+        promotionPieces.put(new Square(23,0), PieceType.BISHOP);
     }
 
-    private void promote(Point selectedPoint, Point selectedPromotion){
-        Piece piece = new Piece(context.getBoard().getBoardMap().get(selectedPoint).getColor(), promotionPieces.get(selectedPromotion));
-        context.getBoard().getBoardMap().put(selectedPoint, piece);
+    private void promote(Square selectedSquare, Square selectedPromotion){
+        Piece piece = new Piece(context.getBoard().getBoardMap().get(this.selectedSquare).getColor(), promotionPieces.get(selectedPromotion));
+        context.getBoard().getBoardMap().put(selectedSquare, piece);
     }
 
     @Override
