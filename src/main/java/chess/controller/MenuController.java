@@ -81,8 +81,6 @@ public class MenuController implements Initializable {
     void goToBoard(ActionEvent event) {
         model.createNewGame();
 
-        chessController.updateImageHandler();
-
         if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
         if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
         model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));

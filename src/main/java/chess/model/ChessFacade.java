@@ -20,84 +20,110 @@ public class ChessFacade {
     private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
 
-    public String getCurrentPlayerName(){
+    public String getCurrentPlayerName() {
         return currentGame.getCurrentPlayer().getName();
     }
 
-    public String getCurrentPlayerBlackName(){
+    public String getCurrentPlayerBlackName() {
         return currentGame.getPlayerBlack().getName();
     }
 
-    public String getCurrentPlayerWhiteName(){
+    public String getCurrentPlayerWhiteName() {
         return currentGame.getPlayerWhite().getName();
     }
 
-    public void setCurrentPlayerWhiteName(String name){
+    public void setCurrentPlayerWhiteName(String name) {
         currentGame.getPlayerWhite().setName(name);
     }
 
-    public void setCurrentPlayerBlackName(String name){
+    public void setCurrentPlayerBlackName(String name) {
         currentGame.getPlayerBlack().setName(name);
     }
 
-    public boolean isCurrentPlayerWhite(){
+    public boolean isCurrentPlayerWhite() {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
-    public void forfeit(){
+    public boolean isPointOccupied(Point point){
+        return currentGame.getBoard().getBoardMap().containsKey(point);
+    }
+
+    public void forfeit() {
         currentGame.endGameAsForfeit();
     }
 
-    public void acceptDraw(){
+    public void acceptDraw() {
         currentGame.endGameAsDraw();
     }
-    public void addGameObserverToCurrentGame(GameObserver gameObserver){
+
+    public void addGameObserverToCurrentGame(GameObserver gameObserver) {
         currentGame.addGameObserver(gameObserver);
     }
-    public void addEndGameObserverToCurrentGame(EndGameObserver endgameObserver){
+
+    public void addEndGameObserverToCurrentGame(EndGameObserver endgameObserver) {
         currentGame.addEndGameObserver(endgameObserver);
     }
-    public void initTimersInCurrentGame(){
+
+    public void initTimersInCurrentGame() {
         currentGame.initTimers();
     }
-    public ChessColor getCurrentPlayerColor(){
+
+    public ChessColor getCurrentPlayerColor() {
         return currentGame.getCurrentPlayerColor();
     }
+
     //----------------------------Returns copies-----------------------------------------
-    public List<Ply> getCurrentGamePlies(){
+    public List<Ply> getCurrentGamePlies() {
         return new ArrayList<>(currentGame.getPlies());
     }
-    public Map<Point,Piece> getCurrentBoardMap(){
+
+    public Map<Point, Piece> getCurrentBoardMap() {
         return new HashMap<>(currentGame.getBoard().getBoardMap());
     }
+
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
-    public List<Piece> getCurrentDeadPieces(){
+
+    public List<Piece> getCurrentDeadPieces() {
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }
-    public List<Point> getCurrentLegalPoints(){
+
+    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor){
+        List<PieceType> pieceTypes = new ArrayList<>();
+        for (Piece piece : currentGame.getBoard().getDeadPieces()){
+            if (piece.getColor().equals(chessColor)){
+                pieceTypes.add(piece.getPieceType());
+            }
+        }
+        return pieceTypes;
+    }
+
+    public Point getLastPlyMovedFromPoint(){
+        return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedFrom();
+    }
+
+    public Point getLastPlyMovedToPoint(){
+        return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
+    }
+
+    public List<Point> getCurrentLegalPoints() {
         return new ArrayList<>(currentGame.getLegalPoints());
     }
 
-
-
-
-
-
-    public int getCurrentWhiteTimerTime(){
-       return currentGame.getPlayerWhite().getCurrentTime();
+    public int getCurrentWhiteTimerTime() {
+        return currentGame.getPlayerWhite().getCurrentTime();
     }
 
-    public int getCurrentBlackTimerTime(){
+    public int getCurrentBlackTimerTime() {
         return currentGame.getPlayerBlack().getCurrentTime();
     }
 
-    public void setCurrentWhitePlayerTimerTime(int seconds){
+    public void setCurrentWhitePlayerTimerTime(int seconds) {
         currentGame.getPlayerWhite().setTime(seconds);
     }
 
-    public void setCurrentBlackPlayerTimerTime(int seconds){
+    public void setCurrentBlackPlayerTimerTime(int seconds) {
         currentGame.getPlayerBlack().setTime(seconds);
     }
 
@@ -125,8 +151,7 @@ public class ChessFacade {
         return currentGame.isGameOngoing();
     }
 
-    public void stopAllTimers(){
+    public void stopAllTimers() {
         currentGame.stopAllTimers();
     }
-
 }

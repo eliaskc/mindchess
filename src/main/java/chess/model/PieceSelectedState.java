@@ -39,6 +39,7 @@ public class PieceSelectedState implements GameState {
         if (context.getLegalPoints().contains(targetPoint)) {
             move(selectedPoint,targetPoint);
             addMoveToPlies(selectedPoint, targetPoint);
+            context.notifyDrawPieces();
 
             if (checkKingTaken()) {
                 context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game"));
@@ -61,8 +62,6 @@ public class PieceSelectedState implements GameState {
     private void move(Point selectedPoint, Point targetPoint) {
         makeSpecialMoves(selectedPoint, targetPoint);
         makeMoves(selectedPoint, targetPoint);
-
-        context.notifyDrawPieces();
     }
 
     /**
