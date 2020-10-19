@@ -9,13 +9,13 @@ import java.util.Map;
  */
 public class Ply {
     private String playerName;
-    private Point movedFrom;
-    private Point movedTo;
+    private Square movedFrom;
+    private Square movedTo;
     private Piece movedPiece;
     private Piece takenPiece;
-    private Map<Point, Piece> boardSnapshot;
+    private Map<Square, Piece> boardSnapshot;
 
-    public Ply(String playerName, Point movedFrom, Point movedTo, Piece movedPiece, Piece takenPiece, Map<Point, Piece> boardMap) {
+    public Ply(String playerName, Square movedFrom, Square movedTo, Piece movedPiece, Piece takenPiece, Map<Square, Piece> boardMap) {
         this.playerName = playerName;
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
@@ -28,11 +28,11 @@ public class Ply {
         return playerName;
     }
 
-    public Point getMovedFrom() {
+    public Square getMovedFrom() {
         return movedFrom;
     }
 
-    public Point getMovedTo() {
+    public Square getMovedTo() {
         return movedTo;
     }
 
@@ -44,7 +44,7 @@ public class Ply {
         return takenPiece;
     }
 
-    public Map<Point, Piece> getBoardSnapshot() {
+    public Map<Square, Piece> getBoardSnapshot() {
         return boardSnapshot;
     }
 }

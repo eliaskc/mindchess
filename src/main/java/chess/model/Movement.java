@@ -15,7 +15,7 @@ import static chess.model.PieceType.PAWN;
  * Is responisble for finding legal moves
  */
 public class Movement {
-    public Movement(Map<Point, Piece> boardMap, List<Ply> plies) {
+    public Movement(Map<Square, Piece> boardMap, List<Ply> plies) {
         this.boardMap = boardMap;
         this.plies = plies;
     }
@@ -23,183 +23,183 @@ public class Movement {
     public Movement() {
     }
 
-    private Map<Point, Piece> boardMap = new HashMap<>();
+    private Map<Square, Piece> boardMap = new HashMap<>();
     private List<Ply> plies = new ArrayList<>();
 
-    boolean checkingOpponentLegalPointsInProgress = false;
+    boolean checkingOpponentLegalSquaresInProgress = false;
 
-    public void setBoardMap(Map<Point, Piece> boardMap) {
+    public void setBoardMap(Map<Square, Piece> boardMap) {
         this.boardMap = boardMap;
     }
 
-    public List<Point> fetchLegalMoves(Piece pieceToMove, Point selectedPoint) {
-        List<Point> legalPoints = new ArrayList<>(); // Holds points which are valid to move to
+    public List<Square> fetchLegalMoves(Piece pieceToMove, Square selectedSquare) {
+        List<Square> legalSquares = new ArrayList<>(); // Holds Squares which are valid to move to
 
         switch (pieceToMove.getPieceType()) {
-            case ROOK -> legalMovesRook(pieceToMove, selectedPoint, legalPoints);
+            case ROOK -> legalMovesRook(pieceToMove, selectedSquare, legalSquares);
 
-            case BISHOP -> legalMovesBishop(pieceToMove, selectedPoint, legalPoints);
+            case BISHOP -> legalMovesBishop(pieceToMove, selectedSquare, legalSquares);
 
-            case KNIGHT -> legalMovesKnight(pieceToMove, selectedPoint, legalPoints);
+            case KNIGHT -> legalMovesKnight(pieceToMove, selectedSquare, legalSquares);
 
-            case QUEEN -> legalMovesQueen(pieceToMove, selectedPoint, legalPoints);
+            case QUEEN -> legalMovesQueen(pieceToMove, selectedSquare, legalSquares);
 
-            case KING -> legalMovesKing(pieceToMove, selectedPoint, legalPoints);
+            case KING -> legalMovesKing(pieceToMove, selectedSquare, legalSquares);
 
-            case PAWN -> legalMovesPawn(pieceToMove, selectedPoint, legalPoints);
+            case PAWN -> legalMovesPawn(pieceToMove, selectedSquare, legalSquares);
         }
-        return legalPoints;
+        return legalSquares;
     }
 
-    private void legalMovesPawn(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        int x = selectedPoint.x;
-        int y = selectedPoint.y;
+    private void legalMovesPawn(Piece pieceToMove, Square selectedSquare, List<Square> legalSquares) {
+        int x = selectedSquare.getX();
+        int y = selectedSquare.getY();
 
         if (pieceToMove.getColor() == WHITE) {
-            if (isUnoccupied(new Point(x, y - 1))) {
-                up(pieceToMove, selectedPoint, 1, legalPoints);
+            if (isUnoccupied(new Square(x, y - 1))) {
+                up(pieceToMove, selectedSquare, 1, legalSquares);
 
-                if (isUnoccupied(new Point(x, y - 2)) && !pieceHasMoved(pieceToMove)) {
-                    addPoint(new Point(x, y - 2), pieceToMove, legalPoints);
+                if (isUnoccupied(new Square(x, y - 2)) && !pieceHasMoved(pieceToMove)) {
+                    addSquare(new Square(x, y - 2), pieceToMove, legalSquares);
                 }
             }
-            if (isOccupied(new Point(x + 1, y - 1))) upRight(pieceToMove, selectedPoint, 1, legalPoints);
-            if (isOccupied(new Point(x - 1, y - 1))) upLeft(pieceToMove, selectedPoint, 1, legalPoints);
+            if (isOccupied(new Square(x + 1, y - 1))) upRight(pieceToMove, selectedSquare, 1, legalSquares);
+            if (isOccupied(new Square(x - 1, y - 1))) upLeft(pieceToMove, selectedSquare, 1, legalSquares);
         } else if (pieceToMove.getColor() == BLACK) {
-            if (isUnoccupied(new Point(x, y + 1))) {
-                down(pieceToMove, selectedPoint, 1, legalPoints);
+            if (isUnoccupied(new Square(x, y + 1))) {
+                down(pieceToMove, selectedSquare, 1, legalSquares);
 
-                if (isUnoccupied(new Point(x, y + 2)) && !pieceHasMoved(pieceToMove)) {
-                    addPoint(new Point(x, y + 2), pieceToMove, legalPoints);
+                if (isUnoccupied(new Square(x, y + 2)) && !pieceHasMoved(pieceToMove)) {
+                    addSquare(new Square(x, y + 2), pieceToMove, legalSquares);
                 }
             }
-            if (isOccupied(new Point(x + 1, y + 1))) downRight(pieceToMove, selectedPoint, 1, legalPoints);
-            if (isOccupied(new Point(x - 1, y + 1))) downLeft(pieceToMove, selectedPoint, 1, legalPoints);
+            if (isOccupied(new Square(x + 1, y + 1))) downRight(pieceToMove, selectedSquare, 1, legalSquares);
+            if (isOccupied(new Square(x - 1, y + 1))) downLeft(pieceToMove, selectedSquare, 1, legalSquares);
         }
 
-        legalPoints.addAll(getEnPassantPoints(pieceToMove,selectedPoint));
+        legalSquares.addAll(getEnPassantSquares(pieceToMove,selectedSquare));
     }
 
-    private void legalMovesRook(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        up(pieceToMove, selectedPoint, 7, legalPoints);
-        down(pieceToMove, selectedPoint, 7, legalPoints);
-        left(pieceToMove, selectedPoint, 7, legalPoints);
-        right(pieceToMove, selectedPoint, 7, legalPoints);
+    private void legalMovesRook(Piece pieceToMove, Square selectedSquare, List<Square> legalSquare) {
+        up(pieceToMove, selectedSquare, 7, legalSquare);
+        down(pieceToMove, selectedSquare, 7, legalSquare);
+        left(pieceToMove, selectedSquare, 7, legalSquare);
+        right(pieceToMove, selectedSquare, 7, legalSquare);
     }
 
-    private void legalMovesBishop(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        upLeft(pieceToMove, selectedPoint, 7, legalPoints);
-        upRight(pieceToMove, selectedPoint, 7, legalPoints);
-        downRight(pieceToMove, selectedPoint, 7, legalPoints);
-        downLeft(pieceToMove, selectedPoint, 7, legalPoints);
+    private void legalMovesBishop(Piece pieceToMove, Square selectedSquare, List<Square> legalSquare) {
+        upLeft(pieceToMove, selectedSquare, 7, legalSquare);
+        upRight(pieceToMove, selectedSquare, 7, legalSquare);
+        downRight(pieceToMove, selectedSquare, 7, legalSquare);
+        downLeft(pieceToMove, selectedSquare, 7, legalSquare);
     }
 
-    private void legalMovesKnight(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        int x = selectedPoint.x;
-        int y = selectedPoint.y;
+    private void legalMovesKnight(Piece pieceToMove, Square selectedSquare, List<Square> legalSquares) {
+        int x = selectedSquare.getX();
+        int y = selectedSquare.getY();
 
-        addPoint(new Point(x + 1, y - 2), pieceToMove, legalPoints);
-        addPoint(new Point(x + 2, y - 1), pieceToMove, legalPoints);
-        addPoint(new Point(x + 2, y + 1), pieceToMove, legalPoints);
-        addPoint(new Point(x + 1, y + 2), pieceToMove, legalPoints);
-        addPoint(new Point(x - 1, y + 2), pieceToMove, legalPoints);
-        addPoint(new Point(x - 2, y + 1), pieceToMove, legalPoints);
-        addPoint(new Point(x - 2, y - 1), pieceToMove, legalPoints);
-        addPoint(new Point(x - 1, y - 2), pieceToMove, legalPoints);
+        addSquare(new Square(x + 1, y - 2), pieceToMove, legalSquares);
+        addSquare(new Square(x + 2, y - 1), pieceToMove, legalSquares);
+        addSquare(new Square(x + 2, y + 1), pieceToMove, legalSquares);
+        addSquare(new Square(x + 1, y + 2), pieceToMove, legalSquares);
+        addSquare(new Square(x - 1, y + 2), pieceToMove, legalSquares);
+        addSquare(new Square(x - 2, y + 1), pieceToMove, legalSquares);
+        addSquare(new Square(x - 2, y - 1), pieceToMove, legalSquares);
+        addSquare(new Square(x - 1, y - 2), pieceToMove, legalSquares);
     }
 
-    private void legalMovesKing(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        up(pieceToMove, selectedPoint, 1, legalPoints);
-        right(pieceToMove, selectedPoint, 1, legalPoints);
-        down(pieceToMove, selectedPoint, 1, legalPoints);
-        left(pieceToMove, selectedPoint, 1, legalPoints);
+    private void legalMovesKing(Piece pieceToMove, Square selectedSquare, List<Square> legalSquares) {
+        up(pieceToMove, selectedSquare, 1, legalSquares);
+        right(pieceToMove, selectedSquare, 1, legalSquares);
+        down(pieceToMove, selectedSquare, 1, legalSquares);
+        left(pieceToMove, selectedSquare, 1, legalSquares);
 
-        upLeft(pieceToMove, selectedPoint, 1, legalPoints);
-        upRight(pieceToMove, selectedPoint, 1, legalPoints);
-        downLeft(pieceToMove, selectedPoint, 1, legalPoints);
-        downRight(pieceToMove, selectedPoint, 1, legalPoints);
+        upLeft(pieceToMove, selectedSquare, 1, legalSquares);
+        upRight(pieceToMove, selectedSquare, 1, legalSquares);
+        downLeft(pieceToMove, selectedSquare, 1, legalSquares);
+        downRight(pieceToMove, selectedSquare, 1, legalSquares);
 
-        legalPoints.addAll(getCastlingPoints(pieceToMove, selectedPoint));
-        if (!checkingOpponentLegalPointsInProgress) {
-            List<Point> opponentLegalPoints = fetchOpponentLegalPoints(pieceToMove.getColor());
-            legalPoints.removeIf(p -> opponentLegalPoints.contains(p));
-        }
-    }
-
-    private void legalMovesQueen(Piece pieceToMove, Point selectedPoint, List<Point> legalPoints) {
-        up(pieceToMove, selectedPoint, 7, legalPoints);
-        down(pieceToMove, selectedPoint, 7, legalPoints);
-        left(pieceToMove, selectedPoint, 7, legalPoints);
-        right(pieceToMove, selectedPoint, 7, legalPoints);
-
-        upLeft(pieceToMove, selectedPoint, 7, legalPoints);
-        upRight(pieceToMove, selectedPoint, 7, legalPoints);
-        downRight(pieceToMove, selectedPoint, 7, legalPoints);
-        downLeft(pieceToMove, selectedPoint, 7, legalPoints);
-    }
-
-    private void up(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        for (int i = selectedPoint.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(selectedPoint.x, i);
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+        legalSquares.addAll(getCastlingSquare(pieceToMove, selectedSquare));
+        if (!checkingOpponentLegalSquaresInProgress) {
+            List<Square> opponentLegalSquares = fetchOpponentLegalSquares(pieceToMove.getColor());
+            legalSquares.removeIf(p -> opponentLegalSquares.contains(p));
         }
     }
 
-    private void down(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        for (int i = selectedPoint.y + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(selectedPoint.x, i);
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+    private void legalMovesQueen(Piece pieceToMove, Square selectedSquare, List<Square> legalSquares) {
+        up(pieceToMove, selectedSquare, 7, legalSquares);
+        down(pieceToMove, selectedSquare, 7, legalSquares);
+        left(pieceToMove, selectedSquare, 7, legalSquares);
+        right(pieceToMove, selectedSquare, 7, legalSquares);
+
+        upLeft(pieceToMove, selectedSquare, 7, legalSquares);
+        upRight(pieceToMove, selectedSquare, 7, legalSquares);
+        downRight(pieceToMove, selectedSquare, 7, legalSquares);
+        downLeft(pieceToMove, selectedSquare, 7, legalSquares);
+    }
+
+    private void up(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        for (int i = selectedSquare.getY() - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Square square = new Square(selectedSquare.getX(), i);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void left(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        for (int i = selectedPoint.x - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(i, selectedPoint.y);
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+    private void down(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        for (int i = selectedSquare.getY() + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Square square = new Square(selectedSquare.getX(), i);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void right(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        for (int i = selectedPoint.x + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(i, selectedPoint.y);
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+    private void left(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        for (int i = selectedSquare.getX() - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Square square = new Square(i, selectedSquare.getY());
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void upLeft(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        Point p = new Point(selectedPoint.x, selectedPoint.y);
+    private void right(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        for (int i = selectedSquare.getX() + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Square square = new Square(i, selectedSquare.getY());
+            if (addSquare(square, pieceToMove, legalSquares)) break;
+        }
+    }
+
+    private void upLeft(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        Square square = new Square(selectedSquare.getX(), selectedSquare.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x--;
-            p.y--;
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+            square.setX(square.getX()-1);
+            square.setY(square.getY()-1);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void upRight(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        Point p = new Point(selectedPoint.x, selectedPoint.y);
+    private void upRight(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        Square square = new Square(selectedSquare.getX(), selectedSquare.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x++;
-            p.y--;
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+            square.setX(square.getX()+1);
+            square.setY(square.getY()-1);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void downRight(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        Point p = new Point(selectedPoint.x, selectedPoint.y);
+    private void downRight(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        Square square = new Square(selectedSquare.getX(), selectedSquare.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x++;
-            p.y++;
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+            square.setX(square.getX()+1);
+            square.setY(square.getY()+1);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
-    private void downLeft(Piece pieceToMove, Point selectedPoint, int iterations, List<Point> legalPoints) {
-        Point p = new Point(selectedPoint.x, selectedPoint.y);
+    private void downLeft(Piece pieceToMove, Square selectedSquare, int iterations, List<Square> legalSquares) {
+        Square square = new Square(selectedSquare.getX(), selectedSquare.getY());
 
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x--;
-            p.y++;
-            if (addPoint(p, pieceToMove, legalPoints)) break;
+            square.setX(square.getX()-1);
+            square.setY(square.getY()+1);
+            if (addSquare(square, pieceToMove, legalSquares)) break;
         }
     }
 
@@ -212,14 +212,14 @@ public class Movement {
      * @param pieceToMove
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
      */
-    private boolean addPoint(Point p, Piece pieceToMove, List<Point> listToAddTo) {
+    private boolean addSquare(Square square, Piece pieceToMove, List<Square> listToAddTo) {
         boolean breakLoop;      //Used just to be extra clear, instead of return false or true
-        if (p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
-            if (boardMap.get(p) == null) {
-                listToAddTo.add(new Point(p.x, p.y));
+        if (square.getX() >= 0 && square.getX() < 8 && square.getY() >= 0 && square.getY() < 8) {
+            if (boardMap.get(square) == null) {
+                listToAddTo.add(new Square(square.getX(), square.getY()));
                 breakLoop = false;
-            } else if (boardMap.get(p).getColor() != pieceToMove.getColor()) {
-                listToAddTo.add(new Point(p.x, p.y));
+            } else if (boardMap.get(square).getColor() != pieceToMove.getColor()) {
+                listToAddTo.add(new Square(square.getX(), square.getY()));
                 breakLoop = true;
             } else {
                 breakLoop = true;
@@ -230,25 +230,25 @@ public class Movement {
         return breakLoop;
     }
 
-    private boolean isUnoccupied(Point p) {
-        return !boardMap.containsKey(p);
+    private boolean isUnoccupied(Square square) {
+        return !boardMap.containsKey(square);
     }
 
-    private boolean isOccupied(Point p) {
-        return boardMap.containsKey(p);
+    private boolean isOccupied(Square square) {
+        return boardMap.containsKey(square);
     }
 
-    List<Point> getCastlingPoints(Piece pieceToMove, Point selectedPoint) {
-        List<Point> castlingPoints = new ArrayList<>();
+    List<Square> getCastlingSquare(Piece pieceToMove, Square selectedSquare) {
+        List<Square> castlingSquares = new ArrayList<>();
         if (!pieceHasMoved(pieceToMove)) {
-            if (checkRightCastling(selectedPoint)) {
-                castlingPoints.add(new Point(selectedPoint.x + 2, selectedPoint.y));
+            if (checkRightCastling(selectedSquare)) {
+                castlingSquares.add(new Square(selectedSquare.getX() + 2, selectedSquare.getY()));
             }
-            if (checkLeftCastling(selectedPoint)) {
-                castlingPoints.add(new Point(selectedPoint.x - 2, selectedPoint.y));
+            if (checkLeftCastling(selectedSquare)) {
+                castlingSquares.add(new Square(selectedSquare.getX() - 2, selectedSquare.getY()));
             }
         }
-        return castlingPoints;
+        return castlingSquares;
     }
 
     /**
@@ -267,20 +267,20 @@ public class Movement {
     /**
      * Checks that the conditions for castling to the right are filled
      *
-     * @param selectedPoint
+     * @param selectedSquare
      * @return
      */
-    private boolean checkRightCastling(Point selectedPoint) {
-        for (int i = selectedPoint.x + 1; i <= selectedPoint.x + 2; i++) {
-            if (isOccupied(new Point(i, selectedPoint.y))) {
+    private boolean checkRightCastling(Square selectedSquare) {
+        for (int i = selectedSquare.getX() + 1; i <= selectedSquare.getX() + 2; i++) {
+            if (isOccupied(new Square(i, selectedSquare.getY()))) {
                 return false;
             }
         }
 
-        Point p = new Point(selectedPoint.x + 3, selectedPoint.y);
-        if (isOccupied(p)) {
-            Piece piece = boardMap.get(p);
-            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedPoint).getColor();
+        Square square = new Square(selectedSquare.getX() + 3, selectedSquare.getY());
+        if (isOccupied(square)) {
+            Piece piece = boardMap.get(square);
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedSquare).getColor();
         }
         return false;
     }
@@ -288,63 +288,63 @@ public class Movement {
     /**
      * Checks that the conditions for castling to the left are filled
      *
-     * @param selectedPoint
+     * @param selectedSquare
      * @return
      */
-    private boolean checkLeftCastling(Point selectedPoint) {
-        for (int i = selectedPoint.x - 1; i >= selectedPoint.x - 3; i--) {
-            if (isOccupied(new Point(i, selectedPoint.y))) {
+    private boolean checkLeftCastling(Square selectedSquare) {
+        for (int i = selectedSquare.getX() - 1; i >= selectedSquare.getX() - 3; i--) {
+            if (isOccupied(new Square(i, selectedSquare.getY()))) {
                 return false;
             }
         }
 
-        Point p = new Point(selectedPoint.x - 4, selectedPoint.y);
-        if (isOccupied(p)) {
-            Piece piece = boardMap.get(p);
-            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedPoint).getColor();
+        Square square = new Square(selectedSquare.getX() - 4, selectedSquare.getY());
+        if (isOccupied(square)) {
+            Piece piece = boardMap.get(square);
+            return piece.getPieceType() == PieceType.ROOK && !pieceHasMoved(piece) && piece.getColor() == boardMap.get(selectedSquare).getColor();
         }
         return false;
     }
 
-    List<Point> getEnPassantPoints(Piece pieceToMove, Point selectedPoint) {
-        List<Point> enPassantPoints = new ArrayList<>();
-        if (plies.size() == 0) return enPassantPoints;
+    List<Square> getEnPassantSquares(Piece pieceToMove, Square selectedSquare) {
+        List<Square> enPassantSquares = new ArrayList<>();
+        if (plies.size() == 0) return enPassantSquares;
 
         Ply lastPly = plies.get(plies.size() - 1);
         Piece lastMovedPiece = lastPly.getMovedPiece();
 
         if (lastMovedPiece.getPieceType() == PAWN && lastMovedPiece.getColor() != pieceToMove.getColor() && Math.abs(lastPly.getMovedFrom().y - lastPly.getMovedTo().y) == 2) {
-            if ((lastPly.getMovedTo().x == selectedPoint.x + 1 || lastPly.getMovedTo().x == selectedPoint.x - 1) && lastPly.getMovedTo().y == selectedPoint.y) {
+            if ((lastPly.getMovedTo().x == selectedSquare.getX() + 1 || lastPly.getMovedTo().x == selectedSquare.getX() - 1) && lastPly.getMovedTo().y == selectedSquare.getY()) {
                 if (lastMovedPiece.getColor() == BLACK) {
-                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
+                    enPassantSquares.add(new Square(lastPly.getMovedTo().x, lastPly.getMovedTo().y - 1));
                 } else if (lastMovedPiece.getColor() == WHITE) {
-                    enPassantPoints.add(new Point(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
+                    enPassantSquares.add(new Square(lastPly.getMovedTo().x, lastPly.getMovedTo().y + 1));
                 }
             }
         }
-        return enPassantPoints;
+        return enPassantSquares;
     }
 
-    private List<Point> fetchOpponentLegalPoints(ChessColor color){
-        List<Point> opponentLegalPoints = new ArrayList<>();
-        checkingOpponentLegalPointsInProgress = true;
+    private List<Square> fetchOpponentLegalSquares(ChessColor color){
+        List<Square> opponentLegalSquares = new ArrayList<>();
+        checkingOpponentLegalSquaresInProgress = true;
 
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+        for (Map.Entry<Square, Piece> entry : boardMap.entrySet()) {
             if(!(entry.getValue().getColor().equals(color))){
-                opponentLegalPoints.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
+                opponentLegalSquares.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
             }
         }
 
-        checkingOpponentLegalPointsInProgress = false;
-        return opponentLegalPoints;
+        checkingOpponentLegalSquaresInProgress = false;
+        return opponentLegalSquares;
     }
 
-    boolean isKingInCheck(Point kingPoint) {
-        return fetchOpponentLegalPoints(boardMap.get(kingPoint).getColor()).contains(kingPoint);
+    boolean isKingInCheck(Square kingSquare) {
+        return fetchOpponentLegalSquares(boardMap.get(kingSquare).getColor()).contains(kingSquare);
     }
 
-    Point fetchKingPoint(ChessColor color) {
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+    Square fetchKingSquare(ChessColor color) {
+        for (Map.Entry<Square, Piece> entry : boardMap.entrySet()) {
             if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(KING)){
                 return entry.getKey();
             }

@@ -3,6 +3,7 @@ package chess.controller;
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.PieceType;
+import chess.model.Square;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
@@ -40,7 +41,7 @@ public class ImageHandler {
      *
      * @return List of piece images
      */
-    public ImageView fetchPieceImageView(Point point, PieceType pieceType, ChessColor chessColor, int dimensions) {
+    public ImageView fetchPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
         ImageView pieceImageView = new ImageView();
 
         pieceImageView.setPreserveRatio(true);
@@ -49,8 +50,8 @@ public class ImageHandler {
         pieceImageView.setFitWidth(dimensions);
         pieceImageView.setFitHeight(dimensions);
 
-        pieceImageView.setX(point.x * dimensions);
-        pieceImageView.setY(point.y * dimensions);
+        pieceImageView.setX(square.getX() * dimensions);
+        pieceImageView.setY(square.getY() * dimensions);
 
         return pieceImageView;
     }
@@ -75,15 +76,15 @@ public class ImageHandler {
     }
 
 
-    void addTranslateTransition(ImageView imageView, Point pointFrom, Point pointTo, int dimensions){
+    void addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions){
         imageView.setX(0);
         imageView.setY(0);
 
         TranslateTransition tt = new TranslateTransition(Duration.millis(500), imageView);
-        tt.setFromX(pointFrom.x*dimensions);
-        tt.setFromY(pointFrom.y*dimensions);
-        tt.setToX(pointTo.x*dimensions);
-        tt.setToY(pointTo.y*dimensions);
+        tt.setFromX(squareFrom.getX()*dimensions);
+        tt.setFromY(squareFrom.getY()*dimensions);
+        tt.setToX(squareTo.getX()*dimensions);
+        tt.setToY(squareTo.getY()*dimensions);
         tt.setCycleCount(1);
         tt.play();
     }
@@ -109,7 +110,7 @@ public class ImageHandler {
         List<ImageView> imageViews = new ArrayList<>();
         for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
 
-           ImageView imageView = fetchPieceImageView(new Point(0,0), pieceType, chessColor, (int) squareDimension);
+           ImageView imageView = fetchPieceImageView(new Square(0,0), pieceType, chessColor, (int) squareDimension);
 
            imageView.setFitWidth(squareDimension - 25);
            imageView.setFitHeight(squareDimension - 25);
@@ -127,10 +128,10 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getCurrentLegalPoints()) {
+        for (Square square : model.getCurrentLegalSquare()) {
             ImageView imageView = new ImageView();
 
-            if (model.isPointOccupied(point)) {
+            if (model.isSquareOccupied(square)) {
                 if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMoveBox.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
@@ -141,8 +142,8 @@ public class ImageHandler {
             imageView.setFitWidth(squareDimension);
             imageView.setFitHeight(squareDimension);
 
-            imageView.setX(point.x * squareDimension);
-            imageView.setY(point.y * squareDimension);
+            imageView.setX(square.getX() * squareDimension);
+            imageView.setY(square.getY() * squareDimension);
 
             imageViews.add(imageView);
         }

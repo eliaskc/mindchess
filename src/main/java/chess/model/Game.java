@@ -18,7 +18,7 @@ public class Game implements TimerObserver {
     private final Board board = new Board();
     //private final Map<Point, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between points (squares) and pieces on the board
 
-    private final List<Point> legalPoints = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
+    private final List<Square> legalSquares = new ArrayList<>(); //List of points that are legal to move to for the currently marked point
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
     private final Player playerWhite = new Player("Player 1", WHITE);
@@ -52,11 +52,11 @@ public class Game implements TimerObserver {
     /**
      * handleBoardClick() is the method responsible for investigating clicks on the board and deciding what should be done.
      * <p>
-     * It receives input about the click and first fetches the clicked Point, and then the Piece on the point (if there is one).
+     * It receives input about the click and first fetches the clicked Square, and then the Piece on the Square (if there is one).
      * <p>
-     * If no piece has been marked, it marks the Piece on the clicked Point
+     * If no piece has been marked, it marks the Piece on the clicked Square
      * <p>
-     * If a piece has been marked already, it checks if the clicked Point is one that is legal to move to and makes the move
+     * If a piece has been marked already, it checks if the clicked Square is one that is legal to move to and makes the move
      * if it is.
      *
      * @param x
@@ -182,8 +182,8 @@ public class Game implements TimerObserver {
         endGameObservers.remove(endgameObserver);
     }
 
-    List<Point> getLegalPoints() {
-        return legalPoints;
+    List<Square> getLegalSquares() {
+        return legalSquares;
     }
 
     Board getBoard() {
