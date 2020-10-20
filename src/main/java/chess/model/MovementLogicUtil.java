@@ -162,6 +162,9 @@ public class MovementLogicUtil {
     public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
         if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
             kingSquare.setSquareType(IN_CHECK);
+        else
+            kingSquare.setSquareType(NORMAL);
+
     }
 
     /**

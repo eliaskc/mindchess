@@ -113,7 +113,7 @@ public class PieceSelectedState implements GameState {
         context.getBoard().getDeadPieces().add(takenPiece);
         context.notifyDrawDeadPieces();
     }
-    
+
     private void checkKingInCheck(ChessColor kingColor) {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
         Square kingSquare = context.getBoard().fetchKingSquare(kingColor);
