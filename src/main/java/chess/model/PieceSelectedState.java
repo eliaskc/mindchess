@@ -82,9 +82,9 @@ public class PieceSelectedState implements GameState {
         }
 
         if (targetSquare.getSquareType() == EN_PASSANT) {
-            if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == WHITE) {
+            if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, WHITE)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() + 1));
-            } else if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == BLACK) {
+            } else if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, BLACK)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() - 1));
             }
         }
@@ -117,6 +117,7 @@ public class PieceSelectedState implements GameState {
     private void checkKingInCheck(ChessColor kingColor) {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
         Square kingSquare = context.getBoard().fetchKingSquare(kingColor);
+
         MovementLogicUtil.isKingInCheck(context.getBoard(), kingSquare, opponentColor);
         if (kingSquare.getSquareType() == IN_CHECK)
             context.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());

@@ -7,5 +7,5 @@ import java.awt.*;
 import java.util.List;
 
 public interface IMoveDelegate {
-    List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkIfKingInCheck);
+    List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide);
 }

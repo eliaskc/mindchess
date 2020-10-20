@@ -10,7 +10,7 @@ import java.util.List;
 public class KnightMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkIfKingInCheck) {
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         int x = squareToCheck.getX();

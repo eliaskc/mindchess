@@ -13,7 +13,7 @@ import static chess.model.ChessColor.WHITE;
 public class PawnMoveDelegate implements IMoveDelegate {
     
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkIfKingInCheck) {
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         if (board.pieceOnSquareColorEquals(squareToCheck, WHITE)) {

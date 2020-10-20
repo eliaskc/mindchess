@@ -35,7 +35,6 @@ public class KingMoveDelegate implements IMoveDelegate {
             List<Square> opponentLegalSquares = MovementLogicUtil.fetchLegalSquaresByColor(board, opponentColor);
             legalSquares.removeIf(p -> opponentLegalSquares.contains(p));
         }
-
         return legalSquares;
     }
 

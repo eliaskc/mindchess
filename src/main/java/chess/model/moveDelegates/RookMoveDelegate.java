@@ -10,7 +10,7 @@ import java.util.List;
 public class RookMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkIfKingInCheck) {
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         legalSquares.addAll(MovementLogicUtil.up(board, squareToCheck, 7));

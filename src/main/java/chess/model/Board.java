@@ -17,6 +17,7 @@ import static chess.model.ChessColor.WHITE;
 public class Board {
     private final Map<Square, IPiece> boardMap = new HashMap<>();
     private final List<IPiece> deadPieces = new ArrayList<>();
+    int i = 0;
 
     Board() {
     }
@@ -71,16 +72,22 @@ public class Board {
         return deadPieces;
     }
 
-    ChessColor fetchPieceOnSquareColor(Square square) {
-        return boardMap.get(square).getColor();
-    }
-
     boolean isPieceOnSquareRook(Square square) {
         return boardMap.get(square).getPieceType().equals(PieceType.ROOK);
     }
 
+    //TODO public only because of tests. Fix them to work without and make package-private
     public IPiece fetchPieceOnSquare(Square squareSelected) {
         return boardMap.get(squareSelected);
+    }
+
+    ChessColor fetchPieceOnSquareColor(Square square) {
+        return boardMap.get(square).getColor();
+    }
+
+    //TODO public only because of tests. Fix them to work without and make package-private
+    public boolean pieceOnSquareColorEquals(Square s, ChessColor chessColor) {
+        return boardMap.get(s).getColor().equals(chessColor);
     }
 
     Square fetchKingSquare(ChessColor color) {
@@ -94,10 +101,6 @@ public class Board {
 
     boolean isOccupied(Square s) {
         return boardMap.containsKey(s);
-    }
-
-    public boolean pieceOnSquareColorEquals(Square s, ChessColor chessColor) {
-        return boardMap.get(s).getColor().equals(chessColor);
     }
 
     void markPieceOnSquareHasMoved(Square s){

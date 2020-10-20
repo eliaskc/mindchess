@@ -164,7 +164,6 @@ public class MovementLogicUtil {
             kingSquare.setSquareType(IN_CHECK);
         else
             kingSquare.setSquareType(NORMAL);
-
     }
 
     /**
