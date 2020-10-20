@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,6 +52,8 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane rootAnchor;
     @FXML
+    private AnchorPane gameListAnchorPane;
+    @FXML
     private ImageView btnStart;
     @FXML
     private ImageView btnExit;
@@ -62,6 +65,10 @@ public class MenuController implements Initializable {
     private Label timeLabel;
     @FXML
     private ComboBox btnTimerDrop;
+    @FXML
+    private FlowPane gameListFlowPane;
+    @FXML
+    private Button btnBackGameList;
 
     public void setChessController(ChessController chessController) {
         this.chessController = chessController;
@@ -169,10 +176,6 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    FlowPane gameListFlowPane;
-    @FXML
-    AnchorPane gameListAnchorPane;
-    @FXML
     private void populateGameList() {
         gameListFlowPane.getChildren().clear();
         int i = 0;
@@ -182,7 +185,6 @@ public class MenuController implements Initializable {
             GameListController gameListController = new GameListController(s[0],s[1],s[2]);
             gameListFlowPane.getChildren().add(gameListController);
             int finalI = i;
-            System.out.println(i);
             gameListController.setOnMouseClicked(event -> {
                 model.setIndexAsCurrentGame(finalI);
                 gameListAnchorPane.toBack();
@@ -190,5 +192,10 @@ public class MenuController implements Initializable {
             });
             i++;
         }
+    }
+
+    @FXML
+    private void closeGameList(){
+        gameListAnchorPane.toBack();
     }
 }

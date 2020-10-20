@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,16 +16,6 @@
 
 <AnchorPane fx:id="rootAnchor" prefHeight="720.0" prefWidth="1280.0" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.MenuController">
    <children>
-      <AnchorPane fx:id="gameListAnchorPane" layoutX="277.0" layoutY="67.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="276.0" AnchorPane.topAnchor="70.0">
-         <children>
-            <FlowPane fx:id="gameListFlowPane" layoutX="-2.0" layoutY="6.0" prefHeight="583.0" prefWidth="465.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.0" />
-            <Label layoutX="322.0" layoutY="26.0" prefHeight="25.0" prefWidth="85.0" text="Games">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <AnchorPane styleClass="background">
          <children>
             <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
@@ -52,6 +45,36 @@
             <Button layoutX="471.0" layoutY="314.0" mnemonicParsing="false" onAction="#goToBoardNewGame" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Start Game" />
             <Button layoutX="471.0" layoutY="487.0" mnemonicParsing="false" onAction="#Exit" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Exit" />
             <Button layoutX="471.0" layoutY="429.0" mnemonicParsing="false" onAction="#populateGameList" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Load Game" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="gameListAnchorPane" layoutX="277.0" layoutY="67.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="276.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <Label alignment="CENTER" layoutX="322.0" layoutY="12.0" prefHeight="47.0" prefWidth="85.0" text="Games" textAlignment="CENTER" AnchorPane.topAnchor="12.0">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnBackFromList" layoutX="582.0" layoutY="14.0" mnemonicParsing="false" onAction="#closeGameList" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Back" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <ScrollPane layoutX="286.0" layoutY="244.0" prefHeight="200.0" prefWidth="200.0" styleClass="menuBackground" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+              <content>
+                <AnchorPane fx:id="GameListAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="519.0" prefWidth="712.0" styleClass="menuBackground">
+                     <children>
+                        <FlowPane fx:id="gameListFlowPane" hgap="10.0" prefHeight="570.0" prefWidth="714.0" vgap="10.0" AnchorPane.bottomAnchor="-51.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-2.0" AnchorPane.topAnchor="0.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </FlowPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
    </children>
