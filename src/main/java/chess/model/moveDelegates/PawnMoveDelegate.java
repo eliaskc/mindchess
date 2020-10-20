@@ -1,6 +1,7 @@
 package chess.model.moveDelegates;
 
 import chess.model.Board;
+import chess.model.Square;
 import chess.model.util.MovementLogicUtil;
 
 import java.awt.*;
@@ -9,55 +10,60 @@ import java.util.List;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.PAWN;
 
 public class PawnMoveDelegate implements IMoveDelegate {
     
     @Override
-    public List<Point> fetchMoves(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var legalPoints = new ArrayList<Point>();
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var legalSquares = new ArrayList<Square>();
 
-        if (board.pieceOnPointColorEquals(pointToCheck, WHITE)) {
-            legalPoints.addAll(fetchMovesWhitePawn(board, pointToCheck, pieceOnPointHasMoved));
-        } else if (board.pieceOnPointColorEquals(pointToCheck, BLACK)) {
-            legalPoints.addAll(fetchMovesBlackPawn(board, pointToCheck, pieceOnPointHasMoved));
+        if (board.pieceOnSquareColorEquals(squareToCheck, WHITE)) {
+            legalSquares.addAll(fetchMovesWhitePawn(board, squareToCheck, pieceOnSquareHasMoved));
+        } else if (board.pieceOnSquareColorEquals(squareToCheck, BLACK)) {
+            legalSquares.addAll(fetchMovesBlackPawn(board, squareToCheck, pieceOnSquareHasMoved));
         }
 
-        return legalPoints;
+        MovementLogicUtil.checkPawnPromotion(board, legalSquares, squareToCheck);
+
+        return legalSquares;
     }
-    
-    private List<Point> fetchMovesWhitePawn(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var returnList = new ArrayList<Point>();
-        int x = pointToCheck.x;
-        int y = pointToCheck.y;
+
+    private List<Square> fetchMovesWhitePawn(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var returnList = new ArrayList<Square>();
+        int x = squareToCheck.getX();
+        int y = squareToCheck.getY();
         
-        if (!MovementLogicUtil.isOccupied(board, new Point(x, y - 1))) {
-            returnList.addAll(MovementLogicUtil.up(board, pointToCheck, 1));
+        if (!MovementLogicUtil.isOccupied(board, new Square(x, y - 1))) {
+            returnList.addAll(MovementLogicUtil.up(board, squareToCheck, 1));
 
-            if (!MovementLogicUtil.isOccupied(board, new Point(x, y - 2)) && !pieceOnPointHasMoved) {
-                MovementLogicUtil.addPointIfLegal(board, new Point(x, y - 2), pointToCheck, returnList);
+            if (!MovementLogicUtil.isOccupied(board, new Square(x, y - 2)) && !pieceOnSquareHasMoved) {
+                MovementLogicUtil.addSquareIfLegal(board, new Square(x, y - 2), squareToCheck, returnList);
             }
         }
-        if (MovementLogicUtil.isOccupied(board, new Point(x + 1, y - 1))) returnList.addAll(MovementLogicUtil.upRight(board, pointToCheck, 1));
-        if (MovementLogicUtil.isOccupied(board, new Point(x - 1, y - 1))) returnList.addAll(MovementLogicUtil.upLeft(board, pointToCheck, 1));
+        if (MovementLogicUtil.isOccupied(board, new Square(x + 1, y - 1))) returnList.addAll(MovementLogicUtil.upRight(board, squareToCheck, 1));
+        if (MovementLogicUtil.isOccupied(board, new Square(x - 1, y - 1))) returnList.addAll(MovementLogicUtil.upLeft(board, squareToCheck, 1));
 
         return returnList;
     }
     
-    private List<Point> fetchMovesBlackPawn(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var returnList = new ArrayList<Point>();
-        int x = pointToCheck.x;
-        int y = pointToCheck.y;
+    private List<Square> fetchMovesBlackPawn(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var returnList = new ArrayList<Square>();
+        int x = squareToCheck.getX();
+        int y = squareToCheck.getY();
 
-        if (!MovementLogicUtil.isOccupied(board,new Point(x, y + 1))) {
-            returnList.addAll(MovementLogicUtil.down(board, pointToCheck, 1));
+        if (!MovementLogicUtil.isOccupied(board,new Square(x, y + 1))) {
+            returnList.addAll(MovementLogicUtil.down(board, squareToCheck, 1));
 
-            if (!MovementLogicUtil.isOccupied(board, new Point(x, y + 2)) && !pieceOnPointHasMoved) {
-                MovementLogicUtil.addPointIfLegal(board, new Point(x, y + 2), pointToCheck, returnList);
+            if (!MovementLogicUtil.isOccupied(board, new Square(x, y + 2)) && !pieceOnSquareHasMoved) {
+                MovementLogicUtil.addSquareIfLegal(board, new Square(x, y + 2), squareToCheck, returnList);
             }
         }
-        if (MovementLogicUtil.isOccupied(board, new Point(x + 1, y + 1))) returnList.addAll(MovementLogicUtil.downRight(board, pointToCheck, 1));
-        if (MovementLogicUtil.isOccupied(board, new Point(x - 1, y + 1))) returnList.addAll(MovementLogicUtil.downLeft(board, pointToCheck, 1));
+        if (MovementLogicUtil.isOccupied(board, new Square(x + 1, y + 1))) returnList.addAll(MovementLogicUtil.downRight(board, squareToCheck, 1));
+        if (MovementLogicUtil.isOccupied(board, new Square(x - 1, y + 1))) returnList.addAll(MovementLogicUtil.downLeft(board, squareToCheck, 1));
 
         return returnList;
     }
+
+
 }

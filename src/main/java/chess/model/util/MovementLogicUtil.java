@@ -1,10 +1,17 @@
 package chess.model.util;
 
-import chess.model.Board;
+import chess.model.*;
+import chess.model.pieces.IPiece;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static chess.model.ChessColor.BLACK;
+import static chess.model.ChessColor.WHITE;
+import static chess.model.PieceType.PAWN;
+import static chess.model.SquareType.EN_PASSANT;
+import static chess.model.SquareType.PROMOTION;
 
 /**
  * Is responsible for finding legal moves
@@ -13,144 +20,157 @@ public class MovementLogicUtil {
     private MovementLogicUtil() {
     }
 
-    public static List<Point> up(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        for (int i = pointToCheck.y - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(pointToCheck.x, i);
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+    public static List<Square> up(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        for (int i = squareToCheck.getY() - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Square s = new Square(squareToCheck.getX(), i);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> down(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        for (int i = pointToCheck.y + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(pointToCheck.x, i);
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+    public static List<Square> down(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        for (int i = squareToCheck.getY() + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Square s = new Square(squareToCheck.getX(), i);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> left(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        for (int i = pointToCheck.x - 1; i >= 0 && iterations > 0; i--, iterations--) {
-            Point p = new Point(i, pointToCheck.y);
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+    public static List<Square> left(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        for (int i = squareToCheck.getX() - 1; i >= 0 && iterations > 0; i--, iterations--) {
+            Square s = new Square(i, squareToCheck.getY());
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> right(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        for (int i = pointToCheck.x + 1; i < 8 && iterations > 0; i++, iterations--) {
-            Point p = new Point(i, pointToCheck.y);
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+    public static List<Square> right(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        for (int i = squareToCheck.getX() + 1; i < 8 && iterations > 0; i++, iterations--) {
+            Square s = new Square(i, squareToCheck.getY());
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> upLeft(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        Point p = new Point(pointToCheck.x, pointToCheck.y);
+    public static List<Square> upLeft(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x--;
-            p.y--;
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+            s.setX(s.getX()-1);
+            s.setY(s.getY()-1);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> upRight(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        Point p = new Point(pointToCheck.x, pointToCheck.y);
+    public static List<Square> upRight(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x++;
-            p.y--;
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+            s.setX(s.getX()+1);
+            s.setY(s.getY()-1);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> downRight(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        Point p = new Point(pointToCheck.x, pointToCheck.y);
+    public static List<Square> downRight(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x++;
-            p.y++;
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+            s.setX(s.getX()+1);
+            s.setY(s.getY()+1);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
-    public static List<Point> downLeft(Board board, Point pointToCheck, int iterations) {
-        var returnList = new ArrayList<Point>();
-        Point p = new Point(pointToCheck.x, pointToCheck.y);
-
+    public static List<Square> downLeft(Board board, Square squareToCheck, int iterations) {
+        var returnList = new ArrayList<Square>();
+        Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            p.x--;
-            p.y++;
-            if (addPointIfLegal(board, p, pointToCheck, returnList)) break;
+            s.setX(s.getX()-1);
+            s.setY(s.getY()+1);
+            if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
     }
 
     /**
-     * Adds point to the list of legal moves if the point is inside the board AND:
-     * - the point is empty
-     * - the point has a piece of the opposite color
+     * Adds square to the list of legal moves if the square is inside the board AND:
+     * - the square is empty
+     * - the square has a piece of the opposite color
      *
      * @param board
-     * @param p            potential legal point
-     * @param pointToCheck point moving from
+     * @param s            potential legal square
+     * @param squareToCheck square moving from
      * @param listToAddTo
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
      */
-    public static boolean addPointIfLegal(Board board, Point p, Point pointToCheck, List<Point> listToAddTo) {
-        if (p.x >= 0 && p.x < 8 && p.y >= 0 && p.y < 8) {
-            if (!isOccupied(board, p)) {
-                listToAddTo.add(new Point(p.x, p.y));
+    public static boolean addSquareIfLegal(Board board, Square s, Square squareToCheck, List<Square> listToAddTo) {
+        if (s.getX() >= 0 && s.getX() < 8 && s.getY() >= 0 && s.getY() < 8) {
+            if (!isOccupied(board, s)) {
+                listToAddTo.add(new Square(s.getX(), s.getY()));
                 return false;
-            } else if (!board.pieceOnPointColorEquals(p, board.fetchPieceOnPointColor(pointToCheck))) {
-                listToAddTo.add(new Point(p.x, p.y));
+            } else if (!board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck))) {
+                listToAddTo.add(new Square(s.getX(), s.getY()));
                 return true;
             }
         }
         return true;
     }
 
-    public static boolean isOccupied(Board board, Point p) {
-        return board.isOccupied(p);
+    public static boolean isOccupied(Board board, Square s) {
+        return board.isOccupied(s);
     }
 
-/*    private List<Point> fetchOpponentLegalPoints(ChessColor color){
-        List<Point> opponentLegalPoints = new ArrayList<>();
-        checkingOpponentLegalPointsInProgress = true;
+/*    private List<Square> fetchOpponentLegalSquares(ChessColor color){
+        List<Square> opponentLegalSquares = new ArrayList<>();
+        checkingOpponentLegalSquaresInProgress = true;
 
-        for (Map.Entry<Point, Piece> entry : boardMap.entrySet()) {
+        for (Map.Entry<Square, Piece> entry : boardMap.entrySet()) {
             if(!(entry.getValue().getColor().equals(color))){
-                opponentLegalPoints.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
+                opponentLegalSquares.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
             }
         }
 
-        checkingOpponentLegalPointsInProgress = false;
-        return opponentLegalPoints;
+        checkingOpponentLegalSquaresInProgress = false;
+        return opponentLegalSquares;
     }*/
 
-    /*static public List<Point> getEnPassantPoints(Ply lastPly, Point pointToCheck){
-        List<Point> enPassantPoints = new ArrayList<>();
-        if (pieceName.equals("Pawn") && !board.pieceOnPointColorEquals(movedTo, pieceToMoveColor) && Math.abs(movedFrom.y - movedTo.y) == 2) {
-            if ((movedTo.x == pointToCheck.x + 1 || movedFrom.x == pointToCheck.x - 1) && movedTo.y == pointToCheck.y) {
-                if (board.pieceOnPointColorEquals(movedTo, BLACK)) {
-                    enPassantPoints.add(new Point(movedTo.x, movedTo.y - 1));
-                } else if (board.pieceOnPointColorEquals(movedTo, WHITE)) {
-                    enPassantPoints.add(new Point(movedTo.x, movedTo.y + 1));
+    static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board){
+        List<Square> enPassantSquares = new ArrayList<>();
+        Square movedFrom = lastPly.getMovedFrom();
+        Square movedTo = lastPly.getMovedTo();
+        PieceType pieceType = lastPly.getMovedPiece().getPieceType();
+        ChessColor pieceToMoveColor = board.fetchPieceOnSquareColor(squareToCheck);
+
+        if (pieceType.equals(PieceType.PAWN) && !board.pieceOnSquareColorEquals(movedTo, pieceToMoveColor) && Math.abs(movedFrom.getY() - movedTo.getY()) == 2) {
+            if ((movedTo.getX() == squareToCheck.getX() + 1 || movedFrom.getX() == squareToCheck.getX() - 1) && movedTo.getY() == squareToCheck.getY()) {
+                if (board.pieceOnSquareColorEquals(movedTo, ChessColor.BLACK)) {
+                    enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() - 1, EN_PASSANT));
+                } else if (board.pieceOnSquareColorEquals(movedTo, ChessColor.WHITE)) {
+                    enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() + 1, EN_PASSANT));
                 }
-                enPassantPossible = true;
-            } else {
-               enPassantPossible = false;
             }
         }
-        return enPassantPoints;
-    }*/
+        return enPassantSquares;
+    }
+
+    public static void checkPawnPromotion(Board board, ArrayList<Square> legalSquares, Square squareToCheck) {
+        if (legalSquares.size() == 0) return;
+
+        for (Square s : legalSquares){
+            if(board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN){
+                if(s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK){
+                    s.setSquareType(PROMOTION);
+                }
+            }
+        }
+    }
 
 }

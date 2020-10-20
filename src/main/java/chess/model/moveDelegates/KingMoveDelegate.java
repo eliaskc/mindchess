@@ -1,63 +1,66 @@
 package chess.model.moveDelegates;
 
 import chess.model.Board;
+import chess.model.Square;
+import chess.model.SquareType;
 import chess.model.util.MovementLogicUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static chess.model.SquareType.CASTLING;
+
 public class KingMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Point> fetchMoves(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var legalPoints = new ArrayList<Point>();
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var legalSquares = new ArrayList<Square>();
 
-        legalPoints.addAll(MovementLogicUtil.up(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.right(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.down(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.left(board, pointToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.up(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.right(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.down(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.left(board, squareToCheck, 1));
 
-        legalPoints.addAll(MovementLogicUtil.upLeft(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.upRight(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.downRight(board, pointToCheck, 1));
-        legalPoints.addAll(MovementLogicUtil.downLeft(board, pointToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.upLeft(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.upRight(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.downRight(board, squareToCheck, 1));
+        legalSquares.addAll(MovementLogicUtil.downLeft(board, squareToCheck, 1));
 
-        legalPoints.addAll(getCastlingPoints(board, pointToCheck, pieceOnPointHasMoved));
+        legalSquares.addAll(getCastlingSquares(board, squareToCheck, pieceOnSquareHasMoved));
 
-        return legalPoints;
+        return legalSquares;
     }
 
-    List<Point> getCastlingPoints(Board board, Point pointToCheck, boolean hasMoved) {
-        List<Point> castlingPoints = new ArrayList<>();
+    List<Square> getCastlingSquares(Board board, Square squareToCheck, boolean hasMoved) {
+        List<Square> castlingSquares = new ArrayList<>();
 
         if (!hasMoved) {
-            if (checkRightCastling(board, pointToCheck, hasMoved)) {
-                castlingPoints.add(new Point(pointToCheck.x + 2, pointToCheck.y));
+            if (checkRightCastling(board, squareToCheck)) {
+                castlingSquares.add(new Square(squareToCheck.getX() + 2, squareToCheck.getY(), CASTLING));
             }
-            if (checkLeftCastling(board, pointToCheck, hasMoved)) {
-                castlingPoints.add(new Point(pointToCheck.x - 2, pointToCheck.y));
+            if (checkLeftCastling(board, squareToCheck)) {
+                castlingSquares.add(new Square(squareToCheck.getX() - 2, squareToCheck.getY(), CASTLING));
             }
         }
-        return castlingPoints;
+        return castlingSquares;
     }
 
     /**
      *
      * @param board
-     * @param pointToCheck
-     * @param hasMoved
+     * @param squareToCheck
      * @return
      */
-    private boolean checkRightCastling(Board board, Point pointToCheck, boolean hasMoved) {
-        for (int i = pointToCheck.x + 1; i <= pointToCheck.x + 2; i++) {
-            if (MovementLogicUtil.isOccupied(board, new Point(i, pointToCheck.y))) {
+    private boolean checkRightCastling(Board board, Square squareToCheck) {
+        for (int i = squareToCheck.getX() + 1; i <= squareToCheck.getX() + 2; i++) {
+            if (MovementLogicUtil.isOccupied(board, new Square(i, squareToCheck.getY()))) {
                 return false;
             }
         }
-        Point p = new Point(pointToCheck.x + 3, pointToCheck.y);
-        if (MovementLogicUtil.isOccupied(board, p)) {
-            return board.isPieceOnPointRook(p) && !hasMoved && board.pieceOnPointColorEquals(p, board.fetchPieceOnPointColor(pointToCheck));
+        Square s = new Square(squareToCheck.getX() + 3, squareToCheck.getY());
+        if (MovementLogicUtil.isOccupied(board, s)) {
+            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
         }
         return false;
     }
@@ -65,19 +68,18 @@ public class KingMoveDelegate implements IMoveDelegate {
     /**
      *
      * @param board
-     * @param pointToCheck
-     * @param hasMoved
+     * @param squareToCheck
      * @return
      */
-    private boolean checkLeftCastling(Board board, Point pointToCheck, boolean hasMoved) {
-        for (int i = pointToCheck.x - 1; i >= pointToCheck.x - 3; i--) {
-            if (MovementLogicUtil.isOccupied(board, new Point(i, pointToCheck.y))) {
+    private boolean checkLeftCastling(Board board, Square squareToCheck) {
+        for (int i = squareToCheck.getX() - 1; i >= squareToCheck.getX() - 3; i--) {
+            if (MovementLogicUtil.isOccupied(board, new Square(i, squareToCheck.getY()))) {
                 return false;
             }
         }
-        Point p = new Point(pointToCheck.x - 4, pointToCheck.y);
-        if (MovementLogicUtil.isOccupied(board, p)) {
-            return board.isPieceOnPointRook(p) && !hasMoved && board.pieceOnPointColorEquals(p, board.fetchPieceOnPointColor(pointToCheck));
+        Square s = new Square(squareToCheck.getX() - 4, squareToCheck.getY());
+        if (MovementLogicUtil.isOccupied(board, s)) {
+            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
         }
         return false;
     }

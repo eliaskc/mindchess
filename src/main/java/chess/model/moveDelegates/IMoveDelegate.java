@@ -1,10 +1,11 @@
 package chess.model.moveDelegates;
 
 import chess.model.Board;
+import chess.model.Square;
 
 import java.awt.*;
 import java.util.List;
 
 public interface IMoveDelegate {
-    List<Point> fetchMoves(Board board, Point pointToCheck, boolean pieceOnPointHasMoved);
+    List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved);
 }

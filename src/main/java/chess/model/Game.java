@@ -7,6 +7,7 @@ import chess.observers.TimerObserver;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
@@ -208,5 +209,13 @@ public class Game implements TimerObserver {
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
+    }
+
+    public Square getLegalSquareByCoordinates(int x, int y) {
+        for (Square s : legalSquares) {
+            if (s.getX() == x && s.getY() == y)
+                return s;
+        }
+        throw new NoSuchElementException("No legal square with matching coordinates found");
     }
 }

@@ -1,6 +1,7 @@
 package chess.model.moveDelegates;
 
 import chess.model.Board;
+import chess.model.Square;
 import chess.model.util.MovementLogicUtil;
 
 import java.awt.*;
@@ -10,21 +11,21 @@ import java.util.List;
 public class KnightMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Point> fetchMoves(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var legalPoints = new ArrayList<Point>();
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var legalSquares = new ArrayList<Square>();
 
-        int x = pointToCheck.x;
-        int y = pointToCheck.y;
+        int x = squareToCheck.getX();
+        int y = squareToCheck.getY();
 
-        MovementLogicUtil.addPointIfLegal(board, new Point(x + 1, y - 2), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x + 2, y - 1), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x + 2, y + 1), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x + 1, y + 2), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x - 1, y + 2), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x - 2, y + 1), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x - 2, y - 1), pointToCheck, legalPoints);
-        MovementLogicUtil.addPointIfLegal(board, new Point(x - 1, y - 2), pointToCheck, legalPoints);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x + 1, y - 2), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x + 2, y - 1), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x + 2, y + 1), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x + 1, y + 2), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x - 1, y + 2), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x - 2, y + 1), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x - 2, y - 1), squareToCheck, legalSquares);
+        MovementLogicUtil.addSquareIfLegal(board, new Square(x - 1, y - 2), squareToCheck, legalSquares);
 
-        return legalPoints;
+        return legalSquares;
     }
 }

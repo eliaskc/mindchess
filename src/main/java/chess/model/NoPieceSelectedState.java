@@ -31,19 +31,17 @@ public class NoPieceSelectedState implements GameState {
     private void fetchLegalMoves(Square selectedSquare) {
         IPiece pieceToCheck = context.getBoard().fetchPieceOnSquare(selectedSquare);
         context.getLegalSquares().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedSquare, pieceToCheck.getHasMoved()));
-        //context.getLegalPoints().addAll(getEnPassantPoints(selectedPoint));
+        context.getLegalSquares().addAll(getEnPassantSquares(selectedSquare));
     }
 
-    /*private List<Point> getEnPassantPoints(Point selectedPoint) {
-        List<Point> enPassantPoints = new ArrayList<>();
+    private List<Square> getEnPassantSquares(Square selectedSquare) {
+        List<Square> enPassantPoints = new ArrayList<>();
         if (context.getPlies().size() == 0) return enPassantPoints;
 
         Ply lastPly = context.getPlies().get(context.getPlies().size() - 1);
 
-        ChessColor pieceToMoveColor = context.getBoard().fetchPieceOnPointColor(selectedPoint);
-
-        return MovementLogicUtil.getEnPassantPoints(selectedPoint, movedFrom, movedTo, pieceName, pieceToMoveColor);
-    }*/
+        return MovementLogicUtil.getEnPassantSquares(lastPly, selectedSquare, context.getBoard());
+    }
 
     private boolean SquareIsAPiece(Square square){
         if(context.getBoard().getBoardMap().containsKey(square)) return true;

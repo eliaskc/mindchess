@@ -1,6 +1,7 @@
 package chess.model.moveDelegates;
 
 import chess.model.Board;
+import chess.model.Square;
 import chess.model.util.MovementLogicUtil;
 
 import java.awt.*;
@@ -10,14 +11,14 @@ import java.util.List;
 public class BishopMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Point> fetchMoves(Board board, Point pointToCheck, boolean pieceOnPointHasMoved) {
-        var legalPoints = new ArrayList<Point>();
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+        var legalSquares = new ArrayList<Square>();
 
-        legalPoints.addAll(MovementLogicUtil.upLeft(board, pointToCheck, 7));
-        legalPoints.addAll(MovementLogicUtil.upRight(board, pointToCheck, 7));
-        legalPoints.addAll(MovementLogicUtil.downRight(board, pointToCheck, 7));
-        legalPoints.addAll(MovementLogicUtil.downLeft(board, pointToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.upLeft(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.upRight(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.downRight(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.downLeft(board, squareToCheck, 7));
 
-        return legalPoints;
+        return legalSquares;
     }
 }
