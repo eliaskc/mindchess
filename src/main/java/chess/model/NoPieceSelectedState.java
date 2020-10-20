@@ -1,9 +1,7 @@
 package chess.model;
 
 import chess.model.pieces.IPiece;
-import chess.model.util.MovementLogicUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class NoPieceSelectedState implements GameState {
      */
     private void fetchLegalMoves(Square selectedSquare) {
         IPiece pieceToCheck = context.getBoard().fetchPieceOnSquare(selectedSquare);
-        context.getLegalSquares().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedSquare, pieceToCheck.getHasMoved()));
+        context.getLegalSquares().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedSquare, pieceToCheck.getHasMoved(), true));
         context.getLegalSquares().addAll(getEnPassantSquares(selectedSquare));
     }
 

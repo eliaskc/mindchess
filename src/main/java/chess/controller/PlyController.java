@@ -60,7 +60,7 @@ public class PlyController extends AnchorPane {
             if (entry.getValue().equals(ply.getMovedPiece())) {
 
                 if(performMove){
-                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40);
+                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40, 400);
                 } else {
                     imageView.setX(ply.getMovedFrom().getX()*40);
                     imageView.setY(ply.getMovedFrom().getY()*40);
@@ -68,7 +68,7 @@ public class PlyController extends AnchorPane {
 
                 if (ply.getTakenPiece() != null) {
                     ImageView attackedImageView = imageHandler.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
-                    imageHandler.addScaleTransition(attackedImageView, 750, false);
+                    imageHandler.addScaleTransition(attackedImageView, 400, false);
                     imageViewList.add(attackedImageView);
                 }
             }

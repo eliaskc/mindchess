@@ -2,20 +2,18 @@ package chess.model.moveDelegates;
 
 import chess.model.Board;
 import chess.model.Square;
-import chess.model.util.MovementLogicUtil;
+import chess.model.MovementLogicUtil;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
-import static chess.model.PieceType.PAWN;
 
 public class PawnMoveDelegate implements IMoveDelegate {
     
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkIfKingInCheck) {
         var legalSquares = new ArrayList<Square>();
 
         if (board.pieceOnSquareColorEquals(squareToCheck, WHITE)) {

@@ -52,7 +52,7 @@ public class PieceSelectedState implements GameState {
             }
 
             context.switchPlayer();
-            //checkKingInCheck();
+            checkKingInCheck(context.getCurrentPlayerColor());
         }
         context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         clearAndDrawLegalMoves();
@@ -113,14 +113,14 @@ public class PieceSelectedState implements GameState {
         context.getBoard().getDeadPieces().add(takenPiece);
         context.notifyDrawDeadPieces();
     }
-
-    /*
-    private void checkKingInCheck() {
-        Square kingSquare = movement.fetchKingSquare(context.getCurrentPlayer().getColor());
-        if (movement.isKingInCheck(kingSquare)) {
+    
+    private void checkKingInCheck(ChessColor kingColor) {
+        ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
+        Square kingSquare = context.getBoard().fetchKingSquare(kingColor);
+        MovementLogicUtil.isKingInCheck(context.getBoard(), kingSquare, opponentColor);
+        if (kingSquare.getSquareType() == IN_CHECK)
             context.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
-        }
-    }*/
+    }
 
     private boolean checkKingTaken() {
         for (IPiece p : context.getBoard().getDeadPieces()) {

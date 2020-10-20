@@ -1,4 +1,4 @@
-package chess.model.util;
+package chess.model;
 
 import chess.model.*;
 import chess.model.pieces.IPiece;
@@ -6,12 +6,12 @@ import chess.model.pieces.IPiece;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 import static chess.model.PieceType.PAWN;
-import static chess.model.SquareType.EN_PASSANT;
-import static chess.model.SquareType.PROMOTION;
+import static chess.model.SquareType.*;
 
 /**
  * Is responsible for finding legal moves
@@ -128,20 +128,6 @@ public class MovementLogicUtil {
         return board.isOccupied(s);
     }
 
-/*    private List<Square> fetchOpponentLegalSquares(ChessColor color){
-        List<Square> opponentLegalSquares = new ArrayList<>();
-        checkingOpponentLegalSquaresInProgress = true;
-
-        for (Map.Entry<Square, Piece> entry : boardMap.entrySet()) {
-            if(!(entry.getValue().getColor().equals(color))){
-                opponentLegalSquares.addAll(fetchLegalMoves(boardMap.get(entry.getKey()), entry.getKey()));
-            }
-        }
-
-        checkingOpponentLegalSquaresInProgress = false;
-        return opponentLegalSquares;
-    }*/
-
     static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board){
         List<Square> enPassantSquares = new ArrayList<>();
         Square movedFrom = lastPly.getMovedFrom();
@@ -173,4 +159,62 @@ public class MovementLogicUtil {
         }
     }
 
+    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
+        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
+            kingSquare.setSquareType(IN_CHECK);
+    }
+
+    /**
+     *
+     * @param board
+     * @param squareToCheck
+     * @return
+     */
+    public static boolean checkRightCastling(Board board, Square squareToCheck) {
+        for (int i = squareToCheck.getX() + 1; i <= squareToCheck.getX() + 2; i++) {
+            if (isOccupied(board, new Square(i, squareToCheck.getY()))) {
+                return false;
+            }
+        }
+        Square s = new Square(squareToCheck.getX() + 3, squareToCheck.getY());
+        if (isOccupied(board, s)) {
+            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param board
+     * @param squareToCheck
+     * @return
+     */
+    public static boolean checkLeftCastling(Board board, Square squareToCheck) {
+        for (int i = squareToCheck.getX() - 1; i >= squareToCheck.getX() - 3; i--) {
+            if (isOccupied(board, new Square(i, squareToCheck.getY()))) {
+                return false;
+            }
+        }
+        Square s = new Square(squareToCheck.getX() - 4, squareToCheck.getY());
+        if (isOccupied(board, s)) {
+            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
+        }
+        return false;
+    }
+
+    public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color){
+        List<Square> opponentLegalSquares = new ArrayList<>();
+
+        for (Map.Entry<Square, IPiece> entry : board.getBoardMap().entrySet()) {
+            if(entry.getValue().getColor().equals(color)){
+                opponentLegalSquares.addAll(entry.getValue().getMoveDelegate().fetchMoves(board, entry.getKey(), entry.getValue().getHasMoved(), false));
+            }
+        }
+
+        return opponentLegalSquares;
+    }
+
+    public static ChessColor fetchPieceColorOnSquare(Board board, Square squareToCheck) {
+        return board.fetchPieceOnSquareColor(squareToCheck);
+    }
 }

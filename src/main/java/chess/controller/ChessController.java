@@ -300,7 +300,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
              pieceImages.add(imageView);
              if(model.getCurrentGamePlies().size() > 0){
                  if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
-                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8);
+                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
                  }
              }
          }
@@ -416,15 +416,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     private void clearAllLegalMoveImages() {
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(75), imageView);
-            st.setFromX(1);
-            st.setFromY(1);
-            st.setToX(0.1);
-            st.setToY(0.1);
-            st.setCycleCount(1);
-            st.play();
-
-            imageHandler.addScaleTransition(imageView, 75, false);
+            ScaleTransition st = imageHandler.addScaleTransition(imageView, 75, false);
 
             st.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override

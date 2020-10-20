@@ -4,11 +4,9 @@ import chess.model.Board;
 import chess.model.ChessFacade;
 import chess.model.Square;
 import chess.model.pieces.IPiece;
-import chess.model.util.MovementLogicUtil;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class TestMovementLogicUtil {
     public void testCheckLegalQueen() {
         Square queenPosition = new Square(3,0);
         IPiece queen = board.fetchPieceOnSquare(queenPosition);
-        List<Square> squares = queen.getMoveDelegate().fetchMoves(board, queenPosition, queen.getHasMoved());
+        List<Square> squares = queen.getMoveDelegate().fetchMoves(board, queenPosition, queen.getHasMoved(), false);
 
         assertEquals(0, squares.size());
     }
@@ -39,7 +37,7 @@ public class TestMovementLogicUtil {
     public void testCheckLegalBlackPawn() {
         Square pawnPosition = new Square(5,1);
         IPiece pawn = board.fetchPieceOnSquare(pawnPosition);
-        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved());
+        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved(), false);
 
         List<Square> comparisonList = new ArrayList<>();
         comparisonList.add(new Square(5,2));
@@ -53,7 +51,7 @@ public class TestMovementLogicUtil {
     public void testCheckLegalWhitePawn() {
         Square pawnPosition = new Square(0,6);
         IPiece pawn = board.fetchPieceOnSquare(pawnPosition);
-        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved());
+        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved(), false);
 
         List<Square> comparisonList = new ArrayList<>();
         comparisonList.add(new Square(0,5));
@@ -67,7 +65,7 @@ public class TestMovementLogicUtil {
         Square pawnPosition = new Square(0,6);
         IPiece pawn = board.fetchPieceOnSquare(pawnPosition);
         pawn.setHasMoved(true);
-        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved());
+        List<Square> squares = pawn.getMoveDelegate().fetchMoves(board, pawnPosition, pawn.getHasMoved(), false);
 
         List<Square> comparisonList = new ArrayList<>();
         comparisonList.add(new Square(0,5));
@@ -79,7 +77,7 @@ public class TestMovementLogicUtil {
     public void testCheckLegalKnight() {
         Square knightPosition = new Square(1,0);
         IPiece knight = board.fetchPieceOnSquare(knightPosition);
-        List<Square> squares = knight.getMoveDelegate().fetchMoves(board, knightPosition, knight.getHasMoved());
+        List<Square> squares = knight.getMoveDelegate().fetchMoves(board, knightPosition, knight.getHasMoved(), false);
 
         assertTrue(squares.get(0).getX() == 2 && squares.get(0).getY() == 2);
     }

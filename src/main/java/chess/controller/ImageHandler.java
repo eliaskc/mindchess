@@ -75,20 +75,22 @@ public class ImageHandler {
         return pieceImage;
     }
 
-    void addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions){
+    TranslateTransition addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions, int duration){
         imageView.setX(0);
         imageView.setY(0);
 
-        TranslateTransition tt = new TranslateTransition(Duration.millis(500), imageView);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(duration), imageView);
         tt.setFromX(squareFrom.getX()*dimensions);
         tt.setFromY(squareFrom.getY()*dimensions);
         tt.setToX(squareTo.getX()*dimensions);
         tt.setToY(squareTo.getY()*dimensions);
         tt.setCycleCount(1);
         tt.play();
+
+        return tt;
     }
 
-    void addScaleTransition(ImageView imageView, double duration, boolean grow){
+    ScaleTransition addScaleTransition(ImageView imageView, double duration, boolean grow){
         ScaleTransition st = new ScaleTransition(Duration.millis(duration), imageView);
         if (grow){
             st.setFromX(0);
@@ -103,6 +105,7 @@ public class ImageHandler {
         }
         st.setCycleCount(1);
         st.play();
+        return st;
     }
 
     public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {

@@ -71,11 +71,11 @@ public class Board {
         return deadPieces;
     }
 
-    public ChessColor fetchPieceOnSquareColor(Square square) {
+    ChessColor fetchPieceOnSquareColor(Square square) {
         return boardMap.get(square).getColor();
     }
 
-    public boolean isPieceOnSquareRook(Square square) {
+    boolean isPieceOnSquareRook(Square square) {
         return boardMap.get(square).getPieceType().equals(PieceType.ROOK);
     }
 
@@ -83,7 +83,7 @@ public class Board {
         return boardMap.get(squareSelected);
     }
 
-    public Square fetchKingSquare(ChessColor color) {
+    Square fetchKingSquare(ChessColor color) {
         for (Map.Entry<Square, chess.model.pieces.IPiece> entry : boardMap.entrySet()) {
             if(entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(PieceType.KING)){
                 return entry.getKey();
@@ -92,7 +92,7 @@ public class Board {
         return null;
     }
 
-    public boolean isOccupied(Square s) {
+    boolean isOccupied(Square s) {
         return boardMap.containsKey(s);
     }
 
@@ -100,7 +100,7 @@ public class Board {
         return boardMap.get(s).getColor().equals(chessColor);
     }
 
-    public void markPieceOnSquareHasMoved(Square s){
+    void markPieceOnSquareHasMoved(Square s){
         fetchPieceOnSquare(s).setHasMoved(true);
     }
 }
