@@ -1,9 +1,7 @@
 package eaee.model;
 
-import chess.model.Board;
-import chess.model.ChessFacade;
+import chess.model.*;
 import chess.model.pieces.IPiece;
-import chess.model.util.MovementLogicUtil;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,7 +32,7 @@ public class TestAlternatingTurns {
 
     @Test
     public void testTakePieceSuccess(){
-        IPiece IPiece = model.getCurrentBoardMap().get(new Point(3,7));
+        IPiece IPiece = model.getCurrentBoardMap().get(new Square(3,7));
 
         model.handleBoardInput(4,6);
         model.handleBoardInput(4,5);
@@ -53,7 +51,7 @@ public class TestAlternatingTurns {
 
     @Test
     public void testTakePieceFail(){
-        IPiece IPiece = model.getCurrentBoardMap().get(new Point(4, 0));
+        IPiece IPiece = model.getCurrentBoardMap().get(new Square(4, 0));
 
         model.handleBoardInput(3,0);
         model.handleBoardInput(4,0);

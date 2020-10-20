@@ -11,18 +11,18 @@ import java.util.Map;
  */
 public class Ply {
     private String playerName;
-    private Point movedFrom;
-    private Point movedTo;
-    private IPiece movedIPiece;
-    private IPiece takenIPiece;
-    private Map<Point, IPiece> boardSnapshot;
+    private Square movedFrom;
+    private Square movedTo;
+    private IPiece movedPiece;
+    private IPiece takenPiece;
+    private Map<Square, IPiece> boardSnapshot;
 
-    public Ply(String playerName, Point movedFrom, Point movedTo, IPiece movedIPiece, IPiece takenIPiece, Map<Point, IPiece> boardMap) {
+    public Ply(String playerName, Square movedFrom, Square movedTo, IPiece movedPiece, IPiece takenPiece, Map<Square, IPiece> boardMap) {
         this.playerName = playerName;
         this.movedFrom = movedFrom;
         this.movedTo = movedTo;
-        this.movedIPiece = movedIPiece;
-        this.takenIPiece = takenIPiece;
+        this.movedPiece = movedPiece;
+        this.takenPiece = takenPiece;
         this.boardSnapshot = new HashMap<>(boardMap);
     }
 
@@ -30,23 +30,23 @@ public class Ply {
         return playerName;
     }
 
-    public Point getMovedFrom() {
+    public Square getMovedFrom() {
         return movedFrom;
     }
 
-    public Point getMovedTo() {
+    public Square getMovedTo() {
         return movedTo;
     }
 
     public IPiece getMovedPiece() {
-        return movedIPiece;
+        return movedPiece;
     }
 
     public IPiece getTakenPiece() {
-        return takenIPiece;
+        return takenPiece;
     }
 
-    public Map<Point, IPiece> getBoardSnapshot() {
+    public Map<Square, IPiece> getBoardSnapshot() {
         return boardSnapshot;
     }
 }

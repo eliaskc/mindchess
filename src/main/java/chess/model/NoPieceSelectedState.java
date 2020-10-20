@@ -16,21 +16,21 @@ public class NoPieceSelectedState implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
-        Point selectedPoint = new Point(x, y);
-        if (pointIsAPiece(selectedPoint) && isPieceMyColor(selectedPoint)) {
-            fetchLegalMoves(selectedPoint);
-            if (context.getLegalPoints().size() == 0) return;
+        Square selectedSquare = new Square(x,y);
+        if(SquareIsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
+            fetchLegalMoves(selectedSquare);
+            if(context.getLegalSquares().size() == 0) return;
             context.notifyDrawLegalMoves();
-            context.setGameState(GameStateFactory.createPieceSelectedState(selectedPoint, context));
+            context.setGameState(GameStateFactory.createPieceSelectedState(selectedSquare,context));
         }
     }
 
     /**
-     * Adds all legal points the marked piece can move to to the legalPoints list
+     * Adds all legal squares the marked piece can move to to the legalSquares list
      */
-    private void fetchLegalMoves(Point selectedPoint) {
-        IPiece pieceToCheck = context.getBoard().fetchPieceOnPoint(selectedPoint);
-        context.getLegalPoints().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedPoint, pieceToCheck.getHasMoved()));
+    private void fetchLegalMoves(Square selectedSquare) {
+        IPiece pieceToCheck = context.getBoard().fetchPieceOnSquare(selectedSquare);
+        context.getLegalSquares().addAll(pieceToCheck.getMoveDelegate().fetchMoves(context.getBoard(), selectedSquare, pieceToCheck.getHasMoved()));
         //context.getLegalPoints().addAll(getEnPassantPoints(selectedPoint));
     }
 
@@ -45,14 +45,13 @@ public class NoPieceSelectedState implements GameState {
         return MovementLogicUtil.getEnPassantPoints(selectedPoint, movedFrom, movedTo, pieceName, pieceToMoveColor);
     }*/
 
-
-    private boolean pointIsAPiece(Point point) {
-        if (context.getBoard().getBoardMap().containsKey(point)) return true;
+    private boolean SquareIsAPiece(Square square){
+        if(context.getBoard().getBoardMap().containsKey(square)) return true;
         return false;
     }
 
-    private boolean isPieceMyColor(Point point) {
-        return context.getBoard().getBoardMap().get(point).getColor() == context.getCurrentPlayer().getColor();
+    private boolean isPieceMyColor(Square square){
+        return context.getBoard().getBoardMap().get(square).getColor() == context.getCurrentPlayer().getColor();
     }
 
     @Override

@@ -1,9 +1,6 @@
 package eaee.model;
 
-import chess.model.Board;
-import chess.model.ChessFacade;
-import chess.model.ChessColor;
-import chess.model.util.MovementLogicUtil;
+import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,8 +40,8 @@ public class TestEnPassant {
         model.handleBoardInput(4,3);
         model.handleBoardInput(3,2);
 
-//        assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
-        assertTrue(board.pieceOnPointColorEquals(new Point(3,2), ChessColor.WHITE));
-        assertEquals(null, board.fetchPieceOnPoint(new Point(3,3)));
+//      assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
+        assertTrue(board.pieceOnSquareColorEquals(new Square(3,2), ChessColor.WHITE));
+        assertEquals(null, board.fetchPieceOnSquare(new Square(3,3)));
     }
 }

@@ -1,7 +1,6 @@
 package eaee.model;
 
-import chess.model.Board;
-import chess.model.ChessFacade;
+import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,8 +27,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(board.fetchPieceOnPoint(new Point(5, 7)).getPieceType(), BISHOP);
-        assertEquals(board.fetchPieceOnPoint(new Point(6, 7)).getPieceType(), KNIGHT);
+        assertEquals(board.fetchPieceOnSquare(new Square(5, 7)).getPieceType(), BISHOP);
+        assertEquals(board.fetchPieceOnSquare(new Square(6, 7)).getPieceType(), KNIGHT);
     }
 
     @Test
@@ -57,8 +56,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(ROOK, board.fetchPieceOnPoint(new Point(5, 7)).getPieceType());
-        assertEquals(KING, board.fetchPieceOnPoint(new Point(6, 7)).getPieceType());
+        assertEquals(ROOK, board.fetchPieceOnSquare(new Square(5, 7)).getPieceType());
+        assertEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
     }
 
     @Test
@@ -98,6 +97,6 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertNotEquals("King", board.fetchPieceOnPoint(new Point(6, 7)));
+        assertNotEquals("King", board.fetchPieceOnSquare(new Square(6, 7)));
     }
 }

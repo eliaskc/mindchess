@@ -16,7 +16,6 @@ public class TestImageHandling {
         model = new ChessFacade();
         model.createNewGame();
         imageHandler = new ImageHandler();
-        imageHandler.fetchPieceImages();
     }
 
     //Input stream error. File paths in imagehandler don't work with travis
@@ -39,7 +38,7 @@ public class TestImageHandling {
         assertTrue(test.getX() == 5);
         assertTrue(test.getY() == 5);
 
-        //hardcoded test for moving piece, also outdated (square, not point)
+        //hardcoded test for moving piece, also outdated (square)
 //        model.getBoard().getPieces().get(0).setSquare(model.getBoard().getSquares()[2][2]);
 
         imageHandler.updateImageCoordinates();

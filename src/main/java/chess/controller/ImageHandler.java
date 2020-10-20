@@ -3,43 +3,24 @@ package chess.controller;
 import chess.model.ChessColor;
 import chess.model.ChessFacade;
 import chess.model.PieceType;
-import chess.model.pieces.IPiece;
+import chess.model.Square;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static chess.model.ChessColor.BLACK;
-import static chess.model.ChessColor.WHITE;
 
 /**
  * Is responsible for fetching the images from files and matching them with the right pieces
  */
 public class ImageHandler {
-    List<ImageView> blackImageViews = new ArrayList<>();
-    List<ImageView> whiteImageViews = new ArrayList<>();
-    private final List<ImageView> pieceImages = new ArrayList<>();
-    private final Map<IPiece, ImageView> pieceImageViewMap = new HashMap<>();
     private ChessFacade model;
-    private Map<Point, IPiece> boardMap;
     private double squareDimension;
     private boolean minecraftPieceStyle = false;
-
-    public List<ImageView> getBlackImageViews() {
-        return blackImageViews;
-    }
-
-    public List<ImageView> getWhiteImageViews() {
-        return whiteImageViews;
-    }
-
-    public List<ImageView> getPieceImages() {
-        return pieceImages;
-    }
 
     public void setModel(ChessFacade model) {
         this.model = model;
@@ -60,29 +41,19 @@ public class ImageHandler {
      *
      * @return List of piece images
      */
-    public List<ImageView> fetchPieceImages() {
-        boardMap = model.getCurrentBoardMap();
+    public ImageView fetchPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
+        ImageView pieceImageView = new ImageView();
 
-        pieceImageViewMap.clear();
-        for (Map.Entry<Point, IPiece> entry : boardMap.entrySet()) {
-            if (entry.getValue() == null) {
-                break;
-            }
+        pieceImageView.setPreserveRatio(true);
+        pieceImageView.setImage(createPieceImage(pieceType, chessColor));
 
-            ImageView pieceImageView = new ImageView();
-            pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(entry.getValue().getPieceType(), entry.getValue().getColor()));
+        pieceImageView.setFitWidth(dimensions);
+        pieceImageView.setFitHeight(dimensions);
 
-            pieceImageView.setFitWidth(squareDimension - 10);
-            pieceImageView.setFitHeight(squareDimension - 10);
+        pieceImageView.setX(square.getX() * dimensions);
+        pieceImageView.setY(square.getY() * dimensions);
 
-            pieceImageView.setX(entry.getKey().x * squareDimension + 5);
-            pieceImageView.setY(entry.getKey().y * squareDimension + 5);
-
-            pieceImages.add(pieceImageView);
-            pieceImageViewMap.put(entry.getValue(), pieceImageView);
-        }
-        return pieceImages;
+        return pieceImageView;
     }
 
     Image createPieceImage(PieceType pieceType, ChessColor pieceColor) {
@@ -104,42 +75,48 @@ public class ImageHandler {
         return pieceImage;
     }
 
-    public void fetchDeadPieceImages() {
-        List<IPiece> deadIPieces = model.getCurrentDeadPieces();
-        whiteImageViews.clear();
-        blackImageViews.clear();
+    void addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions){
+        imageView.setX(0);
+        imageView.setY(0);
 
-        for (IPiece IPiece : deadIPieces) {
-            if (IPiece == null) {
-                break;
-            }
-
-            ImageView pieceImageView = new ImageView();
-            pieceImageView.setPreserveRatio(true);
-            pieceImageView.setImage(createPieceImage(IPiece.getPieceType(), IPiece.getColor()));
-
-            pieceImageView.setFitWidth(squareDimension - 25);
-            pieceImageView.setFitHeight(squareDimension - 25);
-
-            if (IPiece.getColor() == WHITE) {
-                whiteImageViews.add(pieceImageView);
-            } else if (IPiece.getColor() == BLACK) {
-                blackImageViews.add(pieceImageView);
-            }
-
-        }
+        TranslateTransition tt = new TranslateTransition(Duration.millis(500), imageView);
+        tt.setFromX(squareFrom.getX()*dimensions);
+        tt.setFromY(squareFrom.getY()*dimensions);
+        tt.setToX(squareTo.getX()*dimensions);
+        tt.setToY(squareTo.getY()*dimensions);
+        tt.setCycleCount(1);
+        tt.play();
     }
 
-
-    /**
-     * Uses the map created in fetchPieceImages to calculate the coordinates that the images are supposed to have
-     */
-    public void updateImageCoordinates() {
-        boardMap = model.getCurrentBoardMap();
-        for (Map.Entry<Point, IPiece> entry : boardMap.entrySet()) {
-            pieceImageViewMap.get(entry.getValue()).setX(entry.getKey().x * squareDimension + 5);
-            pieceImageViewMap.get(entry.getValue()).setY(entry.getKey().y * squareDimension + 5);
+    void addScaleTransition(ImageView imageView, double duration, boolean grow){
+        ScaleTransition st = new ScaleTransition(Duration.millis(duration), imageView);
+        if (grow){
+            st.setFromX(0);
+            st.setFromY(0);
+            st.setToX(1.0);
+            st.setToY(1.0);
+        } else {
+            st.setFromX(1.0);
+            st.setFromY(1.0);
+            st.setToX(0);
+            st.setToY(0);
         }
+        st.setCycleCount(1);
+        st.play();
+    }
+
+    public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
+        List<ImageView> imageViews = new ArrayList<>();
+        for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
+           ImageView imageView = fetchPieceImageView(new Square(0,0), pieceType, chessColor, (int) squareDimension);
+
+           imageView.setFitWidth(squareDimension - 25);
+           imageView.setFitHeight(squareDimension - 25);
+
+           imageViews.add(imageView);
+        }
+
+        return imageViews;
     }
 
     /**
@@ -149,10 +126,10 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Point point : model.getCurrentLegalPoints()) {
+        for (Square square : model.getCurrentLegalSquare()) {
             ImageView imageView = new ImageView();
 
-            if (boardMap.get(point) != null) {
+            if (model.isSquareOccupied(square)) {
                 if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMoveBox.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
@@ -163,8 +140,8 @@ public class ImageHandler {
             imageView.setFitWidth(squareDimension);
             imageView.setFitHeight(squareDimension);
 
-            imageView.setX(point.x * squareDimension);
-            imageView.setY(point.y * squareDimension);
+            imageView.setX(square.getX() * squareDimension);
+            imageView.setY(square.getY() * squareDimension);
 
             imageViews.add(imageView);
         }
@@ -183,11 +160,6 @@ public class ImageHandler {
 
     public void setSquareDimension(double squareDimension) {
         this.squareDimension = squareDimension;
-    }
-
-    //Game
-    public void init() {
-        boardMap = model.getCurrentBoardMap();
     }
 
     public Image getChessboardImage() {

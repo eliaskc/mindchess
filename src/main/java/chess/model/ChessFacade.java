@@ -4,8 +4,8 @@ import chess.model.pieces.IPiece;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
-import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +28,6 @@ public class ChessFacade {
         return currentGame.getPlayerBlack().getName();
     }
 
-    public void setCurrentPlayerBlackName(String name) {
-        currentGame.getPlayerBlack().setName(name);
-    }
-
     public String getCurrentPlayerWhiteName() {
         return currentGame.getPlayerWhite().getName();
     }
@@ -40,8 +36,16 @@ public class ChessFacade {
         currentGame.getPlayerWhite().setName(name);
     }
 
+    public void setCurrentPlayerBlackName(String name) {
+        currentGame.getPlayerBlack().setName(name);
+    }
+
     public boolean isCurrentPlayerWhite() {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
+    }
+
+    public boolean isSquareOccupied(Square square){
+        return currentGame.getBoard().getBoardMap().containsKey(square);
     }
 
     public void forfeit() {
@@ -73,8 +77,8 @@ public class ChessFacade {
         return new ArrayList<>(currentGame.getPlies());
     }
 
-    public Map<Point, IPiece> getCurrentBoardMap() {
-        return currentGame.getBoard().getBoardMap();
+    public Map<Square, IPiece> getCurrentBoardMap() {
+        return new HashMap<>(currentGame.getBoard().getBoardMap());
     }
 
     public Board getCurrentBoard() {
@@ -84,13 +88,30 @@ public class ChessFacade {
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
-
     public List<IPiece> getCurrentDeadPieces() {
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }
 
-    public List<Point> getCurrentLegalPoints() {
-        return new ArrayList<>(currentGame.getLegalPoints());
+    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor){
+        List<PieceType> pieceTypes = new ArrayList<>();
+        for (IPiece piece : currentGame.getBoard().getDeadPieces()){
+            if (piece.getColor().equals(chessColor)){
+                pieceTypes.add(piece.getPieceType());
+            }
+        }
+        return pieceTypes;
+    }
+
+    public Square getLastPlyMovedFromSquare(){
+        return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedFrom();
+    }
+
+    public Square getLastPlyMovedToSquare(){
+        return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
+    }
+
+    public List<Square> getCurrentLegalSquare() {
+        return new ArrayList<>(currentGame.getLegalSquares());
     }
 
     public int getCurrentWhiteTimerTime() {
@@ -136,5 +157,4 @@ public class ChessFacade {
     public void stopAllTimers() {
         currentGame.stopAllTimers();
     }
-
 }

@@ -1,7 +1,7 @@
 package eaee.model;
 
 import chess.model.ChessFacade;
-import chess.model.util.MovementLogicUtil;
+import chess.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

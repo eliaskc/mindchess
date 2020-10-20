@@ -89,7 +89,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="chessboardContainer" layoutX="360.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="560.0" prefWidth="560.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="60.0">
+            <AnchorPane fx:id="chessboardContainer" layoutX="360.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="560.0" prefWidth="560.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="60.0">
                <children>
                   <ImageView fx:id="chessboardImage" fitHeight="560.0" fitWidth="560.0" onMousePressed="#handleClick" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>

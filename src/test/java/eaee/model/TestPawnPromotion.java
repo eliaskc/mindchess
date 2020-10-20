@@ -3,7 +3,7 @@ package eaee.model;
 import chess.model.Board;
 import chess.model.ChessFacade;
 import chess.model.PieceType;
-import chess.model.util.MovementLogicUtil;
+import chess.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +55,7 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(20,0);
 
-        assertEquals(PieceType.QUEEN, board.fetchPieceOnPoint(new Point(4,0)).getPieceType());
+        assertEquals(PieceType.QUEEN, board.fetchPieceOnSquare(new Square(4,0)).getPieceType());
     }
 
     @Test
@@ -85,6 +85,6 @@ public class TestPawnPromotion {
 
         model.handleBoardInput(0,1);
 
-        assertEquals(PieceType.PAWN, board.fetchPieceOnPoint(new Point(4,1)).getPieceType());
+        assertEquals(PieceType.PAWN, board.fetchPieceOnSquare(new Square(4,1)).getPieceType());
     }
 }
