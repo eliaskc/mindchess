@@ -7,36 +7,52 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchor" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.MenuController">
+<AnchorPane fx:id="rootAnchor" prefHeight="720.0" prefWidth="1280.0" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.MenuController">
    <children>
-      <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
-      <ImageView fitHeight="189.0" fitWidth="621.0" layoutX="330.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@guiFiles/MINDCHESS.png" />
-         </image>
-      </ImageView>
-      <TextField fx:id="player1NameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="139.0" />
-      <TextField fx:id="player2NameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
-      <Label layoutX="472.0" layoutY="236.0" prefHeight="22.0" prefWidth="144.0" styleClass="playerNameLabel" stylesheets="@chess.css" text="Player 1 name:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <Label layoutX="674.0" layoutY="235.0" styleClass="playerNameLabel" text="Player 2 name:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="timeLabel" alignment="CENTER" layoutX="617.0" layoutY="360.0" prefHeight="33.0" prefWidth="55.0" text="5 m." visible="false">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="378.0" prefHeight="32.0" prefWidth="140.0" promptText="Välj tid" styleClass="timeComboBox" />
-      <Button layoutX="471.0" layoutY="314.0" mnemonicParsing="false" onAction="#goToBoard" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Start Game" />
-      <Button layoutX="472.0" layoutY="439.0" mnemonicParsing="false" onAction="#Exit" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Exit" />
+      <AnchorPane layoutX="277.0" layoutY="67.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="276.0" AnchorPane.topAnchor="70.0">
+         <children>
+            <FlowPane layoutX="-2.0" layoutY="6.0" prefHeight="583.0" prefWidth="465.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="72.0" />
+            <Label layoutX="322.0" layoutY="26.0" prefHeight="25.0" prefWidth="85.0" text="Games">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane styleClass="background">
+         <children>
+            <MediaView fx:id="media" fitHeight="720.0" fitWidth="1280.0" />
+            <ImageView fitHeight="189.0" fitWidth="621.0" layoutX="330.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@guiFiles/MINDCHESS.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="player1NameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
+            <TextField fx:id="player2NameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
+            <Label layoutX="472.0" layoutY="236.0" prefHeight="22.0" prefWidth="143.0" styleClass="playerNameLabel" stylesheets="@chess.css" text="Player 1 name:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="675.0" layoutY="235.0" prefHeight="22.0" prefWidth="140.0" styleClass="playerNameLabel" text="Player 2 name:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="timeLabel" alignment="CENTER" layoutX="617.0" layoutY="360.0" prefHeight="33.0" prefWidth="55.0" text="5 m." visible="false">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="373.0" prefHeight="32.0" prefWidth="140.0" promptText="Välj tid" styleClass="timeComboBox" />
+            <Button layoutX="471.0" layoutY="314.0" mnemonicParsing="false" onAction="#goToBoard" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Start Game" />
+            <Button layoutX="471.0" layoutY="487.0" mnemonicParsing="false" onAction="#Exit" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Exit" />
+            <Button layoutX="471.0" layoutY="429.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Load Game" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
