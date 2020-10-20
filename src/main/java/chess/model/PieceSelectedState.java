@@ -1,22 +1,20 @@
 package chess.model;
 
-import java.awt.*;
+import chess.model.pieces.IPiece;
 
-import static chess.model.ChessColor.BLACK;
-import static chess.model.ChessColor.WHITE;
-import static chess.model.PieceType.PAWN;
+import static chess.model.ChessColor.*;
+import static chess.model.PieceType.*;
+import static chess.model.SquareType.*;
 
 public class PieceSelectedState implements GameState {
 
     private Square selectedSquare;
     private Game context;
-    private Movement movement;
-    private Piece takenPiece = null;
+    private IPiece takenPiece = null;
 
     PieceSelectedState(Square selectedSquare, Game context) {
         this.selectedSquare = selectedSquare;
         this.context = context;
-        this.movement = new Movement(context.getBoard().getBoardMap(), context.getPlies());
     }
 
     /**
@@ -37,6 +35,7 @@ public class PieceSelectedState implements GameState {
         }
 
         if (context.getLegalSquares().contains(targetSquare)) {
+            targetSquare = context.getLegalSquareByCoordinates(x, y);
             move(selectedSquare,targetSquare);
             addMoveToPlies(selectedSquare, targetSquare);
             context.notifyDrawPieces();
@@ -53,7 +52,7 @@ public class PieceSelectedState implements GameState {
             }
 
             context.switchPlayer();
-            checkKingInCheck();
+            checkKingInCheck(context.getCurrentPlayerColor());
         }
         context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
         clearAndDrawLegalMoves();
@@ -74,17 +73,18 @@ public class PieceSelectedState implements GameState {
         if (!context.getBoard().getBoardMap().containsKey(selectedSquare)) return;
 
         //castling
-        if (movement.getCastlingSquare(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).size() != 0 && movement.getCastlingSquare(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).contains(targetSquare)) {
+        if (targetSquare.getSquareType() == CASTLING) {
             if (targetSquare.getX() > selectedSquare.getX()) {
                 makeMoves(new Square(targetSquare.getX() + 1, targetSquare.getY()), new Square(targetSquare.getX() - 1, targetSquare.getY()));
             } else if (targetSquare.getX() < selectedSquare.getX()) {
                 makeMoves(new Square(targetSquare.getX() - 2, targetSquare.getY()), new Square(targetSquare.getX() + 1, targetSquare.getY()));
             }
         }
-        if (movement.getEnPassantSquares(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).size() != 0 && movement.getEnPassantSquares(context.getBoard().getBoardMap().get(selectedSquare), selectedSquare).contains(targetSquare)) {
-            if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == WHITE) {
+
+        if (targetSquare.getSquareType() == EN_PASSANT) {
+            if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, WHITE)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() + 1));
-            } else if (context.getBoard().getBoardMap().get(selectedSquare).getColor() == BLACK) {
+            } else if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, BLACK)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() - 1));
             }
         }
@@ -98,7 +98,7 @@ public class PieceSelectedState implements GameState {
         if (context.getBoard().getBoardMap().containsKey(moveTo)) {
             takePiece(moveTo);
         }
-
+        context.getBoard().markPieceOnSquareHasMoved(moveFrom);
         context.getBoard().getBoardMap().put(moveTo, context.getBoard().getBoardMap().get(moveFrom));
         context.getBoard().getBoardMap().remove(moveFrom);
     }
@@ -114,16 +114,18 @@ public class PieceSelectedState implements GameState {
         context.notifyDrawDeadPieces();
     }
 
-    private void checkKingInCheck() {
-        Square kingSquare = movement.fetchKingSquare(context.getCurrentPlayer().getColor());
-        if (movement.isKingInCheck(kingSquare)) {
+    private void checkKingInCheck(ChessColor kingColor) {
+        ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
+        Square kingSquare = context.getBoard().fetchKingSquare(kingColor);
+
+        MovementLogicUtil.isKingInCheck(context.getBoard(), kingSquare, opponentColor);
+        if (kingSquare.getSquareType() == IN_CHECK)
             context.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
-        }
     }
 
     private boolean checkKingTaken() {
-        for (Piece p : context.getBoard().getDeadPieces()) {
-            if (p.getPieceType() == PieceType.KING) return true;
+        for (IPiece p : context.getBoard().getDeadPieces()) {
+            if (p.getPieceType().equals(KING)) return true;
         }
         return false;
     }
@@ -134,7 +136,7 @@ public class PieceSelectedState implements GameState {
      * @param targetSquare
      */
     private boolean checkPawnPromotion(Square targetSquare) {
-        if (context.getBoard().getBoardMap().get(targetSquare).getPieceType() == PAWN && ((targetSquare.getY() == 0 && context.getBoard().getBoardMap().get(targetSquare).getColor() == WHITE) || (targetSquare.getY() == 7 && context.getBoard().getBoardMap().get(targetSquare).getColor() == BLACK))) {
+        if (targetSquare.getSquareType() == PROMOTION) {
             context.notifyPawnPromotion();
             return true;
         }

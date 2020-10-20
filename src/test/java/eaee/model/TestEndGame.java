@@ -1,29 +1,20 @@
 package eaee.model;
 
 import chess.model.ChessFacade;
-import chess.model.Movement;
-import chess.model.Piece;
 import chess.model.Square;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class TestEndGame {
     ChessFacade model;
-    Map<Square, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentBoardMap();
-        movement.setBoardMap(boardMap);
     }
 
     //Test taking the king

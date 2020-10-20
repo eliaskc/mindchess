@@ -2,14 +2,23 @@ package chess.model;
 
 import java.util.Objects;
 
-//point
+import static chess.model.SquareType.*;
+
+//Square
 public class Square {
     private int x;
     private int y;
+    private SquareType squareType = NORMAL;
 
     public Square(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Square(int x, int y, SquareType squareType) {
+        this.x = x;
+        this.y = y;
+        this.squareType = squareType;
     }
 
     public int getX() {
@@ -26,6 +35,14 @@ public class Square {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public SquareType getSquareType() {
+        return squareType;
+    }
+
+    public void setSquareType(SquareType squareType) {
+        this.squareType = squareType;
     }
 
     @Override

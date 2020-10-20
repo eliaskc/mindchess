@@ -3,24 +3,23 @@ package eaee.model;
 import chess.model.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+
+import static chess.model.PieceType.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 public class TestCastling {
     ChessFacade model;
-    Map<Square, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
+    Board board;
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentBoardMap();
-        movement.setBoardMap(boardMap);
+        board = model.getCurrentBoard();
     }
 
     @Test
@@ -28,8 +27,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(boardMap.get(new Square(5,7)).getPieceType(), PieceType.BISHOP);
-        assertEquals(boardMap.get(new Square(6,7)).getPieceType(), PieceType.KNIGHT);
+        assertEquals(board.fetchPieceOnSquare(new Square(5, 7)).getPieceType(), BISHOP);
+        assertEquals(board.fetchPieceOnSquare(new Square(6, 7)).getPieceType(), KNIGHT);
     }
 
     @Test
@@ -57,10 +56,8 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        boardMap = model.getCurrentBoardMap();
-
-        assertEquals(boardMap.get(new Square(5,7)).getPieceType(), PieceType.ROOK);
-        assertEquals(boardMap.get(new Square(6,7)).getPieceType(), PieceType.KING);
+        assertEquals(ROOK, board.fetchPieceOnSquare(new Square(5, 7)).getPieceType());
+        assertEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
     }
 
     @Test
@@ -100,6 +97,6 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertEquals(PieceType.KING, boardMap.get(new Square(4,7)).getPieceType());
+        assertNotEquals("King", board.fetchPieceOnSquare(new Square(6, 7)));
     }
 }

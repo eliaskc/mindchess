@@ -7,6 +7,7 @@ import chess.observers.TimerObserver;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
@@ -31,7 +32,7 @@ public class Game implements TimerObserver {
         this.gameState = gameState;
     }
 
-    private void initGameStates(){
+    private void initGameStates() {
         gameState = GameStateFactory.createNoPieceSelectedState(this);
     }
 
@@ -63,7 +64,7 @@ public class Game implements TimerObserver {
      * @param y
      */
     void handleBoardInput(int x, int y) {
-        gameState.handleInput(x,y);
+        gameState.handleInput(x, y);
         if (!gameState.isGameOngoing()) {
             notifyEndGame();
         }
@@ -76,7 +77,7 @@ public class Game implements TimerObserver {
         notifySwitchedPlayer();
     }
 
-    private Player getOtherPlayer(){
+    private Player getOtherPlayer() {
         if (currentPlayer == playerWhite) {
             return playerBlack;
         } else {
@@ -84,19 +85,19 @@ public class Game implements TimerObserver {
         }
     }
 
-    void endGameAsDraw(){
+    void endGameAsDraw() {
         setGameState(GameStateFactory.createGameOverState("Game ended in draw"));
         stopAllTimers();
         notifyEndGame();
     }
 
-    void endGameAsForfeit(){
+    void endGameAsForfeit() {
         setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }
 
-    void stopAllTimers(){
+    void stopAllTimers() {
         playerBlack.getTimer().stopTimer();
         playerWhite.getTimer().stopTimer();
     }
@@ -208,5 +209,13 @@ public class Game implements TimerObserver {
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
+    }
+
+    public Square getLegalSquareByCoordinates(int x, int y) {
+        for (Square s : legalSquares) {
+            if (s.getX() == x && s.getY() == y)
+                return s;
+        }
+        throw new NoSuchElementException("No legal square with matching coordinates found");
     }
 }

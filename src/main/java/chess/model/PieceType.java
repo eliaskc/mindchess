@@ -1,10 +1,10 @@
 package chess.model;
 
 public enum PieceType {
-    BISHOP,
-    KING,
-    KNIGHT,
-    PAWN,
     QUEEN,
-    ROOK
+    PAWN,
+    ROOK,
+    KING,
+    BISHOP,
+    KNIGHT
 }

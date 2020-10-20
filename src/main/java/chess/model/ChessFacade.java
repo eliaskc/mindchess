@@ -1,5 +1,6 @@
 package chess.model;
 
+import chess.model.pieces.IPiece;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
@@ -16,8 +17,8 @@ import java.util.Map;
  * (Composite pattern?)
  */
 public class ChessFacade {
-    private Game currentGame;
     private final List<Game> gameList = new ArrayList<>();
+    private Game currentGame;
 
     public String getCurrentPlayerName() {
         return currentGame.getCurrentPlayer().getName();
@@ -76,21 +77,24 @@ public class ChessFacade {
         return new ArrayList<>(currentGame.getPlies());
     }
 
-    public Map<Square, Piece> getCurrentBoardMap() {
+    public Map<Square, IPiece> getCurrentBoardMap() {
         return new HashMap<>(currentGame.getBoard().getBoardMap());
+    }
+
+    public Board getCurrentBoard() {
+        return currentGame.getBoard();
     }
 
     public List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
-
-    public List<Piece> getCurrentDeadPieces() {
+    public List<IPiece> getCurrentDeadPieces() {
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }
 
     public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor){
         List<PieceType> pieceTypes = new ArrayList<>();
-        for (Piece piece : currentGame.getBoard().getDeadPieces()){
+        for (IPiece piece : currentGame.getBoard().getDeadPieces()){
             if (piece.getColor().equals(chessColor)){
                 pieceTypes.add(piece.getPieceType());
             }

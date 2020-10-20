@@ -1,25 +1,22 @@
 package eaee.model;
 
 import chess.model.*;
+import chess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TestAlternatingTurns {
     ChessFacade model;
-    Map<Square, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
+    Board board;
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        boardMap = model.getCurrentBoardMap();
-        movement.setBoardMap(boardMap);
+        board = model.getCurrentBoard();
     }
 
     @Test
@@ -35,7 +32,7 @@ public class TestAlternatingTurns {
 
     @Test
     public void testTakePieceSuccess(){
-        Piece piece = model.getCurrentBoardMap().get(new Square(3,7));
+        IPiece IPiece = model.getCurrentBoardMap().get(new Square(3,7));
 
         model.handleBoardInput(4,6);
         model.handleBoardInput(4,5);
@@ -49,17 +46,17 @@ public class TestAlternatingTurns {
         model.handleBoardInput(2,0);
         model.handleBoardInput(6,4);
 
-        assertTrue(model.getCurrentDeadPieces().contains(piece));
+        assertTrue(model.getCurrentDeadPieces().contains(IPiece));
     }
 
     @Test
     public void testTakePieceFail(){
-        Piece piece = model.getCurrentBoardMap().get(new Square(4, 0));
+        IPiece IPiece = model.getCurrentBoardMap().get(new Square(4, 0));
 
         model.handleBoardInput(3,0);
         model.handleBoardInput(4,0);
 
-        assertFalse(model.getCurrentDeadPieces().contains(piece));
+        assertFalse(model.getCurrentDeadPieces().contains(IPiece));
     }
 
 }

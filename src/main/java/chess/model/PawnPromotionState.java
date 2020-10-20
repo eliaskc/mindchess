@@ -1,10 +1,13 @@
 package chess.model;
 
-import java.awt.*;
+import chess.model.pieces.IPiece;
+import chess.model.pieces.Piece;
+import chess.model.pieces.PieceFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class PawnPromotionState implements GameState{
+public class PawnPromotionState implements GameState {
 
     private Map<Square, PieceType> promotionPieces = new HashMap<>();
 
@@ -37,12 +40,18 @@ public class PawnPromotionState implements GameState{
     }
 
     private void promote(Square selectedSquare, Square selectedPromotion){
-        Piece piece = new Piece(context.getBoard().getBoardMap().get(this.selectedSquare).getColor(), promotionPieces.get(selectedPromotion));
+        IPiece piece = null;
+        try {
+            piece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid Piece Name");
+        }
+
         context.getBoard().getBoardMap().put(selectedSquare, piece);
     }
 
     @Override
-    public String getGameStatus() {
+    public java.lang.String getGameStatus() {
         return "Game ongoing";
     }
 

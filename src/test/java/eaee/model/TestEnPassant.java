@@ -5,22 +5,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestEnPassant {
     ChessFacade model;
-    Map<Square, Piece> boardMap = new HashMap<>();
-    Movement movement = new Movement();
+    Board board;
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
-        movement.setBoardMap(boardMap);
+        board = model.getCurrentBoard();
     }
 
     @Test
@@ -42,10 +40,8 @@ public class TestEnPassant {
         model.handleBoardInput(4,3);
         model.handleBoardInput(3,2);
 
-        boardMap = model.getCurrentBoardMap();
-
-        assertEquals(PieceType.PAWN, boardMap.get(new Square(3,2)).getPieceType());
-        assertEquals(ChessColor.WHITE, boardMap.get(new Square(3,2)).getColor());
-        assertEquals(null, boardMap.get(new Square(3,3)));
+//      assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
+        assertTrue(board.pieceOnSquareColorEquals(new Square(3,2), ChessColor.WHITE));
+        assertEquals(null, board.fetchPieceOnSquare(new Square(3,3)));
     }
 }

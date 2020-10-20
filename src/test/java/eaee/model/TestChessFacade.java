@@ -2,7 +2,7 @@ package eaee.model;
 
 import chess.model.*;
 import chess.model.ChessColor;
-import chess.model.Piece;
+import chess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,36 +10,35 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.Map;
 
+import static chess.model.PieceType.*;
 import static org.junit.Assert.*;
 
 public class TestChessFacade {
     private ChessFacade model;
+    Board board;
 
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame();
+        board = model.getCurrentBoard();
     }
 
     @Test
     public void testMoveAndPly() {
-        Map<Square, Piece> boardMap = model.getCurrentBoardMap();
         Square p1 = new Square(0,6);
         Square p2 = new Square(0,5);
 
-        Piece testPieceBefore = boardMap.get(p1);
+        IPiece testIPieceBefore = model.getCurrentBoardMap().get(p1);
 
         model.handleBoardInput(0,6);
         model.handleBoardInput(0,5);
 
-        boardMap = model.getCurrentBoardMap();
+        IPiece testIPieceAfter = model.getCurrentBoardMap().get(p2);
 
-        Piece testPieceAfter = boardMap.get(p2);
+        Ply ply = new Ply("", p1,p2, testIPieceAfter,null,model.getCurrentBoardMap());
 
-        Ply ply = new Ply("", p1,p2,testPieceAfter,null,boardMap);
-
-        assertEquals(testPieceBefore, testPieceAfter);
-      
+        assertEquals(testIPieceBefore, testIPieceAfter);
         assertEquals(model.getCurrentGamePlies().get(0).getMovedFrom(), ply.getMovedFrom());
         assertEquals(model.getCurrentGamePlies().get(0).getMovedTo(), ply.getMovedTo());
         assertEquals(model.getCurrentGamePlies().get(0).getMovedPiece(), ply.getMovedPiece());
@@ -47,11 +46,9 @@ public class TestChessFacade {
 
     @Test
     public void testPlaceAllPieces(){
-        Map<Square, Piece> boardMap = model.getCurrentBoardMap();
-
-        assertTrue(boardMap.get(new Square(0,0)).getColor() == ChessColor.BLACK && boardMap.get(new Square(0,0)).getPieceType() == PieceType.ROOK);
-        assertTrue(boardMap.get(new Square(6,6)).getColor() == ChessColor.WHITE && boardMap.get(new Square(6,6)).getPieceType() == PieceType.PAWN);
-        assertTrue(boardMap.get(new Square(4,7)).getColor() == ChessColor.WHITE && boardMap.get(new Square(4,7)).getPieceType() == PieceType.KING);
+        assertTrue(board.pieceOnSquareColorEquals(new Square(0,0), ChessColor.BLACK) && board.fetchPieceOnSquare(new Square(0,0)).getPieceType().equals(ROOK));
+        assertTrue(board.pieceOnSquareColorEquals(new Square(6,6), ChessColor.WHITE) && board.fetchPieceOnSquare(new Square(6,6)).getPieceType().equals(PAWN));
+        assertTrue(board.pieceOnSquareColorEquals(new Square(4,7), ChessColor.WHITE) && board.fetchPieceOnSquare(new Square(4,7)).getPieceType().equals(KING));
     }
 
     @Test

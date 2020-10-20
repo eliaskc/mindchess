@@ -1,17 +1,14 @@
 package chess.controller;
 
-import chess.model.Piece;
 import chess.model.Ply;
 import chess.model.Square;
-import javafx.animation.*;
+import chess.model.pieces.IPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +52,7 @@ public class PlyController extends AnchorPane {
     public List<ImageView> generateBoardImages(boolean performMove){
         List<ImageView> imageViewList = new ArrayList<>();
 
-        for (Map.Entry<Square, Piece> entry : ply.getBoardSnapshot().entrySet()){
+        for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()){
             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
 
             imageViewList.add(imageView);
@@ -63,7 +60,7 @@ public class PlyController extends AnchorPane {
             if (entry.getValue().equals(ply.getMovedPiece())) {
 
                 if(performMove){
-                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40);
+                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40, 400);
                 } else {
                     imageView.setX(ply.getMovedFrom().getX()*40);
                     imageView.setY(ply.getMovedFrom().getY()*40);
@@ -71,7 +68,7 @@ public class PlyController extends AnchorPane {
 
                 if (ply.getTakenPiece() != null) {
                     ImageView attackedImageView = imageHandler.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
-                    imageHandler.addScaleTransition(attackedImageView, 750, false);
+                    imageHandler.addScaleTransition(attackedImageView, 400, false);
                     imageViewList.add(attackedImageView);
                 }
             }

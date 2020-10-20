@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.model.*;
+import chess.model.pieces.IPiece;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 import javafx.animation.ScaleTransition;
@@ -33,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import static chess.model.PieceType.*;
 
 /**
  * ChessController handles the chess board
@@ -290,18 +289,18 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private void muteUnmute() {
         audioPlayer.setMute(!audioPlayer.isMute());
-        muteUnmuteButton.setText(muteUnmuteButton.getText().equals("Mute") ? "Unmute" : "Mute");
+        muteUnmuteButton.setText(audioPlayer.isMute() ? "Unmute" : "Mute");
     }
 
 
     private List<ImageView> fetchPieceImages() {
          List<ImageView> pieceImages = new ArrayList<>();
-         for (Map.Entry<Square, Piece> entry : model.getCurrentBoardMap().entrySet()){
+         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()){
              ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
              pieceImages.add(imageView);
              if(model.getCurrentGamePlies().size() > 0){
                  if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
-                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8);
+                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
                  }
              }
          }
@@ -380,10 +379,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void drawPawnPromotionSetup(ChessColor chessColor) {
-        promotionQueen.setImage(imageHandler.createPieceImage(QUEEN, chessColor));
-        promotionKnight.setImage(imageHandler.createPieceImage(KNIGHT, chessColor));
-        promotionRook.setImage(imageHandler.createPieceImage(ROOK, chessColor));
-        promotionBishop.setImage(imageHandler.createPieceImage(BISHOP, chessColor));
+        promotionQueen.setImage(imageHandler.createPieceImage(PieceType.QUEEN, chessColor));
+        promotionKnight.setImage(imageHandler.createPieceImage(PieceType.KNIGHT, chessColor));
+        promotionRook.setImage(imageHandler.createPieceImage(PieceType.ROOK, chessColor));
+        promotionBishop.setImage(imageHandler.createPieceImage(PieceType.BISHOP, chessColor));
     }
 
     private void pawnPromotion(int x, int y) {
@@ -417,13 +416,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     private void clearAllLegalMoveImages() {
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = new ScaleTransition(Duration.millis(75), imageView);
-            st.setFromX(1);
-            st.setFromY(1);
-            st.setToX(0.1);
-            st.setToY(0.1);
-            st.setCycleCount(1);
-            st.play();
+            ScaleTransition st = imageHandler.addScaleTransition(imageView, 75, false);
 
             st.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
