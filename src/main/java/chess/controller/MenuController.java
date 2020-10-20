@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -78,7 +79,7 @@ public class MenuController implements Initializable {
      * @param event Clicked the button
      */
     @FXML
-    void goToBoard(ActionEvent event) {
+    void goToBoardNewGame(ActionEvent event) {
         model.createNewGame();
 
         if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
@@ -86,7 +87,11 @@ public class MenuController implements Initializable {
         model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
         model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        goToBoard(event.getSource());
+    }
+
+    void goToBoard(Object source) {
+        Stage window = (Stage) ((Node) source).getScene().getWindow();
         window.setScene(scene);
         window.show();
 
@@ -95,6 +100,7 @@ public class MenuController implements Initializable {
         chessController.init();
         chessController.drawPieces();
     }
+
 
     public void createChessScene(Parent chessParent) {
         this.chessParent = chessParent;
@@ -160,5 +166,29 @@ public class MenuController implements Initializable {
         timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
 
         btnTimerDrop.getSelectionModel().select(3);
+    }
+
+    @FXML
+    FlowPane gameListFlowPane;
+    @FXML
+    AnchorPane gameListAnchorPane;
+    @FXML
+    private void populateGameList() {
+        gameListFlowPane.getChildren().clear();
+        int i = 0;
+        gameListAnchorPane.toFront();
+        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        for (String[] s : model.getPlayersAndStatusInGameList()) {
+            GameListController gameListController = new GameListController(s[0],s[1],s[2]);
+            gameListFlowPane.getChildren().add(gameListController);
+            int finalI = i;
+            System.out.println(i);
+            gameListController.setOnMouseClicked(event -> {
+                model.setIndexAsCurrentGame(finalI);
+                gameListAnchorPane.toBack();
+                goToBoard(event.getSource());
+            });
+            i++;
+        }
     }
 }

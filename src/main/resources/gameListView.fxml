@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="chess.controller.GameListController"
-            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+<fx:root prefHeight="122.0" prefWidth="343.0" style="-fx-background-color: Blue;" type="AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="lblGameLabel" layoutX="25.0" layoutY="49.0" prefHeight="32.0" prefWidth="343.0" stylesheets="@chess.css" text="Player1 vs Player 2: Match ongoing" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="49.0" />
+   </children>
+</fx:root>

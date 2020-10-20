@@ -3,6 +3,7 @@ package chess.model;
 import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,6 +117,24 @@ public class ChessFacade {
 
     public int getCurrentBlackTimerTime() {
         return currentGame.getPlayerBlack().getCurrentTime();
+    }
+
+    public List<String[]> getPlayersAndStatusInGameList(){
+        ArrayList<String[]> returnList = new ArrayList<>();
+        for (Game g : getGameList()) {
+            String playerWhite = g.getPlayerWhite().getName();
+            String playerBlack = g.getPlayerBlack().getName();
+            String gameStatus = g.getGameStatus();
+            String[] tempArray = {playerWhite,playerBlack,gameStatus};
+            returnList.add(tempArray);
+        }
+        return returnList;
+    }
+    public void setIndexAsCurrentGame(int i){
+        if(i >= gameList.size()){
+            throw new IndexOutOfBoundsException();
+        }
+        currentGame = gameList.get(i);
     }
 
     public void setCurrentWhitePlayerTimerTime(int seconds) {

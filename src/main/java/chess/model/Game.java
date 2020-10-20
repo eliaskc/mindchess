@@ -166,6 +166,10 @@ public class Game implements TimerObserver {
         return currentPlayer.getColor();
     }
 
+    public String getGameStatus(){
+      return gameState.getGameStatus();
+    }
+
     void addGameObserver(GameObserver gameObserver) {
         gameObservers.add(gameObserver);
     }
