@@ -7,31 +7,6 @@
     -fx-font-family: "Minecraft";
 }
 
-/*
-.startButton {
-    -fx-image: url("guiFiles/buttons/start_game.png");
-}
-
-.startButton:hover {
-    -fx-image: url("guiFiles/buttons/start_game_hover.png");
-}
-
-.exitButton {
-    -fx-image: url("guiFiles/buttons/exit_game.png");
-}
-
-.exitButton:hover {
-    -fx-image: url("guiFiles/buttons/exit_game_hover.png");
-}
-
-.backButton {
-    -fx-image: url("guiFiles/buttons/back_button.png");
-}
-
-.backButton:hover {
-    -fx-image: url("guiFiles/buttons/back_button_hover.png");
-}*/
-
 .pawnPromotionBox {
     -fx-background-color: #D7D7D7;
 }
