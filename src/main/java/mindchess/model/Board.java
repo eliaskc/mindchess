@@ -9,9 +9,9 @@ import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
 
 /**
- * Board represents the mindchess board and contains the information and methods to see where things are.
+ * Board represents the mindchess board and contains the information and methods to see where things are on the board.
  *
- * The mindchess board is represented by a Map with Squares and IPieces that this class is responsible for putting into and
+ * The mindchess board is represented by a map with Squares and IPieces that this class is responsible for putting into and
  * removing from.
  */
 public class Board {
