@@ -1,5 +1,7 @@
 package mindchess.model;
 
+import mindchess.observers.TimerObserver;
+
 /**
  * Class Player represents a player playing mindchess and contains attributes for that player
  */
@@ -36,5 +38,20 @@ public class Player {
     ChessTimer getTimer() {
         return chessTimer;
     }
+
+
+    void setTimerActive(boolean active) {
+        chessTimer.setActive(active);
+    }
+
+    void addTimerObserver(TimerObserver observer){
+        chessTimer.addObserver(observer);
+    }
+
+    void startPlayerTimer(){
+        chessTimer.startTimer();
+    }
+
+    void stopPlayerTimer(){chessTimer.stopTimer();}
     
 }
