@@ -27,9 +27,10 @@ public class ChessTimer {
     /**
      * stops previous timer to make sure that not more than 1 threads are active
      * <p>
-     * Creates and starts decrementing a new timer
+     * Creates a new timer with a initial int time and start decrementing the time once per second.
+     *
+     * when the time reaches zero, the timer will become inactive and notify any observer
      */
-    //Public for tests
     void startTimer() {
         timer.cancel();
         timer = new Timer();
@@ -50,13 +51,16 @@ public class ChessTimer {
         setActive(false);
     }
 
+    /**
+     * when the time runs the timer will stop and any observer will be notified that the timer has run out
+     */
     private void timerRunOut(){
         stopTimer();
         notifyTimerEnded();
     }
 
     /**
-     * decrements the time Integer
+     * decrements the time Integer and notifies any observer that the time has updated every second
      */
     private void decrementTime() {
         time--;
@@ -78,6 +82,10 @@ public class ChessTimer {
         }
     }
 
+    void addObserver(TimerObserver t) {
+        observers.add(t);
+    }
+
     int getTime() {
         return time;
     }
@@ -90,7 +98,4 @@ public class ChessTimer {
         this.active = active;
     }
 
-    void addObserver(TimerObserver t) {
-        observers.add(t);
-    }
 }
