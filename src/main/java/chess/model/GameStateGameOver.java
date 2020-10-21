@@ -1,9 +1,11 @@
 package chess.model;
 
-public class GameOverState implements GameState {
+import chess.model.GameState;
+
+public class GameStateGameOver implements GameState {
     private String resultStatus;
 
-    GameOverState(String resultStatus) {
+    GameStateGameOver(String resultStatus) {
         this.resultStatus = resultStatus;
     }
 

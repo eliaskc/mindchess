@@ -99,11 +99,15 @@ public class Board {
         return null;
     }
 
+    boolean isSquareAPiece(Square square){
+        return boardMap.containsKey(square);
+    }
+
     boolean isOccupied(Square s) {
         return boardMap.containsKey(s);
     }
 
-    void markPieceOnSquareHasMoved(Square s){
+    public void markPieceOnSquareHasMoved(Square s){
         fetchPieceOnSquare(s).setHasMoved(true);
     }
 }

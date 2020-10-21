@@ -2,18 +2,29 @@ package chess.model;
 
 import chess.model.pieces.IPiece;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import static chess.model.ChessColor.*;
 import static chess.model.PieceType.*;
 import static chess.model.SquareType.*;
 
-public class PieceSelectedState implements GameState {
+public class GameStatePieceSelected implements GameState {
 
     private Square selectedSquare;
-    private Game context;
+    private IGameContext context;
     private IPiece takenPiece = null;
+    private GameStateObserver gameStateObserver;
+    private List<Square> legalSquares;
+    private List<Ply> plies;
+    private Board board;
 
-    PieceSelectedState(Square selectedSquare, Game context) {
+    GameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, GameStateObserver gameStateObserver, IGameContext context) {
         this.selectedSquare = selectedSquare;
+        this.board = board;
+        this.legalSquares = legalSquares;
+        this.plies = plies;
+        this.gameStateObserver = gameStateObserver;
         this.context = context;
     }
 
@@ -27,34 +38,35 @@ public class PieceSelectedState implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Square targetSquare = new Square(x, y);
-        if (context.getBoard().getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && context.getBoard().getBoardMap().get(targetSquare).getColor() == context.getCurrentPlayer().getColor()) {
+        if (board.getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
-            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
-            context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
+            //context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
+            //context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return;
         }
 
-        if (context.getLegalSquares().contains(targetSquare)) {
-            targetSquare = context.getLegalSquareByCoordinates(x, y);
+        if (legalSquares.contains(targetSquare)) {
+            targetSquare = getLegalSquareByCoordinates(x,y);
             move(selectedSquare,targetSquare);
             addMoveToPlies(selectedSquare, targetSquare);
-            context.notifyDrawPieces();
+            gameStateObserver.notifyDrawPieces();
 
             if (checkKingTaken()) {
-                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayer().getName() + " has won the game"));
+                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayerName() + " has won the game"));
                 return;
             }
 
             if (checkPawnPromotion(targetSquare)) {
-                context.setGameState(GameStateFactory.createPawnPromotionState(targetSquare,context));
+                context.setGameState(GameStateFactory.createPawnPromotionState(targetSquare,board,plies,legalSquares, gameStateObserver,context));
                 clearAndDrawLegalMoves();
                 return;
             }
 
-            context.switchPlayer();
+            //context.switchPlayer();
+            gameStateObserver.notifySwitchPlayer();
             checkKingInCheck(context.getCurrentPlayerColor());
         }
-        context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
+        context.setGameState(GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares, gameStateObserver,context));
         clearAndDrawLegalMoves();
     }
 
@@ -70,7 +82,7 @@ public class PieceSelectedState implements GameState {
      * @param targetSquare
      */
     private void makeSpecialMoves(Square selectedSquare, Square targetSquare) {
-        if (!context.getBoard().getBoardMap().containsKey(selectedSquare)) return;
+        if (!board.getBoardMap().containsKey(selectedSquare)) return;
 
         //castling
         if (targetSquare.getSquareType() == CASTLING) {
@@ -82,9 +94,9 @@ public class PieceSelectedState implements GameState {
         }
 
         if (targetSquare.getSquareType() == EN_PASSANT) {
-            if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, WHITE)) {
+            if (board.pieceOnSquareColorEquals(selectedSquare, WHITE)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() + 1));
-            } else if (context.getBoard().pieceOnSquareColorEquals(selectedSquare, BLACK)) {
+            } else if (board.pieceOnSquareColorEquals(selectedSquare, BLACK)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() - 1));
             }
         }
@@ -95,36 +107,36 @@ public class PieceSelectedState implements GameState {
      * <p>
      */
     private void makeMoves(Square moveFrom, Square moveTo) {
-        if (context.getBoard().getBoardMap().containsKey(moveTo)) {
+        if (board.isSquareAPiece(moveTo)) {
             takePiece(moveTo);
         }
-        context.getBoard().markPieceOnSquareHasMoved(moveFrom);
-        context.getBoard().getBoardMap().put(moveTo, context.getBoard().getBoardMap().get(moveFrom));
-        context.getBoard().getBoardMap().remove(moveFrom);
+        board.markPieceOnSquareHasMoved(moveFrom);
+        board.getBoardMap().put(moveTo, board.getBoardMap().get(moveFrom));
+        board.getBoardMap().remove(moveFrom);
     }
 
     private void clearAndDrawLegalMoves(){
-        context.getLegalSquares().clear();
-        context.notifyDrawLegalMoves();
+        legalSquares.clear();
+        gameStateObserver.notifyDrawLegalMoves();
     }
 
     private void takePiece(Square pieceOnSquareToTake) {
-        takenPiece = context.getBoard().getBoardMap().remove(pieceOnSquareToTake);
-        context.getBoard().getDeadPieces().add(takenPiece);
-        context.notifyDrawDeadPieces();
+        takenPiece = board.getBoardMap().remove(pieceOnSquareToTake);
+        board.getDeadPieces().add(takenPiece);
+        gameStateObserver.notifyDrawDeadPieces();
     }
 
     private void checkKingInCheck(ChessColor kingColor) {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
-        Square kingSquare = context.getBoard().fetchKingSquare(kingColor);
+        Square kingSquare = board.fetchKingSquare(kingColor);
 
-        MovementLogicUtil.isKingInCheck(context.getBoard(), kingSquare, opponentColor);
+        MovementLogicUtil.isKingInCheck(board, kingSquare, opponentColor);
         if (kingSquare.getSquareType() == IN_CHECK)
-            context.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
+            gameStateObserver.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
     }
 
     private boolean checkKingTaken() {
-        for (IPiece p : context.getBoard().getDeadPieces()) {
+        for (IPiece p : board.getDeadPieces()) {
             if (p.getPieceType().equals(KING)) return true;
         }
         return false;
@@ -137,15 +149,15 @@ public class PieceSelectedState implements GameState {
      */
     private boolean checkPawnPromotion(Square targetSquare) {
         if (targetSquare.getSquareType() == PROMOTION) {
-            context.notifyPawnPromotion();
+            gameStateObserver.notifyPawnPromotion();
             return true;
         }
         return false;
     }
 
     private void addMoveToPlies(Square selectedSquare, Square targetSquare) {
-        Ply ply = new Ply(context.getCurrentPlayer().getName(), selectedSquare, targetSquare, context.getBoard().getBoardMap().get(targetSquare), takenPiece, context.getBoard().getBoardMap());
-        context.getPlies().add(ply);
+        Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getBoardMap().get(targetSquare), takenPiece, board.getBoardMap());
+        plies.add(ply);
     }
 
     @Override
@@ -156,5 +168,13 @@ public class PieceSelectedState implements GameState {
     @Override
     public boolean isGameOngoing() {
         return true;
+    }
+
+    private Square getLegalSquareByCoordinates(int x, int y) {
+        for (Square s : legalSquares) {
+            if (s.getX() == x && s.getY() == y)
+                return s;
+        }
+        throw new NoSuchElementException("No legal square with matching coordinates found");
     }
 }

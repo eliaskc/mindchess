@@ -1,34 +1,41 @@
 package chess.model;
 
 import chess.model.pieces.IPiece;
-import chess.model.pieces.Piece;
 import chess.model.pieces.PieceFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class PawnPromotionState implements GameState {
+public class GameStatePawnPromotion implements GameState {
 
     private Map<Square, PieceType> promotionPieces = new HashMap<>();
 
-    private Game context;
+    private IGameContext context;
     private Square selectedSquare;
+    private GameStateObserver gameStateObserver;
+    private List<Square> legalSquares;
+    private List<Ply> plies;
+    private Board board;
 
-
-    PawnPromotionState(Square selectedSquare, Game context) {
-        this.context = context;
+    GameStatePawnPromotion(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, GameStateObserver gameStateObserver, IGameContext context) {
         this.selectedSquare = selectedSquare;
-        initPromotionPieces();
+        this.board = board;
+        this.legalSquares = legalSquares;
+        this.plies = plies;
+        this.gameStateObserver = gameStateObserver;
+        this.context = context;
     }
 
     @Override
     public void handleInput(int x, int y) {
+        initPromotionPieces();
         Square selectedPromotion = new Square(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
             promote(selectedSquare,selectedPromotion);
-            context.switchPlayer();
-            context.notifyDrawPieces();
-            context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
+            gameStateObserver.notifySwitchPlayer();
+            gameStateObserver.notifyDrawLegalMoves();
+            context.setGameState(GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares, gameStateObserver,context));
         }
     }
 
@@ -47,7 +54,7 @@ public class PawnPromotionState implements GameState {
             System.out.println("Invalid Piece Name");
         }
 
-        context.getBoard().getBoardMap().put(selectedSquare, piece);
+        board.getBoardMap().put(selectedSquare, piece);
     }
 
     @Override

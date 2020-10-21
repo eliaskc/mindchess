@@ -4,15 +4,13 @@ import chess.observers.EndGameObserver;
 import chess.observers.GameObserver;
 import chess.observers.TimerObserver;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static chess.model.ChessColor.BLACK;
 import static chess.model.ChessColor.WHITE;
 
-public class Game implements TimerObserver {
+public class Game implements TimerObserver,IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
@@ -28,12 +26,13 @@ public class Game implements TimerObserver {
 
     private GameState gameState;
 
-    void setGameState(GameState gameState) {
+    @Override
+    public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
     private void initGameStates() {
-        gameState = GameStateFactory.createNoPieceSelectedState(this);
+        gameState = GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares,this,this);
     }
 
     void initGame() {
@@ -163,8 +162,17 @@ public class Game implements TimerObserver {
         }
     }
 
-    ChessColor getCurrentPlayerColor() {
+    @Override
+    public void notifySwitchPlayer() {
+        switchPlayer();
+    }
+
+    public ChessColor getCurrentPlayerColor() {
         return currentPlayer.getColor();
+    }
+
+    public String getCurrentPlayerName() {
+        return currentPlayer.getName();
     }
 
     void addGameObserver(GameObserver gameObserver) {
@@ -211,11 +219,4 @@ public class Game implements TimerObserver {
         return gameState.isGameOngoing();
     }
 
-    public Square getLegalSquareByCoordinates(int x, int y) {
-        for (Square s : legalSquares) {
-            if (s.getX() == x && s.getY() == y)
-                return s;
-        }
-        throw new NoSuchElementException("No legal square with matching coordinates found");
-    }
 }
