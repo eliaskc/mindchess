@@ -9,12 +9,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
+/**
+ * Class for the application
+ *
+ * Starts the application
+ */
 public final class ChessApplication extends Application {
 
+    /**
+     * Launches the program
+     * @param args
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    /**
+     * Initialize controllers, imagehandler and fxml files
+     *
+     * Creates a Chessfacade/model and sends it into the controllers
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         stage.setResizable(false);

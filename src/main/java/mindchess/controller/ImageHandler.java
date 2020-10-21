@@ -128,7 +128,7 @@ public class ImageHandler {
      */
     List<ImageView> fetchLegalMoveImages() {
         List<ImageView> imageViews = new ArrayList<>();
-        for (Square square : model.getCurrentLegalSquare()) {
+        for (Square square : model.getCurrentLegalSquares()) {
             ImageView imageView = new ImageView();
 
             if (model.isSquareOccupied(square)) {
