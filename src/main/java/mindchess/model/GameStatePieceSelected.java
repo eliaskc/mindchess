@@ -68,9 +68,6 @@ public class GameStatePieceSelected implements GameState {
             notifySwitchPlayer();
             checkKingInCheck(context.getCurrentPlayerColor());
         }
-        if (context.getCurrentPlayerType() == PlayerType.CPU) {
-            context.setGameState(GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, context, gameStateObservers));
-        }
         context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
         gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();

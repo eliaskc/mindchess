@@ -12,8 +12,9 @@ public class GameStateFactory {
         return new GameStateNoPieceSelected(board, plies, legalSquares, context);
     }
 
-    public static GameState createGameStateAIPlayerTurn(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context, List<GameStateObserver> gameStateObservers) {
-        GameStateAIPlayerTurn AIState = new GameStateAIPlayerTurn(board, legalSquares, plies, context, gameStateObservers);
+    public static GameState createGameStateAIPlayerTurn(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context, GameStateObserver gameStateObserver) {
+        GameStateAIPlayerTurn AIState = new GameStateAIPlayerTurn(board, legalSquares, plies, context);
+        AIState.addGameStateObserver(gameStateObserver);
         AIState.handleInput(0,0);
         return AIState;
     }

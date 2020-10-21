@@ -82,6 +82,10 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         currentPlayer.getTimer().setActive(false);
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
+
+        if (currentPlayer.getPlayerType() == PlayerType.CPU) {
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this);
+        }
         notifySwitchedPlayer();
     }
 
