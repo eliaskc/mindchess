@@ -4,6 +4,8 @@ import mindchess.observers.TimerObserver;
 
 /**
  * Class Player represents a player playing mindchess and contains attributes for that player
+ *
+ * The player controls its own timer
  */
 public class Player {
     private final ChessTimer chessTimer = new ChessTimer();
@@ -15,43 +17,46 @@ public class Player {
         this.chessColor = chessColor;
     }
 
-    String getName() {
-        return name;
+    //-------------------------------------------------------------------------------------
+    //Timer
+    void startPlayerTimer(){
+        chessTimer.startTimer();
     }
 
-    void setName(String name) {
-        this.name = name;
+    void stopPlayerTimer(){chessTimer.stopTimer();}
+
+    //-------------------------------------------------------------------------------------
+    //Observer
+    void addTimerObserver(TimerObserver observer){
+        chessTimer.addObserver(observer);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Getters
+    String getName() {
+        return name;
     }
 
     int getCurrentTime(){
         return chessTimer.getTime();
     }
 
-    void setTime(int seconds){
-        chessTimer.setTime(seconds);
-    }
-
     ChessColor getColor() {
         return chessColor;
     }
 
-    ChessTimer getTimer() {
-        return chessTimer;
-    }
-
-
+    //-------------------------------------------------------------------------------------
+    //Setters
     void setTimerActive(boolean active) {
         chessTimer.setActive(active);
     }
 
-    void addTimerObserver(TimerObserver observer){
-        chessTimer.addObserver(observer);
+    void setTime(int seconds){
+        chessTimer.setTime(seconds);
     }
 
-    void startPlayerTimer(){
-        chessTimer.startTimer();
+    void setName(String name) {
+        this.name = name;
     }
-
-    void stopPlayerTimer(){chessTimer.stopTimer();}
     
 }
