@@ -34,7 +34,7 @@ public class GameStatePawnPromotion implements GameState {
         if(promotionPieces.containsKey(selectedPromotion)){
             promote(selectedSquare,selectedPromotion);
             notifySwitchPlayer();
-            notifyDrawLegalMoves();
+            notifyDrawPieces();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
             gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
         }
@@ -64,9 +64,9 @@ public class GameStatePawnPromotion implements GameState {
         }
     }
 
-    private void notifyDrawLegalMoves(){
+    private void notifyDrawPieces(){
         for (GameStateObserver gameStateObserver: gameStateObservers) {
-            gameStateObserver.notifyDrawLegalMoves();
+            gameStateObserver.notifyDrawPieces();
         }
     }
 
