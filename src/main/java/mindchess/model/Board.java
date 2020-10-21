@@ -107,7 +107,7 @@ public class Board {
         return boardMap.containsKey(s);
     }
 
-    public void markPieceOnSquareHasMoved(Square s){
+    Void markPieceOnSquareHasMoved(Square s){
         fetchPieceOnSquare(s).setHasMoved(true);
     }
 }
