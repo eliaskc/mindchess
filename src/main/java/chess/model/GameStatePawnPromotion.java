@@ -36,7 +36,7 @@ public class GameStatePawnPromotion implements GameState {
             notifySwitchPlayer();
             notifyDrawPieces();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
-            gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         }
     }
 

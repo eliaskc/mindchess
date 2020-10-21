@@ -33,7 +33,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
 
     private void initGameStates() {
         gameState = GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,this);
-        gameState.addGameStateObserver(this);
+        addGameStateObserver(this);
     }
 
     void initGame() {
@@ -168,6 +168,11 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         switchPlayer();
     }
 
+    @Override
+    public void addGameStateObserver(GameStateObserver gameStateObserver) {
+        gameState.addGameStateObserver(gameStateObserver);
+    }
+
     public ChessColor getCurrentPlayerColor() {
         return currentPlayer.getColor();
     }
@@ -216,10 +221,6 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         return plies;
     }
 
-    @Override
-    public GameState getGameState() {
-        return gameState;
-    }
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();

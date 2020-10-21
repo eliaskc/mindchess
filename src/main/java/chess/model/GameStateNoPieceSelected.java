@@ -26,7 +26,7 @@ public class GameStateNoPieceSelected implements GameState {
             if(legalSquares.size() == 0) return;
             notifyDrawLegalMoves();
             context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare,board,plies,legalSquares,context));
-            gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         }
     }
 

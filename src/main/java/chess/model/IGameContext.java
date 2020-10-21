@@ -2,7 +2,7 @@ package chess.model;
 
 public interface IGameContext {
     void setGameState(GameState gameState);
-    GameState getGameState();
+    void addGameStateObserver(GameStateObserver gameStateObserver);
     String getCurrentPlayerName();
     ChessColor getCurrentPlayerColor();
 

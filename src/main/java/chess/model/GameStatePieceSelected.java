@@ -58,7 +58,7 @@ public class GameStatePieceSelected implements GameState {
 
             if (checkPawnPromotion(targetSquare)) {
                 context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));
-                gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
+                gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
                 clearAndDrawLegalMoves();
                 return;
             }
@@ -67,7 +67,7 @@ public class GameStatePieceSelected implements GameState {
             checkKingInCheck(context.getCurrentPlayerColor());
         }
         context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
-        gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
+        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();
     }
 
