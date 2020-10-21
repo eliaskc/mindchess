@@ -1,9 +1,9 @@
 package eaee.model;
 
-import chess.model.Board;
-import chess.model.ChessFacade;
-import chess.model.Square;
-import chess.model.pieces.IPiece;
+import mindchess.model.Board;
+import mindchess.model.ChessFacade;
+import mindchess.model.Square;
+import mindchess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 

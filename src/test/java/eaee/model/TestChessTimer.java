@@ -1,6 +1,6 @@
 package eaee.model;
 
-import chess.model.*;
+import mindchess.model.*;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -1,12 +1,10 @@
 package eaee.model;
 
-import chess.model.*;
+import mindchess.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
-
-import static chess.model.PieceType.*;
+import static mindchess.model.PieceType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
