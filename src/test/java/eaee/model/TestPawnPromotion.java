@@ -1,13 +1,11 @@
 package eaee.model;
 
-import chess.model.Board;
-import chess.model.ChessFacade;
-import chess.model.PieceType;
-import chess.model.Square;
+import mindchess.model.Board;
+import mindchess.model.ChessFacade;
+import mindchess.model.PieceType;
+import mindchess.model.Square;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 

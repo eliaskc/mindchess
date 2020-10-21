@@ -1,12 +1,10 @@
 package eaee.model;
 
-import chess.model.*;
-import chess.model.pieces.IPiece;
+import mindchess.model.*;
+import mindchess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
-import java.awt.*;
 
 public class TestAlternatingTurns {
     ChessFacade model;

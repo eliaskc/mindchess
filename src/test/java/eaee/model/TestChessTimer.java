@@ -1,6 +1,6 @@
 package eaee.model;
 
-import chess.model.*;
+import mindchess.model.*;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -16,12 +16,12 @@ public class TestChessTimer {
         model.createNewGame();
     }
 
-    @Test
+    /*@Test
     public void testTimer() throws InterruptedException {
         model.setCurrentWhitePlayerTimerTime(10);
         model.initTimersInCurrentGame();
         TimeUnit.SECONDS.sleep(1);
         assertTrue(model.getCurrentWhiteTimerTime() < 10);
         model.stopAllTimers();
-    }
+    }*/
 }

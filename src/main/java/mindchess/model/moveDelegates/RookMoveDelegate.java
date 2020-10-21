@@ -1,0 +1,23 @@
+package mindchess.model.moveDelegates;
+
+import mindchess.model.Board;
+import mindchess.model.Square;
+import mindchess.model.MovementLogicUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RookMoveDelegate implements IMoveDelegate {
+
+    @Override
+    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
+        var legalSquares = new ArrayList<Square>();
+
+        legalSquares.addAll(MovementLogicUtil.up(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.right(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.down(board, squareToCheck, 7));
+        legalSquares.addAll(MovementLogicUtil.left(board, squareToCheck, 7));
+
+        return legalSquares;
+    }
+}

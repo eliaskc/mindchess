@@ -1,16 +1,13 @@
 package eaee.model;
 
-import chess.model.*;
-import chess.model.ChessColor;
-import chess.model.pieces.IPiece;
+import mindchess.model.*;
+import mindchess.model.ChessColor;
+import mindchess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 
 
-import java.awt.*;
-import java.util.Map;
-
-import static chess.model.PieceType.*;
+import static mindchess.model.PieceType.*;
 import static org.junit.Assert.*;
 
 public class TestChessFacade {
