@@ -3,6 +3,7 @@ package chess.model;
 import chess.model.pieces.IPiece;
 import chess.model.pieces.PieceFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,17 +14,16 @@ public class GameStatePawnPromotion implements GameState {
 
     private IGameContext context;
     private Square selectedSquare;
-    private GameStateObserver gameStateObserver;
+    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
 
-    GameStatePawnPromotion(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, GameStateObserver gameStateObserver, IGameContext context) {
+    GameStatePawnPromotion(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.selectedSquare = selectedSquare;
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;
-        this.gameStateObserver = gameStateObserver;
         this.context = context;
     }
 
@@ -33,9 +33,10 @@ public class GameStatePawnPromotion implements GameState {
         Square selectedPromotion = new Square(x,y);
         if(promotionPieces.containsKey(selectedPromotion)){
             promote(selectedSquare,selectedPromotion);
-            gameStateObserver.notifySwitchPlayer();
-            gameStateObserver.notifyDrawLegalMoves();
-            context.setGameState(GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares, gameStateObserver,context));
+            notifySwitchPlayer();
+            notifyDrawLegalMoves();
+            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+            gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
         }
     }
 
@@ -57,13 +58,30 @@ public class GameStatePawnPromotion implements GameState {
         board.getBoardMap().put(selectedSquare, piece);
     }
 
+    private void notifySwitchPlayer(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifySwitchPlayer();
+        }
+    }
+
+    private void notifyDrawLegalMoves(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyDrawLegalMoves();
+        }
+    }
+
     @Override
-    public java.lang.String getGameStatus() {
+    public String getGameStatus() {
         return "Game ongoing";
     }
 
     @Override
     public boolean isGameOngoing() {
         return true;
+    }
+
+    @Override
+    public void addGameStateObserver(GameStateObserver gameStateObserver) {
+        gameStateObservers.add(gameStateObserver);
     }
 }

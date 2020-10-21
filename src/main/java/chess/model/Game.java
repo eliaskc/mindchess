@@ -32,7 +32,8 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     }
 
     private void initGameStates() {
-        gameState = GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares,this,this);
+        gameState = GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,this);
+        gameState.addGameStateObserver(this);
     }
 
     void initGame() {
@@ -85,13 +86,13 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     }
 
     void endGameAsDraw() {
-        setGameState(GameStateFactory.createGameOverState("Game ended in draw"));
+        setGameState(GameStateFactory.createGameStateGameOver("Game ended in draw"));
         stopAllTimers();
         notifyEndGame();
     }
 
     void endGameAsForfeit() {
-        setGameState(GameStateFactory.createGameOverState(getOtherPlayer().getName() + " has won the game"));
+        setGameState(GameStateFactory.createGameStateGameOver(getOtherPlayer().getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }
@@ -121,7 +122,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     @Override
     public void notifyTimerEnded() {
         switchPlayer();
-        setGameState(GameStateFactory.createGameOverState(currentPlayer.getName() + " has won the game"));
+        setGameState(GameStateFactory.createGameStateGameOver(currentPlayer.getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }
@@ -213,6 +214,11 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
 
     List<Ply> getPlies() {
         return plies;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
     }
 
     boolean isGameOngoing() {

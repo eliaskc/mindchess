@@ -7,15 +7,14 @@ import java.util.List;
 
 public class GameStateNoPieceSelected implements GameState {
     private IGameContext context;
-    private GameStateObserver gameStateObserver;
+    private List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
-    GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, GameStateObserver gameStateObserver, IGameContext context) {
+    GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;
-        this.gameStateObserver = gameStateObserver;
         this.context = context;
     }
 
@@ -25,9 +24,9 @@ public class GameStateNoPieceSelected implements GameState {
         if(SquareIsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
             fetchLegalMoves(selectedSquare);
             if(legalSquares.size() == 0) return;
-            //context.notifyDrawLegalMoves();
-            gameStateObserver.notifyDrawLegalMoves();
-            context.setGameState(GameStateFactory.createPieceSelectedState(selectedSquare,board,plies,legalSquares, gameStateObserver,context));
+            notifyDrawLegalMoves();
+            context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare,board,plies,legalSquares,context));
+            gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
         }
     }
 
@@ -59,6 +58,12 @@ public class GameStateNoPieceSelected implements GameState {
         return board.pieceOnSquareColorEquals(square,context.getCurrentPlayerColor());
     }
 
+    private void notifyDrawLegalMoves(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyDrawLegalMoves();
+        }
+    }
+
     @Override
     public String getGameStatus() {
         return "Game ongoing";
@@ -67,5 +72,10 @@ public class GameStateNoPieceSelected implements GameState {
     @Override
     public boolean isGameOngoing() {
         return true;
+    }
+
+    @Override
+    public void addGameStateObserver(GameStateObserver gameStateObserver) {
+        gameStateObservers.add(gameStateObserver);
     }
 }

@@ -2,6 +2,7 @@ package chess.model;
 
 import chess.model.pieces.IPiece;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,17 +15,16 @@ public class GameStatePieceSelected implements GameState {
     private Square selectedSquare;
     private IGameContext context;
     private IPiece takenPiece = null;
-    private GameStateObserver gameStateObserver;
+    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
 
-    GameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, GameStateObserver gameStateObserver, IGameContext context) {
+    GameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.selectedSquare = selectedSquare;
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;
-        this.gameStateObserver = gameStateObserver;
         this.context = context;
     }
 
@@ -49,24 +49,25 @@ public class GameStatePieceSelected implements GameState {
             targetSquare = getLegalSquareByCoordinates(x,y);
             move(selectedSquare,targetSquare);
             addMoveToPlies(selectedSquare, targetSquare);
-            gameStateObserver.notifyDrawPieces();
+            notifyDrawPieces();
 
             if (checkKingTaken()) {
-                context.setGameState(GameStateFactory.createGameOverState(context.getCurrentPlayerName() + " has won the game"));
+                context.setGameState(GameStateFactory.createGameStateGameOver(context.getCurrentPlayerName() + " has won the game"));
                 return;
             }
 
             if (checkPawnPromotion(targetSquare)) {
-                context.setGameState(GameStateFactory.createPawnPromotionState(targetSquare,board,plies,legalSquares, gameStateObserver,context));
+                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));
+                gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
                 clearAndDrawLegalMoves();
                 return;
             }
 
-            //context.switchPlayer();
-            gameStateObserver.notifySwitchPlayer();
+            notifySwitchPlayer();
             checkKingInCheck(context.getCurrentPlayerColor());
         }
-        context.setGameState(GameStateFactory.createNoPieceSelectedState(board,plies,legalSquares, gameStateObserver,context));
+        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+        gameStateObservers.forEach(gameStateObserver -> context.getGameState().addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();
     }
 
@@ -117,13 +118,13 @@ public class GameStatePieceSelected implements GameState {
 
     private void clearAndDrawLegalMoves(){
         legalSquares.clear();
-        gameStateObserver.notifyDrawLegalMoves();
+        notifyDrawLegalMoves();
     }
 
     private void takePiece(Square pieceOnSquareToTake) {
         takenPiece = board.getBoardMap().remove(pieceOnSquareToTake);
         board.getDeadPieces().add(takenPiece);
-        gameStateObserver.notifyDrawDeadPieces();
+        notifyDrawDeadPieces();
     }
 
     private void checkKingInCheck(ChessColor kingColor) {
@@ -132,7 +133,7 @@ public class GameStatePieceSelected implements GameState {
 
         MovementLogicUtil.isKingInCheck(board, kingSquare, opponentColor);
         if (kingSquare.getSquareType() == IN_CHECK)
-            gameStateObserver.notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
+            notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
     }
 
     private boolean checkKingTaken() {
@@ -149,7 +150,7 @@ public class GameStatePieceSelected implements GameState {
      */
     private boolean checkPawnPromotion(Square targetSquare) {
         if (targetSquare.getSquareType() == PROMOTION) {
-            gameStateObserver.notifyPawnPromotion();
+            notifyPawnPromotion();
             return true;
         }
         return false;
@@ -159,6 +160,51 @@ public class GameStatePieceSelected implements GameState {
         Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getBoardMap().get(targetSquare), takenPiece, board.getBoardMap());
         plies.add(ply);
     }
+
+    private Square getLegalSquareByCoordinates(int x, int y) {
+        for (Square s : legalSquares) {
+            if (s.getX() == x && s.getY() == y)
+                return s;
+        }
+        throw new NoSuchElementException("No legal square with matching coordinates found");
+    }
+
+    private void notifyPawnPromotion(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyPawnPromotion();
+        }
+    }
+
+    private void notifyDrawPieces(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyDrawPieces();
+        }
+    }
+
+    private void notifyDrawDeadPieces(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyDrawDeadPieces();
+        }
+    }
+
+    private void notifySwitchPlayer(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifySwitchPlayer();
+        }
+    }
+
+    private void notifyDrawLegalMoves(){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyDrawLegalMoves();
+        }
+    }
+
+    private void notifyKingInCheck(int x, int y){
+        for (GameStateObserver gameStateObserver: gameStateObservers) {
+            gameStateObserver.notifyKingInCheck(x,y);
+        }
+    }
+
 
     @Override
     public String getGameStatus() {
@@ -170,11 +216,8 @@ public class GameStatePieceSelected implements GameState {
         return true;
     }
 
-    private Square getLegalSquareByCoordinates(int x, int y) {
-        for (Square s : legalSquares) {
-            if (s.getX() == x && s.getY() == y)
-                return s;
-        }
-        throw new NoSuchElementException("No legal square with matching coordinates found");
+    @Override
+    public void addGameStateObserver(GameStateObserver gameStateObserver) {
+        gameStateObservers.add(gameStateObserver);
     }
 }

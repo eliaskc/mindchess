@@ -2,8 +2,12 @@ package chess.model;
 
 import chess.model.GameState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameStateGameOver implements GameState {
     private String resultStatus;
+    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
 
     GameStateGameOver(String resultStatus) {
         this.resultStatus = resultStatus;
@@ -22,5 +26,10 @@ public class GameStateGameOver implements GameState {
     @Override
     public boolean isGameOngoing() {
         return false;
+    }
+
+    @Override
+    public void addGameStateObserver(GameStateObserver gameStateObserver) {
+        this.gameStateObservers.add(gameStateObserver);
     }
 }
