@@ -38,7 +38,7 @@ public class GameStatePieceSelected implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Square targetSquare = new Square(x, y);
-        if (board.getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
+        if (board.isAPieceOnSquare(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
             gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
@@ -84,7 +84,7 @@ public class GameStatePieceSelected implements GameState {
      * @param targetSquare
      */
     private void makeSpecialMoves(Square selectedSquare, Square targetSquare) {
-        if (!board.getBoardMap().containsKey(selectedSquare)) return;
+        if (!board.isAPieceOnSquare(selectedSquare)) return;
 
         //castling
         if (targetSquare.getSquareType() == CASTLING) {
@@ -113,8 +113,8 @@ public class GameStatePieceSelected implements GameState {
             takePiece(moveTo);
         }
         board.markPieceOnSquareHasMoved(moveFrom);
-        board.getBoardMap().put(moveTo, board.getBoardMap().get(moveFrom));
-        board.getBoardMap().remove(moveFrom);
+        board.placePieceOnSquare(moveTo, board.getPieceOnSquare(moveFrom));
+        board.removePieceFromSquare(moveFrom);
     }
 
     private void clearAndDrawLegalMoves(){
@@ -123,7 +123,7 @@ public class GameStatePieceSelected implements GameState {
     }
 
     private void takePiece(Square pieceOnSquareToTake) {
-        takenPiece = board.getBoardMap().remove(pieceOnSquareToTake);
+        takenPiece = board.removePieceFromSquare(pieceOnSquareToTake);
         board.getDeadPieces().add(takenPiece);
         notifyDrawDeadPieces();
     }
@@ -158,7 +158,7 @@ public class GameStatePieceSelected implements GameState {
     }
 
     private void addMoveToPlies(Square selectedSquare, Square targetSquare) {
-        Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getBoardMap().get(targetSquare), takenPiece, board.getBoardMap());
+        Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getPieceOnSquare(targetSquare), takenPiece, board.getBoardSnapShot());
         plies.add(ply);
     }
 

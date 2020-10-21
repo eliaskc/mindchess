@@ -126,7 +126,7 @@ public class ChessFacade {
 
     //TODO How to remove cascading without adding dependancy on IPiece in Game
     public Map<Square, IPiece> getCurrentBoardMap() {
-        return new HashMap<>(currentGame.getBoard().getBoardMap());
+        return currentGame.getBoard().getBoardSnapShot();
     }
 
     private List<Game> getGameList() {
@@ -149,7 +149,7 @@ public class ChessFacade {
 
     //TODO How to remove cascading without adding dependancy on IPiece in Game
     public boolean isSquareOccupied(Square square){
-        return currentGame.getBoard().getBoardMap().containsKey(square);
+        return currentGame.getBoard().isAPieceOnSquare(square);
     }
 
     public boolean isGameOngoing() {

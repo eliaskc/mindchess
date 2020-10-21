@@ -205,7 +205,7 @@ public class MovementLogicUtil {
     public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color){
         List<Square> opponentLegalSquares = new ArrayList<>();
 
-        for (Map.Entry<Square, IPiece> entry : board.getBoardMap().entrySet()) {
+        for (Map.Entry<Square, IPiece> entry : board.getBoardEntrySet()) {
             if(entry.getValue().getColor().equals(color)){
                 opponentLegalSquares.addAll(entry.getValue().getMoveDelegate().fetchMoves(board, entry.getKey(), entry.getValue().getHasMoved(), false));
             }

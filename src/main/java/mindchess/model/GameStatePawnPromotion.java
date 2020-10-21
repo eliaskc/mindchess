@@ -55,7 +55,7 @@ public class GameStatePawnPromotion implements GameState {
             System.out.println("Invalid Piece Name");
         }
 
-        board.getBoardMap().put(selectedSquare, piece);
+        board.placePieceOnSquare(selectedSquare, piece);
     }
 
     private void notifySwitchPlayer(){

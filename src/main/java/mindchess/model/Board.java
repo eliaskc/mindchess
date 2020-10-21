@@ -3,33 +3,63 @@ package mindchess.model;
 import mindchess.model.pieces.IPiece;
 import mindchess.model.pieces.PieceFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
 
 /**
- * Board represents the mindchess board and contains the information and methods to interact with the mindchess board
+ * Board represents the mindchess board and contains the information and methods to see where things are.
+ *
+ * The mindchess board is represented by a Map with Squares and IPieces that this class is responsible for putting into and
+ * removing from.
  */
 public class Board {
     private final Map<Square, IPiece> boardMap = new HashMap<>();
     private final List<IPiece> deadPieces = new ArrayList<>();
-    int i = 0;
 
     Board() {
-    }
-
-    Map<Square, IPiece> getBoardMap() {
-        return boardMap;
     }
 
     void initBoard() {
         boardMap.clear();
         deadPieces.clear();
         placeAllPieces();
+    }
+
+    /**
+     * Puts the IPiece and Square into the boardMap with the Square as the key
+     * @param square
+     * @param piece
+     */
+    void placePieceOnSquare(Square square, IPiece piece){
+        boardMap.put(square, piece);
+    }
+
+    /**
+     * removes the square and corresponding IPiece from the boardMap
+     * @param square square with a piece on it
+     * @return The removed piece
+     */
+    IPiece removePieceFromSquare(Square square){
+        return boardMap.remove(square);
+    }
+
+    /**
+     * Checks if a square is occupied by a IPiece
+     * @param s The square we check
+     * @return True if there is a IPiece on the square
+     */
+    boolean isOccupied(Square s) {
+        return boardMap.containsKey(s);
+    }
+
+    /**
+     * Changes the hasMoved attribute of the piece on the square to true
+     * @param s The square with the piece on it
+     */
+    void markPieceOnSquareHasMoved(Square s){
+        fetchPieceOnSquare(s).setHasMoved(true);
     }
 
     /**
@@ -68,14 +98,8 @@ public class Board {
         }
     }
 
-    List<IPiece> getDeadPieces() {
-        return deadPieces;
-    }
-
-    boolean isPieceOnSquareRook(Square square) {
-        return boardMap.get(square).getPieceType().equals(PieceType.ROOK);
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Fetchers
     //TODO public only because of tests. Fix them to work without and make package-private
     public IPiece fetchPieceOnSquare(Square squareSelected) {
         return boardMap.get(squareSelected);
@@ -99,15 +123,34 @@ public class Board {
         return null;
     }
 
+    //-------------------------------------------------------------------------------------
+    //Getters
+    List<IPiece> getDeadPieces() {
+        return deadPieces;
+    }
+
+    IPiece getPieceOnSquare(Square square){
+        return boardMap.get(square);
+    }
+
+    Map<Square, IPiece> getBoardSnapShot(){
+        return new HashMap<Square, IPiece>(boardMap);
+    }
+
+    Set<Map.Entry<Square, IPiece>> getBoardEntrySet(){
+        return boardMap.entrySet();
+    }
+
+
     boolean isSquareAPiece(Square square){
         return boardMap.containsKey(square);
     }
 
-    boolean isOccupied(Square s) {
-        return boardMap.containsKey(s);
+    boolean isPieceOnSquareRook(Square square) {
+        return boardMap.get(square).getPieceType().equals(PieceType.ROOK);
     }
 
-    void markPieceOnSquareHasMoved(Square s){
-        fetchPieceOnSquare(s).setHasMoved(true);
+    boolean isAPieceOnSquare(Square square){
+        return boardMap.containsKey(square);
     }
 }
