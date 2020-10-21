@@ -13,31 +13,38 @@ import java.util.Map;
  * Chess represents the model to the rest of the application
  *
  * Delegates method calls from outside the model to the right part of the model
- *
- * It also makes sure that that the model updates when something happens during runtime
  */
 public class ChessFacade {
     private final List<Game> gameList = new ArrayList<>();
     private Game currentGame;
 
     /**
-     * sends the coordinates from the mouse click to the board to handle and notifies all observers a click has been made
+     * sends the coordinates from the input to the current game to handle
      *
-     * @param x the x coordinate for the mouse when it clicks
-     * @param y the y coordinate for the mouse when it clicks
+     * @param x the x coordinate from the input
+     * @param y the y coordinate from the input
      */
     public void handleBoardInput(int x, int y) {
         currentGame.handleBoardInput(x, y);
     }
 
+    /**
+     * Forfeits the current game
+     */
     public void forfeit() {
         currentGame.endGameAsForfeit();
     }
 
+    /**
+     * Draws the current game
+     */
     public void acceptDraw() {
         currentGame.endGameAsDraw();
     }
 
+    /**
+     * Creates a new Game, makes it the current game, Initializes it and adds it to the game list
+     */
     public void createNewGame() {
         currentGame = new Game();
         currentGame.initGame();
@@ -93,23 +100,23 @@ public class ChessFacade {
     }
 
     public int getCurrentWhiteTimerTime() {
-        return currentGame.getPlayerWhite().getCurrentTime();
+        return currentGame.getPlayerWhiteTime();
     }
 
     public int getCurrentBlackTimerTime() {
-        return currentGame.getPlayerBlack().getCurrentTime();
+        return currentGame.getPlayerBlackTime();
     }
 
     public String getCurrentPlayerName() {
-        return currentGame.getCurrentPlayer().getName();
+        return currentGame.getCurrentPlayerName();
     }
 
-    public String getCurrentPlayerBlackName() {
-        return currentGame.getPlayerBlack().getName();
+    public String getCurrentWhitePlayerName() {
+        return currentGame.getPlayerWhiteName();
     }
 
-    public String getCurrentPlayerWhiteName() {
-        return currentGame.getPlayerWhite().getName();
+    public String getCurrentBlackPlayerName() {
+        return currentGame.getPlayerBlackName();
     }
 
     //----------------------------Returns copies-----------------------------------------
@@ -117,14 +124,16 @@ public class ChessFacade {
         return new ArrayList<>(currentGame.getPlies());
     }
 
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public Map<Square, IPiece> getCurrentBoardMap() {
         return new HashMap<>(currentGame.getBoard().getBoardMap());
     }
 
-    public List<Game> getGameList() {
+    private List<Game> getGameList() {
         return new ArrayList<>(gameList);
     }
 
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public List<IPiece> getCurrentDeadPieces() {
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }
@@ -138,6 +147,7 @@ public class ChessFacade {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public boolean isSquareOccupied(Square square){
         return currentGame.getBoard().getBoardMap().containsKey(square);
     }
@@ -148,20 +158,19 @@ public class ChessFacade {
 
     //-------------------------------------------------------------------------------------
     //Setters
-
     public void setCurrentWhitePlayerTimerTime(int seconds) {
-        currentGame.getPlayerWhite().setTime(seconds);
+        currentGame.setPlayerWhiteTime(seconds);
     }
 
     public void setCurrentBlackPlayerTimerTime(int seconds) {
-        currentGame.getPlayerBlack().setTime(seconds);
+        currentGame.setPlayerBlackTime(seconds);
     }
 
     public void setCurrentPlayerWhiteName(String name) {
-        currentGame.getPlayerWhite().setName(name);
+        currentGame.setPlayerWhiteName(name);
     }
 
     public void setCurrentPlayerBlackName(String name) {
-        currentGame.getPlayerBlack().setName(name);
+        currentGame.setPlayerBlackName(name);
     }
 }

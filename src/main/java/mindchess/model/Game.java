@@ -221,6 +221,37 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         return plies;
     }
 
+    int getPlayerWhiteTime(){
+        return playerWhite.getCurrentTime();
+    }
+
+    int getPlayerBlackTime(){
+        return playerBlack.getCurrentTime();
+    }
+
+    String getPlayerWhiteName(){
+        return playerWhite.getName();
+    }
+
+    String getPlayerBlackName(){
+        return playerBlack.getName();
+    }
+
+    void setPlayerWhiteTime(int seconds){
+        playerWhite.setTime(seconds);
+    }
+
+    void setPlayerBlackTime(int seconds){
+        playerBlack.setTime(seconds);
+    }
+
+    void setPlayerWhiteName(String name){
+        playerWhite.setName(name);
+    }
+
+    void setPlayerBlackName(String name){
+        playerBlack.setName(name);
+    }
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
