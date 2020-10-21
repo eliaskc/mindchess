@@ -3,38 +3,36 @@ package mindchess.model;
 /**
  * Class Player represents a player playing mindchess and contains attributes for that player
  */
-public class Player {
+public class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();
     private String name;
     private final ChessColor chessColor;
+    private PlayerType playerType;
 
-    Player(String name, ChessColor chessColor) {
+    Player(String name, ChessColor chessColor, PlayerType playerType, Integer gameLength) {
         this.name = name;
         this.chessColor = chessColor;
+        this.playerType = playerType;
+        this.chessTimer.setTime(gameLength);
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setName(String name) {
-        this.name = name;
-    }
-
-    int getCurrentTime(){
+    public int getCurrentTime(){
         return chessTimer.getTime();
     }
 
-    void setTime(int seconds){
-        chessTimer.setTime(seconds);
-    }
-
-    ChessColor getColor() {
+    public ChessColor getColor() {
         return chessColor;
     }
 
-    ChessTimer getTimer() {
+    public ChessTimer getTimer() {
         return chessTimer;
     }
-    
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
 }

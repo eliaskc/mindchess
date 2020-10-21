@@ -10,7 +10,7 @@ import java.util.List;
 import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
 
-public class Game implements TimerObserver,IGameContext, GameStateObserver {
+public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
@@ -20,9 +20,9 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     private final List<Square> legalSquares = new ArrayList<>(); //List of squares that are legal to move to for the currently marked square
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
-    private final Player playerWhite = new Player("Player 1", WHITE);
-    private final Player playerBlack = new Player("Player 2", BLACK);
-    private Player currentPlayer;
+    private IPlayer playerWhite;
+    private IPlayer playerBlack;
+    private IPlayer currentPlayer;
 
     private GameState gameState;
 
@@ -32,14 +32,22 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     }
 
     private void initGameStates() {
-        gameState = GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,this);
-        addGameStateObserver(this);
+        gameState = GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, this);
+        gameState.addGameStateObserver(this);
     }
 
     void initGame() {
         board.initBoard();
-        currentPlayer = playerWhite;
         initGameStates();
+    }
+
+    public void createPlayers(String whitePlayerName, String blackPlayerName, PlayerType whitePlayerType, PlayerType blackPlayerType, Integer gameLength) {
+        if (whitePlayerName.equals("")) whitePlayerName = "White";
+        if (blackPlayerName.equals("")) blackPlayerName = "Black";
+        playerWhite = new Player(whitePlayerName, WHITE, whitePlayerType, gameLength);
+        playerBlack = new Player(blackPlayerName, BLACK, blackPlayerType, gameLength);
+
+        currentPlayer = playerWhite;
     }
 
     void initTimers() {
@@ -77,7 +85,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         notifySwitchedPlayer();
     }
 
-    private Player getOtherPlayer() {
+    private IPlayer getOtherPlayer() {
         if (currentPlayer == playerWhite) {
             return playerBlack;
         } else {
@@ -127,6 +135,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         notifyEndGame();
     }
 
+    @Override
     public void notifyDrawPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawPieces();
@@ -177,6 +186,11 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         return currentPlayer.getColor();
     }
 
+    @Override
+    public PlayerType getCurrentPlayerType() {
+        return currentPlayer.getPlayerType();
+    }
+
     public String getCurrentPlayerName() {
         return currentPlayer.getName();
     }
@@ -205,15 +219,15 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         return board;
     }
 
-    Player getPlayerWhite() {
+    IPlayer getPlayerWhite() {
         return playerWhite;
     }
 
-    Player getPlayerBlack() {
+    IPlayer getPlayerBlack() {
         return playerBlack;
     }
 
-    Player getCurrentPlayer() {
+    IPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -225,5 +239,4 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
     }
-
 }

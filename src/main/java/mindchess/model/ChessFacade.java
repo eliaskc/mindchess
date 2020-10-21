@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static mindchess.model.PlayerType.*;
+
 /**
  * Chess represents the model to the rest of the application
  * <p>
@@ -30,14 +32,6 @@ public class ChessFacade {
 
     public String getCurrentPlayerWhiteName() {
         return currentGame.getPlayerWhite().getName();
-    }
-
-    public void setCurrentPlayerWhiteName(String name) {
-        currentGame.getPlayerWhite().setName(name);
-    }
-
-    public void setCurrentPlayerBlackName(String name) {
-        currentGame.getPlayerBlack().setName(name);
     }
 
     public boolean isCurrentPlayerWhite() {
@@ -110,7 +104,7 @@ public class ChessFacade {
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
     }
 
-    public List<Square> getCurrentLegalSquare() {
+    public List<Square> getCurrentLegalSquares() {
         return new ArrayList<>(currentGame.getLegalSquares());
     }
 
@@ -120,14 +114,6 @@ public class ChessFacade {
 
     public int getCurrentBlackTimerTime() {
         return currentGame.getPlayerBlack().getCurrentTime();
-    }
-
-    public void setCurrentWhitePlayerTimerTime(int seconds) {
-        currentGame.getPlayerWhite().setTime(seconds);
-    }
-
-    public void setCurrentBlackPlayerTimerTime(int seconds) {
-        currentGame.getPlayerBlack().setTime(seconds);
     }
 
 
@@ -144,9 +130,10 @@ public class ChessFacade {
     //-------------------------------------------------------------------------------------
     //Game
 
-    public void createNewGame() {
+    public void createNewGame(String whitePlayerName, String blackPlayerName, PlayerType whitePlayerType, PlayerType blackPlayerType, Integer gameLength) {
         currentGame = new Game();
         currentGame.initGame();
+        currentGame.createPlayers(whitePlayerName, blackPlayerName, HUMAN, CPU, gameLength);
         gameList.add(currentGame);
     }
 

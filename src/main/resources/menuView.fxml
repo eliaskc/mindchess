@@ -18,8 +18,8 @@
             <Image url="@guiFiles/MINDCHESS.png" />
          </image>
       </ImageView>
-      <TextField fx:id="player1NameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="139.0" />
-      <TextField fx:id="player2NameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
+      <TextField fx:id="whitePlayerNameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="139.0" />
+      <TextField fx:id="blackPlayerNameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
       <Label layoutX="472.0" layoutY="236.0" prefHeight="22.0" prefWidth="144.0" styleClass="playerNameLabel" stylesheets="@chess.css" text="Player 1 name:">
          <font>
             <Font size="16.0" />

@@ -2,6 +2,7 @@ package eaee.model;
 
 import mindchess.model.Board;
 import mindchess.model.ChessFacade;
+import mindchess.model.PlayerType;
 import mindchess.model.Square;
 import mindchess.model.pieces.IPiece;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class TestMovementLogicUtil {
     @Before
     public void init() {
         model = new ChessFacade();
-        model.createNewGame();
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         board = model.getCurrentBoard();
     }
 

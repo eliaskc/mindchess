@@ -16,7 +16,7 @@ public class TestCastling {
     @Before
     public void init() {
         model = new ChessFacade();
-        model.createNewGame();
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         board = model.getCurrentBoard();
     }
 

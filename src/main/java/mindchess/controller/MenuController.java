@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.*;
 
+import static mindchess.model.PlayerType.*;
+
 /**
  * MenuController handles the menu
  */
@@ -54,9 +56,9 @@ public class MenuController implements Initializable {
     @FXML
     private ImageView btnExit;
     @FXML
-    private TextField player1NameField;
+    private TextField whitePlayerNameField;
     @FXML
-    private TextField player2NameField;
+    private TextField blackPlayerNameField;
     @FXML
     private Label timeLabel;
     @FXML
@@ -79,12 +81,7 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard(ActionEvent event) {
-        model.createNewGame();
-
-        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
-        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
-        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
-        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, CPU, timerMap.get(btnTimerDrop.getValue()));
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);

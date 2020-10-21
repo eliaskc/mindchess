@@ -15,7 +15,8 @@ public class GameStatePieceSelected implements GameState {
     private Square selectedSquare;
     private IGameContext context;
     private IPiece takenPiece = null;
-    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
+    private List<GameStateObserver> gameStateObservers = new ArrayList<>();
+    ;
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
@@ -38,17 +39,17 @@ public class GameStatePieceSelected implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Square targetSquare = new Square(x, y);
-        if (board.getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
+        if (board.getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare, context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
-            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
             gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
             context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return;
         }
 
         if (legalSquares.contains(targetSquare)) {
-            targetSquare = getLegalSquareByCoordinates(x,y);
-            move(selectedSquare,targetSquare);
+            targetSquare = getLegalSquareByCoordinates(x, y);
+            move(selectedSquare, targetSquare);
             addMoveToPlies(selectedSquare, targetSquare);
             notifyDrawPieces();
 
@@ -58,7 +59,7 @@ public class GameStatePieceSelected implements GameState {
             }
 
             if (checkPawnPromotion(targetSquare)) {
-                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));
+                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare, board, plies, legalSquares, context));
                 gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
                 clearAndDrawLegalMoves();
                 return;
@@ -67,7 +68,10 @@ public class GameStatePieceSelected implements GameState {
             notifySwitchPlayer();
             checkKingInCheck(context.getCurrentPlayerColor());
         }
-        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+        if (context.getCurrentPlayerType() == PlayerType.CPU) {
+            context.setGameState(GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, context, gameStateObservers));
+        }
+        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
         gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();
     }
@@ -117,7 +121,7 @@ public class GameStatePieceSelected implements GameState {
         board.getBoardMap().remove(moveFrom);
     }
 
-    private void clearAndDrawLegalMoves(){
+    private void clearAndDrawLegalMoves() {
         legalSquares.clear();
         notifyDrawLegalMoves();
     }
@@ -170,39 +174,39 @@ public class GameStatePieceSelected implements GameState {
         throw new NoSuchElementException("No legal square with matching coordinates found");
     }
 
-    private void notifyPawnPromotion(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyPawnPromotion() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyPawnPromotion();
         }
     }
 
-    private void notifyDrawPieces(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawPieces() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawPieces();
         }
     }
 
-    private void notifyDrawDeadPieces(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawDeadPieces() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawDeadPieces();
         }
     }
 
-    private void notifySwitchPlayer(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifySwitchPlayer() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifySwitchPlayer();
         }
     }
 
-    private void notifyDrawLegalMoves(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawLegalMoves() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawLegalMoves();
         }
     }
 
-    private void notifyKingInCheck(int x, int y){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
-            gameStateObserver.notifyKingInCheck(x,y);
+    private void notifyKingInCheck(int x, int y) {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
+            gameStateObserver.notifyKingInCheck(x, y);
         }
     }
 

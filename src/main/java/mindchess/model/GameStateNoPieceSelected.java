@@ -11,6 +11,7 @@ public class GameStateNoPieceSelected implements GameState {
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
+
     GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.board = board;
         this.legalSquares = legalSquares;
