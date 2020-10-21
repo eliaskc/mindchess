@@ -40,8 +40,9 @@ public class GameStatePieceSelected implements GameState {
         Square targetSquare = new Square(x, y);
         if (board.getBoardMap().containsKey(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
-            //context.setGameState(GameStateFactory.createNoPieceSelectedState(context));
-            //context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
+            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return;
         }
 

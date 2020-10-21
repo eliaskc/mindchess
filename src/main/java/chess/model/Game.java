@@ -63,7 +63,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
      * @param x
      * @param y
      */
-    void handleBoardInput(int x, int y) {
+    public void handleBoardInput(int x, int y) {
         gameState.handleInput(x, y);
         if (!gameState.isGameOngoing()) {
             notifyEndGame();
