@@ -1,5 +1,8 @@
 package mindchess.model;
 
+/**
+ * represents the GameStates' context
+ */
 public interface IGameContext {
     void handleBoardInput(int x, int y);
     void setGameState(GameState gameState);

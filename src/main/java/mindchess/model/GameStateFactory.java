@@ -2,6 +2,9 @@ package mindchess.model;
 
 import java.util.List;
 
+/**
+ * A factory class for the different game states
+ */
 public class GameStateFactory {
 
     public static GameState createGameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context){

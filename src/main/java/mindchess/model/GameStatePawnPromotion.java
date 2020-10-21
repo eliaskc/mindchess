@@ -8,6 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The state which represent when a pawn has reached the opposite side and is able to be promoted to a other piece.
+ *
+ * From this state you can go to the no piece selected state by promoting the players pawn.
+ *
+ * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
+ * The pawn promotion state also needs a Square representing the square which the promotion will occur on.
+ */
 public class GameStatePawnPromotion implements GameState {
 
     private Map<Square, PieceType> promotionPieces = new HashMap<>();
@@ -27,6 +35,13 @@ public class GameStatePawnPromotion implements GameState {
         this.context = context;
     }
 
+    /**
+     * The input corresponds to a value which can represent a piece type which the pawn can promote to
+     *
+     * it will only promote when it recieves a valid input and when it does it will change player and state to no Piece selected for the next player
+     * @param x
+     * @param y
+     */
     @Override
     public void handleInput(int x, int y) {
         initPromotionPieces();
@@ -40,6 +55,11 @@ public class GameStatePawnPromotion implements GameState {
         }
     }
 
+    /**
+     * Puts a piece with a corresponding square with a coded value in a map.
+     *
+     * If the input from handle input matches the key it will return the value which is a piece type
+     */
     private void initPromotionPieces(){
         promotionPieces.put(new Square(20,0), PieceType.QUEEN);
         promotionPieces.put(new Square(21,0), PieceType.KNIGHT);
@@ -47,14 +67,18 @@ public class GameStatePawnPromotion implements GameState {
         promotionPieces.put(new Square(23,0), PieceType.BISHOP);
     }
 
+    /**
+     * The promotion happens by replacing the piece in the promotion square by a new Piece on the same square with a different type
+     * @param selectedSquare
+     * @param selectedPromotion
+     */
     private void promote(Square selectedSquare, Square selectedPromotion){
         IPiece piece = null;
         try {
             piece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid Piece Name");
+            System.out.println("Invalid input");
         }
-
         board.placePieceOnSquare(selectedSquare, piece);
     }
 

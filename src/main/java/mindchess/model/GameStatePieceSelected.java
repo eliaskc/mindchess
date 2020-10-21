@@ -9,7 +9,16 @@ import java.util.NoSuchElementException;
 import static mindchess.model.ChessColor.*;
 import static mindchess.model.PieceType.*;
 import static mindchess.model.SquareType.*;
-
+/**
+ * The state which represent when a piece has been selected and the next input will try to move the selected piece to the inputted square
+ *
+ * From this state you can go to the no piece selected state if you make a move or deselects the piece by inputting an invalid input
+ * And Game over state if you fulfill a win condition
+ * And Pawn promotion if you move a pawn to the opposite side
+ *
+ * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
+ * The piece selected game state also needs a square which represent what piece is selected
+ */
 public class GameStatePieceSelected implements GameState {
 
     private Square selectedSquare;
@@ -31,7 +40,8 @@ public class GameStatePieceSelected implements GameState {
     /**
      * Checks if the latest click was on a square that is legal to move to
      * If it is, the move is made
-     *
+     * If a win condition is met you will win the game
+     * If you reach the opposite board the pawn promotion will happen
      * @param x
      * @param y
      */
@@ -78,7 +88,7 @@ public class GameStatePieceSelected implements GameState {
     }
 
     /**
-     * Checks if any special moves are attempted and if so, performs the necessary actions
+     * Checks if any special moves are possible and if so, performs the necessary actions
      *
      * @param selectedSquare
      * @param targetSquare
@@ -94,7 +104,7 @@ public class GameStatePieceSelected implements GameState {
                 makeMoves(new Square(targetSquare.getX() - 2, targetSquare.getY()), new Square(targetSquare.getX() + 1, targetSquare.getY()));
             }
         }
-
+        //en passant
         if (targetSquare.getSquareType() == EN_PASSANT) {
             if (board.pieceOnSquareColorEquals(selectedSquare, WHITE)) {
                 takePiece(new Square(targetSquare.getX(), targetSquare.getY() + 1));
@@ -109,7 +119,7 @@ public class GameStatePieceSelected implements GameState {
      * <p>
      */
     private void makeMoves(Square moveFrom, Square moveTo) {
-        if (board.isSquareAPiece(moveTo)) {
+        if (board.isSquareContainsAPiece(moveTo)) {
             takePiece(moveTo);
         }
         board.markPieceOnSquareHasMoved(moveFrom);
@@ -117,17 +127,25 @@ public class GameStatePieceSelected implements GameState {
         board.removePieceFromSquare(moveFrom);
     }
 
-    private void clearAndDrawLegalMoves(){
-        legalSquares.clear();
-        notifyDrawLegalMoves();
-    }
-
+    /**
+     * take a piece on a square and put it in dead pieces
+     * @param pieceOnSquareToTake
+     */
     private void takePiece(Square pieceOnSquareToTake) {
         takenPiece = board.removePieceFromSquare(pieceOnSquareToTake);
         board.getDeadPieces().add(takenPiece);
         notifyDrawDeadPieces();
     }
 
+    private void clearAndDrawLegalMoves(){
+        legalSquares.clear();
+        notifyDrawLegalMoves();
+    }
+
+    /**
+     * chicks if the king is in check and can be taken
+     * @param kingColor
+     */
     private void checkKingInCheck(ChessColor kingColor) {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
         Square kingSquare = board.fetchKingSquare(kingColor);
@@ -137,6 +155,10 @@ public class GameStatePieceSelected implements GameState {
             notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
     }
 
+    /**
+     * checks if the king has been taken by looking at the dead pieces list
+     * @return true if king has been taken
+     */
     private boolean checkKingTaken() {
         for (IPiece p : board.getDeadPieces()) {
             if (p.getPieceType().equals(KING)) return true;
@@ -145,9 +167,10 @@ public class GameStatePieceSelected implements GameState {
     }
 
     /**
-     * Checks if pawn a pawn is in a position to be promoted and initiates the promotion if so
+     * Checks if pawn a pawn is in a position to be promoted
      *
-     * @param targetSquare
+     * @param targetSquare square to be checked
+     * @return true if piece cam be promoted
      */
     private boolean checkPawnPromotion(Square targetSquare) {
         if (targetSquare.getSquareType() == PROMOTION) {
@@ -157,11 +180,23 @@ public class GameStatePieceSelected implements GameState {
         return false;
     }
 
+    /**
+     * adds the move(ply) made to the list of plies
+     * @param selectedSquare
+     * @param targetSquare
+     */
     private void addMoveToPlies(Square selectedSquare, Square targetSquare) {
         Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getPieceOnSquare(targetSquare), takenPiece, board.getBoardSnapShot());
         plies.add(ply);
     }
 
+    /**
+     * returns a square if it matches the coordinates inputted
+     * should never be null so throws exception if null
+     * @param x
+     * @param y
+     * @return
+     */
     private Square getLegalSquareByCoordinates(int x, int y) {
         for (Square s : legalSquares) {
             if (s.getX() == x && s.getY() == y)

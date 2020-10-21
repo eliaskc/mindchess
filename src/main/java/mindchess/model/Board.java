@@ -142,7 +142,7 @@ public class Board {
     }
 
 
-    boolean isSquareAPiece(Square square){
+    boolean isSquareContainsAPiece(Square square){
         return boardMap.containsKey(square);
     }
 

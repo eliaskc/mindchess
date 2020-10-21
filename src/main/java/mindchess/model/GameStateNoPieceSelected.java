@@ -5,12 +5,20 @@ import mindchess.model.pieces.IPiece;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The state which represent when no piece on the chess board has been selected, it will be the entry point for the state.
+ *
+ * From this state you can go to the piece selected state by inputting a coordinate for your own piece.
+ *
+ * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
+ */
 public class GameStateNoPieceSelected implements GameState {
     private IGameContext context;
     private List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private List<Square> legalSquares;
     private List<Ply> plies;
     private Board board;
+
     GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.board = board;
         this.legalSquares = legalSquares;
@@ -18,10 +26,15 @@ public class GameStateNoPieceSelected implements GameState {
         this.context = context;
     }
 
+    /**
+     * In no piece selected state a board input will select a piece of your own if you input the coordinates of the squares it is placed on.
+     * @param x
+     * @param y
+     */
     @Override
     public void handleInput(int x, int y) {
         Square selectedSquare = new Square(x,y);
-        if(SquareIsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
+        if(SquareContainsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
             fetchLegalMoves(selectedSquare);
             if(legalSquares.size() == 0) return;
 
@@ -40,6 +53,11 @@ public class GameStateNoPieceSelected implements GameState {
         legalSquares.addAll(getEnPassantSquares(selectedSquare));
     }
 
+    /**
+     * fetches the squares possible if any for the special move of "en passant"
+     * @param selectedSquare
+     * @return a list of possible en passant squares
+     */
     private List<Square> getEnPassantSquares(Square selectedSquare) {
         List<Square> enPassantPoints = new ArrayList<>();
         if (plies.size() == 0) return enPassantPoints;
@@ -49,13 +67,22 @@ public class GameStateNoPieceSelected implements GameState {
         return MovementLogicUtil.getEnPassantSquares(lastPly, selectedSquare, board);
     }
 
-    private boolean SquareIsAPiece(Square square){
-        if(board.isSquareAPiece(square)) return true;
+    /**
+     * checks if a square contains a piece
+     * @param square
+     * @return true if it contains a piece otherwise false
+     */
+    private boolean SquareContainsAPiece(Square square){
+        if(board.isSquareContainsAPiece(square)) return true;
         return false;
     }
 
+    /**
+     * checks if a piece on a square is the same color as current player
+     * @param square
+     * @return true if colors match
+     */
     private boolean isPieceMyColor(Square square){
-        //return context.getBoard().getBoardMap().get(square).getColor() == context.getCurrentPlayerColor();
         return board.pieceOnSquareColorEquals(square,context.getCurrentPlayerColor());
     }
 
@@ -65,11 +92,15 @@ public class GameStateNoPieceSelected implements GameState {
         }
     }
 
+
     @Override
     public String getGameStatus() {
         return "Game ongoing";
     }
-
+    /**
+     * In this state the game is always ongoing
+     * @return true
+     */
     @Override
     public boolean isGameOngoing() {
         return true;
