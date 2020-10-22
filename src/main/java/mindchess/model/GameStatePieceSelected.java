@@ -1,6 +1,7 @@
 package mindchess.model;
 
 import mindchess.model.pieces.IPiece;
+import mindchess.observers.GameStateObserver;
 
 import java.util.ArrayList;
 import java.util.List;

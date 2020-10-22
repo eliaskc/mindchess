@@ -2,6 +2,7 @@ package mindchess.model;
 
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
+import mindchess.observers.GameStateObserver;
 import mindchess.observers.TimerObserver;
 
 import java.util.ArrayList;

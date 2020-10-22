@@ -12,7 +12,7 @@ import static mindchess.model.PieceType.PAWN;
 import static mindchess.model.SquareType.*;
 
 /**
- * Is responsible for finding legal moves
+ * Is responsible for finding legal moves by checking a specified direction and returning all legal moves in a Square list in that direction
  */
 public class MovementLogicUtil {
     private MovementLogicUtil() {
@@ -124,9 +124,13 @@ public class MovementLogicUtil {
         return returnList;
     }
 
-    //-------------------------------------------------------------------------------------
-    //Special rules
-    public static void checkPawnPromotion(Board board, ArrayList<Square> legalSquares, Square squareToCheck) {
+    /**
+     * marks squares for pawn promotion if a pawn moves to the opposite side
+     * @param board
+     * @param squareToCheck to check if the piece on the square is a pawn and what color it is
+     * @param legalSquares  possible squares the pawn can move to
+     */
+    public static void checkPawnPromotion(Board board,Square squareToCheck, ArrayList<Square> legalSquares) {
         if (legalSquares.size() == 0) return;
 
         for (Square s : legalSquares){
@@ -138,6 +142,13 @@ public class MovementLogicUtil {
         }
     }
 
+    /**
+     * returns a list of possible en passant moves, needs to know of previous moves(plies) to check if en passant is possible
+     * @param lastPly   last move
+     * @param squareToCheck the square with the piece that is going to make the move
+     * @param board
+     * @return  list of possible en passant moves
+     */
     static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board){
         List<Square> enPassantSquares = new ArrayList<>();
         Square movedFrom = lastPly.getMovedFrom();
@@ -158,10 +169,10 @@ public class MovementLogicUtil {
     }
 
     /**
-     *
+     * checks if the king can make the castle move to the right
      * @param board
      * @param squareToCheck
-     * @return
+     * @return true if castling to the right is possible
      */
     public static boolean checkRightCastling(Board board, Square squareToCheck) {
         for (int i = squareToCheck.getX() + 1; i <= squareToCheck.getX() + 2; i++) {
@@ -177,10 +188,10 @@ public class MovementLogicUtil {
     }
 
     /**
-     *
+     * checks if the king can make the castle move to the left
      * @param board
      * @param squareToCheck
-     * @return
+     * @return true if castling to the left is possible
      */
     public static boolean checkLeftCastling(Board board, Square squareToCheck) {
         for (int i = squareToCheck.getX() - 1; i >= squareToCheck.getX() - 3; i--) {
