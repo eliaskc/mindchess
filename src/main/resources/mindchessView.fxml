@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mindchess.controller.ChessController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mindchess.controller.MindchessController">
    <children>
       <AnchorPane fx:id="pliesAnchorPane" layoutX="190.0" layoutY="110.0" prefHeight="500.0" prefWidth="900.0" stylesheets="@chess.css">
          <children>

@@ -44,6 +44,15 @@ public class MovementLogicUtil {
 
     //-------------------------------------------------------------------------------------
     //Directions
+
+    /**
+     * Checks the possible moves available in the upwards direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> up(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getY() - 1; i >= 0 && iterations > 0; i--, iterations--) {
@@ -53,6 +62,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the downwards direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> down(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getY() + 1; i < 8 && iterations > 0; i++, iterations--) {
@@ -62,6 +79,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the leftwards direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> left(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getX() - 1; i >= 0 && iterations > 0; i--, iterations--) {
@@ -71,6 +96,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the rightwards direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> right(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getX() + 1; i < 8 && iterations > 0; i++, iterations--) {
@@ -80,6 +113,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the up and left direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> upLeft(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
@@ -91,6 +132,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the up and right direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> upRight(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
@@ -102,6 +151,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the down and right direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> downRight(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
@@ -113,6 +170,14 @@ public class MovementLogicUtil {
         return returnList;
     }
 
+    /**
+     * Checks the possible moves available in the down and left direction
+     *
+     * @param board
+     * @param squareToCheck square moving from
+     * @param iterations the maximum number of steps allowed for the piece to move
+     * @return
+     */
     public static List<Square> downLeft(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
@@ -144,7 +209,7 @@ public class MovementLogicUtil {
     }
 
     /**
-     * returns a list of possible en passant moves, needs to know of previous moves(plies) to check if en passant is possible
+     * returns a list of possible en passant moves, needs to know of the last move(ply) to check if en passant is possible
      *
      * @param lastPly       last move
      * @param squareToCheck the square with the piece that is going to make the move
