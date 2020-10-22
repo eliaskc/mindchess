@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotEquals;
 
 public class TestCastling {
     ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {
