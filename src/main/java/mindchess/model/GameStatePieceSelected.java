@@ -103,7 +103,6 @@ public class GameStatePieceSelected implements GameState {
             clearAndDrawLegalMoves();
             return;
         }
-    }
 
         if (checkPawnPromotion(targetSquare)) {
             context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));

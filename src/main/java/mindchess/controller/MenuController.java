@@ -163,7 +163,6 @@ public class MenuController implements Initializable {
             GameListController gameListController = new GameListController(s[0],s[1],s[2]);
             gameListFlowPane.getChildren().add(gameListController);
             int finalI = i;
-            System.out.println(i);
             gameListController.setOnMouseClicked(event -> {
                 model.setIndexAsCurrentGame(finalI);
                 gameListAnchorPane.toBack();
