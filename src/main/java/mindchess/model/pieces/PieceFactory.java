@@ -8,7 +8,7 @@ import static mindchess.model.PieceType.*;
 
 /**
  * Factory to create Pieces.
- *
+ * <p>
  * Creates a different piece depending on what PieceType and Color it gets.
  */
 public class PieceFactory {

@@ -1,9 +1,5 @@
 package mindchess.controller;
 
-import mindchess.model.*;
-import mindchess.model.pieces.IPiece;
-import mindchess.observers.EndGameObserver;
-import mindchess.observers.GameObserver;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -26,6 +22,10 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import mindchess.model.*;
+import mindchess.model.pieces.IPiece;
+import mindchess.observers.EndGameObserver;
+import mindchess.observers.GameObserver;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,11 +35,11 @@ import java.util.ResourceBundle;
 
 /**
  * ChessController handles the mindchess board
- *
+ * <p>
  * It handeles the fxml files
- *
+ * <p>
  * It receves notification from the board when something on the board is changed(moved/removed/..)
- *
+ * <p>
  * Recevies input when the user interacts with its scene and does something or send the input to the model to do something
  */
 public class ChessController implements Initializable, GameObserver, EndGameObserver {
@@ -54,8 +54,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ImageHandler imageHandler;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
-    private ImageView kingInCheckImage = new ImageView();
-    private List<ImageView> pliesImages = new ArrayList<>();
+    private final ImageView kingInCheckImage = new ImageView();
+    private final List<ImageView> pliesImages = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
 
@@ -162,6 +162,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     //-------------------------------------------------------------------------------------
     //make move
+
     /**
      * "Lights up" the current player's timer, dims the opponents timer
      */
@@ -224,8 +225,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void kingInCheck(int x, int y) {
         kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
-        kingInCheckImage.setX(x*squareDimension);
-        kingInCheckImage.setY(y*squareDimension);
+        kingInCheckImage.setX(x * squareDimension);
+        kingInCheckImage.setY(y * squareDimension);
         kingInCheckImage.setFitHeight(squareDimension);
         kingInCheckImage.setFitWidth(squareDimension);
         kingInCheckImage.setOpacity(0.6);
@@ -298,12 +299,12 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     //Draw And Images
     private List<ImageView> fetchPieceImages() {
         List<ImageView> pieceImages = new ArrayList<>();
-        for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()){
-            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
+        for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
+            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
             pieceImages.add(imageView);
-            if(model.getCurrentGamePlies().size() > 0){
-                if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
-                    imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
+            if (model.getCurrentGamePlies().size() > 0) {
+                if (entry.getKey().equals(model.getLastPlyMovedToSquare())) {
+                    imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
                 }
             }
         }
@@ -376,6 +377,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     //-------------------------------------------------------------------------------------
     //Promotion
+
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
      *
@@ -446,6 +448,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     //-------------------------------------------------------------------------------------
     //Analyze
+
     /**
      * Creates a PlyController object for each ply and populates it with information about the ply
      * Also takes the generated snapshot of that specific ply and creates an image that represents the board after that ply has been made
@@ -468,7 +471,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             });
 
             //If this is the first ply, generate the board but dont move the first piece
-            if (model.getCurrentGamePlies().indexOf(ply) == 0){
+            if (model.getCurrentGamePlies().indexOf(ply) == 0) {
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
@@ -493,6 +496,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     //-------------------------------------------------------------------------------------
     //Timer
+
     /**
      * Fetches the times for each timer from the model when called and updates the labels
      */

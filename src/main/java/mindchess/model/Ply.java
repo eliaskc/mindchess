@@ -9,12 +9,12 @@ import java.util.Map;
  * Representation of a move by either Player. In mindchess terms a half-move, or a ply
  */
 public class Ply {
-    private String playerName;
-    private Square movedFrom;
-    private Square movedTo;
-    private IPiece movedPiece;
-    private IPiece takenPiece;
-    private Map<Square, IPiece> boardSnapshot;
+    private final String playerName;
+    private final Square movedFrom;
+    private final Square movedTo;
+    private final IPiece movedPiece;
+    private final IPiece takenPiece;
+    private final Map<Square, IPiece> boardSnapshot;
 
     public Ply(String playerName, Square movedFrom, Square movedTo, IPiece movedPiece, IPiece takenPiece, Map<Square, IPiece> boardMap) {
         this.playerName = playerName;

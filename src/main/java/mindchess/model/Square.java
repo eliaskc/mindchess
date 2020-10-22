@@ -2,7 +2,7 @@ package mindchess.model;
 
 import java.util.Objects;
 
-import static mindchess.model.SquareType.*;
+import static mindchess.model.SquareType.NORMAL;
 
 /**
  * Represent a square on the chess board with an x and y coordinate. The square has a enum type SquareType which represents
@@ -28,20 +28,20 @@ public class Square {
         return x;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public SquareType getSquareType() {
-        return squareType;
-    }
-
     void setX(int x) {
         this.x = x;
     }
 
+    public int getY() {
+        return y;
+    }
+
     void setY(int y) {
         this.y = y;
+    }
+
+    public SquareType getSquareType() {
+        return squareType;
     }
 
     void setSquareType(SquareType squareType) {

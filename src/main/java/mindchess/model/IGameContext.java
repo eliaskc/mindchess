@@ -8,6 +8,7 @@ import mindchess.observers.GameStateObserver;
 public interface IGameContext {
     /**
      * used in special cases when a state can call an other states delegated method
+     *
      * @param x
      * @param y
      */
@@ -15,11 +16,15 @@ public interface IGameContext {
 
     /**
      * for the states to be able to change state
+     *
      * @param gameState
      */
     void setGameState(GameState gameState);
+
     void addGameStateObserver(GameStateObserver gameStateObserver);
+
     String getCurrentPlayerName();
+
     ChessColor getCurrentPlayerColor();
 
 }

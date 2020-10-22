@@ -1,14 +1,14 @@
 package mindchess.controller;
 
-import mindchess.model.ChessColor;
-import mindchess.model.ChessFacade;
-import mindchess.model.PieceType;
-import mindchess.model.Square;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import mindchess.model.ChessColor;
+import mindchess.model.ChessFacade;
+import mindchess.model.PieceType;
+import mindchess.model.Square;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ public class ImageHandler {
     private double squareDimension;
     private boolean minecraftPieceStyle = false;
 
-    double distanceFromMarkedPiece(ImageView imageView, int x, int y){
-        double yDelta = imageView.getY() - y*squareDimension;
-        double xDelta = imageView.getX() - x*squareDimension;
+    double distanceFromMarkedPiece(ImageView imageView, int x, int y) {
+        double yDelta = imageView.getY() - y * squareDimension;
+        double xDelta = imageView.getX() - x * squareDimension;
         return Math.hypot(yDelta, xDelta);
     }
 
@@ -37,9 +37,9 @@ public class ImageHandler {
         }
     }
 
-    ScaleTransition addScaleTransition(ImageView imageView, double duration, boolean grow){
+    ScaleTransition addScaleTransition(ImageView imageView, double duration, boolean grow) {
         ScaleTransition st = new ScaleTransition(Duration.millis(duration), imageView);
-        if (grow){
+        if (grow) {
             st.setFromX(0);
             st.setFromY(0);
             st.setToX(1.0);
@@ -58,7 +58,7 @@ public class ImageHandler {
     public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
         List<ImageView> imageViews = new ArrayList<>();
         for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
-            ImageView imageView = fetchPieceImageView(new Square(0,0), pieceType, chessColor, (int) squareDimension);
+            ImageView imageView = fetchPieceImageView(new Square(0, 0), pieceType, chessColor, (int) squareDimension);
 
             imageView.setFitWidth(squareDimension - 25);
             imageView.setFitHeight(squareDimension - 25);
@@ -110,15 +110,15 @@ public class ImageHandler {
         return pieceImage;
     }
 
-    TranslateTransition addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions, int duration){
+    TranslateTransition addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions, int duration) {
         imageView.setX(0);
         imageView.setY(0);
 
         TranslateTransition tt = new TranslateTransition(Duration.millis(duration), imageView);
-        tt.setFromX(squareFrom.getX()*dimensions);
-        tt.setFromY(squareFrom.getY()*dimensions);
-        tt.setToX(squareTo.getX()*dimensions);
-        tt.setToY(squareTo.getY()*dimensions);
+        tt.setFromX(squareFrom.getX() * dimensions);
+        tt.setFromY(squareFrom.getY() * dimensions);
+        tt.setToX(squareTo.getX() * dimensions);
+        tt.setToY(squareTo.getY() * dimensions);
         tt.setCycleCount(1);
         tt.play();
 
@@ -136,10 +136,12 @@ public class ImageHandler {
             ImageView imageView = new ImageView();
 
             if (model.isSquareOccupied(square)) {
-                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMoveBox.png")));
+                if (minecraftPieceStyle)
+                    imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMoveBox.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMoveBox.png")));
             } else {
-                if(minecraftPieceStyle) imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMove.png")));
+                if (minecraftPieceStyle)
+                    imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/minecraftLegalMove.png")));
                 else imageView.setImage(new Image(getClass().getResourceAsStream("/guiFiles/legalMove.png")));
             }
 
@@ -179,22 +181,21 @@ public class ImageHandler {
         return squareDimension;
     }
 
-
-    public boolean isMinecraftPieceStyle() {
-        return minecraftPieceStyle;
-    }
-
     //-------------------------------------------------------------------------------------
     //Setters
     public void setSquareDimension(double squareDimension) {
         this.squareDimension = squareDimension;
     }
 
-    public void setModel(ChessFacade model) {
-        this.model = model;
+    public boolean isMinecraftPieceStyle() {
+        return minecraftPieceStyle;
     }
 
     public void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
         this.minecraftPieceStyle = minecraftPieceStyle;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
     }
 }

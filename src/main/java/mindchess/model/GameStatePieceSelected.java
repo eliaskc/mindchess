@@ -7,28 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static mindchess.model.ChessColor.*;
-import static mindchess.model.PieceType.*;
+import static mindchess.model.ChessColor.BLACK;
+import static mindchess.model.ChessColor.WHITE;
+import static mindchess.model.PieceType.KING;
 import static mindchess.model.SquareType.*;
+
 /**
  * The state which represent when a piece has been selected and the next input will try to move the selected piece to the inputted square
- *
+ * <p>
  * From this state you can go to the no piece selected state if you make a move or deselects the piece by inputting an invalid input
  * And Game over state if you fulfill a win condition
  * And Pawn promotion if you move a pawn to the opposite side
- *
+ * <p>
  * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
  * The piece selected game state also needs a square which represent what piece is selected
  */
 public class GameStatePieceSelected implements GameState {
 
-    private Square selectedSquare;
-    private IGameContext context;
+    private final Square selectedSquare;
+    private final IGameContext context;
     private IPiece takenPiece = null;
-    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
-    private List<Square> legalSquares;
-    private List<Ply> plies;
-    private Board board;
+    private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
+    private final List<Square> legalSquares;
+    private final List<Ply> plies;
+    private final Board board;
 
     GameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.selectedSquare = selectedSquare;
@@ -43,23 +45,24 @@ public class GameStatePieceSelected implements GameState {
      * If it is, the move is made
      * If a win condition is met you will win the game
      * If you reach the opposite board the pawn promotion will happen
+     *
      * @param x
      * @param y
      */
     @Override
     public void handleInput(int x, int y) {
         Square targetSquare = new Square(x, y);
-        if (board.isAPieceOnSquare(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare,context.getCurrentPlayerColor())) {
+        if (board.isAPieceOnSquare(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare, context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
-            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
             gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
             context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return;
         }
 
         if (legalSquares.contains(targetSquare)) {
-            targetSquare = getLegalSquareByCoordinates(x,y);
-            move(selectedSquare,targetSquare);
+            targetSquare = getLegalSquareByCoordinates(x, y);
+            move(selectedSquare, targetSquare);
             addMoveToPlies(selectedSquare, targetSquare);
             notifyDrawPieces();
 
@@ -69,7 +72,7 @@ public class GameStatePieceSelected implements GameState {
             }
 
             if (checkPawnPromotion(targetSquare)) {
-                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));
+                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare, board, plies, legalSquares, context));
                 gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
                 clearAndDrawLegalMoves();
                 return;
@@ -78,7 +81,7 @@ public class GameStatePieceSelected implements GameState {
             notifySwitchPlayer();
             checkKingInCheck(context.getCurrentPlayerColor());
         }
-        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
         gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();
     }
@@ -130,6 +133,7 @@ public class GameStatePieceSelected implements GameState {
 
     /**
      * take a piece on a square and put it in dead pieces
+     *
      * @param pieceOnSquareToTake
      */
     private void takePiece(Square pieceOnSquareToTake) {
@@ -138,13 +142,14 @@ public class GameStatePieceSelected implements GameState {
         notifyDrawDeadPieces();
     }
 
-    private void clearAndDrawLegalMoves(){
+    private void clearAndDrawLegalMoves() {
         legalSquares.clear();
         notifyDrawLegalMoves();
     }
 
     /**
      * chicks if the king is in check and can be taken
+     *
      * @param kingColor
      */
     private void checkKingInCheck(ChessColor kingColor) {
@@ -158,6 +163,7 @@ public class GameStatePieceSelected implements GameState {
 
     /**
      * checks if the king has been taken by looking at the dead pieces list
+     *
      * @return true if king has been taken
      */
     private boolean checkKingTaken() {
@@ -183,6 +189,7 @@ public class GameStatePieceSelected implements GameState {
 
     /**
      * adds the move(ply) made to the list of plies
+     *
      * @param selectedSquare
      * @param targetSquare
      */
@@ -194,6 +201,7 @@ public class GameStatePieceSelected implements GameState {
     /**
      * returns a square if it matches the coordinates inputted
      * should never be null so throws exception if null
+     *
      * @param x
      * @param y
      * @return
@@ -206,39 +214,39 @@ public class GameStatePieceSelected implements GameState {
         throw new NoSuchElementException("No legal square with matching coordinates found");
     }
 
-    private void notifyPawnPromotion(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyPawnPromotion() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyPawnPromotion();
         }
     }
 
-    private void notifyDrawPieces(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawPieces() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawPieces();
         }
     }
 
-    private void notifyDrawDeadPieces(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawDeadPieces() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawDeadPieces();
         }
     }
 
-    private void notifySwitchPlayer(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifySwitchPlayer() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifySwitchPlayer();
         }
     }
 
-    private void notifyDrawLegalMoves(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawLegalMoves() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawLegalMoves();
         }
     }
 
-    private void notifyKingInCheck(int x, int y){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
-            gameStateObserver.notifyKingInCheck(x,y);
+    private void notifyKingInCheck(int x, int y) {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
+            gameStateObserver.notifyKingInCheck(x, y);
         }
     }
 
