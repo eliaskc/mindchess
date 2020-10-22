@@ -1,4 +1,4 @@
-package eaee.model;
+package mindchess.model;
 
 import mindchess.model.*;
 import mindchess.model.pieces.IPiece;

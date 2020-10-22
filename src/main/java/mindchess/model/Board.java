@@ -104,8 +104,8 @@ public class Board {
 
     //-------------------------------------------------------------------------------------
     //Fetchers
-    //TODO public only because of tests. Fix them to work without and make package-private
-    public IPiece fetchPieceOnSquare(Square squareSelected) {
+
+    IPiece fetchPieceOnSquare(Square squareSelected) {
         return boardMap.get(squareSelected);
     }
 
@@ -113,7 +113,6 @@ public class Board {
         return boardMap.get(square).getColor();
     }
 
-    //TODO public only because of tests. Fix them to work without and make package-private
     public boolean pieceOnSquareColorEquals(Square s, ChessColor chessColor) {
         return boardMap.get(s).getColor().equals(chessColor);
     }

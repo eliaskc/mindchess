@@ -1,4 +1,4 @@
-package eaee.model;
+package mindchess.model;
 
 import mindchess.model.ChessFacade;
 import mindchess.model.PlayerType;

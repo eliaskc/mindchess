@@ -1,4 +1,4 @@
-package eaee.model;
+package mindchess.model;
 
 import mindchess.controller.ImageHandler;
 import mindchess.model.ChessFacade;
