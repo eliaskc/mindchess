@@ -6,6 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Tests that the players have alternating turns
+ */
 public class TestAlternatingTurns {
     ChessFacade model;
     Board board;
@@ -17,6 +20,9 @@ public class TestAlternatingTurns {
         board = model.getCurrentBoard();
     }
 
+    /**
+     * Tests that the player switches after input
+     */
     @Test
     public void testAlternatingTurns(){
         String p1 = model.getCurrentWhitePlayerName();
@@ -28,6 +34,9 @@ public class TestAlternatingTurns {
         assertTrue(currPlayer.equals(p2) && !currPlayer.equals(p1));
     }
 
+    /**
+     * Tests that Pieces that are taken are saved in the deadPieces list
+     */
     @Test
     public void testTakePieceSuccess(){
         IPiece IPiece = model.getCurrentBoardMap().get(new Square(3,7));
@@ -47,6 +56,9 @@ public class TestAlternatingTurns {
         assertTrue(model.getCurrentDeadPieces().contains(IPiece));
     }
 
+    /**
+     * Tests that if a piece is not taken, it does not get into the deadPieces list
+     */
     @Test
     public void testTakePieceFail(){
         IPiece IPiece = model.getCurrentBoardMap().get(new Square(4, 0));

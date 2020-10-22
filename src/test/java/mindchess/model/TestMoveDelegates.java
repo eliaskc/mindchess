@@ -11,7 +11,10 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestMovementLogicUtil {
+/**
+ * Tests the methods in MoveDelegate
+ */
+public class TestMoveDelegates {
     ChessFacade model;
     Board board;
 
@@ -22,6 +25,9 @@ public class TestMovementLogicUtil {
         board = model.getCurrentBoard();
     }
 
+    /**
+     * Tests that the Queen can move according to the rules of chess(from the start position)
+     */
     @Test
     public void testCheckLegalQueen() {
         Square queenPosition = new Square(3,0);
@@ -31,6 +37,9 @@ public class TestMovementLogicUtil {
         assertEquals(0, squares.size());
     }
 
+    /**
+     * Tests that a black pawn can move according to the rules of chess(from the start position)
+     */
     @Test
     public void testCheckLegalBlackPawn() {
         Square pawnPosition = new Square(5,1);
@@ -40,11 +49,13 @@ public class TestMovementLogicUtil {
         List<Square> comparisonList = new ArrayList<>();
         comparisonList.add(new Square(5,2));
         comparisonList.add(new Square(5,3));
-        //comparisonList.add(new Point(0,3)); not implemented yet
 
         assertEquals(squares, comparisonList);
     }
 
+    /**
+     * Tests that a white pawn can move according to the rules of chess(from the start position)
+     */
     @Test
     public void testCheckLegalWhitePawn() {
         Square pawnPosition = new Square(0,6);
@@ -58,6 +69,9 @@ public class TestMovementLogicUtil {
         assertEquals(squares, comparisonList);
     }
 
+    /**
+     * Tests that a white pawn can move according to the rules of check after the first move(second move is tested)
+     */
     @Test
     public void testCheckLegalWhitePawnAfterMove() {
         Square pawnPosition = new Square(0,6);
@@ -71,6 +85,9 @@ public class TestMovementLogicUtil {
         assertEquals(squares, comparisonList);
     }
 
+    /**
+     * Tests that a knight can move according to the rules of chess
+     */
     @Test
     public void testCheckLegalKnight() {
         Square knightPosition = new Square(1,0);
