@@ -18,6 +18,43 @@ public class MovementLogicUtil {
     private MovementLogicUtil() {
     }
 
+    /**
+     * Adds square to the list of legal moves if the square is inside the board AND:
+     * - the square is empty
+     * - the square has a piece of the opposite color
+     *
+     * @param board
+     * @param s            potential legal square
+     * @param squareToCheck square moving from
+     * @param listToAddTo
+     * @return returns boolean that breaks the loop where the method was called, if a point has been added
+     */
+    public static boolean addSquareIfLegal(Board board, Square s, Square squareToCheck, List<Square> listToAddTo) {
+        if (s.getX() >= 0 && s.getX() < 8 && s.getY() >= 0 && s.getY() < 8) {
+            if (!isOccupied(board, s)) {
+                listToAddTo.add(new Square(s.getX(), s.getY()));
+                return false;
+            } else if (!board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck))) {
+                listToAddTo.add(new Square(s.getX(), s.getY()));
+                return true;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isOccupied(Board board, Square s) {
+        return board.isOccupied(s);
+    }
+
+    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
+        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
+            kingSquare.setSquareType(IN_CHECK);
+        else
+            kingSquare.setSquareType(NORMAL);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Directions
     public static List<Square> up(Board board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getY() - 1; i >= 0 && iterations > 0; i--, iterations--) {
@@ -98,32 +135,18 @@ public class MovementLogicUtil {
         return returnList;
     }
 
-    /**
-     * Adds square to the list of legal moves if the square is inside the board AND:
-     * - the square is empty
-     * - the square has a piece of the opposite color
-     *
-     * @param board
-     * @param s            potential legal square
-     * @param squareToCheck square moving from
-     * @param listToAddTo
-     * @return returns boolean that breaks the loop where the method was called, if a point has been added
-     */
-    public static boolean addSquareIfLegal(Board board, Square s, Square squareToCheck, List<Square> listToAddTo) {
-        if (s.getX() >= 0 && s.getX() < 8 && s.getY() >= 0 && s.getY() < 8) {
-            if (!isOccupied(board, s)) {
-                listToAddTo.add(new Square(s.getX(), s.getY()));
-                return false;
-            } else if (!board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck))) {
-                listToAddTo.add(new Square(s.getX(), s.getY()));
-                return true;
+    //-------------------------------------------------------------------------------------
+    //Special rules
+    public static void checkPawnPromotion(Board board, ArrayList<Square> legalSquares, Square squareToCheck) {
+        if (legalSquares.size() == 0) return;
+
+        for (Square s : legalSquares){
+            if(board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN){
+                if(s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK){
+                    s.setSquareType(PROMOTION);
+                }
             }
         }
-        return true;
-    }
-
-    public static boolean isOccupied(Board board, Square s) {
-        return board.isOccupied(s);
     }
 
     static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board){
@@ -143,25 +166,6 @@ public class MovementLogicUtil {
             }
         }
         return enPassantSquares;
-    }
-
-    public static void checkPawnPromotion(Board board, ArrayList<Square> legalSquares, Square squareToCheck) {
-        if (legalSquares.size() == 0) return;
-
-        for (Square s : legalSquares){
-            if(board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN){
-                if(s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK){
-                    s.setSquareType(PROMOTION);
-                }
-            }
-        }
-    }
-
-    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
-        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
-            kingSquare.setSquareType(IN_CHECK);
-        else
-            kingSquare.setSquareType(NORMAL);
     }
 
     /**
@@ -202,6 +206,8 @@ public class MovementLogicUtil {
         return false;
     }
 
+    //-------------------------------------------------------------------------------------
+    //Fetch
     public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color){
         List<Square> opponentLegalSquares = new ArrayList<>();
 
