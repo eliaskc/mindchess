@@ -37,6 +37,7 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
+
         assertFalse(model.isGameOngoing());
     }
 

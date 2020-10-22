@@ -59,8 +59,6 @@ public class GameStatePieceSelected implements GameState {
             targetSquareIsLegal(targetSquare);
         }
 
-        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
-        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
         clearAndDrawLegalMoves();
     }
 
@@ -111,6 +109,9 @@ public class GameStatePieceSelected implements GameState {
             return;
         }
 
+        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+
         notifySwitchPlayer();
         checkKingInCheck(context.getCurrentPlayerColor());
     }
@@ -160,10 +161,6 @@ public class GameStatePieceSelected implements GameState {
         board.removePieceFromSquare(moveFrom);
     }
 
-    private void clearAndDrawLegalMoves() {
-        legalSquares.clear();
-        notifyDrawLegalMoves();
-    }
 
     /**
      * take a piece on a square and put it in dead pieces

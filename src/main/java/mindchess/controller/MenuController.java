@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -58,6 +59,7 @@ public class MenuController implements Initializable {
     private ComboBox gameLengthDropDown;
     @FXML
     private ComboBox gamemodeDropDown;
+    @FXML
     private Label timeLabel;
     @FXML
     private FlowPane gameListFlowPane;
@@ -74,11 +76,6 @@ public class MenuController implements Initializable {
     @FXML
     void goToBoardNewGame(ActionEvent event) {
         model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, gamemodeMap.get(gamemodeDropDown.getValue()), gameLengthMap.get(gameLengthDropDown.getValue()));
-
-        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
-        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
-        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
-        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
 
         goToBoard(event.getSource());
     }

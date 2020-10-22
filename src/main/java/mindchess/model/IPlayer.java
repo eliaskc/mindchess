@@ -1,5 +1,7 @@
 package mindchess.model;
 
+import mindchess.observers.TimerObserver;
+
 public interface IPlayer {
     String getName();
 
@@ -7,7 +9,13 @@ public interface IPlayer {
 
     ChessColor getColor();
 
-    ChessTimer getTimer();
-
     PlayerType getPlayerType();
+
+    void setTimerActive(boolean active);
+
+    void startPlayerTimer();
+
+    void stopPlayerTimer();
+
+    void addTimerObserver(TimerObserver observer);
 }

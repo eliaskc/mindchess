@@ -1,6 +1,7 @@
 package mindchess.model;
 
 import mindchess.model.pieces.IPiece;
+import mindchess.observers.GameStateObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,17 +64,17 @@ public class GameStateAIPlayerTurn implements GameState {
      * @return the square to move from and the square to move to, in a list
      */
     private List<Square> calculateLevel1Move() {
-        var allBoardSquares = new ArrayList<>(board.getBoardMap().keySet());
+        var allBoardSquares = new ArrayList<>(board.getBoardKeys());
         Random rand;
 
         var returnList = new ArrayList<Square>();
         List<Square> AILegalSquares;
-        Square randToSquare = null;
+        Square randToSquare;
 
         while (true) {
             rand = new Random();
             Square randSquare = allBoardSquares.get(rand.nextInt(allBoardSquares.size()));
-            IPiece randPiece = board.getBoardMap().get(randSquare);
+            IPiece randPiece = board.getPieceOnSquare(randSquare);
 
             if (randPiece.getColor() == context.getCurrentPlayerColor()) {
                 AILegalSquares = randPiece.getMoveDelegate().fetchMoves(board, randSquare, randPiece.getHasMoved(), true);

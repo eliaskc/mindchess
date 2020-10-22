@@ -31,16 +31,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     private GameState gameState;
 
-    private void initGameStates() {
-        gameState = GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, this);
-        gameState.addGameStateObserver(this);
-    }
-
-    void initGame() {
-        board.initBoard();
-        initGameStates();
-    }
-
     public void createPlayers(String whitePlayerName, String blackPlayerName, Integer gameLength, PlayerType whitePlayerType, PlayerType blackPlayerType) {
         if (whitePlayerName.equals("")) whitePlayerName = "White";
         if (blackPlayerName.equals("")) blackPlayerName = "Black";
@@ -48,14 +38,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         playerBlack = new Player(blackPlayerName, BLACK, blackPlayerType, gameLength);
 
         currentPlayer = playerWhite;
-    }
-
-    void initTimers() {
-        playerWhite.getTimer().addObserver(this);
-        playerBlack.getTimer().addObserver(this);
-        playerWhite.getTimer().startTimer();
-        playerWhite.getTimer().setActive(true);
-        playerBlack.getTimer().startTimer();
     }
 
     /**
@@ -83,7 +65,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     void switchPlayer() {
         currentPlayer.setTimerActive(false);
         currentPlayer = getOtherPlayer();
-        currentPlayer.getTimer().setActive(true);
+        currentPlayer.setTimerActive(true);
 
         if (currentPlayer.getPlayerType() == CPU_LEVEL1)
             gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
@@ -92,14 +74,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
         currentPlayer.setTimerActive(true);
         notifySwitchedPlayer();
-    }
-
-    private IPlayer getOtherPlayer() {
-        if (currentPlayer == playerWhite) {
-            return playerBlack;
-        } else {
-            return playerWhite;
-        }
     }
 
     /**
@@ -266,6 +240,10 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return currentPlayer.getName();
     }
 
+    public PlayerType getCurrentPlayerType() {
+        return currentPlayer.getPlayerType();
+    }
+
     List<Square> getLegalSquares() {
         return legalSquares;
     }
@@ -310,7 +288,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return playerWhite.getName();
     }
   
-    private Player getOtherPlayer() {
+    private IPlayer getOtherPlayer() {
         if (currentPlayer == playerWhite) {
             return playerBlack;
         } else {
@@ -324,22 +302,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     //-------------------------------------------------------------------------------------
     //Setters
-  
-    void setPlayerWhiteTime(int seconds) {
-        playerWhite.setTime(seconds);
-    }
-  
-    void setPlayerBlackTime(int seconds) {
-        playerBlack.setTime(seconds);
-    }
-  
-    void setPlayerWhiteName(String name) {
-        playerWhite.setName(name);
-    }
-
-    void setPlayerBlackName(String name) {
-        playerBlack.setName(name);
-    }
 
     /**
      * Sets the gamestate, called from the states themselves to decide which next state should be

@@ -179,20 +179,4 @@ public class ChessFacade {
         }
         currentGame = gameList.get(i);
     }
-
-    public void setCurrentWhitePlayerTimerTime(int seconds) {
-        currentGame.setPlayerWhiteTime(seconds);
-    }
-
-    public void setCurrentBlackPlayerTimerTime(int seconds) {
-        currentGame.setPlayerBlackTime(seconds);
-    }
-
-    public void setCurrentPlayerWhiteName(String name) {
-        currentGame.setPlayerWhiteName(name);
-    }
-
-    public void setCurrentPlayerBlackName(String name) {
-        currentGame.setPlayerBlackName(name);
-    }
 }

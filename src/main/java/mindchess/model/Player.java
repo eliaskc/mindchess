@@ -22,41 +22,41 @@ public class Player implements IPlayer {
  
     //-------------------------------------------------------------------------------------
     //Timer
-    void startPlayerTimer() {
+    public void startPlayerTimer() {
         chessTimer.startTimer();
     }
 
-    void stopPlayerTimer() {
+    public void stopPlayerTimer() {
         chessTimer.stopTimer();
     }
 
     //-------------------------------------------------------------------------------------
     //Observer
-    void addTimerObserver(TimerObserver observer) {
+    public void addTimerObserver(TimerObserver observer) {
         chessTimer.addObserver(observer);
     }
 
     //-------------------------------------------------------------------------------------
     //Getters
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    int getCurrentTime() {
+    public int getCurrentTime() {
         return chessTimer.getTime();
     }
 
-    ChessColor getColor() {
+    public ChessColor getColor() {
         return chessColor;
     }
     
-     public PlayerType getPlayerType() {
+    public PlayerType getPlayerType() {
         return playerType;
     }
 
     //-------------------------------------------------------------------------------------
     //Setters
-    void setTimerActive(boolean active) {
+    public void setTimerActive(boolean active) {
         chessTimer.setActive(active);
     }
 }
