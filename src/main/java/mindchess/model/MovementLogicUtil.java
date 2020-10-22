@@ -301,10 +301,10 @@ public class MovementLogicUtil {
         return board.isOccupied(s);
     }
 
-    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
+    public static boolean isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
         if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
-            kingSquare.setSquareType(IN_CHECK);
+            return true;
         else
-            kingSquare.setSquareType(NORMAL);
+            return false;
     }
 }
