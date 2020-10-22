@@ -53,16 +53,4 @@ public class TestChessFacade {
         model.handleBoardInput(10,11);
         model.handleBoardInput(10,12);
     }
-
-    @Test
-    public void testForfeit(){
-        model.forfeit();
-        assertFalse(model.isGameOngoing());
-    }
-
-    @Test
-    public void testDraw(){
-        model.acceptDraw();
-        assertFalse(model.isGameOngoing());
-    }
 }

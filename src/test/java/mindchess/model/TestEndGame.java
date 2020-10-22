@@ -59,22 +59,13 @@ public class TestEndGame {
 
 
     //Currently the accepting/declining is not done by the model
-    /*
+
     @Test
     public void testDrawAccepted() {
-        model.getCurrentGame().offerDraw();
-        model.getCurrentGame().acceptDraw();
+        model.acceptDraw();
 
-        assertEquals(true, model.getCurrentGame().getGameState().getIsGameOver());
+        assertEquals(true, model.isGameOngoing());
     }
-
-    @Test
-    public void testDrawDeclined() {
-        model.getCurrentGame().offerDraw();
-        model.getCurrentGame().declineDraw();
-
-        assertEquals(false, model.getCurrentGame().getGameState().getIsGameOver());
-    }*/
 
     @Test
     public void testForfeit() {
