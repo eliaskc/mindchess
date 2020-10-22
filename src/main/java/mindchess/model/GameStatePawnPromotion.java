@@ -51,6 +51,7 @@ public class GameStatePawnPromotion implements GameState {
         Square selectedPromotion = new Square(x, y);
         if (promotionPieces.containsKey(selectedPromotion)) {
             promote(selectedSquare, selectedPromotion);
+            notifyPawnPromotionCleanUp();
             notifySwitchPlayer();
             notifyDrawPieces();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
@@ -95,6 +96,12 @@ public class GameStatePawnPromotion implements GameState {
     private void notifyDrawPieces() {
         for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawPieces();
+        }
+    }
+
+    private void notifyPawnPromotionCleanUp(){
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
+            gameStateObserver.notifyPawnPromotionCleanUp();
         }
     }
 

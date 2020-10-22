@@ -15,5 +15,7 @@ public interface GameObserver {
 
     void pawnPromotionSetup(ChessColor chessColor);
 
+    void pawnPromotionCleanUp();
+
     void kingInCheck(int x, int y);
 }

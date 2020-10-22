@@ -43,26 +43,26 @@ public class PieceFactory {
     }
 
     public static IPiece createRook(ChessColor chessColor) {
-        return new Piece(chessColor, ROOK, new RookMoveDelegate());
+        return new Piece(chessColor, ROOK, new RookMoveDelegate(), 5);
     }
 
     public static IPiece createKnight(ChessColor chessColor) {
-        return new Piece(chessColor, KNIGHT, new KnightMoveDelegate());
+        return new Piece(chessColor, KNIGHT, new KnightMoveDelegate(), 3);
     }
 
     public static IPiece createBishop(ChessColor chessColor) {
-        return new Piece(chessColor, BISHOP, new BishopMoveDelegate());
+        return new Piece(chessColor, BISHOP, new BishopMoveDelegate(), 3);
     }
 
     public static IPiece createQueen(ChessColor chessColor) {
-        return new Piece(chessColor, QUEEN, new QueenMoveDelegate());
+        return new Piece(chessColor, QUEEN, new QueenMoveDelegate(), 9);
     }
 
     public static IPiece createKing(ChessColor chessColor) {
-        return new Piece(chessColor, KING, new KingMoveDelegate());
+        return new Piece(chessColor, KING, new KingMoveDelegate(), 100);
     }
 
     public static IPiece createPawn(ChessColor chessColor) {
-        return new Piece(chessColor, PAWN, new PawnMoveDelegate());
+        return new Piece(chessColor, PAWN, new PawnMoveDelegate(), 1);
     }
 }
