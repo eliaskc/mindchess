@@ -19,8 +19,8 @@ public class TestAlternatingTurns {
 
     @Test
     public void testAlternatingTurns(){
-        String p1 = model.getCurrentPlayerWhiteName();
-        String p2 = model.getCurrentPlayerBlackName();
+        String p1 = model.getCurrentWhitePlayerName();
+        String p2 = model.getCurrentBlackPlayerName();
         model.handleBoardInput(0,6);
         model.handleBoardInput(0, 5);
 

@@ -1,19 +1,23 @@
 package mindchess.controller;
 
-import mindchess.model.ChessFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import mindchess.model.PlayerType;
+import mindchess.model.ChessFacade;
 
 import java.net.URL;
 import java.util.*;
@@ -24,25 +28,21 @@ import static mindchess.model.PlayerType.*;
  * MenuController handles the menu
  */
 public class MenuController implements Initializable {
-    private ChessFacade model;
-
-    private Parent chessParent;
-    private Scene scene;
-
     private final String media_URL_1 = "/backgroundVideos/background_video_1.mp4";
     private final String media_URL_2 = "/backgroundVideos/background_video_2.mp4";
     private final String media_URL_3 = "/backgroundVideos/background_video_3.mp4";
     private final String media_URL_4 = "/backgroundVideos/background_video_4.mp4";
-    List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
-
     private final String audio_URL_1 = "/backgroundMusic/C418_Sweden.mp3";
     private final String audio_URL_2 = "/backgroundMusic/C418_SubwooferLullaby.mp3";
+    private final HashMap<String, Integer> timerMap = new LinkedHashMap<>();
+    List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
     //private final String audio_URL_3 = "/backgroundMusic/CaptainSparklez_Revenge.mp3";
     List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2);
-
+    private ChessFacade model;
+    private Parent chessParent;
+    private Scene scene;
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
-
     private ChessController chessController;
     private final HashMap<String, Integer> gameLengthMap = new LinkedHashMap<>();
     private final HashMap<String, PlayerType> gamemodeMap = new LinkedHashMap<>();
@@ -51,19 +51,18 @@ public class MenuController implements Initializable {
     @FXML
     private TextField whitePlayerNameField;
     @FXML
+    private AnchorPane gameListAnchorPane;
+    @FXML
     private TextField blackPlayerNameField;
     @FXML
     private ComboBox gameLengthDropDown;
     @FXML
     private ComboBox gamemodeDropDown;
-
-    public void setChessController(ChessController chessController) {
-        this.chessController = chessController;
-    }
-
-    public void setModel(ChessFacade model) {
-        this.model = model;
-    }
+    private Label timeLabel;
+    @FXML
+    private FlowPane gameListFlowPane;
+    @FXML
+    private Button btnBackGameList;
 
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
@@ -73,10 +72,19 @@ public class MenuController implements Initializable {
      * @param event Clicked the button
      */
     @FXML
-    void goToBoard(ActionEvent event) {
+    void goToBoardNewGame(ActionEvent event) {
         model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, gamemodeMap.get(gamemodeDropDown.getValue()), gameLengthMap.get(gameLengthDropDown.getValue()));
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
+        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
+        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+
+        goToBoard(event.getSource());
+    }
+
+    void goToBoard(Object source) {
+        Stage window = (Stage) ((Node) source).getScene().getWindow();
         window.setScene(scene);
         window.show();
 
@@ -86,21 +94,8 @@ public class MenuController implements Initializable {
         chessController.drawPieces();
     }
 
-    public void createChessScene(Parent chessParent) {
-        this.chessParent = chessParent;
-        this.scene = new Scene(chessParent);
-    }
-
-    /**
-     * Exits the application when called
-     *
-     * @param event Pressed the button
-     */
-    @FXML
-    void Exit(ActionEvent event) {
-        System.exit(0);
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Start
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeBackgroundMusic();
         initializeBackgroundVideo();
@@ -162,4 +157,57 @@ public class MenuController implements Initializable {
 
         gamemodeDropDown.getSelectionModel().selectFirst();
     }
+
+    public void createChessScene(Parent chessParent) {
+        this.chessParent = chessParent;
+        this.scene = new Scene(chessParent);
+    }
+  
+    @FXML
+    private void populateGameList() {
+        gameListFlowPane.getChildren().clear();
+        int i = 0;
+        gameListAnchorPane.toFront();
+        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        for (String[] s : model.getPlayersAndStatusInGameList()) {
+            GameListController gameListController = new GameListController(s[0],s[1],s[2]);
+            gameListFlowPane.getChildren().add(gameListController);
+            int finalI = i;
+            gameListController.setOnMouseClicked(event -> {
+                model.setIndexAsCurrentGame(finalI);
+                gameListAnchorPane.toBack();
+                goToBoard(event.getSource());
+            });
+            i++;
+        }
+    }
+
+    @FXML
+    private void closeGameList(){
+        gameListAnchorPane.toBack();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //End
+
+    /**
+     * Exits the application when called
+     *
+     * @param event Pressed the button
+     */
+    @FXML
+    void Exit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Setters
+    public void setChessController(ChessController chessController) {
+        this.chessController = chessController;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
+    }
+      
 }

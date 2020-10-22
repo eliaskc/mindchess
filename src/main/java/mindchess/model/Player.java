@@ -1,13 +1,17 @@
 package mindchess.model;
 
+import mindchess.observers.TimerObserver;
+
 /**
  * Class Player represents a player playing mindchess and contains attributes for that player
+ * <p>
+ * The player controls its own timer
  */
 public class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();
-    private String name;
     private final ChessColor chessColor;
     private PlayerType playerType;
+    private String name;
 
     Player(String name, ChessColor chessColor, PlayerType playerType, Integer gameLength) {
         this.name = name;
@@ -15,24 +19,44 @@ public class Player implements IPlayer {
         this.playerType = playerType;
         this.chessTimer.setTime(gameLength);
     }
+ 
+    //-------------------------------------------------------------------------------------
+    //Timer
+    void startPlayerTimer() {
+        chessTimer.startTimer();
+    }
 
-    public String getName() {
+    void stopPlayerTimer() {
+        chessTimer.stopTimer();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Observer
+    void addTimerObserver(TimerObserver observer) {
+        chessTimer.addObserver(observer);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Getters
+    String getName() {
         return name;
     }
 
-    public int getCurrentTime(){
+    int getCurrentTime() {
         return chessTimer.getTime();
     }
 
-    public ChessColor getColor() {
+    ChessColor getColor() {
         return chessColor;
     }
-
-    public ChessTimer getTimer() {
-        return chessTimer;
+    
+     public PlayerType getPlayerType() {
+        return playerType;
     }
 
-    public PlayerType getPlayerType() {
-        return playerType;
+    //-------------------------------------------------------------------------------------
+    //Setters
+    void setTimerActive(boolean active) {
+        chessTimer.setActive(active);
     }
 }

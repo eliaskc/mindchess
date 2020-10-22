@@ -2,6 +2,7 @@ package mindchess.model;
 
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
+import mindchess.observers.GameStateObserver;
 import mindchess.observers.TimerObserver;
 
 import java.util.ArrayList;
@@ -11,12 +12,15 @@ import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
 import static mindchess.model.PlayerType.*;
 
+/**
+ * The game class represents one game which has a board and two players. It keeps track of legal squares,current game state, plies and who
+ * is the current player.
+ */
 public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
     private final Board board = new Board();
-    //private final Map<Square, Piece> boardMap = board.getBoardMap(); //Representation of the relationship between square (squares) and pieces on the board
 
     private final List<Square> legalSquares = new ArrayList<>(); //List of squares that are legal to move to for the currently marked square
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
@@ -26,11 +30,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private IPlayer currentPlayer;
 
     private GameState gameState;
-
-    @Override
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
 
     private void initGameStates() {
         gameState = GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, this);
@@ -60,17 +59,14 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     }
 
     /**
-     * handleBoardClick() is the method responsible for investigating clicks on the board and deciding what should be done.
+     * handleBoardInput() is the method responsible for handling a input on the chess board.
      * <p>
-     * It receives input about the click and first fetches the clicked Square, and then the Piece on the Square (if there is one).
+     * It delegates the input to the handleInput() method of the current state who then decides what to do with it.
      * <p>
-     * If no piece has been marked, it marks the Piece on the clicked Square
-     * <p>
-     * If a piece has been marked already, it checks if the clicked Square is one that is legal to move to and makes the move
-     * if it is.
+     * If the game has ended does it notify the rest of the program that it has.
      *
-     * @param x
-     * @param y
+     * @param x The x value of where on the application the input happend
+     * @param y The y value of where on the application the input happend
      */
     public void handleBoardInput(int x, int y) {
         gameState.handleInput(x, y);
@@ -79,8 +75,13 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         }
     }
 
+    /**
+     * Switches the current active player and switches whos timers is active.
+     * <p>
+     * Notifies that the player has switched.
+     */
     void switchPlayer() {
-        currentPlayer.getTimer().setActive(false);
+        currentPlayer.setTimerActive(false);
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
 
@@ -89,6 +90,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         else if (currentPlayer.getPlayerType() == CPU_LEVEL2)
             gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
 
+        currentPlayer.setTimerActive(true);
         notifySwitchedPlayer();
     }
 
@@ -100,21 +102,66 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         }
     }
 
+    /**
+     * sets the state of the game to game over, with the gamestatus string of gameover state set to the "game ended in a draw"
+     * <p>
+     * stops both players timers, notifies that the game has ended.
+     */
     void endGameAsDraw() {
         setGameState(GameStateFactory.createGameStateGameOver("Game ended in draw"));
         stopAllTimers();
         notifyEndGame();
     }
 
+    /**
+     * sets the state of the game to game over, with the gamestatus string of gameover state set to the opponents name + "has won the game"
+     * <p>
+     * stops both players timers, notifies that the game has ended.
+     */
     void endGameAsForfeit() {
         setGameState(GameStateFactory.createGameStateGameOver(getOtherPlayer().getName() + " has won the game"));
         stopAllTimers();
         notifyEndGame();
     }
 
+    //-------------------------------------------------------------------------------------
+    //Initializes
+
+    /**
+     * sets the first state to a no piece selected state and adds the game as an observer, an entry into the states
+     */
+    private void initGameStates() {
+        gameState = GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, this);
+        addGameStateObserver(this);
+    }
+
+    /**
+     * initializes the board and starts the current player as white according to chess rules
+     */
+    void initGame() {
+        board.initBoard();
+        currentPlayer = playerWhite;
+        initGameStates();
+    }
+
+    /**
+     * initializes the players timers and adds game as observer.
+     * <p>
+     * starts the white timer as it's always the first to move in a new game.
+     */
+    void initTimers() {
+        playerWhite.addTimerObserver(this);
+        playerBlack.addTimerObserver(this);
+        playerWhite.startPlayerTimer();
+        playerWhite.setTimerActive(true);
+        playerBlack.startPlayerTimer();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Timers
     void stopAllTimers() {
-        playerBlack.getTimer().stopTimer();
-        playerWhite.getTimer().stopTimer();
+        playerBlack.stopPlayerTimer();
+        playerWhite.stopPlayerTimer();
     }
 
     @Override
@@ -122,6 +169,8 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         notifyTimerUpdated();
     }
 
+    //-------------------------------------------------------------------------------------
+    //Notify
     private void notifyTimerUpdated() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.updateTimer();
@@ -184,22 +233,11 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         switchPlayer();
     }
 
+    //-------------------------------------------------------------------------------------
+    //Observers
     @Override
     public void addGameStateObserver(GameStateObserver gameStateObserver) {
         gameState.addGameStateObserver(gameStateObserver);
-    }
-
-    public ChessColor getCurrentPlayerColor() {
-        return currentPlayer.getColor();
-    }
-
-    @Override
-    public PlayerType getCurrentPlayerType() {
-        return currentPlayer.getPlayerType();
-    }
-
-    public String getCurrentPlayerName() {
-        return currentPlayer.getName();
     }
 
     void addGameObserver(GameObserver gameObserver) {
@@ -218,12 +256,26 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         endGameObservers.remove(endgameObserver);
     }
 
+    //-------------------------------------------------------------------------------------
+    //Getters
+    public ChessColor getCurrentPlayerColor() {
+        return currentPlayer.getColor();
+    }
+
+    public String getCurrentPlayerName() {
+        return currentPlayer.getName();
+    }
+
     List<Square> getLegalSquares() {
         return legalSquares;
     }
 
     Board getBoard() {
         return board;
+    }
+  
+    public String getGameStatus(){
+      return gameState.getGameStatus();
     }
 
     IPlayer getPlayerWhite() {
@@ -242,8 +294,60 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return plies;
     }
 
+    int getPlayerWhiteTime() {
+        return playerWhite.getCurrentTime();
+    }
+
+    int getPlayerBlackTime() {
+        return playerBlack.getCurrentTime();
+    }
+  
+    String getPlayerBlackName() {
+        return playerBlack.getName();
+    }
+
+    String getPlayerWhiteName() {
+        return playerWhite.getName();
+    }
+  
+    private Player getOtherPlayer() {
+        if (currentPlayer == playerWhite) {
+            return playerBlack;
+        } else {
+            return playerWhite;
+        }
+    }
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Setters
+  
+    void setPlayerWhiteTime(int seconds) {
+        playerWhite.setTime(seconds);
+    }
+  
+    void setPlayerBlackTime(int seconds) {
+        playerBlack.setTime(seconds);
+    }
+  
+    void setPlayerWhiteName(String name) {
+        playerWhite.setName(name);
+    }
+
+    void setPlayerBlackName(String name) {
+        playerBlack.setName(name);
+    }
+
+    /**
+     * Sets the gamestate, called from the states themselves to decide which next state should be
+     *
+     * @param gameState the new game state
+     */
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }
