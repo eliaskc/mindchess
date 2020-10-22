@@ -1,18 +1,40 @@
 package mindchess.model;
 
+import mindchess.observers.TimerObserver;
+
 /**
  * Class Player represents a player playing mindchess and contains attributes for that player
+ * <p>
+ * The player controls its own timer
  */
 public class Player {
     private final ChessTimer chessTimer = new ChessTimer();
-    private String name;
     private final ChessColor chessColor;
+    private String name;
 
     Player(String name, ChessColor chessColor) {
         this.name = name;
         this.chessColor = chessColor;
     }
 
+    //-------------------------------------------------------------------------------------
+    //Timer
+    void startPlayerTimer() {
+        chessTimer.startTimer();
+    }
+
+    void stopPlayerTimer() {
+        chessTimer.stopTimer();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Observer
+    void addTimerObserver(TimerObserver observer) {
+        chessTimer.addObserver(observer);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Getters
     String getName() {
         return name;
     }
@@ -21,20 +43,22 @@ public class Player {
         this.name = name;
     }
 
-    int getCurrentTime(){
+    int getCurrentTime() {
         return chessTimer.getTime();
-    }
-
-    void setTime(int seconds){
-        chessTimer.setTime(seconds);
     }
 
     ChessColor getColor() {
         return chessColor;
     }
 
-    ChessTimer getTimer() {
-        return chessTimer;
+    //-------------------------------------------------------------------------------------
+    //Setters
+    void setTimerActive(boolean active) {
+        chessTimer.setActive(active);
     }
-    
+
+    void setTime(int seconds) {
+        chessTimer.setTime(seconds);
+    }
+
 }

@@ -54,6 +54,10 @@
     -fx-border-color: #AAAAAA #565656 #565656 #AAAAAA;
 }
 
+.menuBackground {
+    -fx-background-image: url("./guiFiles/dirt_background.png");
+}
+
 .background {
     -fx-background-color: #202020;
 }

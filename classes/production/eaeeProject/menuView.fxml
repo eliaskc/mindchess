@@ -32,7 +32,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <ImageView fx:id="btnStart" fitHeight="105.0" fitWidth="347.0" layoutX="471.0" layoutY="286.0" onMouseClicked="#goToBoard" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btnStart" fitHeight="105.0" fitWidth="347.0" layoutX="471.0" layoutY="286.0" onMouseClicked="#goToBoardNewGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@start_game.png" />
          </image>
