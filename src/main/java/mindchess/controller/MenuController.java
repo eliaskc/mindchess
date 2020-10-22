@@ -89,6 +89,7 @@ public class MenuController implements Initializable {
         chessController.setAudioPlayer(audioPlayer);
         chessController.init();
         chessController.drawPieces();
+        chessController.drawLegalMoves();
     }
 
     //-------------------------------------------------------------------------------------
