@@ -14,7 +14,7 @@ import static mindchess.model.ChessColor.WHITE;
  * The mindchess board is represented by a map with Squares and IPieces that this class is responsible for putting into and
  * removing from.
  */
-public class Board {
+public class Board implements IBoard {
     private final Map<Square, IPiece> boardMap = new HashMap<>();
     private final List<IPiece> deadPieces = new ArrayList<>();
 
@@ -33,7 +33,8 @@ public class Board {
      * @param square
      * @param piece
      */
-    void placePieceOnSquare(Square square, IPiece piece) {
+    @Override
+    public void placePieceOnSquare(Square square, IPiece piece) {
         boardMap.put(square, piece);
     }
 
@@ -43,7 +44,8 @@ public class Board {
      * @param square square with a piece on it
      * @return The removed piece
      */
-    IPiece removePieceFromSquare(Square square) {
+    @Override
+    public IPiece removePieceFromSquare(Square square) {
         return boardMap.remove(square);
     }
 
@@ -53,7 +55,8 @@ public class Board {
      * @param s The square we check
      * @return True if there is a IPiece on the square
      */
-    boolean isOccupied(Square s) {
+    @Override
+    public boolean isOccupied(Square s) {
         return boardMap.containsKey(s);
     }
 
@@ -62,7 +65,8 @@ public class Board {
      *
      * @param s The square with the piece on it
      */
-    void markPieceOnSquareHasMoved(Square s) {
+    @Override
+    public void markPieceOnSquareHasMoved(Square s) {
         fetchPieceOnSquare(s).setHasMoved(true);
     }
 
@@ -105,19 +109,23 @@ public class Board {
     //-------------------------------------------------------------------------------------
     //Fetchers
 
-    IPiece fetchPieceOnSquare(Square squareSelected) {
+    @Override
+    public IPiece fetchPieceOnSquare(Square squareSelected) {
         return boardMap.get(squareSelected);
     }
 
-    ChessColor fetchPieceOnSquareColor(Square square) {
+    @Override
+    public ChessColor fetchPieceOnSquareColor(Square square) {
         return boardMap.get(square).getColor();
     }
 
+    @Override
     public boolean pieceOnSquareColorEquals(Square s, ChessColor chessColor) {
         return boardMap.get(s).getColor().equals(chessColor);
     }
 
-    Square fetchKingSquare(ChessColor color) {
+    @Override
+    public Square fetchKingSquare(ChessColor color) {
         for (Map.Entry<Square, mindchess.model.pieces.IPiece> entry : boardMap.entrySet()) {
             if (entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(PieceType.KING)) {
                 return entry.getKey();
@@ -128,36 +136,42 @@ public class Board {
 
     //-------------------------------------------------------------------------------------
     //Getters
-    List<IPiece> getDeadPieces() {
+    @Override
+    public List<IPiece> getDeadPieces() {
         return deadPieces;
     }
-
-    IPiece getPieceOnSquare(Square square) {
+    @Override
+    public IPiece getPieceOnSquare(Square square) {
         return boardMap.get(square);
     }
 
-    Map<Square, IPiece> getBoardSnapShot() {
+    @Override
+    public Map<Square, IPiece> getBoardSnapShot() {
         return new HashMap<Square, IPiece>(boardMap);
     }
 
-    Set<Map.Entry<Square, IPiece>> getBoardEntrySet() {
+    @Override
+    public Set<Map.Entry<Square, IPiece>> getBoardEntrySet() {
         return boardMap.entrySet();
     }
 
-    Set<Square> getBoardKeys() {
+    @Override
+    public Set<Square> getBoardKeys() {
         return boardMap.keySet();
     }
 
-
-    boolean isSquareContainsAPiece(Square square) {
+    @Override
+    public boolean isSquareContainsAPiece(Square square) {
         return boardMap.containsKey(square);
     }
 
-    boolean isPieceOnSquareRook(Square square) {
+    @Override
+    public boolean isPieceOnSquareRook(Square square) {
         return boardMap.get(square).getPieceType().equals(PieceType.ROOK);
     }
 
-    boolean isAPieceOnSquare(Square square) {
+    @Override
+    public boolean isAPieceOnSquare(Square square) {
         return boardMap.containsKey(square);
     }
 }

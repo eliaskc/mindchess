@@ -1,5 +1,6 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
+import mindchess.model.*;
 import mindchess.observers.GameStateObserver;
 
 import java.util.List;
@@ -9,22 +10,22 @@ import java.util.List;
  */
 public class GameStateFactory {
 
-    public static GameState createGameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    public static GameState createGameStatePieceSelected(Square selectedSquare, IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         return new GameStatePieceSelected(selectedSquare, board, plies, legalSquares, context);
     }
 
-    public static GameState createGameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    public static GameState createGameStateNoPieceSelected(IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         return new GameStateNoPieceSelected(board, plies, legalSquares, context);
     }
 
-    public static GameState createGameStateAIPlayerTurn(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context, GameStateObserver gameStateObserver, int difficulty) {
+    public static GameState createGameStateAIPlayerTurn(IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context, GameStateObserver gameStateObserver, int difficulty) {
         GameStateAIPlayerTurn AIState = new GameStateAIPlayerTurn(board, legalSquares, plies, context, difficulty);
         AIState.addGameStateObserver(gameStateObserver);
         AIState.handleInput(0,0);
         return AIState;
     }
   
-    public static GameState createGameStatePawnPromotion(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    public static GameState createGameStatePawnPromotion(Square selectedSquare, IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         return new GameStatePawnPromotion(selectedSquare, board, plies, legalSquares, context);
     }
 

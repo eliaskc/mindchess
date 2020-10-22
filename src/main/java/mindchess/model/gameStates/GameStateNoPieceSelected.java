@@ -1,5 +1,6 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
+import mindchess.model.*;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.GameStateObserver;
 
@@ -18,9 +19,9 @@ public class GameStateNoPieceSelected implements GameState {
     private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private final List<Square> legalSquares;
     private final List<Ply> plies;
-    private final Board board;
+    private final IBoard board;
 
-    GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    GameStateNoPieceSelected(IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;

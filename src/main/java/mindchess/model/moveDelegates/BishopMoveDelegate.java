@@ -1,6 +1,7 @@
 package mindchess.model.moveDelegates;
 
 import mindchess.model.Board;
+import mindchess.model.IBoard;
 import mindchess.model.MovementLogicUtil;
 import mindchess.model.Square;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class BishopMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
+    public List<Square> fetchMoves(IBoard board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         legalSquares.addAll(MovementLogicUtil.upLeft(board, squareToCheck, 7));

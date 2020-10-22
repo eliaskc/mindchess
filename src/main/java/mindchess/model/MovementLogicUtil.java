@@ -29,7 +29,7 @@ public class MovementLogicUtil {
      * @param listToAddTo
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
      */
-    public static boolean addSquareIfLegal(Board board, Square s, Square squareToCheck, List<Square> listToAddTo) {
+    public static boolean addSquareIfLegal(IBoard board, Square s, Square squareToCheck, List<Square> listToAddTo) {
         if (s.getX() >= 0 && s.getX() < 8 && s.getY() >= 0 && s.getY() < 8) {
             if (!isOccupied(board, s)) {
                 listToAddTo.add(new Square(s.getX(), s.getY()));
@@ -53,7 +53,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> up(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> up(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getY() - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Square s = new Square(squareToCheck.getX(), i);
@@ -70,7 +70,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> down(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> down(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getY() + 1; i < 8 && iterations > 0; i++, iterations--) {
             Square s = new Square(squareToCheck.getX(), i);
@@ -87,7 +87,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> left(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> left(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getX() - 1; i >= 0 && iterations > 0; i--, iterations--) {
             Square s = new Square(i, squareToCheck.getY());
@@ -104,7 +104,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> right(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> right(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         for (int i = squareToCheck.getX() + 1; i < 8 && iterations > 0; i++, iterations--) {
             Square s = new Square(i, squareToCheck.getY());
@@ -121,7 +121,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> upLeft(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> upLeft(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
@@ -140,7 +140,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> upRight(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> upRight(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
@@ -159,7 +159,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> downRight(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> downRight(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
@@ -178,7 +178,7 @@ public class MovementLogicUtil {
      * @param iterations the maximum number of steps allowed for the piece to move
      * @return
      */
-    public static List<Square> downLeft(Board board, Square squareToCheck, int iterations) {
+    public static List<Square> downLeft(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
@@ -196,7 +196,7 @@ public class MovementLogicUtil {
      * @param squareToCheck to check if the piece on the square is a pawn and what color it is
      * @param legalSquares  possible squares the pawn can move to
      */
-    public static void checkPawnPromotion(Board board, Square squareToCheck, ArrayList<Square> legalSquares) {
+    public static void checkPawnPromotion(IBoard board, Square squareToCheck, ArrayList<Square> legalSquares) {
         if (legalSquares.size() == 0) return;
 
         for (Square s : legalSquares) {
@@ -216,7 +216,7 @@ public class MovementLogicUtil {
      * @param board
      * @return list of possible en passant moves
      */
-    static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board) {
+    static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, IBoard board) {
         List<Square> enPassantSquares = new ArrayList<>();
         Square movedFrom = lastPly.getMovedFrom();
         Square movedTo = lastPly.getMovedTo();
@@ -242,7 +242,7 @@ public class MovementLogicUtil {
      * @param squareToCheck
      * @return true if castling to the right is possible
      */
-    public static boolean checkRightCastling(Board board, Square squareToCheck) {
+    public static boolean checkRightCastling(IBoard board, Square squareToCheck) {
         for (int i = squareToCheck.getX() + 1; i <= squareToCheck.getX() + 2; i++) {
             if (isOccupied(board, new Square(i, squareToCheck.getY()))) {
                 return false;
@@ -262,7 +262,7 @@ public class MovementLogicUtil {
      * @param squareToCheck
      * @return true if castling to the left is possible
      */
-    public static boolean checkLeftCastling(Board board, Square squareToCheck) {
+    public static boolean checkLeftCastling(IBoard board, Square squareToCheck) {
         for (int i = squareToCheck.getX() - 1; i >= squareToCheck.getX() - 3; i--) {
             if (isOccupied(board, new Square(i, squareToCheck.getY()))) {
                 return false;
@@ -277,7 +277,7 @@ public class MovementLogicUtil {
 
     //-------------------------------------------------------------------------------------
     //Fetch
-    public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color) {
+    public static List<Square> fetchLegalSquaresByColor(IBoard board, ChessColor color) {
         List<Square> opponentLegalSquares = new ArrayList<>();
 
         for (Map.Entry<Square, IPiece> entry : board.getBoardEntrySet()) {
@@ -289,17 +289,17 @@ public class MovementLogicUtil {
         return opponentLegalSquares;
     }
 
-    public static ChessColor fetchPieceColorOnSquare(Board board, Square squareToCheck) {
+    public static ChessColor fetchPieceColorOnSquare(IBoard board, Square squareToCheck) {
         return board.fetchPieceOnSquareColor(squareToCheck);
     }
 
     //-------------------------------------------------------------------------------------
     //Is checks
-    public static boolean isOccupied(Board board, Square s) {
+    public static boolean isOccupied(IBoard board, Square s) {
         return board.isOccupied(s);
     }
 
-    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
+    public static void isKingInCheck(IBoard board, Square kingSquare, ChessColor opponentColor) {
         if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
             kingSquare.setSquareType(IN_CHECK);
         else

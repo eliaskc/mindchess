@@ -1,5 +1,7 @@
 package mindchess.model;
 
+import mindchess.model.gameStates.GameState;
+import mindchess.model.gameStates.GameStateFactory;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 import mindchess.observers.GameStateObserver;
