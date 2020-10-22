@@ -31,14 +31,14 @@ public class ChessFacade {
     }
 
     /**
-     * Forfeits the current game
+     * Ends the current game as a forfeit
      */
     public void forfeit() {
         currentGame.endGameAsForfeit();
     }
 
     /**
-     * Draws the current game
+     * End the current game as a draw
      */
     public void acceptDraw() {
         currentGame.endGameAsDraw();

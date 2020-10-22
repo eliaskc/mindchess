@@ -33,6 +33,14 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     private GameState gameState;
 
+    /**
+     * Initializes the players for the game
+     * @param whitePlayerName the name for the player with the white pieces
+     * @param blackPlayerName the name for the player with the black pieces
+     * @param gameLength the length for each of the players' timers
+     * @param whitePlayerType the PlayerType of the player with the white pieces
+     * @param blackPlayerType the PlayerType of the player with the black pieces
+     */
     public void createPlayers(String whitePlayerName, String blackPlayerName, Integer gameLength, PlayerType whitePlayerType, PlayerType blackPlayerType) {
         if (whitePlayerName.equals("")) whitePlayerName = "White";
         if (blackPlayerName.equals("")) blackPlayerName = "Black";

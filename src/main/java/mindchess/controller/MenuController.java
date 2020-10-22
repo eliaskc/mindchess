@@ -87,8 +87,6 @@ public class MenuController implements Initializable {
         mindchessController.setMediaPlayer(mediaPlayer);
         mindchessController.setAudioPlayer(audioPlayer);
         mindchessController.init();
-        mindchessController.drawPieces();
-        mindchessController.drawLegalMoves();
     }
 
     //-------------------------------------------------------------------------------------

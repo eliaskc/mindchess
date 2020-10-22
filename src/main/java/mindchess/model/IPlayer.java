@@ -4,6 +4,9 @@ import mindchess.model.enums.ChessColor;
 import mindchess.model.enums.PlayerType;
 import mindchess.observers.TimerObserver;
 
+/**
+ * Interfaces for Player classes
+ */
 public interface IPlayer {
     String getName();
 
