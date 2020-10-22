@@ -40,6 +40,7 @@ public class GameStateAIPlayerTurn implements GameState {
         Random rand;
 
         var returnList = new ArrayList<Square>();
+        List<Square> AILegalSquares;
 
         while (true) {
             rand = new Random();
@@ -47,14 +48,15 @@ public class GameStateAIPlayerTurn implements GameState {
             IPiece randPiece = board.getBoardMap().get(randSquare);
 
             if (randPiece.getColor() == context.getCurrentPlayerColor()) {
-                legalSquares = randPiece.getMoveDelegate().fetchMoves(board, randSquare, randPiece.getHasMoved(), true);
-                if (legalSquares.size() > 0) {
+                AILegalSquares = randPiece.getMoveDelegate().fetchMoves(board, randSquare, randPiece.getHasMoved(), true);
+                legalSquares.addAll(AILegalSquares);
+                if (AILegalSquares.size() > 0) {
                     returnList.add(randSquare);
                     break;
                 }
             }
         }
-        returnList.add(legalSquares.get(rand.nextInt(legalSquares.size())));
+        returnList.add(AILegalSquares.get(rand.nextInt(AILegalSquares.size())));
         return returnList;
     }
 
