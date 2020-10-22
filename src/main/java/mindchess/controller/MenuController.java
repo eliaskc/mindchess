@@ -44,8 +44,8 @@ public class MenuController implements Initializable {
     private MediaPlayer audioPlayer;
 
     private ChessController chessController;
-    private final Map<String, Integer> timerMap = new HashMap<>();
-    private final Map<String, PlayerType> playerTypeMap = new HashMap<>();
+    private final HashMap<String, Integer> gameLengthMap = new LinkedHashMap<>();
+    private final HashMap<String, PlayerType> gamemodeMap = new LinkedHashMap<>();
     @FXML
     private MediaView media;
     @FXML
@@ -53,9 +53,9 @@ public class MenuController implements Initializable {
     @FXML
     private TextField blackPlayerNameField;
     @FXML
-    private ComboBox btnTimerDrop;
+    private ComboBox gameLengthDropDown;
     @FXML
-    private ComboBox playerTypeDropDown;
+    private ComboBox gamemodeDropDown;
 
     public void setChessController(ChessController chessController) {
         this.chessController = chessController;
@@ -74,7 +74,7 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard(ActionEvent event) {
-        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), timerMap.get(btnTimerDrop.getValue()), HUMAN, playerTypeMap.get(playerTypeDropDown.getValue()));
+        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, gamemodeMap.get(gamemodeDropDown.getValue()), gameLengthMap.get(gameLengthDropDown.getValue()));
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -104,7 +104,8 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeBackgroundMusic();
         initializeBackgroundVideo();
-        initTimer();
+        initTimeComboBox();
+        initGameTypeCombobox();
     }
 
     /**
@@ -139,26 +140,26 @@ public class MenuController implements Initializable {
      * <p>
      * Where the possible times is decided
      */
-    private void initTimer() {
-        timerMap.put("1 min", 60);
-        timerMap.put("3 min", 180);
-        timerMap.put("5 min", 300);
-        timerMap.put("10 min", 600);
-        timerMap.put("30 min", 1800);
-        timerMap.put("60 min", 3600);
+    private void initTimeComboBox() {
+        gameLengthMap.put("1 min", 60);
+        gameLengthMap.put("3 min", 180);
+        gameLengthMap.put("5 min", 300);
+        gameLengthMap.put("10 min", 600);
+        gameLengthMap.put("30 min", 1800);
+        gameLengthMap.put("60 min", 3600);
 
-        timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
+        gameLengthMap.forEach((key, value) -> gameLengthDropDown.getItems().add(key));
 
-        btnTimerDrop.getSelectionModel().select(3);
+        gameLengthDropDown.getSelectionModel().select(3);
     }
 
     private void initGameTypeCombobox() {
-        playerTypeMap.put("Player vs player", HUMAN);
-        playerTypeMap.put("AI Difficulty I", CPU_LEVEL1);
-        playerTypeMap.put("AI Difficulty II", CPU_LEVEL2);
+        gamemodeMap.put("vs Player", HUMAN);
+        gamemodeMap.put("vs AI lvl I", CPU_LEVEL1);
+        gamemodeMap.put("vs AI lvl II", CPU_LEVEL2);
 
-        playerTypeMap.forEach((key, value) -> playerTypeDropDown.getItems().add(key));
+        gamemodeMap.forEach((key, value) -> gamemodeDropDown.getItems().add(key));
 
-        playerTypeDropDown.getSelectionModel().selectFirst();
+        gamemodeDropDown.getSelectionModel().selectFirst();
     }
 }

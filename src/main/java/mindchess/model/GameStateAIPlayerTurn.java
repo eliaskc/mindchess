@@ -52,8 +52,8 @@ public class GameStateAIPlayerTurn implements GameState {
     private List<Square> calculateMove() {
         if (difficulty == 1)
             return calculateLevel1Move();
-        else if (difficulty == 2)
-            return calculateLevel2Move();
+        /*else if (difficulty == 2)
+            return calculateLevel2Move();*/
         throw new IllegalArgumentException();
     }
 
@@ -87,9 +87,9 @@ public class GameStateAIPlayerTurn implements GameState {
         return returnList;
     }
 
-    private List<Square> calculateLevel2Move() {
+    /*private List<Square> calculateLevel2Move() {
 
-    }
+    }*/
 
     @Override
     public String getGameStatus() {

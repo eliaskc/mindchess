@@ -35,9 +35,9 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="378.0" prefHeight="32.0" prefWidth="140.0" promptText="Välj tid" styleClass="timeComboBox" />
+      <ComboBox fx:id="gameLengthDropDown" layoutX="471.0" layoutY="378.0" prefHeight="44.0" prefWidth="164.0" promptText="Välj tid" styleClass="timeComboBox" />
       <Button layoutX="471.0" layoutY="314.0" mnemonicParsing="false" onAction="#goToBoard" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Start Game" />
       <Button layoutX="472.0" layoutY="439.0" mnemonicParsing="false" onAction="#Exit" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Exit" />
-      <ComboBox fx:id="playerTypeDropDown" layoutX="679.0" layoutY="378.0" prefHeight="32.0" prefWidth="140.0" promptText="Game Type" styleClass="timeComboBox" />
+      <ComboBox fx:id="gamemodeDropDown" layoutX="643.0" layoutY="378.0" prefHeight="44.0" prefWidth="176.0" promptText="vs Player" styleClass="timeComboBox" />
    </children>
 </AnchorPane>

@@ -130,7 +130,7 @@ public class ChessFacade {
     //-------------------------------------------------------------------------------------
     //Game
 
-    public void createNewGame(String whitePlayerName, String blackPlayerName, Integer gameLength, PlayerType whitePlayerType, PlayerType blackPlayerType) {
+    public void createNewGame(String whitePlayerName, String blackPlayerName, PlayerType whitePlayerType, PlayerType blackPlayerType, Integer gameLength) {
         currentGame = new Game();
         currentGame.initGame();
         currentGame.createPlayers(whitePlayerName, blackPlayerName, gameLength, whitePlayerType, blackPlayerType);

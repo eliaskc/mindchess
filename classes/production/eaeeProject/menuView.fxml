@@ -42,6 +42,6 @@
             <Image url="@exit_game.png" />
          </image>
       </ImageView>
-      <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="360.0" prefWidth="150.0" promptText="Välj tid" />
+      <ComboBox fx:id="gameLengthDropDown" layoutX="471.0" layoutY="360.0" prefWidth="150.0" promptText="Välj tid" />
    </children>
 </AnchorPane>
