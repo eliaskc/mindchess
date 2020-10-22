@@ -2,7 +2,6 @@ package mindchess.model;
 
 import mindchess.model.pieces.IPiece;
 import mindchess.model.pieces.PieceFactory;
-import mindchess.observers.GameStateObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;

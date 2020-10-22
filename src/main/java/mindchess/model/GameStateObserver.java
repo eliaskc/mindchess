@@ -1,4 +1,4 @@
-package mindchess.observers;
+package mindchess.model;
 
 /**
  * observers used for notifying the game when changes in a state happens

@@ -22,7 +22,7 @@ public class PawnMoveDelegate implements IMoveDelegate {
             legalSquares.addAll(fetchMovesBlackPawn(board, squareToCheck, pieceOnSquareHasMoved));
         }
 
-        MovementLogicUtil.checkPawnPromotion(board, squareToCheck, legalSquares);
+        MovementLogicUtil.checkPawnPromotion(board, legalSquares, squareToCheck);
 
         return legalSquares;
     }

@@ -1,7 +1,5 @@
 package mindchess.model;
 
-import mindchess.observers.GameStateObserver;
-
 import java.util.ArrayList;
 import java.util.List;
 

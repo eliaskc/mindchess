@@ -1,7 +1,5 @@
 package mindchess.model;
 
-import mindchess.observers.GameStateObserver;
-
 /**
  * an interface for a GameState
  */
@@ -17,11 +15,6 @@ public interface GameState {
      * @return
      */
     String getGameStatus();
-
-    /**
-     *
-     * @return false if game is over
-     */
     boolean isGameOngoing();
     void addGameStateObserver(GameStateObserver gameStateObserver);
 }
