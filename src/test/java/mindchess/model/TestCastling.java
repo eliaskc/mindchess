@@ -9,7 +9,9 @@ import static mindchess.model.enums.PieceType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-
+/**
+ * Tests if you can do castleing and if you only can do it when it is allowed
+ */
 public class TestCastling {
     ChessFacade model;
     Board board;
@@ -21,6 +23,9 @@ public class TestCastling {
         board = model.getCurrentBoard();
     }
 
+    /**
+     * Tests if you can castle when there are pieces in the path of the castle
+     */
     @Test
     public void testCastlingNotPossibleWrongPosition() {
         model.handleBoardInput(4,7);
@@ -30,6 +35,9 @@ public class TestCastling {
         assertEquals(board.fetchPieceOnSquare(new Square(6, 7)).getPieceType(), KNIGHT);
     }
 
+    /**
+     * Tests if you can castle when it is allowed
+     */
     @Test
     public void testCastlingPossible() {
         //Castling setup
@@ -59,6 +67,9 @@ public class TestCastling {
         assertEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
     }
 
+    /**
+     * Tests if you can not castle when the king has moved before
+     */
     @Test
     public void testCastlingKingHasMoved() {
         //Castling setup
@@ -99,7 +110,9 @@ public class TestCastling {
         assertNotEquals("King", board.fetchPieceOnSquare(new Square(6, 7)));
     }
 
-
+    /**
+     * Tests if you can not castle when the rook has moved before
+     */
     //TODO Implement so that these work
     @Test
     public void testCastlingRookHasMoved() {
@@ -138,9 +151,12 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        //assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
+        assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
     }
 
+    /**
+     * Tests if you can not castle when the king is in check
+     */
     @Test
     public void testCastlingKingInCheck() {
         //Castling setup
@@ -173,6 +189,6 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        //assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
+        assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
     }
 }

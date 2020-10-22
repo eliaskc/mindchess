@@ -14,6 +14,11 @@ import static mindchess.model.enums.PieceType.BISHOP;
 import static mindchess.model.enums.PieceType.KNIGHT;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests the ImageHandler class
+ *
+ * Only able to test the lists that are returned from methods with our knowlage of tests
+ */
 public class TestImageHandlerUtil {
 
     ImageHandlerUtil imageHandlerUtil = new ImageHandlerUtil();
@@ -32,6 +37,9 @@ public class TestImageHandlerUtil {
         imageHandlerUtil.setModel(model);
     }
 
+    /**
+     * Tests that the size of the DeadPieceImages list is correct
+     */
     @Test
     public void testFetchDeadPieceImagesSize() {
         model.handleBoardInput(4,6);

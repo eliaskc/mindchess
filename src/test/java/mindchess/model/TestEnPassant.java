@@ -7,7 +7,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-
+/**
+ * Tests the special move en passant
+ */
 public class TestEnPassant {
     ChessFacade model;
     Board board;
@@ -19,6 +21,9 @@ public class TestEnPassant {
         board = model.getCurrentBoard();
     }
 
+    /**
+     * Tests if you can make a en passant when it is allowed
+     */
     @Test
     public void testEnPassantPossible() {
         //En Passant setup
@@ -43,6 +48,9 @@ public class TestEnPassant {
         assertEquals(null, board.fetchPieceOnSquare(new Square(3,3)));
     }
 
+    /**
+     * Tests that you can not make an en passant when the pawn was not the last moved piece
+     */
     @Test
     public void testEnPassantNotPossiblePawnNotLastMoved() {
         //En Passant setup
@@ -65,6 +73,9 @@ public class TestEnPassant {
         assertEquals(null, board.fetchPieceOnSquare(new Square(3,2)));
     }
 
+    /**
+     * Tests that you can not make an en passant when the pawn made a one step move last move
+     */
     @Test
     public void testEnPassantNotPossiblePawnOnlyMoveOneStep() {
         //En Passant setup

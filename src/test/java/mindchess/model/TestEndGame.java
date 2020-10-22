@@ -7,6 +7,9 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Test the different ways you can end the game
+ */
 public class TestEndGame {
     ChessFacade model;
 
@@ -15,8 +18,9 @@ public class TestEndGame {
         model = new ChessFacade();
     }
 
-    //Test taking the king
-    //gamelist = 0 after taking a king
+    /**
+     * Tests that when you take the king, the game ends
+     */
     @Test
     public void testCheckKingTaken(){
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
@@ -40,6 +44,9 @@ public class TestEndGame {
         assertFalse(model.isGameOngoing());
     }
 
+    /**
+     * Tests that when the timer runs out, the game ends
+     */
     @Test
     public void testTimerRunningOut() throws InterruptedException {
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 0);
@@ -48,6 +55,9 @@ public class TestEndGame {
         assertFalse(model.isGameOngoing());
     }
 
+    /**
+     * Tests that the game does not until the timers reach zero
+     */
     @Test
     public void testTimerNotRunningOut() {
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 5);
@@ -55,6 +65,9 @@ public class TestEndGame {
         assertTrue(model.isGameOngoing());
     }
 
+    /**
+     * Tests that when a draw is announced, the game ends
+     */
     @Test
     public void testDrawAccepted() {
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
@@ -63,6 +76,9 @@ public class TestEndGame {
         assertFalse(model.isGameOngoing());
     }
 
+    /**
+     * Tests that when someone forfeits, the game ends
+     */
     @Test
     public void testForfeit() {
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
