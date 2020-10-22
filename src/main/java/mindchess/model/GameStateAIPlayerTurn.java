@@ -68,6 +68,7 @@ public class GameStateAIPlayerTurn implements GameState {
 
         var returnList = new ArrayList<Square>();
         List<Square> AILegalSquares;
+        Square randToSquare = null;
 
         while (true) {
             rand = new Random();
@@ -78,12 +79,16 @@ public class GameStateAIPlayerTurn implements GameState {
                 AILegalSquares = randPiece.getMoveDelegate().fetchMoves(board, randSquare, randPiece.getHasMoved(), true);
                 legalSquares.addAll(AILegalSquares);
                 if (AILegalSquares.size() > 0) {
-                    returnList.add(randSquare);
-                    break;
+                    randToSquare = AILegalSquares.get(rand.nextInt(AILegalSquares.size()));
+                    if (!(randToSquare.getSquareType() == SquareType.PROMOTION)) {
+                        returnList.add(randSquare);
+                        break;
+                    }
                 }
             }
         }
-        returnList.add(AILegalSquares.get(rand.nextInt(AILegalSquares.size())));
+
+        returnList.add(randToSquare);
         return returnList;
     }
 
