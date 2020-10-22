@@ -22,6 +22,7 @@
       </ImageView>
       <Label fx:id="player2NameLabel" alignment="CENTER_RIGHT" layoutX="3.0" layoutY="125.0" prefHeight="30.0" prefWidth="295.0" text="Player 2" />
       <Label layoutX="147.0" layoutY="70.0" text="VS" />
+      <Label fx:id="gameIDLabel" layoutX="634.0" layoutY="11.0" text="#1" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

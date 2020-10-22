@@ -107,7 +107,7 @@ public class MenuController implements Initializable {
         Random ran = new Random();
         int videoIndex = ran.nextInt(4);
         mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
-        //mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(1000);
         media.setMediaPlayer(mediaPlayer);
     }
@@ -167,7 +167,7 @@ public class MenuController implements Initializable {
         gameListAnchorPane.toFront();
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (String[] s : model.getPlayersAndStatusInGameList()) {
-            GameListController gameListController = new GameListController(s[0],s[1],s[2]);
+            GameListController gameListController = new GameListController(s[0],s[1],s[2], i+1);
             gameListFlowPane.getChildren().add(gameListController);
             int finalI = i;
             gameListController.setOnMouseClicked(event -> {
