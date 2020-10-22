@@ -168,7 +168,7 @@ public class MenuController implements Initializable {
         gameListAnchorPane.toFront();
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (String[] s : model.getPlayersAndStatusInGameList()) {
-            GameListController gameListController = new GameListController(s[0],s[1],s[2]);
+            GameListController gameListController = new GameListController(s[0],s[1],s[2], i+1);
             gameListFlowPane.getChildren().add(gameListController);
             int finalI = i;
             gameListController.setOnMouseClicked(event -> {

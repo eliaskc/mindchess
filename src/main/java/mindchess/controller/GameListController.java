@@ -18,9 +18,11 @@ public class GameListController extends AnchorPane {
     private Label player2NameLabel;
     @FXML
     private Label gameStatusLabel;
+    @FXML
+    private Label gameIDLabel;
 
 
-    public GameListController(String player1Name, String player2Name, String gameStatus) {
+    public GameListController(String player1Name, String player2Name, String gameStatus, int gameID) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gameListView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -34,5 +36,6 @@ public class GameListController extends AnchorPane {
         this.player1NameLabel.setText(player1Name);
         this.player2NameLabel.setText(player2Name);
         this.gameStatusLabel.setText(gameStatus);
+        this.gameIDLabel.setText("#" + gameID);
     }
 }
