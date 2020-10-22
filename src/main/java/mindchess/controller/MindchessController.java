@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * <p>
  * Recevies input when the user interacts with its scene and does something or send the input to the model to do something
  */
-public class ChessController implements Initializable, GameObserver, EndGameObserver {
+public class MindchessController implements Initializable, GameObserver, EndGameObserver {
     private double squareDimension = 75;
     private double chessboardContainerX;
     private double chessboardContainerY;
@@ -51,7 +51,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private ChessFacade model;
     private Parent menuParent;
     private Scene scene;
-    private ImageHandler imageHandler;
+    private ImageHandlerUtil imageHandlerUtil;
     private List<ImageView> pieceImages;
     private List<ImageView> legalMoveImages;
     private final ImageView kingInCheckImage = new ImageView();
@@ -130,11 +130,11 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         media.setEffect(new GaussianBlur(16));
         endGamePane.toBack();
 
-        chessboardImage.setImage(imageHandler.getChessboardImage());
+        chessboardImage.setImage(imageHandlerUtil.getChessboardImage());
         updateSquareDimensions();
 
         pieceImages = fetchPieceImages();
-        legalMoveImages = imageHandler.fetchLegalMoveImages();
+        legalMoveImages = imageHandlerUtil.fetchLegalMoveImages();
         drawPieces();
         drawDeadPieces();
         model.addGameObserverToCurrentGame(this);
@@ -157,7 +157,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      */
     private void updateSquareDimensions() {
         squareDimension = chessboardImage.getFitHeight() / 8;
-        imageHandler.setSquareDimension(squareDimension);
+        imageHandlerUtil.setSquareDimension(squareDimension);
     }
 
     public void createMenuScene(Parent menuParent) {
@@ -229,7 +229,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     //End
     @Override
     public void kingInCheck(int x, int y) {
-        kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
+        kingInCheckImage.setImage(imageHandlerUtil.createKingInCheckImage());
         kingInCheckImage.setX(x * squareDimension);
         kingInCheckImage.setY(y * squareDimension);
         kingInCheckImage.setFitHeight(squareDimension);
@@ -260,7 +260,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
      * stops players from moving their pieces while the interface is up
      */
     @FXML
-    void offerDraw(ActionEvent event) {
+    void offerDraw() {
         lblDrawLabel.setText(model.getCurrentPlayerName() + " offered you a draw");
         drawAnchorPane.toFront();
     }
@@ -307,11 +307,11 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private List<ImageView> fetchPieceImages() {
         List<ImageView> pieceImages = new ArrayList<>();
         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
-            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
+            ImageView imageView = imageHandlerUtil.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
             pieceImages.add(imageView);
             if (model.getCurrentGamePlies().size() > 0) {
                 if (entry.getKey().equals(model.getLastPlyMovedToSquare())) {
-                    imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
+                    imageHandlerUtil.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
                 }
             }
         }
@@ -342,8 +342,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     public void drawDeadPieces() {
         flowPaneWhitePieces.getChildren().clear();
         flowPaneBlackPieces.getChildren().clear();
-        flowPaneWhitePieces.getChildren().addAll(imageHandler.fetchDeadPieceImages(ChessColor.WHITE));
-        flowPaneBlackPieces.getChildren().addAll(imageHandler.fetchDeadPieceImages(ChessColor.BLACK));
+        flowPaneWhitePieces.getChildren().addAll(imageHandlerUtil.fetchDeadPieceImages(ChessColor.WHITE));
+        flowPaneBlackPieces.getChildren().addAll(imageHandlerUtil.fetchDeadPieceImages(ChessColor.BLACK));
     }
 
     /**
@@ -353,10 +353,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     public void drawLegalMoves() {
         clearAllLegalMoveImages();
 
-        legalMoveImages = imageHandler.fetchLegalMoveImages();
+        legalMoveImages = imageHandlerUtil.fetchLegalMoveImages();
 
         for (ImageView imageView : legalMoveImages) {
-            imageHandler.addScaleTransition(imageView, imageHandler.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY), true);
+            imageHandlerUtil.addScaleTransition(imageView, imageHandlerUtil.distanceFromMarkedPiece(imageView, lastClickedX, lastClickedY), true);
 
             chessboardContainer.getChildren().add(imageView);
             chessboardContainer.getChildren().get(chessboardContainer.getChildren().indexOf(imageView)).setMouseTransparent(true);
@@ -365,9 +365,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     @FXML
     private void switchPieceStyle() {
-        imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+        imageHandlerUtil.setMinecraftPieceStyle(!imageHandlerUtil.isMinecraftPieceStyle());
 
-        chessboardImage.setImage(imageHandler.getChessboardImage());
+        chessboardImage.setImage(imageHandlerUtil.getChessboardImage());
         drawLegalMoves();
         drawPieces();
         drawDeadPieces();
@@ -397,10 +397,10 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     }
 
     private void drawPawnPromotionSetup(ChessColor chessColor) {
-        promotionQueen.setImage(imageHandler.createPieceImage(PieceType.QUEEN, chessColor));
-        promotionKnight.setImage(imageHandler.createPieceImage(PieceType.KNIGHT, chessColor));
-        promotionRook.setImage(imageHandler.createPieceImage(PieceType.ROOK, chessColor));
-        promotionBishop.setImage(imageHandler.createPieceImage(PieceType.BISHOP, chessColor));
+        promotionQueen.setImage(imageHandlerUtil.createPieceImage(PieceType.QUEEN, chessColor));
+        promotionKnight.setImage(imageHandlerUtil.createPieceImage(PieceType.KNIGHT, chessColor));
+        promotionRook.setImage(imageHandlerUtil.createPieceImage(PieceType.ROOK, chessColor));
+        promotionBishop.setImage(imageHandlerUtil.createPieceImage(PieceType.BISHOP, chessColor));
     }
 
 
@@ -437,7 +437,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
     private void clearAllLegalMoveImages() {
         for (ImageView imageView : legalMoveImages) {
-            ScaleTransition st = imageHandler.addScaleTransition(imageView, 75, false);
+            ScaleTransition st = imageHandlerUtil.addScaleTransition(imageView, 75, false);
 
             st.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
@@ -467,7 +467,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         //Adds the plyControllers to the flowpane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGamePlies()) {
-            PlyController plyController = new PlyController(ply, model.getCurrentGamePlies().indexOf(ply) + 1, imageHandler);
+            PlyController plyController = new PlyController(ply, model.getCurrentGamePlies().indexOf(ply) + 1, imageHandlerUtil);
             pliesFlowPane.getChildren().add(plyController);
 
             //When a ply is clicked all the pieces on the ply board are removed and updated/animated
@@ -498,7 +498,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     public void analyzeGame() {
         populatePliesFlowPane();
-        pliesBoardImageView.setImage(imageHandler.getChessboardImage());
+        pliesBoardImageView.setImage(imageHandlerUtil.getChessboardImage());
         pliesAnchorPane.toFront();
     }
 
@@ -546,7 +546,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         this.model = model;
     }
 
-    public void setImageHandler(ImageHandler imageHandler) {
-        this.imageHandler = imageHandler;
+    public void setImageHandler(ImageHandlerUtil imageHandlerUtil) {
+        this.imageHandlerUtil = imageHandlerUtil;
     }
 }

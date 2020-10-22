@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class PlyController extends AnchorPane {
     private final Ply ply;
-    private final ImageHandler imageHandler;
+    private final ImageHandlerUtil imageHandlerUtil;
 
     @FXML
     private Label labelPlyNumber;
@@ -33,7 +33,7 @@ public class PlyController extends AnchorPane {
     @FXML
     private ImageView imagePiece;
 
-    public PlyController(Ply ply, int plyNum, ImageHandler imageHandler) {
+    public PlyController(Ply ply, int plyNum, ImageHandlerUtil imageHandlerUtil) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/plyView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -45,8 +45,8 @@ public class PlyController extends AnchorPane {
         }
 
         this.ply = ply;
-        this.imageHandler = imageHandler;
-        this.imagePiece.setImage(imageHandler.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
+        this.imageHandlerUtil = imageHandlerUtil;
+        this.imagePiece.setImage(imageHandlerUtil.createPieceImage(ply.getMovedPiece().getPieceType(), ply.getMovedPiece().getColor()));
         this.labelPlyNumber.setText(String.format("#%d", plyNum));
         this.labelMovedFrom.setText(String.format("%s%s", translateXCoordinate(ply.getMovedFrom().getX()), translateYCoordinate(ply.getMovedFrom().getY())));
         this.labelMovedTo.setText(String.format("%s%s", translateXCoordinate(ply.getMovedTo().getX()), translateYCoordinate(ply.getMovedTo().getY())));
@@ -57,22 +57,22 @@ public class PlyController extends AnchorPane {
         List<ImageView> imageViewList = new ArrayList<>();
 
         for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()) {
-            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
+            ImageView imageView = imageHandlerUtil.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
 
             imageViewList.add(imageView);
 
             if (entry.getValue().equals(ply.getMovedPiece())) {
 
                 if (performMove) {
-                    imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40, 400);
+                    imageHandlerUtil.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40, 400);
                 } else {
                     imageView.setX(ply.getMovedFrom().getX() * 40);
                     imageView.setY(ply.getMovedFrom().getY() * 40);
                 }
 
                 if (ply.getTakenPiece() != null) {
-                    ImageView attackedImageView = imageHandler.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
-                    imageHandler.addScaleTransition(attackedImageView, 400, false);
+                    ImageView attackedImageView = imageHandlerUtil.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
+                    imageHandlerUtil.addScaleTransition(attackedImageView, 400, false);
                     imageViewList.add(attackedImageView);
                 }
             }

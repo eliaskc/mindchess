@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import mindchess.controller.ChessController;
-import mindchess.controller.ImageHandler;
+import mindchess.controller.MindchessController;
+import mindchess.controller.ImageHandlerUtil;
 import mindchess.controller.MenuController;
 import mindchess.model.ChessFacade;
 
@@ -37,29 +37,29 @@ public final class ChessApplication extends Application {
     public void start(Stage stage) throws Exception {
         stage.setResizable(false);
         FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
-        FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("boardView.fxml"));
+        FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("mindchessView.fxml"));
 
         Parent menuParent = menuLoader.load();
         Parent chessParent = chessLoader.load();
 
         MenuController menuController = menuLoader.getController();
-        ChessController chessController = chessLoader.getController();
-        ImageHandler imageHandler = new ImageHandler();
+        MindchessController mindchessController = chessLoader.getController();
+        ImageHandlerUtil imageHandlerUtil = new ImageHandlerUtil();
 
         menuController.createChessScene(chessParent);
-        chessController.createMenuScene(menuParent);
+        mindchessController.createMenuScene(menuParent);
 
-        menuController.setChessController(chessController);
+        menuController.setChessController(mindchessController);
 
         ChessFacade model = new ChessFacade();
         menuController.setModel(model);
-        chessController.setModel(model);
-        imageHandler.setModel(model);
+        mindchessController.setModel(model);
+        imageHandlerUtil.setModel(model);
 
-        chessController.setImageHandler(imageHandler);
+        mindchessController.setImageHandler(imageHandlerUtil);
 
         //Might need to be reworked since our menu scene is created in our chessController which is kinda weird
-        stage.setScene(chessController.getMenuScene());
+        stage.setScene(mindchessController.getMenuScene());
         stage.show();
     }
 }

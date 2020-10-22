@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
@@ -44,7 +43,7 @@ public class MenuController implements Initializable {
     private Scene scene;
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
-    private ChessController chessController;
+    private MindchessController mindchessController;
     private final HashMap<String, Integer> gameLengthMap = new LinkedHashMap<>();
     private final HashMap<String, PlayerType> gamemodeMap = new LinkedHashMap<>();
     @FXML
@@ -85,11 +84,11 @@ public class MenuController implements Initializable {
         window.setScene(scene);
         window.show();
 
-        chessController.setMediaPlayer(mediaPlayer);
-        chessController.setAudioPlayer(audioPlayer);
-        chessController.init();
-        chessController.drawPieces();
-        chessController.drawLegalMoves();
+        mindchessController.setMediaPlayer(mediaPlayer);
+        mindchessController.setAudioPlayer(audioPlayer);
+        mindchessController.init();
+        mindchessController.drawPieces();
+        mindchessController.drawLegalMoves();
     }
 
     //-------------------------------------------------------------------------------------
@@ -200,8 +199,8 @@ public class MenuController implements Initializable {
 
     //-------------------------------------------------------------------------------------
     //Setters
-    public void setChessController(ChessController chessController) {
-        this.chessController = chessController;
+    public void setChessController(MindchessController mindchessController) {
+        this.mindchessController = mindchessController;
     }
 
     public void setModel(ChessFacade model) {

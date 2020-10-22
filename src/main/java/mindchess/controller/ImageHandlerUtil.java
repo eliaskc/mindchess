@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Is responsible for fetching the images from files and matching them with the right pieces
  */
-public class ImageHandler {
+public class ImageHandlerUtil {
     private ChessFacade model;
     private double squareDimension;
     private boolean minecraftPieceStyle = false;

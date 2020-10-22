@@ -1,18 +1,16 @@
 package mindchess.model;
 
-import mindchess.controller.ImageHandler;
-import mindchess.model.ChessFacade;
-import mindchess.model.PlayerType;
+import mindchess.controller.ImageHandlerUtil;
 import org.junit.Before;
 
 public class TestImageHandling {
     ChessFacade model;
-    ImageHandler imageHandler;
+    ImageHandlerUtil imageHandlerUtil;
     @Before
     public void init() {
         model = new ChessFacade();
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
-        imageHandler = new ImageHandler();
+        imageHandlerUtil = new ImageHandlerUtil();
     }
 
     //Input stream error. File paths in imagehandler don't work with travis
