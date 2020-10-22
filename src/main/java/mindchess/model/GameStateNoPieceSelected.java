@@ -8,17 +8,17 @@ import java.util.List;
 
 /**
  * The state which represent when no piece on the chess board has been selected, it will be the entry point for the state.
- *
+ * <p>
  * From this state you can go to the piece selected state by inputting a coordinate for your own piece.
- *
+ * <p>
  * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
  */
 public class GameStateNoPieceSelected implements GameState {
-    private IGameContext context;
-    private List<GameStateObserver> gameStateObservers = new ArrayList<>();
-    private List<Square> legalSquares;
-    private List<Ply> plies;
-    private Board board;
+    private final IGameContext context;
+    private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
+    private final List<Square> legalSquares;
+    private final List<Ply> plies;
+    private final Board board;
 
     GameStateNoPieceSelected(Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.board = board;
@@ -29,17 +29,18 @@ public class GameStateNoPieceSelected implements GameState {
 
     /**
      * In no piece selected state a board input will select a piece of your own if you input the coordinates of the squares it is placed on.
+     *
      * @param x
      * @param y
      */
     @Override
     public void handleInput(int x, int y) {
-        Square selectedSquare = new Square(x,y);
-        if(SquareContainsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
+        Square selectedSquare = new Square(x, y);
+        if (SquareContainsAPiece(selectedSquare) && isPieceMyColor(selectedSquare)) {
             fetchLegalMoves(selectedSquare);
-            if(legalSquares.size() == 0) return;
+            if (legalSquares.size() == 0) return;
 
-            context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare,board,plies,legalSquares,context));
+            context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare, board, plies, legalSquares, context));
             gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
             notifyDrawLegalMoves();
         }
@@ -56,6 +57,7 @@ public class GameStateNoPieceSelected implements GameState {
 
     /**
      * fetches the squares possible if any for the special move of "en passant"
+     *
      * @param selectedSquare
      * @return a list of possible en passant squares
      */
@@ -70,25 +72,26 @@ public class GameStateNoPieceSelected implements GameState {
 
     /**
      * checks if a square contains a piece
+     *
      * @param square
      * @return true if it contains a piece otherwise false
      */
-    private boolean SquareContainsAPiece(Square square){
-        if(board.isSquareContainsAPiece(square)) return true;
-        return false;
+    private boolean SquareContainsAPiece(Square square) {
+        return board.isSquareContainsAPiece(square);
     }
 
     /**
      * checks if a piece on a square is the same color as current player
+     *
      * @param square
      * @return true if colors match
      */
-    private boolean isPieceMyColor(Square square){
-        return board.pieceOnSquareColorEquals(square,context.getCurrentPlayerColor());
+    private boolean isPieceMyColor(Square square) {
+        return board.pieceOnSquareColorEquals(square, context.getCurrentPlayerColor());
     }
 
-    private void notifyDrawLegalMoves(){
-        for (GameStateObserver gameStateObserver: gameStateObservers) {
+    private void notifyDrawLegalMoves() {
+        for (GameStateObserver gameStateObserver : gameStateObservers) {
             gameStateObserver.notifyDrawLegalMoves();
         }
     }
@@ -98,8 +101,10 @@ public class GameStateNoPieceSelected implements GameState {
     public String getGameStatus() {
         return "Game ongoing";
     }
+
     /**
      * In this state the game is always ongoing
+     *
      * @return true
      */
     @Override

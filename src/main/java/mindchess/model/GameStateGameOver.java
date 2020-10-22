@@ -9,8 +9,8 @@ import java.util.List;
  * The state which represent when the is over
  */
 public class GameStateGameOver implements GameState {
-    private String resultStatus;
-    private List<GameStateObserver> gameStateObservers = new ArrayList<>();;
+    private final String resultStatus;
+    private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
 
     GameStateGameOver(String resultStatus) {
         this.resultStatus = resultStatus;
@@ -18,6 +18,7 @@ public class GameStateGameOver implements GameState {
 
     /**
      * Any input in this state will do nothing as the game has ended
+     *
      * @param x
      * @param y
      */

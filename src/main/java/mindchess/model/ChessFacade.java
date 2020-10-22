@@ -5,13 +5,12 @@ import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Chess represents the model to the rest of the application
- *
+ * <p>
  * Delegates method calls from outside the model to the right part of the model
  */
 public class ChessFacade {
@@ -81,21 +80,21 @@ public class ChessFacade {
         return currentGame.getBoard();
     }
 
-    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor){
+    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor) {
         List<PieceType> pieceTypes = new ArrayList<>();
-        for (IPiece piece : currentGame.getBoard().getDeadPieces()){
-            if (piece.getColor().equals(chessColor)){
+        for (IPiece piece : currentGame.getBoard().getDeadPieces()) {
+            if (piece.getColor().equals(chessColor)) {
                 pieceTypes.add(piece.getPieceType());
             }
         }
         return pieceTypes;
     }
 
-    public Square getLastPlyMovedFromSquare(){
+    public Square getLastPlyMovedFromSquare() {
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedFrom();
     }
 
-    public Square getLastPlyMovedToSquare(){
+    public Square getLastPlyMovedToSquare() {
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
     }
 
@@ -148,7 +147,7 @@ public class ChessFacade {
     }
 
     //TODO How to remove cascading without adding dependancy on IPiece in Game
-    public boolean isSquareOccupied(Square square){
+    public boolean isSquareOccupied(Square square) {
         return currentGame.getBoard().isAPieceOnSquare(square);
     }
 

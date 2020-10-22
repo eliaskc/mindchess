@@ -24,7 +24,7 @@ public class MovementLogicUtil {
      * - the square has a piece of the opposite color
      *
      * @param board
-     * @param s            potential legal square
+     * @param s             potential legal square
      * @param squareToCheck square moving from
      * @param listToAddTo
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
@@ -84,8 +84,8 @@ public class MovementLogicUtil {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            s.setX(s.getX()-1);
-            s.setY(s.getY()-1);
+            s.setX(s.getX() - 1);
+            s.setY(s.getY() - 1);
             if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
@@ -95,8 +95,8 @@ public class MovementLogicUtil {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            s.setX(s.getX()+1);
-            s.setY(s.getY()-1);
+            s.setX(s.getX() + 1);
+            s.setY(s.getY() - 1);
             if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
@@ -106,8 +106,8 @@ public class MovementLogicUtil {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            s.setX(s.getX()+1);
-            s.setY(s.getY()+1);
+            s.setX(s.getX() + 1);
+            s.setY(s.getY() + 1);
             if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
@@ -117,8 +117,8 @@ public class MovementLogicUtil {
         var returnList = new ArrayList<Square>();
         Square s = new Square(squareToCheck.getX(), squareToCheck.getY());
         for (int i = 0; i < 8 && iterations > 0; i++, iterations--) {
-            s.setX(s.getX()-1);
-            s.setY(s.getY()+1);
+            s.setX(s.getX() - 1);
+            s.setY(s.getY() + 1);
             if (addSquareIfLegal(board, s, squareToCheck, returnList)) break;
         }
         return returnList;
@@ -126,16 +126,17 @@ public class MovementLogicUtil {
 
     /**
      * marks squares for pawn promotion if a pawn moves to the opposite side
+     *
      * @param board
      * @param squareToCheck to check if the piece on the square is a pawn and what color it is
      * @param legalSquares  possible squares the pawn can move to
      */
-    public static void checkPawnPromotion(Board board,Square squareToCheck, ArrayList<Square> legalSquares) {
+    public static void checkPawnPromotion(Board board, Square squareToCheck, ArrayList<Square> legalSquares) {
         if (legalSquares.size() == 0) return;
 
-        for (Square s : legalSquares){
-            if(board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN){
-                if(s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK){
+        for (Square s : legalSquares) {
+            if (board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN) {
+                if (s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK) {
                     s.setSquareType(PROMOTION);
                 }
             }
@@ -144,12 +145,13 @@ public class MovementLogicUtil {
 
     /**
      * returns a list of possible en passant moves, needs to know of previous moves(plies) to check if en passant is possible
-     * @param lastPly   last move
+     *
+     * @param lastPly       last move
      * @param squareToCheck the square with the piece that is going to make the move
      * @param board
-     * @return  list of possible en passant moves
+     * @return list of possible en passant moves
      */
-    static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board){
+    static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, Board board) {
         List<Square> enPassantSquares = new ArrayList<>();
         Square movedFrom = lastPly.getMovedFrom();
         Square movedTo = lastPly.getMovedTo();
@@ -170,6 +172,7 @@ public class MovementLogicUtil {
 
     /**
      * checks if the king can make the castle move to the right
+     *
      * @param board
      * @param squareToCheck
      * @return true if castling to the right is possible
@@ -189,6 +192,7 @@ public class MovementLogicUtil {
 
     /**
      * checks if the king can make the castle move to the left
+     *
      * @param board
      * @param squareToCheck
      * @return true if castling to the left is possible
@@ -208,11 +212,11 @@ public class MovementLogicUtil {
 
     //-------------------------------------------------------------------------------------
     //Fetch
-    public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color){
+    public static List<Square> fetchLegalSquaresByColor(Board board, ChessColor color) {
         List<Square> opponentLegalSquares = new ArrayList<>();
 
         for (Map.Entry<Square, IPiece> entry : board.getBoardEntrySet()) {
-            if(entry.getValue().getColor().equals(color)){
+            if (entry.getValue().getColor().equals(color)) {
                 opponentLegalSquares.addAll(entry.getValue().getMoveDelegate().fetchMoves(board, entry.getKey(), entry.getValue().getHasMoved(), false));
             }
         }
