@@ -1,6 +1,7 @@
 package eaee.model;
 
 import mindchess.model.ChessFacade;
+import mindchess.model.PlayerType;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,13 +14,13 @@ public class TestEndGame {
     @Before
     public void init() {
         model = new ChessFacade();
-        model.createNewGame();
     }
 
     //Test taking the king
     //gamelist = 0 after taking a king
     @Test
     public void testCheckKingTaken(){
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         //Setup
         model.handleBoardInput(2,6);
         model.handleBoardInput(2,4);
@@ -36,6 +37,7 @@ public class TestEndGame {
         //white queen takes takes black king
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
+
         assertFalse(model.isGameOngoing());
     }
 
@@ -43,7 +45,7 @@ public class TestEndGame {
 
     @Test
     public void testTimerRunningOut() throws InterruptedException {
-        model.setCurrentWhitePlayerTimerTime(0);
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 0);
         model.initTimersInCurrentGame();
         TimeUnit.SECONDS.sleep(1);
         assertFalse(model.isGameOngoing());
@@ -51,7 +53,7 @@ public class TestEndGame {
 
     @Test
     public void testTimerNotRunningOut() {
-        model.setCurrentWhitePlayerTimerTime(5);
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 5);
         model.initTimersInCurrentGame();
         assertTrue(model.isGameOngoing());
     }
@@ -77,6 +79,7 @@ public class TestEndGame {
 
     @Test
     public void testForfeit() {
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         model.forfeit();
 
         assertFalse(model.isGameOngoing());

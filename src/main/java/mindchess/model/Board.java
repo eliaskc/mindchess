@@ -145,6 +145,10 @@ public class Board {
         return boardMap.entrySet();
     }
 
+    Set<Square> getBoardKeys() {
+        return boardMap.keySet();
+    }
+
 
     boolean isSquareContainsAPiece(Square square) {
         return boardMap.containsKey(square);

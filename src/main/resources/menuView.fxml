@@ -50,8 +50,8 @@
                   <Image url="@guiFiles/MINDCHESS.png" />
                </image>
             </ImageView>
-            <TextField fx:id="player1NameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
-            <TextField fx:id="player2NameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
+            <TextField fx:id="whitePlayerNameField" layoutX="471.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
+            <TextField fx:id="blackPlayerNameField" layoutX="673.0" layoutY="259.0" prefHeight="25.0" prefWidth="143.0" />
             <Label layoutX="472.0" layoutY="236.0" prefHeight="22.0" prefWidth="143.0" styleClass="playerNameLabel" stylesheets="@chess.css" text="Player 1 name:">
                <font>
                   <Font size="16.0" />
@@ -67,10 +67,11 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <ComboBox fx:id="btnTimerDrop" layoutX="471.0" layoutY="373.0" prefHeight="32.0" prefWidth="140.0" promptText="Välj tid" styleClass="timeComboBox" />
+            <ComboBox fx:id="gameLengthDropDown" layoutX="471.0" layoutY="373.0" prefHeight="32.0" prefWidth="140.0" promptText="Välj tid" styleClass="timeComboBox" />
             <Button layoutX="471.0" layoutY="314.0" mnemonicParsing="false" onAction="#goToBoardNewGame" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Start Game" />
             <Button layoutX="471.0" layoutY="487.0" mnemonicParsing="false" onAction="#Exit" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Exit" />
             <Button layoutX="471.0" layoutY="429.0" mnemonicParsing="false" onAction="#populateGameList" prefHeight="47.0" prefWidth="347.0" styleClass="minecraftStyleButton" text="Load Game" />
+            <ComboBox fx:id="gamemodeDropDown" layoutX="641.0" layoutY="373.0" prefHeight="44.0" prefWidth="176.0" promptText="vs Player" styleClass="timeComboBox" />
          </children>
       </AnchorPane>
    </children>

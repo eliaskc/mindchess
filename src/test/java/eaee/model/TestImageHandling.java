@@ -2,6 +2,7 @@ package eaee.model;
 
 import mindchess.controller.ImageHandler;
 import mindchess.model.ChessFacade;
+import mindchess.model.PlayerType;
 import org.junit.Before;
 
 public class TestImageHandling {
@@ -10,7 +11,7 @@ public class TestImageHandling {
     @Before
     public void init() {
         model = new ChessFacade();
-        model.createNewGame();
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         imageHandler = new ImageHandler();
     }
 

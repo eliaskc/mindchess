@@ -17,10 +17,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import mindchess.model.PlayerType;
 import mindchess.model.ChessFacade;
 
 import java.net.URL;
 import java.util.*;
+
+import static mindchess.model.PlayerType.*;
 
 /**
  * MenuController handles the menu
@@ -42,24 +45,22 @@ public class MenuController implements Initializable {
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
     private ChessController chessController;
+    private final HashMap<String, Integer> gameLengthMap = new LinkedHashMap<>();
+    private final HashMap<String, PlayerType> gamemodeMap = new LinkedHashMap<>();
     @FXML
     private MediaView media;
     @FXML
-    private AnchorPane rootAnchor;
+    private TextField whitePlayerNameField;
     @FXML
     private AnchorPane gameListAnchorPane;
     @FXML
-    private ImageView btnStart;
+    private TextField blackPlayerNameField;
     @FXML
-    private ImageView btnExit;
+    private ComboBox gameLengthDropDown;
     @FXML
-    private TextField player1NameField;
-    @FXML
-    private TextField player2NameField;
+    private ComboBox gamemodeDropDown;
     @FXML
     private Label timeLabel;
-    @FXML
-    private ComboBox btnTimerDrop;
     @FXML
     private FlowPane gameListFlowPane;
     @FXML
@@ -74,12 +75,7 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoardNewGame(ActionEvent event) {
-        model.createNewGame();
-
-        if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
-        if (!player2NameField.getText().equals("")) model.setCurrentPlayerBlackName(player2NameField.getText());
-        model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
-        model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
+        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, gamemodeMap.get(gamemodeDropDown.getValue()), gameLengthMap.get(gameLengthDropDown.getValue()));
 
         goToBoard(event.getSource());
     }
@@ -100,7 +96,8 @@ public class MenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeBackgroundMusic();
         initializeBackgroundVideo();
-        initTimer();
+        initTimeComboBox();
+        initGameTypeCombobox();
     }
 
     /**
@@ -135,17 +132,27 @@ public class MenuController implements Initializable {
      * <p>
      * Where the possible times is decided
      */
-    private void initTimer() {
-        timerMap.put("1 min", 60);
-        timerMap.put("3 min", 180);
-        timerMap.put("5 min", 300);
-        timerMap.put("10 min", 600);
-        timerMap.put("30 min", 1800);
-        timerMap.put("60 min", 3600);
+    private void initTimeComboBox() {
+        gameLengthMap.put("1 min", 60);
+        gameLengthMap.put("3 min", 180);
+        gameLengthMap.put("5 min", 300);
+        gameLengthMap.put("10 min", 600);
+        gameLengthMap.put("30 min", 1800);
+        gameLengthMap.put("60 min", 3600);
 
-        timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
+        gameLengthMap.forEach((key, value) -> gameLengthDropDown.getItems().add(key));
 
-        btnTimerDrop.getSelectionModel().select(3);
+        gameLengthDropDown.getSelectionModel().select(3);
+    }
+
+    private void initGameTypeCombobox() {
+        gamemodeMap.put("vs Player", HUMAN);
+        gamemodeMap.put("vs AI lvl I", CPU_LEVEL1);
+        gamemodeMap.put("vs AI lvl II", CPU_LEVEL2);
+
+        gamemodeMap.forEach((key, value) -> gamemodeDropDown.getItems().add(key));
+
+        gamemodeDropDown.getSelectionModel().selectFirst();
     }
 
     public void createChessScene(Parent chessParent) {

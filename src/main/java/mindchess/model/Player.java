@@ -7,58 +7,56 @@ import mindchess.observers.TimerObserver;
  * <p>
  * The player controls its own timer
  */
-public class Player {
+public class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();
     private final ChessColor chessColor;
+    private PlayerType playerType;
     private String name;
 
-    Player(String name, ChessColor chessColor) {
+    Player(String name, ChessColor chessColor, PlayerType playerType, Integer gameLength) {
         this.name = name;
         this.chessColor = chessColor;
+        this.playerType = playerType;
+        this.chessTimer.setTime(gameLength);
     }
-
+ 
     //-------------------------------------------------------------------------------------
     //Timer
-    void startPlayerTimer() {
+    public void startPlayerTimer() {
         chessTimer.startTimer();
     }
 
-    void stopPlayerTimer() {
+    public void stopPlayerTimer() {
         chessTimer.stopTimer();
     }
 
     //-------------------------------------------------------------------------------------
     //Observer
-    void addTimerObserver(TimerObserver observer) {
+    public void addTimerObserver(TimerObserver observer) {
         chessTimer.addObserver(observer);
     }
 
     //-------------------------------------------------------------------------------------
     //Getters
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setName(String name) {
-        this.name = name;
-    }
-
-    int getCurrentTime() {
+    public int getCurrentTime() {
         return chessTimer.getTime();
     }
 
-    ChessColor getColor() {
+    public ChessColor getColor() {
         return chessColor;
+    }
+    
+    public PlayerType getPlayerType() {
+        return playerType;
     }
 
     //-------------------------------------------------------------------------------------
     //Setters
-    void setTimerActive(boolean active) {
+    public void setTimerActive(boolean active) {
         chessTimer.setActive(active);
     }
-
-    void setTime(int seconds) {
-        chessTimer.setTime(seconds);
-    }
-
 }

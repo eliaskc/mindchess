@@ -444,6 +444,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
                 }
             });
         }
+        legalMoveImages.clear();
     }
 
     private void clearAllPliesImages() {

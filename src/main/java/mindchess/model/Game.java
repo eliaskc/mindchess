@@ -10,6 +10,7 @@ import java.util.List;
 
 import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
+import static mindchess.model.PlayerType.*;
 
 /**
  * The game class represents one game which has a board and two players. It keeps track of legal squares,current game state, plies and who
@@ -24,11 +25,20 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<Square> legalSquares = new ArrayList<>(); //List of squares that are legal to move to for the currently marked square
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
 
-    private final Player playerWhite = new Player("Player 1", WHITE);
-    private final Player playerBlack = new Player("Player 2", BLACK);
-    private Player currentPlayer;
+    private IPlayer playerWhite;
+    private IPlayer playerBlack;
+    private IPlayer currentPlayer;
 
     private GameState gameState;
+
+    public void createPlayers(String whitePlayerName, String blackPlayerName, Integer gameLength, PlayerType whitePlayerType, PlayerType blackPlayerType) {
+        if (whitePlayerName.equals("")) whitePlayerName = "White";
+        if (blackPlayerName.equals("")) blackPlayerName = "Black";
+        playerWhite = new Player(whitePlayerName, WHITE, whitePlayerType, gameLength);
+        playerBlack = new Player(blackPlayerName, BLACK, blackPlayerType, gameLength);
+
+        currentPlayer = playerWhite;
+    }
 
     /**
      * handleBoardInput() is the method responsible for handling a input on the chess board.
@@ -55,6 +65,13 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     void switchPlayer() {
         currentPlayer.setTimerActive(false);
         currentPlayer = getOtherPlayer();
+        currentPlayer.setTimerActive(true);
+
+        if (currentPlayer.getPlayerType() == CPU_LEVEL1)
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
+        else if (currentPlayer.getPlayerType() == CPU_LEVEL2)
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
+
         currentPlayer.setTimerActive(true);
         notifySwitchedPlayer();
     }
@@ -148,6 +165,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         notifyEndGame();
     }
 
+    @Override
     public void notifyDrawPieces() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.drawPieces();
@@ -222,6 +240,10 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return currentPlayer.getName();
     }
 
+    public PlayerType getCurrentPlayerType() {
+        return currentPlayer.getPlayerType();
+    }
+
     List<Square> getLegalSquares() {
         return legalSquares;
     }
@@ -234,15 +256,15 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
       return gameState.getGameStatus();
     }
 
-    Player getPlayerWhite() {
+    IPlayer getPlayerWhite() {
         return playerWhite;
     }
 
-    Player getPlayerBlack() {
+    IPlayer getPlayerBlack() {
         return playerBlack;
     }
 
-    Player getCurrentPlayer() {
+    IPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -266,7 +288,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return playerWhite.getName();
     }
   
-    private Player getOtherPlayer() {
+    private IPlayer getOtherPlayer() {
         if (currentPlayer == playerWhite) {
             return playerBlack;
         } else {
@@ -280,22 +302,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     //-------------------------------------------------------------------------------------
     //Setters
-  
-    void setPlayerWhiteTime(int seconds) {
-        playerWhite.setTime(seconds);
-    }
-  
-    void setPlayerBlackTime(int seconds) {
-        playerBlack.setTime(seconds);
-    }
-  
-    void setPlayerWhiteName(String name) {
-        playerWhite.setName(name);
-    }
-
-    void setPlayerBlackName(String name) {
-        playerBlack.setName(name);
-    }
 
     /**
      * Sets the gamestate, called from the states themselves to decide which next state should be

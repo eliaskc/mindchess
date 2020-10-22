@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static mindchess.model.PlayerType.*;
+
 /**
  * Chess represents the model to the rest of the application
  * <p>
@@ -45,9 +47,10 @@ public class ChessFacade {
     /**
      * Creates a new Game, makes it the current game, Initializes it and adds it to the game list
      */
-    public void createNewGame() {
+    public void createNewGame(String whitePlayerName, String blackPlayerName, PlayerType whitePlayerType, PlayerType blackPlayerType, Integer gameLength) {
         currentGame = new Game();
         currentGame.initGame();
+        currentGame.createPlayers(whitePlayerName, blackPlayerName, gameLength, whitePlayerType, blackPlayerType);
         gameList.add(currentGame);
     }
 
@@ -175,21 +178,5 @@ public class ChessFacade {
             throw new IndexOutOfBoundsException();
         }
         currentGame = gameList.get(i);
-    }
-
-    public void setCurrentWhitePlayerTimerTime(int seconds) {
-        currentGame.setPlayerWhiteTime(seconds);
-    }
-
-    public void setCurrentBlackPlayerTimerTime(int seconds) {
-        currentGame.setPlayerBlackTime(seconds);
-    }
-
-    public void setCurrentPlayerWhiteName(String name) {
-        currentGame.setPlayerWhiteName(name);
-    }
-
-    public void setCurrentPlayerBlackName(String name) {
-        currentGame.setPlayerBlackName(name);
     }
 }

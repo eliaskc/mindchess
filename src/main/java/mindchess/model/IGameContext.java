@@ -19,6 +19,7 @@ public interface IGameContext {
      *
      * @param gameState
      */
+  
     void setGameState(GameState gameState);
 
     void addGameStateObserver(GameStateObserver gameStateObserver);
@@ -27,4 +28,5 @@ public interface IGameContext {
 
     ChessColor getCurrentPlayerColor();
 
+    PlayerType getCurrentPlayerType();
 }
