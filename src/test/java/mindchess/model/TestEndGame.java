@@ -1,7 +1,6 @@
 package mindchess.model;
 
-import mindchess.model.ChessFacade;
-import mindchess.model.PlayerType;
+import mindchess.model.enums.PlayerType;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

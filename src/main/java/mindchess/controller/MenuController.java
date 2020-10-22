@@ -16,13 +16,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-import mindchess.model.PlayerType;
+import mindchess.model.enums.PlayerType;
 import mindchess.model.ChessFacade;
 
 import java.net.URL;
 import java.util.*;
 
-import static mindchess.model.PlayerType.*;
+import static mindchess.model.enums.PlayerType.*;
 
 /**
  * MenuController handles the menu

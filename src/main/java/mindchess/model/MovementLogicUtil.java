@@ -1,15 +1,17 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PieceType;
 import mindchess.model.pieces.IPiece;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
-import static mindchess.model.PieceType.PAWN;
-import static mindchess.model.SquareType.*;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
+import static mindchess.model.enums.PieceType.PAWN;
+import static mindchess.model.enums.SquareType.*;
 
 /**
  * Is responsible for finding legal moves by checking a specified direction and returning all legal moves in a Square list in that direction

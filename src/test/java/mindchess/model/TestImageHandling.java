@@ -1,6 +1,7 @@
 package mindchess.model;
 
 import mindchess.controller.ImageHandlerUtil;
+import mindchess.model.enums.PlayerType;
 import org.junit.Before;
 
 public class TestImageHandling {

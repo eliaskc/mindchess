@@ -1,5 +1,7 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PlayerType;
 import mindchess.observers.TimerObserver;
 
 /**

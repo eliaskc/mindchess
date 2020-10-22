@@ -1,9 +1,6 @@
 package mindchess.model;
 
-import mindchess.model.Board;
-import mindchess.model.ChessFacade;
-import mindchess.model.PlayerType;
-import mindchess.model.Square;
+import mindchess.model.enums.PlayerType;
 import mindchess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;

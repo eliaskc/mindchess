@@ -1,6 +1,7 @@
 package mindchess.model;
 
-import mindchess.model.*;
+import mindchess.model.enums.PieceType;
+import mindchess.model.enums.PlayerType;
 import org.junit.Before;
 import org.junit.Test;
 

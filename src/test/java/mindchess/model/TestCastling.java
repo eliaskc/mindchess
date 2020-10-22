@@ -1,10 +1,10 @@
 package mindchess.model;
 
-import mindchess.model.*;
+import mindchess.model.enums.PlayerType;
 import org.junit.Before;
 import org.junit.Test;
 
-import static mindchess.model.PieceType.*;
+import static mindchess.model.enums.PieceType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 

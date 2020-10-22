@@ -5,9 +5,9 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import mindchess.model.ChessColor;
+import mindchess.model.enums.ChessColor;
 import mindchess.model.ChessFacade;
-import mindchess.model.PieceType;
+import mindchess.model.enums.PieceType;
 import mindchess.model.Square;
 
 import java.util.ArrayList;

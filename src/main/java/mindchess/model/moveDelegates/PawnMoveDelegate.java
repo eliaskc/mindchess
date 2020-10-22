@@ -7,8 +7,8 @@ import mindchess.model.Square;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
 
 public class PawnMoveDelegate implements IMoveDelegate {
 
