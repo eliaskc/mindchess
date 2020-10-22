@@ -185,7 +185,7 @@ public class MovementLogicUtil {
         }
         Square s = new Square(squareToCheck.getX() + 3, squareToCheck.getY());
         if (isOccupied(board, s)) {
-            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
+            return board.isPieceOnSquareRook(s) && !board.fetchPieceOnSquare(s).getHasMoved() && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
         }
         return false;
     }
@@ -205,7 +205,7 @@ public class MovementLogicUtil {
         }
         Square s = new Square(squareToCheck.getX() - 4, squareToCheck.getY());
         if (isOccupied(board, s)) {
-            return board.isPieceOnSquareRook(s) && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
+            return board.isPieceOnSquareRook(s) && !board.fetchPieceOnSquare(s).getHasMoved() && board.pieceOnSquareColorEquals(s, board.fetchPieceOnSquareColor(squareToCheck));
         }
         return false;
     }
