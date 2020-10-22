@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 public interface IBoard {
+    void initBoard();
+
     void placePieceOnSquare(Square square, IPiece piece);
 
     IPiece removePieceFromSquare(Square square);

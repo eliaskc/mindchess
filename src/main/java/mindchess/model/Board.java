@@ -21,7 +21,8 @@ public class Board implements IBoard {
     Board() {
     }
 
-    void initBoard() {
+    @Override
+    public void initBoard() {
         boardMap.clear();
         deadPieces.clear();
         placeAllPieces();
