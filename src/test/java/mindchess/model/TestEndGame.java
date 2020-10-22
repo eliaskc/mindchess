@@ -62,9 +62,10 @@ public class TestEndGame {
 
     @Test
     public void testDrawAccepted() {
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
         model.acceptDraw();
 
-        assertEquals(true, model.isGameOngoing());
+        assertFalse(model.isGameOngoing());
     }
 
     @Test
