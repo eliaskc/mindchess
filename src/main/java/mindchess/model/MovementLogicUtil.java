@@ -42,17 +42,6 @@ public class MovementLogicUtil {
         return true;
     }
 
-    public static boolean isOccupied(Board board, Square s) {
-        return board.isOccupied(s);
-    }
-
-    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
-        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
-            kingSquare.setSquareType(IN_CHECK);
-        else
-            kingSquare.setSquareType(NORMAL);
-    }
-
     //-------------------------------------------------------------------------------------
     //Directions
     public static List<Square> up(Board board, Square squareToCheck, int iterations) {
@@ -222,5 +211,18 @@ public class MovementLogicUtil {
 
     public static ChessColor fetchPieceColorOnSquare(Board board, Square squareToCheck) {
         return board.fetchPieceOnSquareColor(squareToCheck);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Is checks
+    public static boolean isOccupied(Board board, Square s) {
+        return board.isOccupied(s);
+    }
+
+    public static void isKingInCheck(Board board, Square kingSquare, ChessColor opponentColor) {
+        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
+            kingSquare.setSquareType(IN_CHECK);
+        else
+            kingSquare.setSquareType(NORMAL);
     }
 }
