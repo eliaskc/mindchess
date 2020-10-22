@@ -5,8 +5,7 @@ import mindchess.model.enums.PlayerType;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class TestEnPassant {
@@ -42,5 +41,49 @@ public class TestEnPassant {
 //      assertEquals("Pawn", board.fetchPieceOnPoint(new Point(3,2)).getPieceName());
         assertTrue(board.pieceOnSquareColorEquals(new Square(3,2), ChessColor.WHITE));
         assertEquals(null, board.fetchPieceOnSquare(new Square(3,3)));
+    }
+
+    @Test
+    public void testEnPassantNotPossiblePawnNotLastMoved() {
+        //En Passant setup
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,4);
+
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,3);
+
+        model.handleBoardInput(4,4);
+        model.handleBoardInput(4,3);
+
+        model.handleBoardInput(3,0);
+        model.handleBoardInput(3,1);
+
+        //The actual en passant
+        model.handleBoardInput(4,3);
+        model.handleBoardInput(3,2);
+
+        assertEquals(null, board.fetchPieceOnSquare(new Square(3,2)));
+    }
+
+    @Test
+    public void testEnPassantNotPossiblePawnOnlyMoveOneStep() {
+        //En Passant setup
+        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,4);
+
+        model.handleBoardInput(3,1);
+        model.handleBoardInput(3,2);
+
+        model.handleBoardInput(4,4);
+        model.handleBoardInput(4,3);
+
+        model.handleBoardInput(3,2);
+        model.handleBoardInput(3,3);
+
+        //The actual en passant
+        model.handleBoardInput(4,3);
+        model.handleBoardInput(3,2);
+
+        assertEquals(null, board.fetchPieceOnSquare(new Square(3,2)));
     }
 }

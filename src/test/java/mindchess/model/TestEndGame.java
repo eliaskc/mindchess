@@ -40,8 +40,6 @@ public class TestEndGame {
         assertFalse(model.isGameOngoing());
     }
 
-
-
     @Test
     public void testTimerRunningOut() throws InterruptedException {
         model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 0);
@@ -56,9 +54,6 @@ public class TestEndGame {
         model.initTimersInCurrentGame();
         assertTrue(model.isGameOngoing());
     }
-
-
-    //Currently the accepting/declining is not done by the model
 
     @Test
     public void testDrawAccepted() {
