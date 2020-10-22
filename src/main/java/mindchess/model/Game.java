@@ -9,6 +9,7 @@ import java.util.List;
 
 import static mindchess.model.ChessColor.BLACK;
 import static mindchess.model.ChessColor.WHITE;
+import static mindchess.model.PlayerType.*;
 
 public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
@@ -41,7 +42,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         initGameStates();
     }
 
-    public void createPlayers(String whitePlayerName, String blackPlayerName, PlayerType whitePlayerType, PlayerType blackPlayerType, Integer gameLength) {
+    public void createPlayers(String whitePlayerName, String blackPlayerName, Integer gameLength, PlayerType whitePlayerType, PlayerType blackPlayerType) {
         if (whitePlayerName.equals("")) whitePlayerName = "White";
         if (blackPlayerName.equals("")) blackPlayerName = "Black";
         playerWhite = new Player(whitePlayerName, WHITE, whitePlayerType, gameLength);
@@ -83,9 +84,11 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         currentPlayer = getOtherPlayer();
         currentPlayer.getTimer().setActive(true);
 
-        if (currentPlayer.getPlayerType() == PlayerType.CPU) {
-            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this);
-        }
+        if (currentPlayer.getPlayerType() == CPU_LEVEL1)
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
+        else if (currentPlayer.getPlayerType() == CPU_LEVEL2)
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 2);
+
         notifySwitchedPlayer();
     }
 

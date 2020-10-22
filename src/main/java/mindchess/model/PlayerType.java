@@ -2,5 +2,6 @@ package mindchess.model;
 
 public enum PlayerType {
     HUMAN,
-    CPU
+    CPU_LEVEL1,
+    CPU_LEVEL2
 }

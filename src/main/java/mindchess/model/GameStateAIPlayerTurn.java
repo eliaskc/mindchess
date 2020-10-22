@@ -6,18 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A state which is used only when there is a CPU player in the game.
+ *
+ * If there is, this State "replaces" the No Piece Selected state.
+ *
+ * It calculates a move and then changes state to Piece Selected and thereafter makes the previously calculated move.
+ */
 public class GameStateAIPlayerTurn implements GameState {
-    private IGameContext context;
-    private List<GameStateObserver> gameStateObservers = new ArrayList<>();
-    private List<Square> legalSquares;
-    private List<Ply> plies;
-    private Board board;
+    private final IGameContext context;
+    private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
+    private final List<Square> legalSquares;
+    private final List<Ply> plies;
+    private final Board board;
+    private final int difficulty;
 
-    GameStateAIPlayerTurn(Board board, List<Square> legalSquares, List<Ply> plies, IGameContext context) {
+    GameStateAIPlayerTurn(Board board, List<Square> legalSquares, List<Ply> plies, IGameContext context, int difficulty) {
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;
         this.context = context;
+        this.difficulty = difficulty;
     }
 
     @Override
@@ -30,12 +39,30 @@ public class GameStateAIPlayerTurn implements GameState {
         Square selectedSquare = new Square(moveFrom.getX(), moveFrom.getY());
 
         context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare, board, plies, legalSquares, context));
-        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+        gameStateObservers.forEach(context::addGameStateObserver);
 
         context.handleBoardInput(moveTo.getX(), moveTo.getY());
     }
 
+    /**
+     * Calculates the move the CPU Player will make.
+     *
+     * @return the square to move from and the square to move to, in a list
+     */
     private List<Square> calculateMove() {
+        if (difficulty == 1)
+            return calculateLevel1Move();
+        else if (difficulty == 2)
+            return calculateLevel2Move();
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Finds a random move among the legal ones
+     *
+     * @return the square to move from and the square to move to, in a list
+     */
+    private List<Square> calculateLevel1Move() {
         var allBoardSquares = new ArrayList<>(board.getBoardMap().keySet());
         Random rand;
 
@@ -58,6 +85,10 @@ public class GameStateAIPlayerTurn implements GameState {
         }
         returnList.add(AILegalSquares.get(rand.nextInt(AILegalSquares.size())));
         return returnList;
+    }
+
+    private List<Square> calculateLevel2Move() {
+
     }
 
     @Override

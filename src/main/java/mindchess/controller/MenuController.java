@@ -8,14 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import mindchess.model.PlayerType;
 
 import java.net.URL;
 import java.util.*;
@@ -46,23 +44,18 @@ public class MenuController implements Initializable {
     private MediaPlayer audioPlayer;
 
     private ChessController chessController;
-    private final HashMap<String, Integer> timerMap = new LinkedHashMap<>();
+    private final Map<String, Integer> timerMap = new HashMap<>();
+    private final Map<String, PlayerType> playerTypeMap = new HashMap<>();
     @FXML
     private MediaView media;
-    @FXML
-    private AnchorPane rootAnchor;
-    @FXML
-    private ImageView btnStart;
-    @FXML
-    private ImageView btnExit;
     @FXML
     private TextField whitePlayerNameField;
     @FXML
     private TextField blackPlayerNameField;
     @FXML
-    private Label timeLabel;
-    @FXML
     private ComboBox btnTimerDrop;
+    @FXML
+    private ComboBox playerTypeDropDown;
 
     public void setChessController(ChessController chessController) {
         this.chessController = chessController;
@@ -81,7 +74,7 @@ public class MenuController implements Initializable {
      */
     @FXML
     void goToBoard(ActionEvent event) {
-        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), HUMAN, CPU, timerMap.get(btnTimerDrop.getValue()));
+        model.createNewGame(whitePlayerNameField.getText(), blackPlayerNameField.getText(), timerMap.get(btnTimerDrop.getValue()), HUMAN, playerTypeMap.get(playerTypeDropDown.getValue()));
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(scene);
@@ -157,5 +150,15 @@ public class MenuController implements Initializable {
         timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
 
         btnTimerDrop.getSelectionModel().select(3);
+    }
+
+    private void initGameTypeCombobox() {
+        playerTypeMap.put("Player vs player", HUMAN);
+        playerTypeMap.put("AI Difficulty I", CPU_LEVEL1);
+        playerTypeMap.put("AI Difficulty II", CPU_LEVEL2);
+
+        playerTypeMap.forEach((key, value) -> playerTypeDropDown.getItems().add(key));
+
+        playerTypeDropDown.getSelectionModel().selectFirst();
     }
 }
