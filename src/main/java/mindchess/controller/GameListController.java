@@ -1,16 +1,15 @@
 package mindchess.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
 
 import java.io.IOException;
 
+/**
+ * Responsible for fetching information about a game and displaying that information it in the gameListView.fxml
+ */
 public class GameListController extends AnchorPane {
     @FXML
     private Label player1NameLabel;

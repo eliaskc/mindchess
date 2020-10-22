@@ -511,7 +511,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
             });
 
-            //If this is the first ply, generate the board but dont move the first piece
+            //If this is the first ply, this code generates the board but doesn't move the first piece
             if (model.getCurrentGamePlies().indexOf(ply) == 0) {
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
