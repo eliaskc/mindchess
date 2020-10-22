@@ -38,11 +38,11 @@ import java.util.ResourceBundle;
 /**
  * ChessController handles the mindchess board
  * <p>
- * It handeles the fxml files
+ * It handles the fxml files
  * <p>
- * It receves notification from the board when something on the board is changed(moved/removed/..)
+ * It receives notification from the board when something on the board is changed(moved/removed/..)
  * <p>
- * Recevies input when the user interacts with its scene and does something or send the input to the model to do something
+ * Receives input when the user interacts with its scene and does something or send the input to the model to do something
  */
 public class MindchessController implements Initializable, GameObserver, EndGameObserver {
     private double squareDimension = 75;
