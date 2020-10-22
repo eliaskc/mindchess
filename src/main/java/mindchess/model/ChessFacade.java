@@ -71,6 +71,14 @@ public class ChessFacade {
         currentGame.addEndGameObserver(endgameObserver);
     }
 
+    public void removeGameObserverFromCurrentGame(GameObserver gameObserver){
+        currentGame.removeGameObserver(gameObserver);
+    }
+
+    public void removeEndGameObserverFromCurrentGame(EndGameObserver endGameObserver){
+        currentGame.removeEndGameObserver(endGameObserver);
+    }
+
     //-------------------------------------------------------------------------------------
     //Getters
     public ChessColor getCurrentPlayerColor() {

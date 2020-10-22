@@ -291,6 +291,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         clearAllPieceImages();
         clearAllLegalMoveImages();
         chessboardContainer.getChildren().remove(kingInCheckImage);
+        model.removeGameObserverFromCurrentGame(this);
+        model.removeEndGameObserverFromCurrentGame(this);
         model.stopAllTimers();
         drawAnchorPane.toBack();
         promotionAnchorPane.toBack();
