@@ -21,7 +21,6 @@ public class GameListController extends AnchorPane {
     @FXML
     private Label gameIDLabel;
 
-
     public GameListController(String player1Name, String player2Name, String gameStatus, int gameID) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gameListView.fxml"));
         fxmlLoader.setRoot(this);
