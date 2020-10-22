@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test the special rule pawnpromotion
+ */
 public class TestPawnPromotion {
     ChessFacade model;
     Board board;
@@ -18,6 +21,9 @@ public class TestPawnPromotion {
         board = model.getCurrentBoard();
     }
 
+    /**
+     * Test that a pawnpromotion can be made when it is time for it
+     */
     @Test
     public void testPawnPromotionSuccess() {
         //Setup
@@ -54,6 +60,9 @@ public class TestPawnPromotion {
         assertEquals(PieceType.QUEEN, board.fetchPieceOnSquare(new Square(4,0)).getPieceType());
     }
 
+    /**
+     * Test that a pawnpromotion can't be made when it can't be
+     */
     @Test
     public void testPawnPromotionFail() {
         //Setup
