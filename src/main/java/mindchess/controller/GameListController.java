@@ -1,4 +1,4 @@
-package chess.controller;
+package mindchess.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -203,8 +203,13 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
         player1Name.setText(model.getCurrentPlayerWhiteName());
         player2Name.setText(model.getCurrentPlayerBlackName());
-        player1TimerBox.setFill(Color.GREENYELLOW);
-        player2TimerBox.setFill(Color.LIGHTGRAY);
+        if (model.getCurrentPlayerColor() == ChessColor.WHITE) {
+            player1TimerBox.setFill(Color.GREENYELLOW);
+            player2TimerBox.setFill(Color.LIGHTGRAY);
+        } else {
+            player2TimerBox.setFill(Color.GREENYELLOW);
+            player1TimerBox.setFill(Color.LIGHTGRAY);
+        }
         model.initTimersInCurrentGame();
     }
 
@@ -292,17 +297,17 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
 
 
     private List<ImageView> fetchPieceImages() {
-         List<ImageView> pieceImages = new ArrayList<>();
-         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()){
-             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
-             pieceImages.add(imageView);
-             if(model.getCurrentGamePlies().size() > 0){
-                 if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
-                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
-                 }
-             }
-         }
-         return pieceImages;
+        List<ImageView> pieceImages = new ArrayList<>();
+        for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
+            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
+            pieceImages.add(imageView);
+            if (model.getCurrentGamePlies().size() > 0) {
+                if (entry.getKey().equals(model.getLastPlyMovedToSquare())) {
+                    imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
+                }
+            }
+        }
+        return pieceImages;
     }
 
     /**
@@ -468,7 +473,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
             });
 
             //If this is the first ply, generate the board but dont move the first piece
-            if (model.getCurrentGamePlies().indexOf(ply) == 0){
+            if (model.getCurrentGamePlies().indexOf(ply) == 0) {
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
@@ -500,8 +505,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @Override
     public void kingInCheck(int x, int y) {
         kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
-        kingInCheckImage.setX(x*squareDimension);
-        kingInCheckImage.setY(y*squareDimension);
+        kingInCheckImage.setX(x * squareDimension);
+        kingInCheckImage.setY(y * squareDimension);
         kingInCheckImage.setFitHeight(squareDimension);
         kingInCheckImage.setFitWidth(squareDimension);
         kingInCheckImage.setOpacity(0.6);

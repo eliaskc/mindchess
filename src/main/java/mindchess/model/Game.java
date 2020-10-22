@@ -46,7 +46,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
         playerWhite.getTimer().addObserver(this);
         playerBlack.getTimer().addObserver(this);
         playerWhite.getTimer().startTimer();
-        playerWhite.getTimer().setActive(true);
+        currentPlayer.getTimer().setActive(true);
         playerBlack.getTimer().startTimer();
     }
 
@@ -176,7 +176,7 @@ public class Game implements TimerObserver,IGameContext, GameStateObserver {
     public ChessColor getCurrentPlayerColor() {
         return currentPlayer.getColor();
     }
-    
+
     public String getCurrentPlayerName() {
         return currentPlayer.getName();
     }

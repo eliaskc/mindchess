@@ -14,7 +14,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootAnchor" prefHeight="720.0" prefWidth="1280.0" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chess.controller.MenuController">
+<AnchorPane fx:id="rootAnchor" prefHeight="720.0" prefWidth="1280.0" stylesheets="@chess.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mindchess.controller.MenuController">
    <children>
       <AnchorPane fx:id="gameListAnchorPane" layoutX="277.0" layoutY="67.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="276.0" AnchorPane.topAnchor="70.0">
          <children>
