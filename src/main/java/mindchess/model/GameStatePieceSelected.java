@@ -55,11 +55,24 @@ public class GameStatePieceSelected implements GameState {
 
         if (switchSelectedPieceIfSameColor(targetSquare)) return;
 
+        if (clickedOnSameSquare(targetSquare)){
+            context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+        }
+
         if (legalSquares.contains(targetSquare)) {
             targetSquareIsLegal(targetSquare);
         }
 
         clearAndDrawLegalMoves();
+    }
+
+    private boolean clickedOnSameSquare(Square targetSquare) {
+        if (targetSquare.equals(selectedSquare)){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
