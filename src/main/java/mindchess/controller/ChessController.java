@@ -140,8 +140,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         model.addGameObserverToCurrentGame(this);
         model.addEndGameObserverToCurrentGame(this);
 
-        player1Name.setText(model.getCurrentPlayerWhiteName());
-        player2Name.setText(model.getCurrentPlayerBlackName());
+        player1Name.setText(model.getCurrentWhitePlayerName());
+        player2Name.setText(model.getCurrentBlackPlayerName());
         if (model.getCurrentPlayerColor() == ChessColor.WHITE) {
             player1TimerBox.setFill(Color.GREENYELLOW);
             player2TimerBox.setFill(Color.LIGHTGRAY);

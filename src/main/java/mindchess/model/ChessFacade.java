@@ -122,17 +122,6 @@ public class ChessFacade {
         }
         return returnList;
     }
-  
-    public void setIndexAsCurrentGame(int i){
-        if(i >= gameList.size()){
-            throw new IndexOutOfBoundsException();
-        }
-        currentGame = gameList.get(i);
-    }
-
-    public void setCurrentWhitePlayerTimerTime(int seconds) {
-        currentGame.getPlayerWhite().setTime(seconds);
-    }
 
     public String getCurrentWhitePlayerName() {
         return currentGame.getPlayerWhiteName();
@@ -142,7 +131,6 @@ public class ChessFacade {
         return currentGame.getPlayerBlackName();
     }
 
-    //----------------------------Returns copies-----------------------------------------
     public List<Ply> getCurrentGamePlies() {
         return new ArrayList<>(currentGame.getPlies());
     }
@@ -181,6 +169,14 @@ public class ChessFacade {
 
     //-------------------------------------------------------------------------------------
     //Setters
+
+    public void setIndexAsCurrentGame(int i){
+        if(i >= gameList.size()){
+            throw new IndexOutOfBoundsException();
+        }
+        currentGame = gameList.get(i);
+    }
+
     public void setCurrentWhitePlayerTimerTime(int seconds) {
         currentGame.setPlayerWhiteTime(seconds);
     }
