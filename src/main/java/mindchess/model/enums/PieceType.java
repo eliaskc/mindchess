@@ -1,4 +1,4 @@
-package mindchess.model;
+package mindchess.model.enums;
 
 /**
  * Enum for the type of piece a Piece can be

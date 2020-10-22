@@ -1,16 +1,16 @@
 package mindchess.model.moveDelegates;
 
 import mindchess.model.Board;
-import mindchess.model.ChessColor;
+import mindchess.model.enums.ChessColor;
 import mindchess.model.MovementLogicUtil;
 import mindchess.model.Square;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
-import static mindchess.model.SquareType.CASTLING;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
+import static mindchess.model.enums.SquareType.CASTLING;
 
 public class KingMoveDelegate implements IMoveDelegate {
 

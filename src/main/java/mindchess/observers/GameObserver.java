@@ -1,6 +1,6 @@
 package mindchess.observers;
 
-import mindchess.model.ChessColor;
+import mindchess.model.enums.ChessColor;
 
 public interface GameObserver {
     void drawPieces();

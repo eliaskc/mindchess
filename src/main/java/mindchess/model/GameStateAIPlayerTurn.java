@@ -1,5 +1,6 @@
 package mindchess.model;
 
+import mindchess.model.enums.SquareType;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.GameStateObserver;
 

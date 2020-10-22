@@ -1,8 +1,10 @@
 package mindchess.model;
 
+import mindchess.model.enums.SquareType;
+
 import java.util.Objects;
 
-import static mindchess.model.SquareType.NORMAL;
+import static mindchess.model.enums.SquareType.NORMAL;
 
 /**
  * Represent a square on the chess board with an x and y coordinate. The square has a enum type SquareType which represents

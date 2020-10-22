@@ -1,5 +1,6 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.GameStateObserver;
 
@@ -7,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
-import static mindchess.model.PieceType.KING;
-import static mindchess.model.SquareType.*;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
+import static mindchess.model.enums.PieceType.KING;
+import static mindchess.model.enums.SquareType.*;
 
 /**
  * The state which represent when a piece has been selected and the next input will try to move the selected piece to the inputted square

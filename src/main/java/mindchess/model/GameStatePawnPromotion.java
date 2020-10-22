@@ -1,5 +1,6 @@
 package mindchess.model;
 
+import mindchess.model.enums.PieceType;
 import mindchess.model.pieces.IPiece;
 import mindchess.model.pieces.PieceFactory;
 import mindchess.observers.GameStateObserver;

@@ -1,15 +1,15 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PieceType;
+import mindchess.model.enums.PlayerType;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static mindchess.model.PlayerType.*;
 
 /**
  * Chess represents the model to the rest of the application

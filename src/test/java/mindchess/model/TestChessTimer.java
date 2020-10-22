@@ -1,11 +1,7 @@
 package mindchess.model;
 
-import mindchess.model.*;
+import mindchess.model.enums.PlayerType;
 import org.junit.Before;
-import static org.junit.Assert.*;
-import org.junit.Test;
-
-import java.util.concurrent.TimeUnit;
 
 public class TestChessTimer {
     ChessFacade model;

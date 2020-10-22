@@ -1,5 +1,7 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PlayerType;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 import mindchess.observers.GameStateObserver;
@@ -8,9 +10,9 @@ import mindchess.observers.TimerObserver;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
-import static mindchess.model.PlayerType.*;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
+import static mindchess.model.enums.PlayerType.*;
 
 /**
  * The game class represents one game which has a board and two players. It keeps track of legal squares,current game state, plies and who

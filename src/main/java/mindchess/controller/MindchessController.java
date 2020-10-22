@@ -23,6 +23,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import mindchess.model.*;
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PieceType;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;

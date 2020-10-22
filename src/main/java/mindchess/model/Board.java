@@ -1,12 +1,14 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PieceType;
 import mindchess.model.pieces.IPiece;
 import mindchess.model.pieces.PieceFactory;
 
 import java.util.*;
 
-import static mindchess.model.ChessColor.BLACK;
-import static mindchess.model.ChessColor.WHITE;
+import static mindchess.model.enums.ChessColor.BLACK;
+import static mindchess.model.enums.ChessColor.WHITE;
 
 /**
  * Board represents the mindchess board and contains the information and methods to see where things are on the board.

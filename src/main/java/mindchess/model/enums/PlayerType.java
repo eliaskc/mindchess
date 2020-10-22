@@ -1,4 +1,4 @@
-package mindchess.model;
+package mindchess.model.enums;
 
 public enum PlayerType {
     HUMAN,

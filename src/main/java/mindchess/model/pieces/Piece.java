@@ -1,7 +1,7 @@
 package mindchess.model.pieces;
 
-import mindchess.model.ChessColor;
-import mindchess.model.PieceType;
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PieceType;
 import mindchess.model.moveDelegates.IMoveDelegate;
 
 /**

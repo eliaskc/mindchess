@@ -1,13 +1,13 @@
 package mindchess.model;
 
-import mindchess.model.*;
-import mindchess.model.ChessColor;
+import mindchess.model.enums.ChessColor;
+import mindchess.model.enums.PlayerType;
 import mindchess.model.pieces.IPiece;
 import org.junit.Before;
 import org.junit.Test;
 
 
-import static mindchess.model.PieceType.*;
+import static mindchess.model.enums.PieceType.*;
 import static org.junit.Assert.*;
 
 public class TestChessFacade {
