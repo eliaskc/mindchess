@@ -4,6 +4,7 @@ import mindchess.model.pieces.IPiece;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,29 @@ public class ChessFacade {
 
     public String getCurrentPlayerName() {
         return currentGame.getCurrentPlayerName();
+    }
+  
+    public List<String[]> getPlayersAndStatusInGameList(){
+        ArrayList<String[]> returnList = new ArrayList<>();
+        for (Game g : getGameList()) {
+            String playerWhite = g.getPlayerWhite().getName();
+            String playerBlack = g.getPlayerBlack().getName();
+            String gameStatus = g.getGameStatus();
+            String[] tempArray = {playerWhite,playerBlack,gameStatus};
+            returnList.add(tempArray);
+        }
+        return returnList;
+    }
+  
+    public void setIndexAsCurrentGame(int i){
+        if(i >= gameList.size()){
+            throw new IndexOutOfBoundsException();
+        }
+        currentGame = gameList.get(i);
+    }
+
+    public void setCurrentWhitePlayerTimerTime(int seconds) {
+        currentGame.getPlayerWhite().setTime(seconds);
     }
 
     public String getCurrentWhitePlayerName() {

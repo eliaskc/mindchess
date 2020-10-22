@@ -6,11 +6,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -45,6 +47,8 @@ public class MenuController implements Initializable {
     @FXML
     private AnchorPane rootAnchor;
     @FXML
+    private AnchorPane gameListAnchorPane;
+    @FXML
     private ImageView btnStart;
     @FXML
     private ImageView btnExit;
@@ -56,6 +60,10 @@ public class MenuController implements Initializable {
     private Label timeLabel;
     @FXML
     private ComboBox btnTimerDrop;
+    @FXML
+    private FlowPane gameListFlowPane;
+    @FXML
+    private Button btnBackGameList;
 
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
@@ -65,7 +73,7 @@ public class MenuController implements Initializable {
      * @param event Clicked the button
      */
     @FXML
-    void goToBoard(ActionEvent event) {
+    void goToBoardNewGame(ActionEvent event) {
         model.createNewGame();
 
         if (!player1NameField.getText().equals("")) model.setCurrentPlayerWhiteName(player1NameField.getText());
@@ -73,7 +81,11 @@ public class MenuController implements Initializable {
         model.setCurrentWhitePlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
         model.setCurrentBlackPlayerTimerTime(timerMap.get(btnTimerDrop.getValue()));
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        goToBoard(event.getSource());
+    }
+
+    void goToBoard(Object source) {
+        Stage window = (Stage) ((Node) source).getScene().getWindow();
         window.setScene(scene);
         window.show();
 
@@ -140,6 +152,31 @@ public class MenuController implements Initializable {
         this.chessParent = chessParent;
         this.scene = new Scene(chessParent);
     }
+  
+    @FXML
+    private void populateGameList() {
+        gameListFlowPane.getChildren().clear();
+        int i = 0;
+        gameListAnchorPane.toFront();
+        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        for (String[] s : model.getPlayersAndStatusInGameList()) {
+            GameListController gameListController = new GameListController(s[0],s[1],s[2]);
+            gameListFlowPane.getChildren().add(gameListController);
+            int finalI = i;
+            System.out.println(i);
+            gameListController.setOnMouseClicked(event -> {
+                model.setIndexAsCurrentGame(finalI);
+                gameListAnchorPane.toBack();
+                goToBoard(event.getSource());
+            });
+            i++;
+        }
+    }
+
+    @FXML
+    private void closeGameList(){
+        gameListAnchorPane.toBack();
+    }
 
     //-------------------------------------------------------------------------------------
     //End
@@ -163,4 +200,5 @@ public class MenuController implements Initializable {
     public void setModel(ChessFacade model) {
         this.model = model;
     }
+      
 }

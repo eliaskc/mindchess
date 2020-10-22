@@ -229,6 +229,10 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     Board getBoard() {
         return board;
     }
+  
+    public String getGameStatus(){
+      return gameState.getGameStatus();
+    }
 
     Player getPlayerWhite() {
         return playerWhite;
@@ -250,37 +254,18 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return playerWhite.getCurrentTime();
     }
 
-    void setPlayerWhiteTime(int seconds) {
-        playerWhite.setTime(seconds);
-    }
-
     int getPlayerBlackTime() {
         return playerBlack.getCurrentTime();
     }
-
-    void setPlayerBlackTime(int seconds) {
-        playerBlack.setTime(seconds);
+  
+    String getPlayerBlackName() {
+        return playerBlack.getName();
     }
 
     String getPlayerWhiteName() {
         return playerWhite.getName();
     }
-
-    void setPlayerWhiteName(String name) {
-        playerWhite.setName(name);
-    }
-
-    //-------------------------------------------------------------------------------------
-    //Setters
-
-    String getPlayerBlackName() {
-        return playerBlack.getName();
-    }
-
-    void setPlayerBlackName(String name) {
-        playerBlack.setName(name);
-    }
-
+  
     private Player getOtherPlayer() {
         if (currentPlayer == playerWhite) {
             return playerBlack;
@@ -291,6 +276,25 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     boolean isGameOngoing() {
         return gameState.isGameOngoing();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Setters
+  
+    void setPlayerWhiteTime(int seconds) {
+        playerWhite.setTime(seconds);
+    }
+  
+    void setPlayerBlackTime(int seconds) {
+        playerBlack.setTime(seconds);
+    }
+  
+    void setPlayerWhiteName(String name) {
+        playerWhite.setName(name);
+    }
+
+    void setPlayerBlackName(String name) {
+        playerBlack.setName(name);
     }
 
     /**
