@@ -62,14 +62,6 @@ public class MenuController implements Initializable {
     @FXML
     private ComboBox btnTimerDrop;
 
-    public void setChessController(ChessController chessController) {
-        this.chessController = chessController;
-    }
-
-    public void setModel(ChessFacade model) {
-        this.model = model;
-    }
-
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
      * <p>
@@ -96,21 +88,8 @@ public class MenuController implements Initializable {
         chessController.drawPieces();
     }
 
-    public void createChessScene(Parent chessParent) {
-        this.chessParent = chessParent;
-        this.scene = new Scene(chessParent);
-    }
-
-    /**
-     * Exits the application when called
-     *
-     * @param event Pressed the button
-     */
-    @FXML
-    void Exit(ActionEvent event) {
-        System.exit(0);
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Start
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeBackgroundMusic();
         initializeBackgroundVideo();
@@ -160,5 +139,32 @@ public class MenuController implements Initializable {
         timerMap.forEach((key, value) -> btnTimerDrop.getItems().add(key));
 
         btnTimerDrop.getSelectionModel().select(3);
+    }
+
+    public void createChessScene(Parent chessParent) {
+        this.chessParent = chessParent;
+        this.scene = new Scene(chessParent);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //End
+    /**
+     * Exits the application when called
+     *
+     * @param event Pressed the button
+     */
+    @FXML
+    void Exit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Setters
+    public void setChessController(ChessController chessController) {
+        this.chessController = chessController;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
     }
 }

@@ -21,16 +21,52 @@ public class ImageHandler {
     private double squareDimension;
     private boolean minecraftPieceStyle = false;
 
-    public void setModel(ChessFacade model) {
-        this.model = model;
+    double distanceFromMarkedPiece(ImageView imageView, int x, int y){
+        double yDelta = imageView.getY() - y*squareDimension;
+        double xDelta = imageView.getX() - x*squareDimension;
+        return Math.hypot(yDelta, xDelta);
     }
 
-    public boolean isMinecraftPieceStyle() {
-        return minecraftPieceStyle;
+    //-------------------------------------------------------------------------------------
+    //Image
+    Image createKingInCheckImage() {
+        try {
+            return new Image(getClass().getResourceAsStream("/guiFiles/kingInCheck.png"));
+        } catch (NullPointerException e) {
+            return new Image(getClass().getResourceAsStream("/guiFiles/missingTexture.png"));
+        }
     }
 
-    public void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
-        this.minecraftPieceStyle = minecraftPieceStyle;
+    ScaleTransition addScaleTransition(ImageView imageView, double duration, boolean grow){
+        ScaleTransition st = new ScaleTransition(Duration.millis(duration), imageView);
+        if (grow){
+            st.setFromX(0);
+            st.setFromY(0);
+            st.setToX(1.0);
+            st.setToY(1.0);
+        } else {
+            st.setFromX(1.0);
+            st.setFromY(1.0);
+            st.setToX(0);
+            st.setToY(0);
+        }
+        st.setCycleCount(1);
+        st.play();
+        return st;
+    }
+
+    public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
+        List<ImageView> imageViews = new ArrayList<>();
+        for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
+            ImageView imageView = fetchPieceImageView(new Square(0,0), pieceType, chessColor, (int) squareDimension);
+
+            imageView.setFitWidth(squareDimension - 25);
+            imageView.setFitHeight(squareDimension - 25);
+
+            imageViews.add(imageView);
+        }
+
+        return imageViews;
     }
 
     /**
@@ -89,38 +125,6 @@ public class ImageHandler {
         return tt;
     }
 
-    ScaleTransition addScaleTransition(ImageView imageView, double duration, boolean grow){
-        ScaleTransition st = new ScaleTransition(Duration.millis(duration), imageView);
-        if (grow){
-            st.setFromX(0);
-            st.setFromY(0);
-            st.setToX(1.0);
-            st.setToY(1.0);
-        } else {
-            st.setFromX(1.0);
-            st.setFromY(1.0);
-            st.setToX(0);
-            st.setToY(0);
-        }
-        st.setCycleCount(1);
-        st.play();
-        return st;
-    }
-
-    public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
-        List<ImageView> imageViews = new ArrayList<>();
-        for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
-           ImageView imageView = fetchPieceImageView(new Square(0,0), pieceType, chessColor, (int) squareDimension);
-
-           imageView.setFitWidth(squareDimension - 25);
-           imageView.setFitHeight(squareDimension - 25);
-
-           imageViews.add(imageView);
-        }
-
-        return imageViews;
-    }
-
     /**
      * Finds and returns a list of images for the squares a piece is allowed to move to
      *
@@ -150,20 +154,8 @@ public class ImageHandler {
         return imageViews;
     }
 
-    double distanceFromMarkedPiece(ImageView imageView, int x, int y){
-        double yDelta = imageView.getY() - y*squareDimension;
-        double xDelta = imageView.getX() - x*squareDimension;
-        return Math.hypot(yDelta, xDelta);
-    }
-
-    public double getSquareDimension() {
-        return squareDimension;
-    }
-
-    public void setSquareDimension(double squareDimension) {
-        this.squareDimension = squareDimension;
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Getters
     public Image getChessboardImage() {
         java.lang.String imageURL;
 
@@ -183,11 +175,26 @@ public class ImageHandler {
         return pieceImage;
     }
 
-    Image createKingInCheckImage() {
-        try {
-            return new Image(getClass().getResourceAsStream("/guiFiles/kingInCheck.png"));
-        } catch (NullPointerException e) {
-            return new Image(getClass().getResourceAsStream("/guiFiles/missingTexture.png"));
-        }
+    public double getSquareDimension() {
+        return squareDimension;
+    }
+
+
+    public boolean isMinecraftPieceStyle() {
+        return minecraftPieceStyle;
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Setters
+    public void setSquareDimension(double squareDimension) {
+        this.squareDimension = squareDimension;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
+    }
+
+    public void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
+        this.minecraftPieceStyle = minecraftPieceStyle;
     }
 }

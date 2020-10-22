@@ -39,6 +39,8 @@ import java.util.ResourceBundle;
  * It handeles the fxml files
  *
  * It receves notification from the board when something on the board is changed(moved/removed/..)
+ *
+ * Recevies input when the user interacts with its scene and does something or send the input to the model to do something
  */
 public class ChessController implements Initializable, GameObserver, EndGameObserver {
     private double squareDimension = 75;
@@ -56,6 +58,9 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private List<ImageView> pliesImages = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
+
+    //-------------------------------------------------------------------------------------
+    //FXML
     @FXML
     private Label player1Name;
     @FXML

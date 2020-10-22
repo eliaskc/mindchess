@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * PlyController is responsible for keeping track of all the moves/plies that have happened in a game so that multiple games can be played
+ * at the same time
+ */
 public class PlyController extends AnchorPane {
     private Ply ply;
     private ImageHandler imageHandler;
