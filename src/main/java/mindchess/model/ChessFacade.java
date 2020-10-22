@@ -6,57 +6,63 @@ import mindchess.observers.GameObserver;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Chess represents the model to the rest of the application
  * <p>
- * It also makes sure that that the model updates when something happens during runtime
- * <p>
- * (Composite pattern?)
+ * Delegates method calls from outside the model to the right part of the model
  */
 public class ChessFacade {
     private final List<Game> gameList = new ArrayList<>();
     private Game currentGame;
 
-    public String getCurrentPlayerName() {
-        return currentGame.getCurrentPlayer().getName();
+    /**
+     * sends the coordinates from the input to the current game to handle
+     *
+     * @param x the x coordinate from the input
+     * @param y the y coordinate from the input
+     */
+    public void handleBoardInput(int x, int y) {
+        currentGame.handleBoardInput(x, y);
     }
 
-    public String getCurrentPlayerBlackName() {
-        return currentGame.getPlayerBlack().getName();
-    }
-
-    public String getCurrentPlayerWhiteName() {
-        return currentGame.getPlayerWhite().getName();
-    }
-
-    public void setCurrentPlayerWhiteName(String name) {
-        currentGame.getPlayerWhite().setName(name);
-    }
-
-    public void setCurrentPlayerBlackName(String name) {
-        currentGame.getPlayerBlack().setName(name);
-    }
-
-    public boolean isCurrentPlayerWhite() {
-        return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
-    }
-
-    public boolean isSquareOccupied(Square square){
-        return currentGame.getBoard().getBoardMap().containsKey(square);
-    }
-
+    /**
+     * Forfeits the current game
+     */
     public void forfeit() {
         currentGame.endGameAsForfeit();
     }
 
+    /**
+     * Draws the current game
+     */
     public void acceptDraw() {
         currentGame.endGameAsDraw();
     }
 
+    /**
+     * Creates a new Game, makes it the current game, Initializes it and adds it to the game list
+     */
+    public void createNewGame() {
+        currentGame = new Game();
+        currentGame.initGame();
+        gameList.add(currentGame);
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Timers
+    public void initTimersInCurrentGame() {
+        currentGame.initTimers();
+    }
+
+    public void stopAllTimers() {
+        currentGame.stopAllTimers();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Observers
     public void addGameObserverToCurrentGame(GameObserver gameObserver) {
         currentGame.addGameObserver(gameObserver);
     }
@@ -65,64 +71,46 @@ public class ChessFacade {
         currentGame.addEndGameObserver(endgameObserver);
     }
 
-    public void initTimersInCurrentGame() {
-        currentGame.initTimers();
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Getters
     public ChessColor getCurrentPlayerColor() {
         return currentGame.getCurrentPlayerColor();
-    }
-
-    //----------------------------Returns copies-----------------------------------------
-    public List<Ply> getCurrentGamePlies() {
-        return new ArrayList<>(currentGame.getPlies());
-    }
-
-    public Map<Square, IPiece> getCurrentBoardMap() {
-        return new HashMap<>(currentGame.getBoard().getBoardMap());
     }
 
     public Board getCurrentBoard() {
         return currentGame.getBoard();
     }
 
-    public List<Game> getGameList() {
-        return new ArrayList<>(gameList);
-    }
-    public List<IPiece> getCurrentDeadPieces() {
-        return new ArrayList<>(currentGame.getBoard().getDeadPieces());
-    }
-
-    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor){
+    public List<PieceType> getCurrentDeadPiecesByColor(ChessColor chessColor) {
         List<PieceType> pieceTypes = new ArrayList<>();
-        for (IPiece piece : currentGame.getBoard().getDeadPieces()){
-            if (piece.getColor().equals(chessColor)){
+        for (IPiece piece : currentGame.getBoard().getDeadPieces()) {
+            if (piece.getColor().equals(chessColor)) {
                 pieceTypes.add(piece.getPieceType());
             }
         }
         return pieceTypes;
     }
 
-    public Square getLastPlyMovedFromSquare(){
+    public Square getLastPlyMovedFromSquare() {
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedFrom();
     }
 
-    public Square getLastPlyMovedToSquare(){
+    public Square getLastPlyMovedToSquare() {
         return getCurrentGamePlies().get(getCurrentGamePlies().size() - 1).getMovedTo();
     }
 
-    public List<Square> getCurrentLegalSquare() {
-        return new ArrayList<>(currentGame.getLegalSquares());
-    }
-
     public int getCurrentWhiteTimerTime() {
-        return currentGame.getPlayerWhite().getCurrentTime();
+        return currentGame.getPlayerWhiteTime();
     }
 
     public int getCurrentBlackTimerTime() {
-        return currentGame.getPlayerBlack().getCurrentTime();
+        return currentGame.getPlayerBlackTime();
     }
 
+    public String getCurrentPlayerName() {
+        return currentGame.getCurrentPlayerName();
+    }
+  
     public List<String[]> getPlayersAndStatusInGameList(){
         ArrayList<String[]> returnList = new ArrayList<>();
         for (Game g : getGameList()) {
@@ -134,6 +122,7 @@ public class ChessFacade {
         }
         return returnList;
     }
+  
     public void setIndexAsCurrentGame(int i){
         if(i >= gameList.size()){
             throw new IndexOutOfBoundsException();
@@ -145,35 +134,66 @@ public class ChessFacade {
         currentGame.getPlayerWhite().setTime(seconds);
     }
 
-    public void setCurrentBlackPlayerTimerTime(int seconds) {
-        currentGame.getPlayerBlack().setTime(seconds);
+    public String getCurrentWhitePlayerName() {
+        return currentGame.getPlayerWhiteName();
+    }
+
+    public String getCurrentBlackPlayerName() {
+        return currentGame.getPlayerBlackName();
+    }
+
+    //----------------------------Returns copies-----------------------------------------
+    public List<Ply> getCurrentGamePlies() {
+        return new ArrayList<>(currentGame.getPlies());
+    }
+
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
+    public Map<Square, IPiece> getCurrentBoardMap() {
+        return currentGame.getBoard().getBoardSnapShot();
+    }
+
+    private List<Game> getGameList() {
+        return new ArrayList<>(gameList);
+    }
+
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
+    public List<IPiece> getCurrentDeadPieces() {
+        return new ArrayList<>(currentGame.getBoard().getDeadPieces());
+    }
+
+    public List<Square> getCurrentLegalSquares() {
+        return new ArrayList<>(currentGame.getLegalSquares());
     }
 
 
-    /**
-     * sends the coordinates from the mouse click to the board to handle and notifies all observers a click has been made
-     *
-     * @param x the x coordinate for the mouse when it clicks
-     * @param y the y coordinate for the mouse when it clicks
-     */
-    public void handleBoardInput(int x, int y) {
-        currentGame.handleBoardInput(x, y);
+    public boolean isCurrentPlayerWhite() {
+        return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
-    //-------------------------------------------------------------------------------------
-    //Game
-
-    public void createNewGame() {
-        currentGame = new Game();
-        currentGame.initGame();
-        gameList.add(currentGame);
+    //TODO How to remove cascading without adding dependancy on IPiece in Game
+    public boolean isSquareOccupied(Square square) {
+        return currentGame.getBoard().isAPieceOnSquare(square);
     }
 
     public boolean isGameOngoing() {
         return currentGame.isGameOngoing();
     }
 
-    public void stopAllTimers() {
-        currentGame.stopAllTimers();
+    //-------------------------------------------------------------------------------------
+    //Setters
+    public void setCurrentWhitePlayerTimerTime(int seconds) {
+        currentGame.setPlayerWhiteTime(seconds);
+    }
+
+    public void setCurrentBlackPlayerTimerTime(int seconds) {
+        currentGame.setPlayerBlackTime(seconds);
+    }
+
+    public void setCurrentPlayerWhiteName(String name) {
+        currentGame.setPlayerWhiteName(name);
+    }
+
+    public void setCurrentPlayerBlackName(String name) {
+        currentGame.setPlayerBlackName(name);
     }
 }

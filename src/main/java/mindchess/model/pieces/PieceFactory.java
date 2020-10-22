@@ -6,6 +6,11 @@ import mindchess.model.moveDelegates.*;
 
 import static mindchess.model.PieceType.*;
 
+/**
+ * Factory to create Pieces.
+ * <p>
+ * Creates a different piece depending on what PieceType and Color it gets.
+ */
 public class PieceFactory {
 
     public static IPiece createPiece(PieceType pieceType, ChessColor chessColor) throws IllegalArgumentException {

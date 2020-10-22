@@ -1,20 +1,38 @@
 package mindchess.application;
 
-import mindchess.controller.ChessController;
-import mindchess.controller.ImageHandler;
-import mindchess.controller.MenuController;
-import mindchess.model.ChessFacade;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import mindchess.controller.ChessController;
+import mindchess.controller.ImageHandler;
+import mindchess.controller.MenuController;
+import mindchess.model.ChessFacade;
 
+/**
+ * Class for the application
+ * <p>
+ * Starts the application
+ */
 public final class ChessApplication extends Application {
 
+    /**
+     * Launches the program
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    /**
+     * Initialize controllers, imagehandler and fxml files
+     * <p>
+     * Creates a Chessfacade/model and sends it into the controllers
+     *
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         stage.setResizable(false);

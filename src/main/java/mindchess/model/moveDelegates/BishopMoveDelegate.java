@@ -1,8 +1,8 @@
 package mindchess.model.moveDelegates;
 
 import mindchess.model.Board;
-import mindchess.model.Square;
 import mindchess.model.MovementLogicUtil;
+import mindchess.model.Square;
 
 import java.util.ArrayList;
 import java.util.List;

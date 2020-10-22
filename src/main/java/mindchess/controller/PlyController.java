@@ -1,22 +1,26 @@
 package mindchess.controller;
 
-import mindchess.model.Ply;
-import mindchess.model.Square;
-import mindchess.model.pieces.IPiece;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import mindchess.model.Ply;
+import mindchess.model.Square;
+import mindchess.model.pieces.IPiece;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * PlyController is responsible for keeping track of all the moves/plies that have happened in a game so that multiple games can be played
+ * at the same time
+ */
 public class PlyController extends AnchorPane {
-    private Ply ply;
-    private ImageHandler imageHandler;
+    private final Ply ply;
+    private final ImageHandler imageHandler;
 
     @FXML
     private Label labelPlyNumber;
@@ -29,7 +33,7 @@ public class PlyController extends AnchorPane {
     @FXML
     private ImageView imagePiece;
 
-    public PlyController(Ply ply, int plyNum, ImageHandler imageHandler){
+    public PlyController(Ply ply, int plyNum, ImageHandler imageHandler) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/plyView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -49,21 +53,21 @@ public class PlyController extends AnchorPane {
         this.labelPlayer.setText(String.format("%s", ply.getPlayerName()));
     }
 
-    public List<ImageView> generateBoardImages(boolean performMove){
+    public List<ImageView> generateBoardImages(boolean performMove) {
         List<ImageView> imageViewList = new ArrayList<>();
 
-        for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()){
+        for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()) {
             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
 
             imageViewList.add(imageView);
 
             if (entry.getValue().equals(ply.getMovedPiece())) {
 
-                if(performMove){
+                if (performMove) {
                     imageHandler.addTranslateTransition(imageView, ply.getMovedFrom(), ply.getMovedTo(), 40, 400);
                 } else {
-                    imageView.setX(ply.getMovedFrom().getX()*40);
-                    imageView.setY(ply.getMovedFrom().getY()*40);
+                    imageView.setX(ply.getMovedFrom().getX() * 40);
+                    imageView.setY(ply.getMovedFrom().getY() * 40);
                 }
 
                 if (ply.getTakenPiece() != null) {

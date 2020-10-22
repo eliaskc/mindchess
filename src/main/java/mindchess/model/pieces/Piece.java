@@ -4,11 +4,16 @@ import mindchess.model.ChessColor;
 import mindchess.model.PieceType;
 import mindchess.model.moveDelegates.IMoveDelegate;
 
+/**
+ * Representation of a piece on the Board.
+ * <p>
+ * When it is created, it has a color, type and movedelegate(which is how it is allowed to move).
+ */
 public class Piece implements IPiece {
-    private ChessColor pieceColor;
-    private PieceType pieceType;
+    private final ChessColor pieceColor;
+    private final PieceType pieceType;
     private boolean hasMoved = false;
-    private IMoveDelegate moveDelegate;
+    private final IMoveDelegate moveDelegate;
 
     public Piece(ChessColor pieceColor, PieceType pieceType, IMoveDelegate moveDelegate) {
         this.pieceColor = pieceColor;
@@ -17,13 +22,13 @@ public class Piece implements IPiece {
     }
 
     @Override
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+    public boolean getHasMoved() {
+        return hasMoved;
     }
 
     @Override
-    public boolean getHasMoved() {
-        return hasMoved;
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 
     @Override
