@@ -35,13 +35,17 @@ import java.util.ResourceBundle;
 
 /**
  * ChessController handles the mindchess board
+ *
+ * It handeles the fxml files
+ *
+ * It receves notification from the board when something on the board is changed(moved/removed/..)
  */
 public class ChessController implements Initializable, GameObserver, EndGameObserver {
-    double squareDimension = 75;
-    double chessboardContainerX;
-    double chessboardContainerY;
-    int lastClickedX;
-    int lastClickedY;
+    private double squareDimension = 75;
+    private double chessboardContainerX;
+    private double chessboardContainerY;
+    private int lastClickedX;
+    private int lastClickedY;
     private ChessFacade model;
     private Parent menuParent;
     private Scene scene;
@@ -53,8 +57,6 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
     @FXML
-    private MediaView media;
-    @FXML
     private Label player1Name;
     @FXML
     private Label player2Name;
@@ -65,21 +67,17 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private Label lblDrawLabel;
     @FXML
-    private ImageView chessboardImage;
+    private Label endGameLabel;
     @FXML
-    private AnchorPane chessboardContainer;
-    @FXML
-    private AnchorPane drawAnchorPane;
-    @FXML
-    private FlowPane flowPaneBlackPieces;
-    @FXML
-    private FlowPane flowPaneWhitePieces;
+    private Button muteUnmuteButton;
     @FXML
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
     @FXML
-    private AnchorPane promotionAnchorPane;
+    private MediaView media;
+    @FXML
+    private ImageView chessboardImage;
     @FXML
     private ImageView promotionQueen;
     @FXML
@@ -89,94 +87,30 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
     @FXML
     private ImageView promotionBishop;
     @FXML
-    private Button muteUnmuteButton;
-    @FXML
-    private AnchorPane pliesAnchorPane;
+    private ImageView pliesBoardImageView;
     @FXML
     private ScrollPane pliesScrollPane;
     @FXML
-    private FlowPane pliesFlowPane;
+    private AnchorPane chessboardContainer;
+    @FXML
+    private AnchorPane drawAnchorPane;
+    @FXML
+    private AnchorPane promotionAnchorPane;
+    @FXML
+    private AnchorPane pliesAnchorPane;
+    @FXML
+    private AnchorPane endGamePane;
     @FXML
     private AnchorPane pliesBoardAnchorPane;
     @FXML
-    private ImageView pliesBoardImageView;
-
-
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
-        this.mediaPlayer = mediaPlayer;
-    }
-
-    public void setAudioPlayer(MediaPlayer audioPlayer) {
-        this.audioPlayer = audioPlayer;
-    }
-
-    public void setModel(ChessFacade model) {
-        this.model = model;
-    }
-
-    public void setImageHandler(ImageHandler imageHandler) {
-        this.imageHandler = imageHandler;
-    }
-
-    /**
-     * Switches to the menu/startscreen scene
-     *
-     * @param event Button click
-     */
+    private FlowPane flowPaneBlackPieces;
     @FXML
-    void goToMenu(ActionEvent event) {
-        clearAllPieceImages();
-        clearAllLegalMoveImages();
-        chessboardContainer.getChildren().remove(kingInCheckImage);
-        model.stopAllTimers();
-        drawAnchorPane.toBack();
-        promotionAnchorPane.toBack();
-        pliesAnchorPane.toBack();
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
-    }
-
+    private FlowPane flowPaneWhitePieces;
     @FXML
-    void forfeit() {
-        model.forfeit();
-    }
+    private FlowPane pliesFlowPane;
 
-    /**
-     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
-     * stops players from moving their pieces while the interface is up
-     */
-    @FXML
-    void offerDraw(ActionEvent event) {
-        lblDrawLabel.setText(model.getCurrentPlayerName() + " offered you a draw");
-        drawAnchorPane.toFront();
-    }
-
-    /**
-     * if the opponent refuses the interface will close and allows the player to move their pieces
-     */
-    @FXML
-    void declineDraw() {
-        drawAnchorPane.toBack();
-    }
-
-    /**
-     * sets the game to a draw
-     */
-    @FXML
-    void acceptDraw() {
-        model.acceptDraw();
-    }
-
-    public void createMenuScene(Parent menuParent) {
-        this.menuParent = menuParent;
-        this.scene = new Scene(menuParent);
-    }
-
-    public Scene getMenuScene() {
-        return scene;
-    }
-
+    //-------------------------------------------------------------------------------------
+    //start
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chessboardContainerX = chessboardContainer.getLayoutX();
@@ -216,20 +150,27 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         imageHandler.setSquareDimension(squareDimension);
     }
 
-    @FXML
-    AnchorPane endGamePane;
-    @FXML
-    Label endGameLabel;
-
-    @Override
-    public void showEndGameResult(String result) {
-        Platform.runLater(() -> {
-            model.stopAllTimers();
-            endGameLabel.setText(result);
-            endGamePane.toFront();
-        });
+    public void createMenuScene(Parent menuParent) {
+        this.menuParent = menuParent;
+        this.scene = new Scene(menuParent);
     }
 
+    //-------------------------------------------------------------------------------------
+    //make move
+    /**
+     * "Lights up" the current player's timer, dims the opponents timer
+     */
+    @Override
+    public void switchedPlayer() {
+        if (model.isCurrentPlayerWhite()) {
+            player1TimerBox.setFill(Color.GREENYELLOW);
+            player2TimerBox.setFill(Color.LIGHTGRAY);
+        } else {
+            player2TimerBox.setFill(Color.GREENYELLOW);
+            player1TimerBox.setFill(Color.LIGHTGRAY);
+        }
+        chessboardContainer.getChildren().remove(kingInCheckImage);
+    }
 
     /**
      * Sends to the board that it has been clicked on
@@ -273,36 +214,95 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         throw new IllegalArgumentException("Outside board");
     }
 
-    @FXML
-    private void switchPieceStyle() {
-        imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+    //-------------------------------------------------------------------------------------
+    //End
+    @Override
+    public void kingInCheck(int x, int y) {
+        kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
+        kingInCheckImage.setX(x*squareDimension);
+        kingInCheckImage.setY(y*squareDimension);
+        kingInCheckImage.setFitHeight(squareDimension);
+        kingInCheckImage.setFitWidth(squareDimension);
+        kingInCheckImage.setOpacity(0.6);
+        kingInCheckImage.setMouseTransparent(true);
 
-        chessboardImage.setImage(imageHandler.getChessboardImage());
-        drawLegalMoves();
+        chessboardContainer.getChildren().add(kingInCheckImage);
         drawPieces();
-        drawDeadPieces();
-        drawPawnPromotionSetup(model.getCurrentPlayerColor());
+    }
+
+    @Override
+    public void showEndGameResult(String result) {
+        Platform.runLater(() -> {
+            model.stopAllTimers();
+            endGameLabel.setText(result);
+            endGamePane.toFront();
+        });
     }
 
     @FXML
-    private void muteUnmute() {
-        audioPlayer.setMute(!audioPlayer.isMute());
-        muteUnmuteButton.setText(audioPlayer.isMute() ? "Unmute" : "Mute");
+    void forfeit() {
+        model.forfeit();
     }
 
+    /**
+     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
+     * stops players from moving their pieces while the interface is up
+     */
+    @FXML
+    void offerDraw(ActionEvent event) {
+        lblDrawLabel.setText(model.getCurrentPlayerName() + " offered you a draw");
+        drawAnchorPane.toFront();
+    }
 
+    /**
+     * if the opponent refuses the interface will close and allows the player to move their pieces
+     */
+    @FXML
+    void declineDraw() {
+        drawAnchorPane.toBack();
+    }
+
+    /**
+     * sets the game to a draw
+     */
+    @FXML
+    void acceptDraw() {
+        model.acceptDraw();
+    }
+
+    /**
+     * Switches to the menu/startscreen scene
+     *
+     * @param event Button click
+     */
+    @FXML
+    void goToMenu(ActionEvent event) {
+        clearAllPieceImages();
+        clearAllLegalMoveImages();
+        chessboardContainer.getChildren().remove(kingInCheckImage);
+        model.stopAllTimers();
+        drawAnchorPane.toBack();
+        promotionAnchorPane.toBack();
+        pliesAnchorPane.toBack();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(scene);
+        window.show();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Draw And Images
     private List<ImageView> fetchPieceImages() {
-         List<ImageView> pieceImages = new ArrayList<>();
-         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()){
-             ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
-             pieceImages.add(imageView);
-             if(model.getCurrentGamePlies().size() > 0){
-                 if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
-                     imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
-                 }
-             }
-         }
-         return pieceImages;
+        List<ImageView> pieceImages = new ArrayList<>();
+        for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()){
+            ImageView imageView = imageHandler.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight()/8));
+            pieceImages.add(imageView);
+            if(model.getCurrentGamePlies().size() > 0){
+                if(entry.getKey().equals(model.getLastPlyMovedToSquare())){
+                    imageHandler.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight()/8, 250);
+                }
+            }
+        }
+        return pieceImages;
     }
 
     /**
@@ -350,21 +350,27 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         }
     }
 
-    /**
-     * "Lights up" the current player's timer, dims the opponents timer
-     */
-    @Override
-    public void switchedPlayer() {
-        if (model.isCurrentPlayerWhite()) {
-            player1TimerBox.setFill(Color.GREENYELLOW);
-            player2TimerBox.setFill(Color.LIGHTGRAY);
-        } else {
-            player2TimerBox.setFill(Color.GREENYELLOW);
-            player1TimerBox.setFill(Color.LIGHTGRAY);
-        }
-        chessboardContainer.getChildren().remove(kingInCheckImage);
+    @FXML
+    private void switchPieceStyle() {
+        imageHandler.setMinecraftPieceStyle(!imageHandler.isMinecraftPieceStyle());
+
+        chessboardImage.setImage(imageHandler.getChessboardImage());
+        drawLegalMoves();
+        drawPieces();
+        drawDeadPieces();
+        drawPawnPromotionSetup(model.getCurrentPlayerColor());
     }
 
+    //-------------------------------------------------------------------------------------
+    //sound
+    @FXML
+    private void muteUnmute() {
+        audioPlayer.setMute(!audioPlayer.isMute());
+        muteUnmuteButton.setText(audioPlayer.isMute() ? "Unmute" : "Mute");
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Promotion
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
      *
@@ -382,6 +388,7 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         promotionRook.setImage(imageHandler.createPieceImage(PieceType.ROOK, chessColor));
         promotionBishop.setImage(imageHandler.createPieceImage(PieceType.BISHOP, chessColor));
     }
+
 
     private void pawnPromotion(int x, int y) {
         model.handleBoardInput(x, y);
@@ -408,6 +415,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         pawnPromotion(23, 0);
     }
 
+    //-------------------------------------------------------------------------------------
+    //Clear
     private void clearAllPieceImages() {
         chessboardContainer.getChildren().removeAll(pieceImages);
     }
@@ -430,22 +439,8 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         pliesImages.clear();
     }
 
-
-    /**
-     * Method is called when the "Analyze" button is pressed at the end screen
-     */
-    @FXML
-    public void analyzeGame() {
-        populatePliesFlowPane();
-        pliesBoardImageView.setImage(imageHandler.getChessboardImage());
-        pliesAnchorPane.toFront();
-    }
-
-    @FXML
-    public void analyzeGameBack() {
-        pliesAnchorPane.toBack();
-    }
-
+    //-------------------------------------------------------------------------------------
+    //Analyze
     /**
      * Creates a PlyController object for each ply and populates it with information about the ply
      * Also takes the generated snapshot of that specific ply and creates an image that represents the board after that ply has been made
@@ -476,6 +471,23 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         }
     }
 
+    @FXML
+    public void analyzeGameBack() {
+        pliesAnchorPane.toBack();
+    }
+
+    /**
+     * Method is called when the "Analyze" button is pressed at the end screen
+     */
+    @FXML
+    public void analyzeGame() {
+        populatePliesFlowPane();
+        pliesBoardImageView.setImage(imageHandler.getChessboardImage());
+        pliesAnchorPane.toFront();
+    }
+
+    //-------------------------------------------------------------------------------------
+    //Timer
     /**
      * Fetches the times for each timer from the model when called and updates the labels
      */
@@ -497,17 +509,27 @@ public class ChessController implements Initializable, GameObserver, EndGameObse
         return min + ":" + sec;
     }
 
-    @Override
-    public void kingInCheck(int x, int y) {
-        kingInCheckImage.setImage(imageHandler.createKingInCheckImage());
-        kingInCheckImage.setX(x*squareDimension);
-        kingInCheckImage.setY(y*squareDimension);
-        kingInCheckImage.setFitHeight(squareDimension);
-        kingInCheckImage.setFitWidth(squareDimension);
-        kingInCheckImage.setOpacity(0.6);
-        kingInCheckImage.setMouseTransparent(true);
+    //-------------------------------------------------------------------------------------
+    //Getters
+    public Scene getMenuScene() {
+        return scene;
+    }
 
-        chessboardContainer.getChildren().add(kingInCheckImage);
-        drawPieces();
+    //-------------------------------------------------------------------------------------
+    //Setters
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
+
+    public void setAudioPlayer(MediaPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
+    }
+
+    public void setModel(ChessFacade model) {
+        this.model = model;
+    }
+
+    public void setImageHandler(ImageHandler imageHandler) {
+        this.imageHandler = imageHandler;
     }
 }
