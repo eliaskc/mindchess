@@ -108,7 +108,7 @@ public class MenuController implements Initializable {
         Random ran = new Random();
         int videoIndex = ran.nextInt(4);
         mediaPlayer = new MediaPlayer(new Media(getClass().getResource(media_list.get(videoIndex)).toExternalForm()));
-        //mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(1000);
         media.setMediaPlayer(mediaPlayer);
     }
