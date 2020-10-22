@@ -52,38 +52,68 @@ public class GameStatePieceSelected implements GameState {
     @Override
     public void handleInput(int x, int y) {
         Square targetSquare = new Square(x, y);
+
+        if (switchSelectedPieceIfSameColor(targetSquare)) return;
+
+        if (legalSquares.contains(targetSquare)) {
+            targetSquareIsLegal(targetSquare);
+        }
+
+        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
+        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+        clearAndDrawLegalMoves();
+    }
+
+    /**
+     * If a player tries to select on one of their pieces besides the selected one, that piece becomes the new selected piece
+     * @param targetSquare the square the player is attempting to select
+     * @return true if a switch was made, false if not
+     */
+    private boolean switchSelectedPieceIfSameColor(Square targetSquare) {
         if (board.isAPieceOnSquare(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare, context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
             gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
             context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Moves the selected piece to the target square.
+     *   - If any special rules apply to a specific move, they are performed
+     *
+     * @param targetSquare the square to move the selected piece to
+     */
+    private void targetSquareIsLegal(Square targetSquare) {
+        targetSquare = getLegalSquareByCoordinates(targetSquare.getX(), targetSquare.getY());
+        move(selectedSquare,targetSquare);
+        addMoveToPlies(selectedSquare, targetSquare);
+        notifyDrawPieces();
+
+        if (checkKingTaken()) {
+            context.setGameState(GameStateFactory.createGameStateGameOver(context.getCurrentPlayerName() + " has won the game"));
             return;
         }
 
-        if (legalSquares.contains(targetSquare)) {
-            targetSquare = getLegalSquareByCoordinates(x, y);
-            move(selectedSquare, targetSquare);
-            addMoveToPlies(selectedSquare, targetSquare);
-            notifyDrawPieces();
-
-            if (checkKingTaken()) {
-                context.setGameState(GameStateFactory.createGameStateGameOver(context.getCurrentPlayerName() + " has won the game"));
-                return;
-            }
-
-            if (checkPawnPromotion(targetSquare)) {
-                context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare, board, plies, legalSquares, context));
-                gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
-                clearAndDrawLegalMoves();
-                return;
-            }
-
-            notifySwitchPlayer();
-            checkKingInCheck(context.getCurrentPlayerColor());
+        if (checkPawnPromotion(targetSquare)) {
+            context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare, board, plies, legalSquares, context));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            clearAndDrawLegalMoves();
+            return;
         }
-        context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
-        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
-        clearAndDrawLegalMoves();
+    }
+
+        if (checkPawnPromotion(targetSquare)) {
+            context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare,board,plies,legalSquares,context));
+            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            clearAndDrawLegalMoves();
+            return;
+        }
+
+        notifySwitchPlayer();
+        checkKingInCheck(context.getCurrentPlayerColor());
     }
 
     private void move(Square selectedSquare, Square targetSquare) {
