@@ -177,10 +177,6 @@ public class ImageHandlerUtil {
         return pieceImage;
     }
 
-    public double getSquareDimension() {
-        return squareDimension;
-    }
-
     //-------------------------------------------------------------------------------------
     //Setters
     public void setSquareDimension(double squareDimension) {
