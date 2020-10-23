@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Responsible for fetching information about a ply (half-move) and displaying it
@@ -77,7 +78,7 @@ public class PlyController extends AnchorPane {
                     imageView.setY(ply.getMovedFrom().getY() * 40);
                 }
 
-                if (ply.getTakenPiece() != null) {
+                if (Objects.nonNull(ply.getTakenPiece())) {
                     ImageView attackedImageView = imageHandlerUtil.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
                     imageHandlerUtil.addScaleTransition(attackedImageView, 400, false);
                     imageViewList.add(attackedImageView);

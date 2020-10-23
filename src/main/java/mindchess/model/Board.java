@@ -129,12 +129,12 @@ public class Board implements IBoard {
 
     @Override
     public Square fetchKingSquare(ChessColor color) {
-        for (Map.Entry<Square, mindchess.model.pieces.IPiece> entry : boardMap.entrySet()) {
+        for (Map.Entry<Square, IPiece> entry : boardMap.entrySet()) {
             if (entry.getValue().getColor().equals(color) && entry.getValue().getPieceType().equals(PieceType.KING)) {
                 return entry.getKey();
             }
         }
-        return null;
+        throw new IllegalStateException("No king of this color on the board.");
     }
 
     //-------------------------------------------------------------------------------------

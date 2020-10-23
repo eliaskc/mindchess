@@ -109,7 +109,7 @@ public class GameStateAIPlayerTurn implements GameState {
     private List<Square> calculateLevel2Move() {
         var returnList = new ArrayList<Square>();
         var allBoardSquares = new ArrayList<>(board.getBoardKeys());
-        List<Square> AILegalSquares = new ArrayList<>();
+        List<Square> AILegalSquares;
         int maxValue = 0;
         Square moveTo = null;
         Square moveFrom = null;

@@ -113,7 +113,6 @@ public class TestCastling {
     /**
      * Tests if you can not castle when the rook has moved before
      */
-    //TODO Implement so that these work
     @Test
     public void testCastlingRookHasMoved() {
         //Castling setup
