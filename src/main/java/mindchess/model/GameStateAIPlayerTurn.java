@@ -10,9 +10,9 @@ import java.util.Random;
 
 /**
  * A state which is used only when there is a CPU player in the game.
- *
+ * <p>
  * If there is, this State "replaces" the No Piece Selected state.
- *
+ * <p>
  * It calculates a move and then changes state to Piece Selected and thereafter makes the previously calculated move.
  */
 public class GameStateAIPlayerTurn implements GameState {
@@ -22,6 +22,7 @@ public class GameStateAIPlayerTurn implements GameState {
     private final List<Ply> plies;
     private final Board board;
     private final int difficulty;
+    private boolean pawnPromotionMove;
 
     GameStateAIPlayerTurn(Board board, List<Square> legalSquares, List<Ply> plies, IGameContext context, int difficulty) {
         this.board = board;
@@ -44,6 +45,10 @@ public class GameStateAIPlayerTurn implements GameState {
         gameStateObservers.forEach(context::addGameStateObserver);
 
         context.handleBoardInput(moveTo.getX(), moveTo.getY());
+
+        if (pawnPromotionMove) {
+            context.handleBoardInput(20, 0);
+        }
     }
 
     /**
@@ -54,15 +59,15 @@ public class GameStateAIPlayerTurn implements GameState {
     private List<Square> calculateMove() {
         if (difficulty == 1)
             return calculateLevel1Move();
-        /*else if (difficulty == 2)
-            return calculateLevel2Move();*/
+        else if (difficulty == 2)
+            return calculateLevel2Move();
         throw new IllegalArgumentException();
     }
 
     /**
-     * Finds a random move among the legal ones
+     * Finds a random move among the legal ones for the AI player
      *
-     * @return the square to move from and the square to move to, in a list
+     * @return a list with the Squares to move from and to
      */
     private List<Square> calculateLevel1Move() {
         var allBoardSquares = new ArrayList<>(board.getBoardKeys());
@@ -70,33 +75,74 @@ public class GameStateAIPlayerTurn implements GameState {
 
         var returnList = new ArrayList<Square>();
         List<Square> AILegalSquares;
-        Square randToSquare;
+        Square moveTo;
 
         while (true) {
             rand = new Random();
-            Square randSquare = allBoardSquares.get(rand.nextInt(allBoardSquares.size()));
-            IPiece randPiece = board.getPieceOnSquare(randSquare);
+            Square moveFrom = allBoardSquares.get(rand.nextInt(allBoardSquares.size()));
+            IPiece piece = board.getPieceOnSquare(moveFrom);
 
-            if (randPiece.getColor() == context.getCurrentPlayerColor()) {
-                AILegalSquares = randPiece.getMoveDelegate().fetchMoves(board, randSquare, randPiece.getHasMoved(), true);
+            if (piece.getColor() == context.getCurrentPlayerColor()) {
+                AILegalSquares = piece.getMoveDelegate().fetchMoves(board, moveFrom, piece.getHasMoved(), true);
                 legalSquares.addAll(AILegalSquares);
                 if (AILegalSquares.size() > 0) {
-                    randToSquare = AILegalSquares.get(rand.nextInt(AILegalSquares.size()));
-                    if (!(randToSquare.getSquareType() == SquareType.PROMOTION)) {
-                        returnList.add(randSquare);
+                    moveTo = AILegalSquares.get(rand.nextInt(AILegalSquares.size()));
+                    if (!(moveTo.getSquareType() == SquareType.PROMOTION)) {
+                        returnList.add(moveFrom);
                         break;
                     }
                 }
             }
         }
 
-        returnList.add(randToSquare);
+        returnList.add(moveTo);
         return returnList;
     }
 
-    /*private List<Square> calculateLevel2Move() {
+    /**
+     * Finds a move for the AI to make.
+     *   - If there are pieces that the AI could take, it takes the highest valued one
+     *   - If not, a move is randomized
+     * @return a list with the Squares to move from and to
+     */
+    private List<Square> calculateLevel2Move() {
+        var returnList = new ArrayList<Square>();
+        var allBoardSquares = new ArrayList<>(board.getBoardKeys());
+        List<Square> AILegalSquares = new ArrayList<>();
+        int maxValue = 0;
+        Square moveTo = null;
+        Square moveFrom = null;
+        Random rand = new Random();
 
-    }*/
+        for (Square possibleMoveFrom : allBoardSquares) {
+            IPiece piece = board.getPieceOnSquare(possibleMoveFrom);
+            if (piece.getColor() == context.getCurrentPlayerColor()) {
+                AILegalSquares = piece.getMoveDelegate().fetchMoves(board, possibleMoveFrom, piece.getHasMoved(), true);
+                legalSquares.addAll(AILegalSquares);
+                for (Square possibleMoveTo : AILegalSquares) {
+                    if (board.isAPieceOnSquare(possibleMoveTo)) {
+                        int currentPieceValue = board.getPieceOnSquare(possibleMoveTo).getPieceValue();
+                        if (currentPieceValue > maxValue) {
+                            maxValue = currentPieceValue;
+                            moveTo = possibleMoveTo;
+                            moveFrom = possibleMoveFrom;
+                        }
+                    }
+                }
+                if (maxValue == 0 && AILegalSquares.size() != 0) {
+                    moveFrom = possibleMoveFrom;
+                    moveTo = AILegalSquares.get(rand.nextInt(AILegalSquares.size()));
+                }
+            }
+        }
+
+        pawnPromotionMove = moveTo.getSquareType().equals(SquareType.PROMOTION);
+
+        returnList.add(moveFrom);
+        returnList.add(moveTo);
+
+        return returnList;
+    }
 
     @Override
     public String getGameStatus() {

@@ -117,7 +117,7 @@ public class GameStatePieceSelected implements GameState {
         }
 
         notifySwitchPlayer();
-        checkKingInCheck(context.getCurrentPlayerColor());
+        notifyIfKingInCheck(context.getCurrentPlayerColor());
 
         context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
         gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
@@ -186,16 +186,16 @@ public class GameStatePieceSelected implements GameState {
     }
 
     /**
-     * chicks if the king is in check and can be taken
+     * Checks if the king of the inputted color is in check and notifies if it is
      *
-     * @param kingColor
+     * @param kingColor the color of the king to check
      */
-    private void checkKingInCheck(ChessColor kingColor) {
+    private void notifyIfKingInCheck(ChessColor kingColor) {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
         Square kingSquare = board.fetchKingSquare(kingColor);
 
-        MovementLogicUtil.isKingInCheck(board, kingSquare, opponentColor);
-        if (kingSquare.getSquareType() == IN_CHECK)
+
+        if (MovementLogicUtil.isKingInCheck(board, kingSquare, opponentColor))
             notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
     }
 
@@ -254,7 +254,7 @@ public class GameStatePieceSelected implements GameState {
 
     private void notifyPawnPromotion() {
         for (GameStateObserver gameStateObserver : gameStateObservers) {
-            gameStateObserver.notifyPawnPromotion();
+            gameStateObserver.notifyPawnPromotionSetup();
         }
     }
 

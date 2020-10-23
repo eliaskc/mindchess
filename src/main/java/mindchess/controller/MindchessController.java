@@ -439,6 +439,11 @@ public class MindchessController implements Initializable, GameObserver, EndGame
 
     private void pawnPromotion(int x, int y) {
         model.handleBoardInput(x, y);
+
+    }
+
+    @Override
+    public void pawnPromotionCleanUp(){
         promotionAnchorPane.toBack();
     }
 

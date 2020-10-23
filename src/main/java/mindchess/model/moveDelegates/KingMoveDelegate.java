@@ -35,7 +35,11 @@ public class KingMoveDelegate implements IMoveDelegate {
             ChessColor opponentColor = (pieceToMoveColor == WHITE) ? BLACK : WHITE;
             List<Square> opponentLegalSquares = MovementLogicUtil.fetchLegalSquaresByColor(board, opponentColor);
             legalSquares.removeIf(p -> opponentLegalSquares.contains(p));
+            if (MovementLogicUtil.isKingInCheck(board, squareToCheck, opponentColor))
+                legalSquares.removeIf(p -> p.getSquareType() == CASTLING);
         }
+
+
         return legalSquares;
     }
 

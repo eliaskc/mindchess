@@ -14,11 +14,13 @@ public class Piece implements IPiece {
     private final PieceType pieceType;
     private boolean hasMoved = false;
     private final IMoveDelegate moveDelegate;
+    private final int pieceValue;
 
-    public Piece(ChessColor pieceColor, PieceType pieceType, IMoveDelegate moveDelegate) {
+    public Piece(ChessColor pieceColor, PieceType pieceType, IMoveDelegate moveDelegate, int pieceValue) {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
         this.moveDelegate = moveDelegate;
+        this.pieceValue = pieceValue;
     }
 
     @Override
@@ -44,5 +46,10 @@ public class Piece implements IPiece {
     @Override
     public IMoveDelegate getMoveDelegate() {
         return moveDelegate;
+    }
+
+    @Override
+    public int getPieceValue() {
+        return pieceValue;
     }
 }
