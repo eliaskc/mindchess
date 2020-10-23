@@ -109,7 +109,7 @@
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor></Button>
-            <Button layoutX="1056.0" layoutY="535.0" mnemonicParsing="false" onAction="#offerDraw" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Draw">
+            <Button fx:id="drawButton" layoutX="1056.0" layoutY="535.0" mnemonicParsing="false" onAction="#offerDraw" prefHeight="50.0" prefWidth="120.0" styleClass="minecraftStyleButton" text="Draw">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
                </cursor></Button>

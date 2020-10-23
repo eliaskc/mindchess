@@ -76,6 +76,8 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     @FXML
     private Button muteUnmuteButton;
     @FXML
+    private Button drawButton;
+    @FXML
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
@@ -173,6 +175,10 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     public void createMenuScene(Parent menuParent) {
         this.menuParent = menuParent;
         this.scene = new Scene(menuParent);
+    }
+
+    void setDisableDrawButton(boolean disableDrawButton){
+        drawButton.setDisable(disableDrawButton);
     }
 
     //-------------------------------------------------------------------------------------
