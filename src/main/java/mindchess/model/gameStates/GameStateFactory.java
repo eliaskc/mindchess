@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * A factory class for the different game states
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStateFactory {
 

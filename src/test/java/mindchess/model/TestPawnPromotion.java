@@ -8,7 +8,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test the special rule pawnpromotion
+ * Test the special rule pawn-promotion
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestPawnPromotion {
     ChessFacade model;

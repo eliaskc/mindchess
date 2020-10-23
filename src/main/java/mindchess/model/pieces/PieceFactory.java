@@ -10,6 +10,8 @@ import static mindchess.model.enums.PieceType.*;
  * Factory to create Pieces.
  * <p>
  * Creates a different piece depending on what PieceType and Color it gets.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class PieceFactory {
 

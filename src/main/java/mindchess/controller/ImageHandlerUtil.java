@@ -105,12 +105,12 @@ public class ImageHandlerUtil {
     }
 
     Image createPieceImage(PieceType pieceType, ChessColor pieceColor) {
-        java.lang.String imageURL;
+        String imageURL;
 
         if (minecraftPieceStyle) {
-            imageURL = java.lang.String.format("/minecraftChesspieces/%s_minecraft_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
+            imageURL = String.format("/minecraftChesspieces/%s_minecraft_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         } else {
-            imageURL = java.lang.String.format("/chessPieces/%s_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
+            imageURL = String.format("/chessPieces/%s_%s.png", pieceColor.toString().toLowerCase(), pieceType.toString().toLowerCase());
         }
 
         Image pieceImage;
@@ -170,7 +170,7 @@ public class ImageHandlerUtil {
     //-------------------------------------------------------------------------------------
     //Getters
     Image getChessboardImage() {
-        java.lang.String imageURL;
+        String imageURL;
 
         if (minecraftPieceStyle) {
             imageURL = "/guiFiles/minecraftChessboard.png";

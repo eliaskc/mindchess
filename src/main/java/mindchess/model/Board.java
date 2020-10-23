@@ -15,6 +15,8 @@ import static mindchess.model.enums.ChessColor.WHITE;
  * <p>
  * The mindchess board is represented by a map with Squares and IPieces that this class is responsible for putting into and
  * removing from.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class Board implements IBoard {
     private final Map<Square, IPiece> boardMap = new HashMap<>();

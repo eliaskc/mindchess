@@ -6,6 +6,8 @@ import mindchess.observers.TimerObserver;
 
 /**
  * Interfaces for Player classes
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public interface IPlayer {
     String getName();

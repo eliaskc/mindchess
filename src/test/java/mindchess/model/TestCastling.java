@@ -11,6 +11,8 @@ import static org.junit.Assert.assertNotEquals;
 
 /**
  * Tests if you can do castleing and if you only can do it when it is allowed
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestCastling {
     ChessFacade model;

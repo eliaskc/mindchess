@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static mindchess.model.enums.ChessColor.BLACK;
-import static mindchess.model.enums.ChessColor.WHITE;
+import static mindchess.model.enums.ChessColor.*;
 import static mindchess.model.enums.PieceType.PAWN;
 import static mindchess.model.enums.SquareType.*;
 
 /**
  * Is responsible for finding legal moves by checking a specified direction and returning all legal moves in a Square list in that direction
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class MovementLogicUtil {
     private MovementLogicUtil() {
@@ -202,10 +203,8 @@ public class MovementLogicUtil {
         if (legalSquares.size() == 0) return;
 
         for (Square s : legalSquares) {
-            if (board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN) {
-                if (s.getY() == 0 && board.fetchPieceOnSquare(squareToCheck).getColor() == WHITE || s.getY() == 7 && board.fetchPieceOnSquare(squareToCheck).getColor() == BLACK) {
-                    s.setSquareType(PROMOTION);
-                }
+            if (board.fetchPieceOnSquare(squareToCheck).getPieceType() == PAWN && (s.getY() == 0 && board.pieceOnSquareColorEquals(squareToCheck, WHITE) || s.getY() == 7 && board.pieceOnSquareColorEquals(squareToCheck, BLACK))) {
+                s.setSquareType(PROMOTION);
             }
         }
     }
@@ -225,13 +224,14 @@ public class MovementLogicUtil {
         PieceType pieceType = lastPly.getMovedPiece().getPieceType();
         ChessColor pieceToMoveColor = board.fetchPieceOnSquareColor(squareToCheck);
 
-        if (pieceType.equals(PieceType.PAWN) && !board.pieceOnSquareColorEquals(movedTo, pieceToMoveColor) && Math.abs(movedFrom.getY() - movedTo.getY()) == 2) {
-            if ((movedTo.getX() == squareToCheck.getX() + 1 || movedFrom.getX() == squareToCheck.getX() - 1) && movedTo.getY() == squareToCheck.getY()) {
-                if (board.pieceOnSquareColorEquals(movedTo, ChessColor.BLACK)) {
-                    enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() - 1, EN_PASSANT));
-                } else if (board.pieceOnSquareColorEquals(movedTo, ChessColor.WHITE)) {
-                    enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() + 1, EN_PASSANT));
-                }
+        if (pieceType.equals(PAWN)
+                && !board.pieceOnSquareColorEquals(movedTo, pieceToMoveColor)
+                && Math.abs(movedFrom.getY() - movedTo.getY()) == 2
+                && (movedTo.getX() == squareToCheck.getX() + 1 || movedFrom.getX() == squareToCheck.getX() - 1) && movedTo.getY() == squareToCheck.getY()) {
+            if (board.pieceOnSquareColorEquals(movedTo, BLACK)) {
+                enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() - 1, EN_PASSANT));
+            } else if (board.pieceOnSquareColorEquals(movedTo, WHITE)) {
+                enPassantSquares.add(new Square(movedTo.getX(), movedTo.getY() + 1, EN_PASSANT));
             }
         }
         return enPassantSquares;

@@ -8,6 +8,11 @@ import static mindchess.model.enums.PieceType.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * Tests moving the king into check
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
+ */
 public class TestKingMoveIntoCheck {
 
     ChessFacade model;

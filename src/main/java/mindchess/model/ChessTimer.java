@@ -13,6 +13,8 @@ import java.util.TimerTask;
  * The timer counts down from a specified number in seconds and updates its observers every second
  * <p>
  * It allows the manipulation of timers by pausing and starting.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 class ChessTimer {
     private final List<TimerObserver> observers = new ArrayList<>();
