@@ -1,8 +1,6 @@
 package mindchess.model.moveDelegates;
 
 import mindchess.model.enums.ChessColor;
-import mindchess.model.MovementLogicUtil;
-import mindchess.model.Square;
 import mindchess.model.*;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class KingMoveDelegate implements IMoveDelegate {
             ChessColor pieceToMoveColor = MovementLogicUtil.fetchPieceColorOnSquare(board, squareToCheck);
             ChessColor opponentColor = (pieceToMoveColor == WHITE) ? BLACK : WHITE;
             List<Square> opponentLegalSquares = MovementLogicUtil.fetchLegalSquaresByColor(board, opponentColor);
-            legalSquares.removeIf(p -> opponentLegalSquares.contains(p));
+            legalSquares.removeIf(opponentLegalSquares::contains);
             if (MovementLogicUtil.isKingInCheck(board, squareToCheck, opponentColor))
                 legalSquares.removeIf(p -> p.getSquareType() == CASTLING);
         }

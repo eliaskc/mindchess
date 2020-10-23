@@ -25,10 +25,10 @@ public class MovementLogicUtil {
      * - the square is empty
      * - the square has a piece of the opposite color
      *
-     * @param board
+     * @param board the board of the current game
      * @param s             potential legal square
      * @param squareToCheck square moving from
-     * @param listToAddTo
+     * @param listToAddTo the list the square will be added to if legal
      * @return returns boolean that breaks the loop where the method was called, if a point has been added
      */
     public static boolean addSquareIfLegal(IBoard board, Square s, Square squareToCheck, List<Square> listToAddTo) {
@@ -50,10 +50,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the upwards direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> up(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -67,10 +67,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the downwards direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> down(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -84,10 +84,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the leftwards direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> left(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -101,10 +101,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the rightwards direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> right(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -118,10 +118,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the up and left direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> upLeft(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -137,10 +137,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the up and right direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> upRight(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -156,10 +156,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the down and right direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> downRight(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -175,10 +175,10 @@ public class MovementLogicUtil {
     /**
      * Checks the possible moves available in the down and left direction
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck square moving from
      * @param iterations the maximum number of steps allowed for the piece to move
-     * @return
+     * @return list of the legal squares in the specified direction
      */
     public static List<Square> downLeft(IBoard board, Square squareToCheck, int iterations) {
         var returnList = new ArrayList<Square>();
@@ -194,7 +194,7 @@ public class MovementLogicUtil {
     /**
      * marks squares for pawn promotion if a pawn moves to the opposite side
      *
-     * @param board
+     * @param board the board of the current game
      * @param squareToCheck to check if the piece on the square is a pawn and what color it is
      * @param legalSquares  possible squares the pawn can move to
      */
@@ -215,7 +215,7 @@ public class MovementLogicUtil {
      *
      * @param lastPly       last move
      * @param squareToCheck the square with the piece that is going to make the move
-     * @param board
+     * @param board the board of the current game
      * @return list of possible en passant moves
      */
     static public List<Square> getEnPassantSquares(Ply lastPly, Square squareToCheck, IBoard board) {
@@ -240,8 +240,8 @@ public class MovementLogicUtil {
     /**
      * checks if the king can make the castle move to the right
      *
-     * @param board
-     * @param squareToCheck
+     * @param board the board of the current game
+     * @param squareToCheck the square the king is currently on
      * @return true if castling to the right is possible
      */
     public static boolean checkRightCastling(IBoard board, Square squareToCheck) {
@@ -260,8 +260,8 @@ public class MovementLogicUtil {
     /**
      * checks if the king can make the castle move to the left
      *
-     * @param board
-     * @param squareToCheck
+     * @param board the board of the current game
+     * @param squareToCheck the square the king is currently on
      * @return true if castling to the left is possible
      */
     public static boolean checkLeftCastling(IBoard board, Square squareToCheck) {
@@ -302,9 +302,6 @@ public class MovementLogicUtil {
     }
 
     public static boolean isKingInCheck(IBoard board, Square kingSquare, ChessColor opponentColor) {
-        if (fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare))
-            return true;
-        else
-            return false;
+        return fetchLegalSquaresByColor(board, opponentColor).contains(kingSquare);
     }
 }

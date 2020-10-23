@@ -3,7 +3,6 @@ package mindchess.controller;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -49,7 +47,6 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     private int lastClickedX;
     private int lastClickedY;
     private ChessFacade model;
-    private Parent menuParent;
     private Scene scene;
     private ImageHandlerUtil imageHandlerUtil;
     private List<ImageView> pieceImages;
@@ -76,6 +73,8 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     @FXML
     private Button muteUnmuteButton;
     @FXML
+    private Button drawButton;
+    @FXML
     private Rectangle player1TimerBox;
     @FXML
     private Rectangle player2TimerBox;
@@ -93,8 +92,6 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     private ImageView promotionBishop;
     @FXML
     private ImageView pliesBoardImageView;
-    @FXML
-    private ScrollPane pliesScrollPane;
     @FXML
     private AnchorPane chessboardContainer;
     @FXML
@@ -123,8 +120,8 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Initalizes the mindchess view.
-     *   - sets the mediaplayer for the view & adds blur to the background video
+     * Initializes the mindchess view.
+     *   - sets the media player for the view & adds blur to the background video
      *   - hides dialogue boxes
      *   - sets the image for the chessboard
      *   - gets the initial (or current if an active game is loaded) pieces and legal moves
@@ -171,8 +168,11 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     public void createMenuScene(Parent menuParent) {
-        this.menuParent = menuParent;
         this.scene = new Scene(menuParent);
+    }
+
+    void setDisableDrawButton(boolean disableDrawButton){
+        drawButton.setDisable(disableDrawButton);
     }
 
     //-------------------------------------------------------------------------------------
@@ -305,7 +305,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Switches to the menu/startscreen scene
+     * Switches to the menu/start screen scene
      *
      * @param event Button click
      */
@@ -331,12 +331,12 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     /**
      * Creates a list with ImageViews of the currently active pieces on the board.
      *  For each piece it uses the ImageHandlerUtil in order to add an animation to the ImageView
-     * @return
+     * @return list of ImageViews of all pieces
      */
     private List<ImageView> fetchPieceImages() {
         List<ImageView> pieceImages = new ArrayList<>();
         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
-            ImageView imageView = imageHandlerUtil.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
+            ImageView imageView = imageHandlerUtil.createPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
             pieceImages.add(imageView);
             if (model.getCurrentGamePlies().size() > 0) {
                 if (entry.getKey().equals(model.getLastPlyMovedToSquare())) {
@@ -421,7 +421,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     /**
      * Opens a dialogue box to let the player choose a piece to transform their pawn into
      *
-     * @param chessColor
+     * @param chessColor the color of the current player
      */
     @Override
     public void pawnPromotionSetup(ChessColor chessColor) {
@@ -437,8 +437,8 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
 
-    private void pawnPromotion(int x, int y) {
-        model.handleBoardInput(x, y);
+    private void pawnPromotion(int x) {
+        model.handleBoardInput(x, 0);
 
     }
 
@@ -449,22 +449,22 @@ public class MindchessController implements Initializable, GameObserver, EndGame
 
     @FXML
     public void handleQueenPromotion() {
-        pawnPromotion(20, 0);
+        pawnPromotion(20);
     }
 
     @FXML
     public void handleKnightPromotion() {
-        pawnPromotion(21, 0);
+        pawnPromotion(21);
     }
 
     @FXML
     public void handleRookPromotion() {
-        pawnPromotion(22, 0);
+        pawnPromotion(22);
     }
 
     @FXML
     public void handleBishopPromotion() {
-        pawnPromotion(23, 0);
+        pawnPromotion(23);
     }
 
     //-------------------------------------------------------------------------------------
@@ -477,12 +477,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         for (ImageView imageView : legalMoveImages) {
             ScaleTransition st = imageHandlerUtil.addScaleTransition(imageView, 75, false);
 
-            st.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    chessboardContainer.getChildren().remove(imageView);
-                }
-            });
+            st.setOnFinished(actionEvent -> chessboardContainer.getChildren().remove(imageView));
         }
         legalMoveImages.clear();
     }
@@ -503,7 +498,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         pliesFlowPane.getChildren().clear();
         clearAllPliesImages();
 
-        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+        //Adds the plyControllers to the flow pane and fills the board with respective pieces
         for (Ply ply : model.getCurrentGamePlies()) {
             PlyController plyController = new PlyController(ply, model.getCurrentGamePlies().indexOf(ply) + 1, imageHandlerUtil);
             pliesFlowPane.getChildren().add(plyController);
@@ -557,7 +552,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
      *
      * Appends zeroes when needed to maintain the 4 digit structure
      *
-     * @param seconds
+     * @param seconds time to format
      * @return the formatted time
      */
     private String formatTime(int seconds) {

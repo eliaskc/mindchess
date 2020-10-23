@@ -31,9 +31,9 @@ public class GameListController extends AnchorPane {
             throw new RuntimeException(exception);
         }
 
-        this.player1NameLabel.setText(player1Name);
-        this.player2NameLabel.setText(player2Name);
-        this.gameStatusLabel.setText(gameStatus);
-        this.gameIDLabel.setText("#" + gameID);
+        player1NameLabel.setText(player1Name);
+        player2NameLabel.setText(player2Name);
+        gameStatusLabel.setText(gameStatus);
+        gameIDLabel.setText("#" + gameID);
     }
 }

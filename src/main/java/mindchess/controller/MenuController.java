@@ -6,9 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -34,12 +32,9 @@ public class MenuController implements Initializable {
     private final String media_URL_4 = "/backgroundVideos/background_video_4.mp4";
     private final String audio_URL_1 = "/backgroundMusic/C418_Sweden.mp3";
     private final String audio_URL_2 = "/backgroundMusic/C418_SubwooferLullaby.mp3";
-    private final HashMap<String, Integer> timerMap = new LinkedHashMap<>();
-    List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
-    //private final String audio_URL_3 = "/backgroundMusic/CaptainSparklez_Revenge.mp3";
-    List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2);
+    private final List<String> media_list = Arrays.asList(media_URL_1, media_URL_2, media_URL_3, media_URL_4);
+    private final List<String> audio_list = Arrays.asList(audio_URL_1, audio_URL_2);
     private ChessFacade model;
-    private Parent chessParent;
     private Scene scene;
     private MediaPlayer mediaPlayer;
     private MediaPlayer audioPlayer;
@@ -59,11 +54,7 @@ public class MenuController implements Initializable {
     @FXML
     private ComboBox gamemodeDropDown;
     @FXML
-    private Label timeLabel;
-    @FXML
     private FlowPane gameListFlowPane;
-    @FXML
-    private Button btnBackGameList;
 
     /**
      * Gets the inputs from the start page and switches to the board scene, and brings the inputs with it
@@ -83,6 +74,8 @@ public class MenuController implements Initializable {
         Stage window = (Stage) ((Node) source).getScene().getWindow();
         window.setScene(scene);
         window.show();
+
+        mindchessController.setDisableDrawButton(gamemodeMap.get(gamemodeDropDown.getValue()) == CPU_LEVEL1 || gamemodeMap.get(gamemodeDropDown.getValue()) == CPU_LEVEL2);
 
         mindchessController.setMediaPlayer(mediaPlayer);
         mindchessController.setAudioPlayer(audioPlayer);
@@ -155,12 +148,11 @@ public class MenuController implements Initializable {
     }
 
     public void createChessScene(Parent chessParent) {
-        this.chessParent = chessParent;
         this.scene = new Scene(chessParent);
     }
 
     /**
-     * Populates the GameList Anchorpane with all available games
+     * Populates the GameList anchor pane with all available games
      */
     @FXML
     private void populateGameList() {
@@ -191,11 +183,9 @@ public class MenuController implements Initializable {
 
     /**
      * Exits the application when called
-     *
-     * @param event Pressed the button
      */
     @FXML
-    void Exit(ActionEvent event) {
+    void Exit() {
         System.exit(0);
     }
 

@@ -7,7 +7,7 @@ import mindchess.model.moveDelegates.IMoveDelegate;
 /**
  * Representation of a piece on the Board.
  * <p>
- * When it is created, it has a color, type and movedelegate(which is how it is allowed to move).
+ * When it is created, it has a color, type and move delegate (which is how it is allowed to move).
  */
 public class Piece implements IPiece {
     private final ChessColor pieceColor;

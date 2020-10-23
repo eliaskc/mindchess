@@ -35,6 +35,8 @@ public class GameStateAIPlayerTurn implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
+
+
         List<Square> moveSquares = calculateMove();
 
         Square moveFrom = moveSquares.get(0);
@@ -137,6 +139,7 @@ public class GameStateAIPlayerTurn implements GameState {
             }
         }
 
+        assert moveTo != null;
         pawnPromotionMove = moveTo.getSquareType().equals(SquareType.PROMOTION);
 
         returnList.add(moveFrom);

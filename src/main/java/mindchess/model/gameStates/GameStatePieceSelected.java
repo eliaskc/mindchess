@@ -48,8 +48,8 @@ public class GameStatePieceSelected implements GameState {
      * If a win condition is met you will win the game
      * If you reach the opposite board the pawn promotion will happen
      *
-     * @param x
-     * @param y
+     * @param x the horizontal chess coordinate of the input
+     * @param y the vertical chess coordinate of the input
      */
     @Override
     public void handleInput(int x, int y) {
@@ -59,7 +59,7 @@ public class GameStatePieceSelected implements GameState {
 
         if (clickedOnSameSquare(targetSquare)){
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
-            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(context::addGameStateObserver);
         }
 
         if (legalSquares.contains(targetSquare)) {
@@ -70,11 +70,7 @@ public class GameStatePieceSelected implements GameState {
     }
 
     private boolean clickedOnSameSquare(Square targetSquare) {
-        if (targetSquare.equals(selectedSquare)){
-            return true;
-        } else {
-            return false;
-        }
+        return targetSquare.equals(selectedSquare);
     }
 
     /**
@@ -86,7 +82,7 @@ public class GameStatePieceSelected implements GameState {
         if (board.isAPieceOnSquare(targetSquare) && !targetSquare.equals(selectedSquare) && board.pieceOnSquareColorEquals(targetSquare, context.getCurrentPlayerColor())) {
             clearAndDrawLegalMoves();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
-            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(context::addGameStateObserver);
             context.handleBoardInput(targetSquare.getX(), targetSquare.getY());
             return true;
         }
@@ -112,7 +108,7 @@ public class GameStatePieceSelected implements GameState {
 
         if (checkPawnPromotion(targetSquare)) {
             context.setGameState(GameStateFactory.createGameStatePawnPromotion(targetSquare, board, plies, legalSquares, context));
-            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(context::addGameStateObserver);
             clearAndDrawLegalMoves();
             return;
         }
@@ -121,7 +117,7 @@ public class GameStatePieceSelected implements GameState {
         notifyIfKingInCheck(context.getCurrentPlayerColor());
 
         context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board,plies,legalSquares,context));
-        gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+        gameStateObservers.forEach(context::addGameStateObserver);
     }
 
     private void move(Square selectedSquare, Square targetSquare) {
@@ -132,8 +128,8 @@ public class GameStatePieceSelected implements GameState {
     /**
      * Checks if any special moves are possible and if so, performs the necessary actions
      *
-     * @param selectedSquare
-     * @param targetSquare
+     * @param selectedSquare the currently selected square
+     * @param targetSquare the square being moved to
      */
     private void makeSpecialMoves(Square selectedSquare, Square targetSquare) {
         if (!board.isAPieceOnSquare(selectedSquare)) return;
@@ -173,10 +169,10 @@ public class GameStatePieceSelected implements GameState {
     /**
      * take a piece on a square and put it in dead pieces
      *
-     * @param pieceOnSquareToTake
+     * @param squareWithPieceToTake the square that has the piece to be taken
      */
-    private void takePiece(Square pieceOnSquareToTake) {
-        takenPiece = board.removePieceFromSquare(pieceOnSquareToTake);
+    private void takePiece(Square squareWithPieceToTake) {
+        takenPiece = board.removePieceFromSquare(squareWithPieceToTake);
         board.getDeadPieces().add(takenPiece);
         notifyDrawDeadPieces();
     }
@@ -228,8 +224,8 @@ public class GameStatePieceSelected implements GameState {
     /**
      * adds the move(ply) made to the list of plies
      *
-     * @param selectedSquare
-     * @param targetSquare
+     * @param selectedSquare the currently selected square
+     * @param targetSquare the square being moved to
      */
     private void addMoveToPlies(Square selectedSquare, Square targetSquare) {
         Ply ply = new Ply(context.getCurrentPlayerName(), selectedSquare, targetSquare, board.getPieceOnSquare(targetSquare), takenPiece, board.getBoardSnapShot());
@@ -240,9 +236,9 @@ public class GameStatePieceSelected implements GameState {
      * returns a square if it matches the coordinates inputted
      * should never be null so throws exception if null
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x the horizontal coordinate to match
+     * @param y the vertical coordinate to match
+     * @return the matching square
      */
     private Square getLegalSquareByCoordinates(int x, int y) {
         for (Square s : legalSquares) {
