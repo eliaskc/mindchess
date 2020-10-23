@@ -41,6 +41,8 @@ public class TestEndGame {
         model.handleBoardInput(0,4);
         model.handleBoardInput(4,0);
 
+        //Should do nothing since the game is over
+        model.handleBoardInput(20,20);
         assertFalse(model.isGameOngoing());
     }
 
@@ -65,15 +67,13 @@ public class TestEndGame {
         assertTrue(model.isGameOngoing());
     }
 
-    /**
-     * Tests that when a draw is announced, the game ends
-     */
+    //Currently the accepting/declining is not done by the model
     @Test
     public void testDrawAccepted() {
-        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 180);
+        model.createNewGame("White", "Black", PlayerType.HUMAN, PlayerType.HUMAN, 5);
         model.acceptDraw();
 
-        assertFalse(model.isGameOngoing());
+        assertEquals(false, model.isGameOngoing());
     }
 
     /**

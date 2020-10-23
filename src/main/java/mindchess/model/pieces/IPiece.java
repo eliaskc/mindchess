@@ -17,4 +17,6 @@ public interface IPiece {
     PieceType getPieceType();
 
     IMoveDelegate getMoveDelegate();
+
+    int getPieceValue();
 }

@@ -146,7 +146,6 @@ public class ChessFacade {
         return new ArrayList<>(currentGame.getPlies());
     }
 
-    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public Map<Square, IPiece> getCurrentBoardMap() {
         return currentGame.getBoard().getBoardSnapShot();
     }
@@ -155,7 +154,6 @@ public class ChessFacade {
         return new ArrayList<>(gameList);
     }
 
-    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public List<IPiece> getCurrentDeadPieces() {
         return new ArrayList<>(currentGame.getBoard().getDeadPieces());
     }

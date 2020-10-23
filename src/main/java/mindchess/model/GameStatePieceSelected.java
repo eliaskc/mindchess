@@ -254,7 +254,7 @@ public class GameStatePieceSelected implements GameState {
 
     private void notifyPawnPromotion() {
         for (GameStateObserver gameStateObserver : gameStateObservers) {
-            gameStateObserver.notifyPawnPromotion();
+            gameStateObserver.notifyPawnPromotionSetup();
         }
     }
 

@@ -72,7 +72,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         if (currentPlayer.getPlayerType() == CPU_LEVEL1)
             gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
         else if (currentPlayer.getPlayerType() == CPU_LEVEL2)
-            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
+            gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 2);
 
         currentPlayer.setTimerActive(true);
         notifySwitchedPlayer();
@@ -198,9 +198,15 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         }
     }
 
-    public void notifyPawnPromotion() {
+    public void notifyPawnPromotionSetup() {
         for (GameObserver gameObserver : gameObservers) {
             gameObserver.pawnPromotionSetup(getCurrentPlayerColor());
+        }
+    }
+
+    public void notifyPawnPromotionCleanUp(){
+        for (GameObserver gameObserver : gameObservers) {
+            gameObserver.pawnPromotionCleanUp();
         }
     }
 

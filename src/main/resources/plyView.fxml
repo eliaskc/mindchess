@@ -10,7 +10,7 @@
 <fx:root minHeight="136.0" prefHeight="136.0" prefWidth="450.0" styleClass="plyAnchorPane" stylesheets="@chess.css" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="136.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="450.0" />
-        <Label fx:id="labelPlyNumber" layoutX="14.0" prefHeight="40.0" prefWidth="55.0" text="#">
+        <Label fx:id="labelPlyNumber" layoutX="14.0" prefHeight="40.0" prefWidth="80.0" text="#">
             <font>
                 <Font size="27.0" />
             </font>
@@ -25,7 +25,7 @@
                 <Font size="21.0" />
             </font>
         </Label>
-        <Label fx:id="labelPlayer" alignment="CENTER" layoutX="157.0" prefHeight="40.0" prefWidth="136.0" text="Player">
+        <Label fx:id="labelPlayer" alignment="CENTER" layoutX="109.0" prefHeight="40.0" prefWidth="269.0" text="Player">
             <font>
                 <Font size="21.0" />
             </font>

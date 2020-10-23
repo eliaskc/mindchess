@@ -15,5 +15,7 @@ public interface GameStateObserver {
 
     void notifyKingInCheck(int x, int y);
 
-    void notifyPawnPromotion();
+    void notifyPawnPromotionSetup();
+
+    void notifyPawnPromotionCleanUp();
 }
