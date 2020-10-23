@@ -151,7 +151,7 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
+        assertEquals(KING, board.fetchPieceOnSquare(new Square(4, 7)).getPieceType());
     }
 
     /**
@@ -160,35 +160,28 @@ public class TestCastling {
     @Test
     public void testCastlingKingInCheck() {
         //Castling setup
-        model.handleBoardInput(6,7);
-        model.handleBoardInput(7,5);
-
-        model.handleBoardInput(4,1);
-        model.handleBoardInput(4,2);
-
-        model.handleBoardInput(4,6);
+        model.handleBoardInput(4,7);
         model.handleBoardInput(4,5);
 
-        model.handleBoardInput(4,2);
+        model.handleBoardInput(4,1);
         model.handleBoardInput(4,3);
 
         model.handleBoardInput(5,7);
-        model.handleBoardInput(4,6);
+        model.handleBoardInput(0,2);
 
-        model.handleBoardInput(4,3);
-        model.handleBoardInput(4,4);
+        model.handleBoardInput(0,5);
+        model.handleBoardInput(1,4);
 
+        model.handleBoardInput(6,7);
+        model.handleBoardInput(5,7);
 
-        model.handleBoardInput(5,6);
-        model.handleBoardInput(5,5);
+        model.handleBoardInput(4,1);
+        model.handleBoardInput(3,6);
 
-        model.handleBoardInput(3,0);
-        model.handleBoardInput(7,5);
-
-        //The actual castling
+        //The actual castling attempt
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertNotEquals(KING, board.fetchPieceOnSquare(new Square(6, 7)).getPieceType());
+        assertEquals(KING, board.fetchPieceOnSquare(new Square(4, 7)).getPieceType());
     }
 }
