@@ -9,14 +9,14 @@ import mindchess.model.moveDelegates.IMoveDelegate;
  * <p>
  * When it is created, it has a color, type and move delegate (which is how it is allowed to move).
  */
-public class Piece implements IPiece {
+class Piece implements IPiece {
     private final ChessColor pieceColor;
     private final PieceType pieceType;
     private boolean hasMoved = false;
     private final IMoveDelegate moveDelegate;
     private final int pieceValue;
 
-    public Piece(ChessColor pieceColor, PieceType pieceType, IMoveDelegate moveDelegate, int pieceValue) {
+    Piece(ChessColor pieceColor, PieceType pieceType, IMoveDelegate moveDelegate, int pieceValue) {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
         this.moveDelegate = moveDelegate;

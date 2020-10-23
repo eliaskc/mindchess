@@ -14,7 +14,7 @@ import java.util.TimerTask;
  * <p>
  * It allows the manipulation of timers by pausing and starting.
  */
-public class ChessTimer {
+class ChessTimer {
     private final List<TimerObserver> observers = new ArrayList<>();
     private int time;
     private boolean active = false;
