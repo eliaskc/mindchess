@@ -107,7 +107,7 @@ public class TestCastling {
         model.handleBoardInput(4,7);
         model.handleBoardInput(6,7);
 
-        assertNotEquals("King", board.fetchPieceOnSquare(new Square(6, 7)));
+        assertEquals(KING, board.fetchPieceOnSquare(new Square(4, 7)).getPieceType());
     }
 
     /**
