@@ -26,9 +26,9 @@ public final class ChessApplication extends Application {
     }
 
     /**
-     * Initialize controllers, imagehandler and fxml files
+     * Initialize controllers, ImageHandlerUtil and fxml files
      * <p>
-     * Creates a Chessfacade/model and sends it into the controllers
+     * Creates a ChessFacade/model and sends it into the controllers
      *
      * @param stage
      * @throws Exception
@@ -58,7 +58,6 @@ public final class ChessApplication extends Application {
 
         mindchessController.setImageHandler(imageHandlerUtil);
 
-        //Might need to be reworked since our menu scene is created in our chessController which is kinda weird
         stage.setScene(mindchessController.getMenuScene());
         stage.show();
     }

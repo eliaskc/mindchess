@@ -36,13 +36,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * ChessController handles the mindchess board
- * <p>
- * It handles the fxml files
- * <p>
- * It receives notification from the board when something on the board is changed(moved/removed/..)
- * <p>
- * Receives input when the user interacts with its scene and does something or send the input to the model to do something
+ * Handles the view of the ongoing game
+ *
+ * If an input is made on the board, it is sent as input to the model so it can be handle properly
+ *
+ * It receives notification from the board when something on the board changes (piece moves, legal moves are found etc)
  */
 public class MindchessController implements Initializable, GameObserver, EndGameObserver {
     private double squareDimension = 75;
@@ -125,7 +123,15 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Fetches needed values & objects, updates labels and starts timers
+     * Initalizes the mindchess view.
+     *   - sets the mediaplayer for the view & adds blur to the background video
+     *   - hides dialogue boxes
+     *   - sets the image for the chessboard
+     *   - gets the initial (or current if an active game is loaded) pieces and legal moves
+     *   - adds the controller as observer of the game
+     *   - updates the labels for the player names
+     *   - highlights and initializes the players' timers
+     *
      */
     void init() {
         media.setMediaPlayer(mediaPlayer);
@@ -139,6 +145,8 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         legalMoveImages = imageHandlerUtil.fetchLegalMoveImages();
         drawPieces();
         drawDeadPieces();
+        drawLegalMoves();
+
         model.addGameObserverToCurrentGame(this);
         model.addEndGameObserverToCurrentGame(this);
 
@@ -186,9 +194,9 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Sends to the board that it has been clicked on
+     * Delegates the input from a click on the board to the model to be handled
      *
-     * @param event board clicked
+     * @param event the object representing the click
      */
     @FXML
     public void handleClick(MouseEvent event) {
@@ -201,7 +209,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
      * Translate input x coordinate into a square index x
      *
      * @param x coordinate of click
-     * @return
+     * @return the x square index of the click
      */
     private int translateX(double x) {
         for (int i = 0; i < 8; i++) {
@@ -216,7 +224,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
      * Translate input y coordinate into a square index y
      *
      * @param y coordinate of click
-     * @return
+     * @return the y square index of the click
      */
     private int translateY(double y) {
         for (int i = 0; i < 8; i++) {
@@ -229,6 +237,12 @@ public class MindchessController implements Initializable, GameObserver, EndGame
 
     //-------------------------------------------------------------------------------------
     //End
+
+    /**
+     * Marks the square with the coordinates with a red background
+     * @param x the x coordinate of the square to be marked
+     * @param y the x coordinate of the square to be marked
+     */
     @Override
     public void kingInCheck(int x, int y) {
         kingInCheckImage.setImage(imageHandlerUtil.createKingInCheckImage());
@@ -243,6 +257,10 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         drawPieces();
     }
 
+    /**
+     * Shows a dialogue box with the game result as well as buttons to return to the menu or analyze the game
+     * @param result the result of the game
+     */
     @Override
     public void showEndGameResult(String result) {
         Platform.runLater(() -> {
@@ -252,14 +270,17 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         });
     }
 
+    /**
+     * Ends the game as a forfeit for the current player
+     */
     @FXML
     void forfeit() {
         model.forfeit();
     }
 
     /**
-     * handles if the draw button is clicked. Asks opponent if they want to draw the game,
-     * stops players from moving their pieces while the interface is up
+     * Opens a dialogue box when someone offers their opponents a draw, where the opponents can then choose
+     * to decline or accept
      */
     @FXML
     void offerDraw() {
@@ -268,7 +289,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * if the opponent refuses the interface will close and allows the player to move their pieces
+     * Hides the "Draw offer" dialogue box if the draw is declined
      */
     @FXML
     void declineDraw() {
@@ -276,7 +297,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * sets the game to a draw
+     * Ends the game as a draw
      */
     @FXML
     void acceptDraw() {
@@ -306,6 +327,12 @@ public class MindchessController implements Initializable, GameObserver, EndGame
 
     //-------------------------------------------------------------------------------------
     //Draw And Images
+
+    /**
+     * Creates a list with ImageViews of the currently active pieces on the board.
+     *  For each piece it uses the ImageHandlerUtil in order to add an animation to the ImageView
+     * @return
+     */
     private List<ImageView> fetchPieceImages() {
         List<ImageView> pieceImages = new ArrayList<>();
         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
@@ -321,7 +348,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Draws all pieces from the list of pieceImages from the ImageHandler
+     * Draws the currently active pieces fetched from fetchPieceImages
      */
     @Override
     public void drawPieces() {
@@ -338,7 +365,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Draws all dead pieces from the ImageHandler
+     * Draws the dead pieces for each colors, which it fetches from ImageHandlerUtil
      */
     @Override
     public void drawDeadPieces() {
@@ -365,6 +392,10 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         }
     }
 
+    /**
+     * Switches between then standard chess style and the custom Minecraft style.
+     * Called when the "Switch style" button is pressed
+     */
     @FXML
     private void switchPieceStyle() {
         imageHandlerUtil.setMinecraftPieceStyle(!imageHandlerUtil.isMinecraftPieceStyle());
@@ -377,7 +408,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     //-------------------------------------------------------------------------------------
-    //sound
+    //Sound
     @FXML
     private void muteUnmute() {
         audioPlayer.setMute(!audioPlayer.isMute());
@@ -485,7 +516,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
                 pliesBoardAnchorPane.getChildren().addAll(pliesImages);
             });
 
-            //If this is the first ply, generate the board but dont move the first piece
+            //If this is the first ply, this code generates the board but doesn't move the first piece
             if (model.getCurrentGamePlies().indexOf(ply) == 0) {
                 List<ImageView> plies = plyController.generateBoardImages(false);
                 pliesImages.addAll(plies);
@@ -500,7 +531,7 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     }
 
     /**
-     * Method is called when the "Analyze" button is pressed at the end screen
+     * Shows a game analysis view when the "Analyze" button is pressed after a game has ended
      */
     @FXML
     public void analyzeGame() {
@@ -515,14 +546,16 @@ public class MindchessController implements Initializable, GameObserver, EndGame
     /**
      * Fetches the times for each timer from the model when called and updates the labels
      */
+    @Override
     public void updateTimer() {
         Platform.runLater(() -> player1Timer.setText(formatTime(model.getCurrentWhiteTimerTime())));
         Platform.runLater(() -> player2Timer.setText(formatTime(model.getCurrentBlackTimerTime())));
     }
 
     /**
-     * Takes an input integer seconds and formats it into minutes and seconds xx:xx as a String
-     * appends zeroes when needed to maintain the 4 digit structure
+     * Takes an input in seconds and formats it into minutes and seconds, mm:ss as a String
+     *
+     * Appends zeroes when needed to maintain the 4 digit structure
      *
      * @param seconds
      * @return the formatted time

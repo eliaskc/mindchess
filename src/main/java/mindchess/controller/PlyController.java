@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * PlyController is responsible for keeping track of all the moves/plies that have happened in a game so that multiple games can be played
- * at the same time
+ * Responsible for fetching information about a ply (half-move) and displaying it
+ * in the plyView.fxml
  */
 public class PlyController extends AnchorPane {
     private final Ply ply;
@@ -53,6 +53,13 @@ public class PlyController extends AnchorPane {
         this.labelPlayer.setText(String.format("%s", ply.getPlayerName()));
     }
 
+    /**
+     * Generates a list of ImageViews using a snapshot of the board after a move
+     * @param performMove Dictates whether we want to perform the ply associated with this object or not
+     * <p>If false: the generated board will look like it did before the move was made
+     * <p> If true: the generated board will look like it did after the move
+     * @return
+     */
     public List<ImageView> generateBoardImages(boolean performMove) {
         List<ImageView> imageViewList = new ArrayList<>();
 
@@ -81,11 +88,21 @@ public class PlyController extends AnchorPane {
         return imageViewList;
     }
 
+    /**
+     * Translates the x-position of a piece in the board map to a chessboard coordinate
+     * @param x X-position
+     * @return
+     */
     private String translateXCoordinate(int x) {
         String[] translation = {"a", "b", "c", "d", "e", "f", "g", "h"};
         return translation[x];
     }
 
+    /**
+     * Translates the y-position of a piece in the board map to a chessboard coordinate
+     * @param y Y-position
+     * @return
+     */
     private String translateYCoordinate(int y) {
         String[] translation = {"8", "7", "6", "5", "4", "3", "2", "1"};
         return translation[y];

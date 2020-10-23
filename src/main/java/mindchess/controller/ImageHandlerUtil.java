@@ -14,13 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Is responsible for fetching the images from files and matching them with the right pieces
+ * Responsible for fetching the images from files and matching them with the correct objects
  */
 public class ImageHandlerUtil {
     private ChessFacade model;
     private double squareDimension;
     private boolean minecraftPieceStyle = false;
 
+    /**
+     * Calculates the distance from an ImageView to the last clicked x and y coordinate
+     * @param imageView
+     * @param x Last clicked x coordinate
+     * @param y Last clicked y coordinate
+     * @return
+     */
     double distanceFromMarkedPiece(ImageView imageView, int x, int y) {
         double yDelta = imageView.getY() - y * squareDimension;
         double xDelta = imageView.getX() - x * squareDimension;
@@ -55,6 +62,11 @@ public class ImageHandlerUtil {
         return st;
     }
 
+    /**
+     * Creates and returns a list of ImageViews of the dead/taken pieces of a specific color
+     * @param chessColor The color of the dead pieces that are to be returned
+     * @return
+     */
     public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
         List<ImageView> imageViews = new ArrayList<>();
         for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
@@ -70,11 +82,12 @@ public class ImageHandlerUtil {
     }
 
     /**
-     * Creates a list of images for all pieces on the board, and a map with the pieces as keys for their respective image
-     * <p>
-     * The list is used to clear the board of old piece position and the map is used to calculate the coordinates of the images
-     *
-     * @return List of piece images
+     * Creates and returns an ImageView of a chess piece
+     * @param square Square at which the image is to be placed
+     * @param pieceType
+     * @param chessColor
+     * @param dimensions Width and height of the image
+     * @return
      */
     public ImageView fetchPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
         ImageView pieceImageView = new ImageView();

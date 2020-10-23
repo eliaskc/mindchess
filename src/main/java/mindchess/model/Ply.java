@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Representation of a move by either Player. In mindchess terms a half-move, or a ply
+ * Representation of a move by either Player. In chess terms a half-move, or a ply
  */
 public class Ply {
     private final String playerName;

@@ -87,8 +87,6 @@ public class MenuController implements Initializable {
         mindchessController.setMediaPlayer(mediaPlayer);
         mindchessController.setAudioPlayer(audioPlayer);
         mindchessController.init();
-        mindchessController.drawPieces();
-        mindchessController.drawLegalMoves();
     }
 
     //-------------------------------------------------------------------------------------
@@ -128,9 +126,7 @@ public class MenuController implements Initializable {
     }
 
     /**
-     * creates the timermap and gives the dropdown menu its options
-     * <p>
-     * Where the possible times is decided
+     * Allocates the different game lengths to the gameLength combobox
      */
     private void initTimeComboBox() {
         gameLengthMap.put("1 min", 60);
@@ -145,6 +141,9 @@ public class MenuController implements Initializable {
         gameLengthDropDown.getSelectionModel().select(3);
     }
 
+    /**
+     * Allocates the different game types to the gameType combobox
+     */
     private void initGameTypeCombobox() {
         gamemodeMap.put("vs Player", HUMAN);
         gamemodeMap.put("vs AI lvl I", CPU_LEVEL1);
@@ -159,13 +158,16 @@ public class MenuController implements Initializable {
         this.chessParent = chessParent;
         this.scene = new Scene(chessParent);
     }
-  
+
+    /**
+     * Populates the GameList Anchorpane with all available games
+     */
     @FXML
     private void populateGameList() {
         gameListFlowPane.getChildren().clear();
         int i = 0;
         gameListAnchorPane.toFront();
-        //Adds the plyControllers to the flowpane and fills the board with respective pieces
+
         for (String[] s : model.getPlayersAndStatusInGameList()) {
             GameListController gameListController = new GameListController(s[0],s[1],s[2], i+1);
             gameListFlowPane.getChildren().add(gameListController);
