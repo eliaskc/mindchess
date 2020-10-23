@@ -75,6 +75,8 @@ public class MenuController implements Initializable {
         window.setScene(scene);
         window.show();
 
+        mindchessController.setDisableDrawButton(gamemodeMap.get(gamemodeDropDown.getValue()) == CPU_LEVEL1 || gamemodeMap.get(gamemodeDropDown.getValue()) == CPU_LEVEL2);
+
         mindchessController.setMediaPlayer(mediaPlayer);
         mindchessController.setAudioPlayer(audioPlayer);
         mindchessController.init();
