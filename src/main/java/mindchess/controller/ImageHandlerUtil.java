@@ -23,10 +23,10 @@ public class ImageHandlerUtil {
 
     /**
      * Calculates the distance from an ImageView to the last clicked x and y coordinate
-     * @param imageView
+     * @param imageView the image to check for
      * @param x Last clicked x coordinate
      * @param y Last clicked y coordinate
-     * @return
+     * @return the distance
      */
     double distanceFromMarkedPiece(ImageView imageView, int x, int y) {
         double yDelta = imageView.getY() - y * squareDimension;
@@ -63,14 +63,14 @@ public class ImageHandlerUtil {
     }
 
     /**
-     * Creates and returns a list of ImageViews of the dead/taken pieces of a specific color
+     * Creates and returns a list of ImageViews of the dead/taken pieces of a specified color
      * @param chessColor The color of the dead pieces that are to be returned
-     * @return
+     * @return a list of images of all dead pieces of the specified color
      */
     public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
         List<ImageView> imageViews = new ArrayList<>();
         for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
-            ImageView imageView = fetchPieceImageView(new Square(0, 0), pieceType, chessColor, (int) squareDimension);
+            ImageView imageView = createPieceImageView(new Square(0, 0), pieceType, chessColor, (int) squareDimension);
 
             imageView.setFitWidth(squareDimension - 25);
             imageView.setFitHeight(squareDimension - 25);
@@ -84,12 +84,12 @@ public class ImageHandlerUtil {
     /**
      * Creates and returns an ImageView of a chess piece
      * @param square Square at which the image is to be placed
-     * @param pieceType
-     * @param chessColor
+     * @param pieceType the type of the piece to create the image for
+     * @param chessColor the color of the piece
      * @param dimensions Width and height of the image
-     * @return
+     * @return the ImageView of the piece
      */
-    public ImageView fetchPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
+    public ImageView createPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
         ImageView pieceImageView = new ImageView();
 
         pieceImageView.setPreserveRatio(true);
@@ -123,7 +123,7 @@ public class ImageHandlerUtil {
         return pieceImage;
     }
 
-    TranslateTransition addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions, int duration) {
+    void addTranslateTransition(ImageView imageView, Square squareFrom, Square squareTo, int dimensions, int duration) {
         imageView.setX(0);
         imageView.setY(0);
 
@@ -134,8 +134,6 @@ public class ImageHandlerUtil {
         tt.setToY(squareTo.getY() * dimensions);
         tt.setCycleCount(1);
         tt.play();
-
-        return tt;
     }
 
     /**

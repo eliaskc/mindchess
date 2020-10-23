@@ -9,6 +9,8 @@ import mindchess.controller.ImageHandlerUtil;
 import mindchess.controller.MenuController;
 import mindchess.model.ChessFacade;
 
+import java.io.IOException;
+
 /**
  * Class for the application
  * <p>
@@ -19,7 +21,7 @@ public final class ChessApplication extends Application {
     /**
      * Launches the program
      *
-     * @param args
+     * @param args starting arguments
      */
     public static void main(String[] args) {
         Application.launch(args);
@@ -30,11 +32,11 @@ public final class ChessApplication extends Application {
      * <p>
      * Creates a ChessFacade/model and sends it into the controllers
      *
-     * @param stage
-     * @throws Exception
+     * @param stage the stage to start
+     * @throws IOException exception to be thrown if either FXMLLoader has issues
      */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws IOException {
         stage.setResizable(false);
         FXMLLoader menuLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuView.fxml"));
         FXMLLoader chessLoader = new FXMLLoader(getClass().getClassLoader().getResource("mindchessView.fxml"));

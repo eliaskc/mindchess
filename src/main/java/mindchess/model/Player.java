@@ -12,8 +12,8 @@ import mindchess.observers.TimerObserver;
 public class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();
     private final ChessColor chessColor;
-    private PlayerType playerType;
-    private String name;
+    private final PlayerType playerType;
+    private final String name;
 
     Player(String name, ChessColor chessColor, PlayerType playerType, Integer gameLength) {
         this.name = name;

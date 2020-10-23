@@ -19,8 +19,8 @@ public class GameStateGameOver implements GameState {
     /**
      * Any input in this state will do nothing as the game has ended
      *
-     * @param x
-     * @param y
+     * @param x the horizontal chess coordinate of the input
+     * @param y the vertical chess coordinate of the input
      */
     @Override
     public void handleInput(int x, int y) {

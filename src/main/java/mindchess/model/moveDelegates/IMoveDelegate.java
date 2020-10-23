@@ -1,6 +1,5 @@
 package mindchess.model.moveDelegates;
 
-import mindchess.model.Board;
 import mindchess.model.IBoard;
 import mindchess.model.Square;
 
