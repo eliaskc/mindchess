@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 public class TestTakePieces {
     ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {

@@ -1,7 +1,7 @@
 package mindchess.model;
 
+import mindchess.model.enums.ChessColor;
 import mindchess.model.pieces.IPiece;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

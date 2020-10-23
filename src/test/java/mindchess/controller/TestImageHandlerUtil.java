@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import mindchess.model.Board;
 import mindchess.model.ChessFacade;
+import mindchess.model.IBoard;
 import mindchess.model.Square;
 import mindchess.model.enums.ChessColor;
 import mindchess.model.enums.PlayerType;
@@ -23,7 +24,7 @@ public class TestImageHandlerUtil {
 
     ImageHandlerUtil imageHandlerUtil = new ImageHandlerUtil();
     ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {
