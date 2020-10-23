@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Responsible for fetching information about a game and displaying that information it in the gameListView.fxml
  */
-public class GameListController extends AnchorPane {
+class GameListController extends AnchorPane {
     @FXML
     private Label player1NameLabel;
     @FXML
@@ -20,7 +20,7 @@ public class GameListController extends AnchorPane {
     @FXML
     private Label gameIDLabel;
 
-    public GameListController(String player1Name, String player2Name, String gameStatus, int gameID) {
+    GameListController(String player1Name, String player2Name, String gameStatus, int gameID) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/gameListView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

@@ -569,11 +569,11 @@ public class MindchessController implements Initializable, GameObserver, EndGame
 
     //-------------------------------------------------------------------------------------
     //Setters
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+    void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
     }
 
-    public void setAudioPlayer(MediaPlayer audioPlayer) {
+    void setAudioPlayer(MediaPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
 

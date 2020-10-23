@@ -9,7 +9,7 @@ import mindchess.observers.TimerObserver;
  * <p>
  * The player controls its own timer
  */
-public class Player implements IPlayer {
+class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();
     private final ChessColor chessColor;
     private final PlayerType playerType;
