@@ -338,10 +338,9 @@ public class MindchessController implements Initializable, GameObserver, EndGame
         for (Map.Entry<Square, IPiece> entry : model.getCurrentBoardMap().entrySet()) {
             ImageView imageView = imageHandlerUtil.createPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), (int) (chessboardContainer.getHeight() / 8));
             pieceImages.add(imageView);
-            if (model.getCurrentGamePlies().size() > 0) {
-                if (entry.getKey().equals(model.getLastPlyMovedToSquare())) {
-                    imageHandlerUtil.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
-                }
+            if (model.getCurrentGamePlies().size() > 0
+                    && entry.getKey().equals(model.getLastPlyMovedToSquare())) {
+                imageHandlerUtil.addTranslateTransition(imageView, model.getLastPlyMovedFromSquare(), model.getLastPlyMovedToSquare(), (int) chessboardContainer.getHeight() / 8, 250);
             }
         }
         return pieceImages;
