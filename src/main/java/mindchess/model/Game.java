@@ -35,6 +35,8 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     private GameState gameState;
 
+    private boolean timerRanOut = false;
+
     /**
      * Initializes the players for the game
      * @param whitePlayerName the name for the player with the white pieces
@@ -79,9 +81,9 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         currentPlayer = getOtherPlayer();
         currentPlayer.setTimerActive(true);
 
-        if (currentPlayer.getPlayerType() == CPU_LEVEL1)
+        if (currentPlayer.getPlayerType() == CPU_LEVEL1 && !timerRanOut)
             gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 1);
-        else if (currentPlayer.getPlayerType() == CPU_LEVEL2)
+        else if (currentPlayer.getPlayerType() == CPU_LEVEL2 && !timerRanOut)
             gameState = GameStateFactory.createGameStateAIPlayerTurn(board, plies, legalSquares, this, this, 2);
 
         currentPlayer.setTimerActive(true);
@@ -171,6 +173,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
 
     @Override
     public void notifyTimerEnded() {
+        timerRanOut = true;
         switchPlayer();
         setGameState(GameStateFactory.createGameStateGameOver(currentPlayer.getName() + " has won the game"));
         stopAllTimers();

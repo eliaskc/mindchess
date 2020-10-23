@@ -35,6 +35,8 @@ public class GameStateAIPlayerTurn implements GameState {
 
     @Override
     public void handleInput(int x, int y) {
+
+
         List<Square> moveSquares = calculateMove();
 
         Square moveFrom = moveSquares.get(0);
