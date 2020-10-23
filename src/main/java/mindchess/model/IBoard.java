@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Interface for the Board class
+ */
 public interface IBoard {
     void initBoard();
 
