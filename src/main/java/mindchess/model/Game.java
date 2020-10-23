@@ -20,7 +20,7 @@ import static mindchess.model.enums.PlayerType.*;
  * The game class represents one game which has a board and two players. It keeps track of legal squares,current game state, plies and who
  * is the current player.
  */
-public class Game implements TimerObserver, IGameContext, GameStateObserver {
+class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
