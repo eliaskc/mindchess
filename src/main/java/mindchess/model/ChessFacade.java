@@ -167,7 +167,6 @@ public class ChessFacade {
         return currentGame.getCurrentPlayer().equals(currentGame.getPlayerWhite());
     }
 
-    //TODO How to remove cascading without adding dependancy on IPiece in Game
     public boolean isSquareOccupied(Square square) {
         return currentGame.getBoard().isAPieceOnSquare(square);
     }

@@ -195,7 +195,6 @@ public class GameStatePieceSelected implements GameState {
         ChessColor opponentColor = (kingColor == WHITE) ? BLACK : WHITE;
         Square kingSquare = board.fetchKingSquare(kingColor);
 
-
         if (MovementLogicUtil.isKingInCheck(board, kingSquare, opponentColor))
             notifyKingInCheck(kingSquare.getX(), kingSquare.getY());
     }

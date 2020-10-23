@@ -79,11 +79,11 @@ public class GameStatePawnPromotion implements GameState {
      * @param selectedPromotion
      */
     private void promote(Square selectedSquare, Square selectedPromotion) {
-        IPiece piece = null;
+        IPiece piece;
         try {
             piece = PieceFactory.createPiece(promotionPieces.get(selectedPromotion), context.getCurrentPlayerColor());
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid input");
+            piece = PieceFactory.createPiece(PieceType.QUEEN, context.getCurrentPlayerColor());
         }
         board.placePieceOnSquare(selectedSquare, piece);
     }
