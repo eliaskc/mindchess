@@ -1,6 +1,7 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
 import mindchess.model.enums.SquareType;
+import mindchess.model.*;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.GameStateObserver;
 
@@ -20,11 +21,11 @@ public class GameStateAIPlayerTurn implements GameState {
     private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private final List<Square> legalSquares;
     private final List<Ply> plies;
-    private final Board board;
+    private final IBoard board;
     private final int difficulty;
     private boolean pawnPromotionMove;
 
-    GameStateAIPlayerTurn(Board board, List<Square> legalSquares, List<Ply> plies, IGameContext context, int difficulty) {
+    GameStateAIPlayerTurn(IBoard board, List<Square> legalSquares, List<Ply> plies, IGameContext context, int difficulty) {
         this.board = board;
         this.legalSquares = legalSquares;
         this.plies = plies;

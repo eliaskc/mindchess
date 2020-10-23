@@ -1,6 +1,7 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
 import mindchess.model.enums.ChessColor;
+import mindchess.model.*;
 import mindchess.model.pieces.IPiece;
 import mindchess.observers.GameStateObserver;
 
@@ -31,9 +32,9 @@ public class GameStatePieceSelected implements GameState {
     private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private final List<Square> legalSquares;
     private final List<Ply> plies;
-    private final Board board;
+    private final IBoard board;
 
-    GameStatePieceSelected(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    GameStatePieceSelected(Square selectedSquare, IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.selectedSquare = selectedSquare;
         this.board = board;
         this.legalSquares = legalSquares;

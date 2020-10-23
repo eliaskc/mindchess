@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestPawnPromotion {
     ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {

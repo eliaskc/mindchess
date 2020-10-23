@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class TestChessFacade {
     private ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {

@@ -88,7 +88,7 @@ public class ChessFacade {
         return currentGame.getCurrentPlayerColor();
     }
 
-    public Board getCurrentBoard() {
+    public IBoard getCurrentBoard() {
         return currentGame.getBoard();
     }
 

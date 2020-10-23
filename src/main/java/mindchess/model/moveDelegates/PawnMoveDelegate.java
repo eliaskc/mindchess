@@ -1,6 +1,7 @@
 package mindchess.model.moveDelegates;
 
 import mindchess.model.Board;
+import mindchess.model.IBoard;
 import mindchess.model.MovementLogicUtil;
 import mindchess.model.Square;
 
@@ -13,7 +14,7 @@ import static mindchess.model.enums.ChessColor.WHITE;
 public class PawnMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
+    public List<Square> fetchMoves(IBoard board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         if (board.pieceOnSquareColorEquals(squareToCheck, WHITE)) {
@@ -27,7 +28,7 @@ public class PawnMoveDelegate implements IMoveDelegate {
         return legalSquares;
     }
 
-    private List<Square> fetchMovesWhitePawn(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+    private List<Square> fetchMovesWhitePawn(IBoard board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
         var returnList = new ArrayList<Square>();
         int x = squareToCheck.getX();
         int y = squareToCheck.getY();
@@ -47,7 +48,7 @@ public class PawnMoveDelegate implements IMoveDelegate {
         return returnList;
     }
 
-    private List<Square> fetchMovesBlackPawn(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
+    private List<Square> fetchMovesBlackPawn(IBoard board, Square squareToCheck, boolean pieceOnSquareHasMoved) {
         var returnList = new ArrayList<Square>();
         int x = squareToCheck.getX();
         int y = squareToCheck.getY();

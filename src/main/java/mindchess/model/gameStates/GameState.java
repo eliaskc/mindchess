@@ -1,4 +1,4 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
 import mindchess.observers.GameStateObserver;
 

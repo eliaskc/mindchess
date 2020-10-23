@@ -2,6 +2,8 @@ package mindchess.model;
 
 import mindchess.model.enums.ChessColor;
 import mindchess.model.enums.PlayerType;
+import mindchess.model.gameStates.GameState;
+import mindchess.model.gameStates.GameStateFactory;
 import mindchess.observers.EndGameObserver;
 import mindchess.observers.GameObserver;
 import mindchess.observers.GameStateObserver;
@@ -22,7 +24,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     private final List<GameObserver> gameObservers = new ArrayList<>();
     private final List<EndGameObserver> endGameObservers = new ArrayList<>();
 
-    private final Board board = new Board();
+    private final IBoard board = new Board();
 
     private final List<Square> legalSquares = new ArrayList<>(); //List of squares that are legal to move to for the currently marked square
     private final List<Ply> plies = new ArrayList<>(); //A ply is the technical term for a player's move, and this is a list of moves
@@ -264,7 +266,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return legalSquares;
     }
 
-    Board getBoard() {
+    IBoard getBoard() {
         return board;
     }
   

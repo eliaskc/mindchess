@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class TestAlternatingTurns {
     ChessFacade model;
-    Board board;
+    IBoard board;
 
     @Before
     public void init() {

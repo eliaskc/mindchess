@@ -2,6 +2,7 @@ package mindchess.model;
 
 import mindchess.model.enums.ChessColor;
 import mindchess.model.enums.PlayerType;
+import mindchess.model.gameStates.GameState;
 import mindchess.observers.GameStateObserver;
 
 /**

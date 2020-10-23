@@ -1,9 +1,9 @@
 package mindchess.model.moveDelegates;
 
-import mindchess.model.Board;
 import mindchess.model.enums.ChessColor;
 import mindchess.model.MovementLogicUtil;
 import mindchess.model.Square;
+import mindchess.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import static mindchess.model.enums.SquareType.CASTLING;
 public class KingMoveDelegate implements IMoveDelegate {
 
     @Override
-    public List<Square> fetchMoves(Board board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
+    public List<Square> fetchMoves(IBoard board, Square squareToCheck, boolean pieceOnSquareHasMoved, boolean checkKingSuicide) {
         var legalSquares = new ArrayList<Square>();
 
         legalSquares.addAll(MovementLogicUtil.up(board, squareToCheck, 1));
@@ -43,7 +43,7 @@ public class KingMoveDelegate implements IMoveDelegate {
         return legalSquares;
     }
 
-    List<Square> getCastlingSquares(Board board, Square squareToCheck, boolean hasMoved) {
+    List<Square> getCastlingSquares(IBoard board, Square squareToCheck, boolean hasMoved) {
         List<Square> castlingSquares = new ArrayList<>();
 
         if (!hasMoved) {

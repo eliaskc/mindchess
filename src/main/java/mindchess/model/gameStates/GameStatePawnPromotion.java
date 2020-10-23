@@ -1,6 +1,7 @@
-package mindchess.model;
+package mindchess.model.gameStates;
 
 import mindchess.model.enums.PieceType;
+import mindchess.model.*;
 import mindchess.model.pieces.IPiece;
 import mindchess.model.pieces.PieceFactory;
 import mindchess.observers.GameStateObserver;
@@ -27,9 +28,9 @@ public class GameStatePawnPromotion implements GameState {
     private final List<GameStateObserver> gameStateObservers = new ArrayList<>();
     private final List<Square> legalSquares;
     private final List<Ply> plies;
-    private final Board board;
+    private final IBoard board;
 
-    GameStatePawnPromotion(Square selectedSquare, Board board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
+    GameStatePawnPromotion(Square selectedSquare, IBoard board, List<Ply> plies, List<Square> legalSquares, IGameContext context) {
         this.selectedSquare = selectedSquare;
         this.board = board;
         this.legalSquares = legalSquares;
