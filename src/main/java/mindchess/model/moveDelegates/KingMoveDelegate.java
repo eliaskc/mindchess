@@ -37,11 +37,10 @@ public class KingMoveDelegate implements IMoveDelegate {
                 legalSquares.removeIf(p -> p.getSquareType() == CASTLING);
         }
 
-
         return legalSquares;
     }
 
-    List<Square> getCastlingSquares(IBoard board, Square squareToCheck, boolean hasMoved) {
+    private List<Square> getCastlingSquares(IBoard board, Square squareToCheck, boolean hasMoved) {
         List<Square> castlingSquares = new ArrayList<>();
 
         if (!hasMoved) {
