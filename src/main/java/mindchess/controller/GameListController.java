@@ -11,6 +11,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Class for the Items found in the list after pressing the load game button
+ *
+ * Represents a old game
+ */
 public class GameListController extends AnchorPane {
     @FXML
     private Label player1NameLabel;

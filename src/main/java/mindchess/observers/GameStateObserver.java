@@ -3,7 +3,6 @@ package mindchess.observers;
 /**
  * observers used for notifying the game when changes in a state happens
  */
-
 public interface GameStateObserver {
     void notifyDrawLegalMoves();
 

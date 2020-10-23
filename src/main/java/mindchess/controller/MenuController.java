@@ -25,7 +25,7 @@ import java.util.*;
 import static mindchess.model.enums.PlayerType.*;
 
 /**
- * MenuController handles the menu
+ * MenuController handles the mainmenu
  */
 public class MenuController implements Initializable {
     private final String media_URL_1 = "/backgroundVideos/background_video_1.mp4";
