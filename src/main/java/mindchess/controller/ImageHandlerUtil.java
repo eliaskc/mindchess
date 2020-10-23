@@ -67,7 +67,7 @@ public class ImageHandlerUtil {
      * @param chessColor The color of the dead pieces that are to be returned
      * @return a list of images of all dead pieces of the specified color
      */
-    public List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
+    List<ImageView> fetchDeadPieceImages(ChessColor chessColor) {
         List<ImageView> imageViews = new ArrayList<>();
         for (PieceType pieceType : model.getCurrentDeadPiecesByColor(chessColor)) {
             ImageView imageView = createPieceImageView(new Square(0, 0), pieceType, chessColor, (int) squareDimension);
@@ -89,7 +89,7 @@ public class ImageHandlerUtil {
      * @param dimensions Width and height of the image
      * @return the ImageView of the piece
      */
-    public ImageView createPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
+    ImageView createPieceImageView(Square square, PieceType pieceType, ChessColor chessColor, int dimensions) {
         ImageView pieceImageView = new ImageView();
 
         pieceImageView.setPreserveRatio(true);
@@ -169,7 +169,7 @@ public class ImageHandlerUtil {
 
     //-------------------------------------------------------------------------------------
     //Getters
-    public Image getChessboardImage() {
+    Image getChessboardImage() {
         java.lang.String imageURL;
 
         if (minecraftPieceStyle) {
@@ -190,15 +190,15 @@ public class ImageHandlerUtil {
 
     //-------------------------------------------------------------------------------------
     //Setters
-    public void setSquareDimension(double squareDimension) {
+    void setSquareDimension(double squareDimension) {
         this.squareDimension = squareDimension;
     }
 
-    public boolean isMinecraftPieceStyle() {
+    boolean isMinecraftPieceStyle() {
         return minecraftPieceStyle;
     }
 
-    public void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
+    void setMinecraftPieceStyle(boolean minecraftPieceStyle) {
         this.minecraftPieceStyle = minecraftPieceStyle;
     }
 

@@ -19,7 +19,7 @@ import java.util.Objects;
  * Responsible for fetching information about a ply (half-move) and displaying it
  * in the plyView.fxml
  */
-public class PlyController extends AnchorPane {
+class PlyController extends AnchorPane {
     private final Ply ply;
     private final ImageHandlerUtil imageHandlerUtil;
 
@@ -34,7 +34,7 @@ public class PlyController extends AnchorPane {
     @FXML
     private ImageView imagePiece;
 
-    public PlyController(Ply ply, int plyNum, ImageHandlerUtil imageHandlerUtil) {
+    PlyController(Ply ply, int plyNum, ImageHandlerUtil imageHandlerUtil) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/plyView.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -61,7 +61,7 @@ public class PlyController extends AnchorPane {
      * <p> If true: the generated board will look like it did after the move
      * @return a list of all active pieces for the current board snapshot
      */
-    public List<ImageView> generateBoardImages(boolean performMove) {
+    List<ImageView> generateBoardImages(boolean performMove) {
         List<ImageView> imageViewList = new ArrayList<>();
 
         for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()) {
