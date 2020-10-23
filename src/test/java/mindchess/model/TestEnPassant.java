@@ -9,6 +9,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests the special move en passant
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestEnPassant {
     ChessFacade model;

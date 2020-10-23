@@ -4,6 +4,8 @@ import mindchess.model.enums.ChessColor;
 
 /**
  * Observer used for notifying the controller when something happens in the game.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public interface GameObserver {
     void drawPieces();

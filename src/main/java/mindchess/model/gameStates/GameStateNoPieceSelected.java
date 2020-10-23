@@ -13,6 +13,8 @@ import java.util.List;
  * From this state you can go to the piece selected state by inputting a coordinate for your own piece.
  * <p>
  * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStateNoPieceSelected implements GameState {
     private final IGameContext context;

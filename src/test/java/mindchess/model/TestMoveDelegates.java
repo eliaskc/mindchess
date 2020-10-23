@@ -13,6 +13,8 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the methods in MoveDelegate
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestMoveDelegates {
     ChessFacade model;

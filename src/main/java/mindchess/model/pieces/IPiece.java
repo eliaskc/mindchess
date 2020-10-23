@@ -6,6 +6,8 @@ import mindchess.model.moveDelegates.IMoveDelegate;
 
 /**
  * Interface for Piece
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public interface IPiece {
     boolean getHasMoved();

@@ -2,6 +2,8 @@ package mindchess.observers;
 
 /**
  * observers used for notifying the game when changes in a state happens
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 
 public interface GameStateObserver {

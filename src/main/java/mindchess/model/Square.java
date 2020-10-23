@@ -9,6 +9,8 @@ import static mindchess.model.enums.SquareType.NORMAL;
 /**
  * Represent a square on the chess board with an x and y coordinate. The square has a enum type SquareType which represents
  * what kind of square it currently is.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class Square {
     private int x;

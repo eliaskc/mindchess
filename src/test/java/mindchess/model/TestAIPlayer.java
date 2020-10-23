@@ -7,6 +7,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test GameStateAIPlayer class
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
+ */
 public class TestAIPlayer {
     ChessFacade model;
 

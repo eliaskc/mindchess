@@ -8,6 +8,8 @@ import mindchess.model.moveDelegates.IMoveDelegate;
  * Representation of a piece on the Board.
  * <p>
  * When it is created, it has a color, type and move delegate (which is how it is allowed to move).
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 class Piece implements IPiece {
     private final ChessColor pieceColor;

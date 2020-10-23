@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * The state which represent when the is over
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStateGameOver implements GameState {
     private final String resultStatus;

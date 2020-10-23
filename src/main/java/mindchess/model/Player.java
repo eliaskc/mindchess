@@ -8,6 +8,8 @@ import mindchess.observers.TimerObserver;
  * Class Player represents a player playing mindchess and contains attributes for that player
  * <p>
  * The player controls its own timer
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 class Player implements IPlayer {
     private final ChessTimer chessTimer = new ChessTimer();

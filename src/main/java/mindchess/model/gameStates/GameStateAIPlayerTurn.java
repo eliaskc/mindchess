@@ -15,6 +15,8 @@ import java.util.Random;
  * If there is, this State "replaces" the No Piece Selected state.
  * <p>
  * It calculates a move and then changes state to Piece Selected and thereafter makes the previously calculated move.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStateAIPlayerTurn implements GameState {
     private final IGameContext context;
