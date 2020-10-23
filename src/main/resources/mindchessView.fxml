@@ -22,7 +22,7 @@
                   <ImageView fx:id="pliesBoardImageView" fitHeight="320.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="pliesScrollPane" hbarPolicy="NEVER" prefHeight="500.0" prefWidth="450.0" stylesheets="@chess.css">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="500.0" prefWidth="450.0" stylesheets="@chess.css">
                <content>
                   <FlowPane fx:id="pliesFlowPane" prefHeight="500.0" prefWidth="450.0" />
                </content>

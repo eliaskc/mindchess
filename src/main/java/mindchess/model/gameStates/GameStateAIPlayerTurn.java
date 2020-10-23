@@ -137,6 +137,7 @@ public class GameStateAIPlayerTurn implements GameState {
             }
         }
 
+        assert moveTo != null;
         pawnPromotionMove = moveTo.getSquareType().equals(SquareType.PROMOTION);
 
         returnList.add(moveFrom);

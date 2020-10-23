@@ -59,8 +59,8 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
      * <p>
      * If the game has ended does it notify the rest of the program that it has.
      *
-     * @param x The x value of where on the application the input happend
-     * @param y The y value of where on the application the input happend
+     * @param x The x value of where on the application the input happened
+     * @param y The y value of where on the application the input happened
      */
     public void handleBoardInput(int x, int y) {
         gameState.handleInput(x, y);
@@ -70,7 +70,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     }
 
     /**
-     * Switches the current active player and switches whos timers is active.
+     * Switches the current active player and switches whose timers is active.
      * <p>
      * Notifies that the player has switched.
      */
@@ -89,7 +89,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     }
 
     /**
-     * sets the state of the game to game over, with the gamestatus string of gameover state set to the "game ended in a draw"
+     * sets the state of the game to game over, with the game status string of Game Over State set to the "game ended in a draw"
      * <p>
      * stops both players timers, notifies that the game has ended.
      */
@@ -100,7 +100,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     }
 
     /**
-     * sets the state of the game to game over, with the gamestatus string of gameover state set to the opponents name + "has won the game"
+     * sets the state of the game to game over, with the game status string of Game Over State set to the opponents name + "has won the game"
      * <p>
      * stops both players timers, notifies that the game has ended.
      */
@@ -258,10 +258,6 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
         return currentPlayer.getName();
     }
 
-    public PlayerType getCurrentPlayerType() {
-        return currentPlayer.getPlayerType();
-    }
-
     List<Square> getLegalSquares() {
         return legalSquares;
     }
@@ -322,7 +318,7 @@ public class Game implements TimerObserver, IGameContext, GameStateObserver {
     //Setters
 
     /**
-     * Sets the gamestate, called from the states themselves to decide which next state should be
+     * Sets the game state, called from the states themselves to decide which next state should be
      *
      * @param gameState the new game state
      */

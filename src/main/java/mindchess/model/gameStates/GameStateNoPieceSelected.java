@@ -31,8 +31,8 @@ public class GameStateNoPieceSelected implements GameState {
     /**
      * In no piece selected state a board input will select a piece of your own if you input the coordinates of the squares it is placed on.
      *
-     * @param x
-     * @param y
+     * @param x the horizontal chess coordinate of the input
+     * @param y the vertical chess coordinate of the input
      */
     @Override
     public void handleInput(int x, int y) {
@@ -42,7 +42,7 @@ public class GameStateNoPieceSelected implements GameState {
             if (legalSquares.size() == 0) return;
 
             context.setGameState(GameStateFactory.createGameStatePieceSelected(selectedSquare, board, plies, legalSquares, context));
-            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(context::addGameStateObserver);
             notifyDrawLegalMoves();
         }
     }
@@ -59,7 +59,7 @@ public class GameStateNoPieceSelected implements GameState {
     /**
      * fetches the squares possible if any for the special move of "en passant"
      *
-     * @param selectedSquare
+     * @param selectedSquare the currently selected square
      * @return a list of possible en passant squares
      */
     private List<Square> getEnPassantSquares(Square selectedSquare) {
@@ -74,7 +74,7 @@ public class GameStateNoPieceSelected implements GameState {
     /**
      * checks if a square contains a piece
      *
-     * @param square
+     * @param square the square to check
      * @return true if it contains a piece otherwise false
      */
     private boolean SquareContainsAPiece(Square square) {
@@ -84,7 +84,7 @@ public class GameStateNoPieceSelected implements GameState {
     /**
      * checks if a piece on a square is the same color as current player
      *
-     * @param square
+     * @param square the square with the piece to check
      * @return true if colors match
      */
     private boolean isPieceMyColor(Square square) {

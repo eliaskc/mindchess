@@ -41,10 +41,10 @@ public class GameStatePawnPromotion implements GameState {
     /**
      * The input corresponds to a value which can represent a piece type which the pawn can promote to
      * <p>
-     * it will only promote when it recieves a valid input and when it does it will change player and state to no Piece selected for the next player
+     * it will only promote when it receives a valid input and when it does it will change player and state to no Piece selected for the next player
      *
-     * @param x
-     * @param y
+     * @param x the horizontal chess coordinate of the input
+     * @param y the vertical chess coordinate of the input
      */
     @Override
     public void handleInput(int x, int y) {
@@ -56,7 +56,7 @@ public class GameStatePawnPromotion implements GameState {
             notifySwitchPlayer();
             notifyDrawPieces();
             context.setGameState(GameStateFactory.createGameStateNoPieceSelected(board, plies, legalSquares, context));
-            gameStateObservers.forEach(gameStateObserver -> context.addGameStateObserver(gameStateObserver));
+            gameStateObservers.forEach(context::addGameStateObserver);
         }
     }
 
@@ -75,8 +75,8 @@ public class GameStatePawnPromotion implements GameState {
     /**
      * The promotion happens by replacing the piece in the promotion square by a new Piece on the same square with a different type
      *
-     * @param selectedSquare
-     * @param selectedPromotion
+     * @param selectedSquare the currently selected square
+     * @param selectedPromotion the square that represents the selected promotion
      */
     private void promote(Square selectedSquare, Square selectedPromotion) {
         IPiece piece;

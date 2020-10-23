@@ -33,8 +33,8 @@ public class Board implements IBoard {
     /**
      * Puts the IPiece and Square into the boardMap with the Square as the key
      *
-     * @param square
-     * @param piece
+     * @param square the square to place on
+     * @param piece the piece to place
      */
     @Override
     public void placePieceOnSquare(Square square, IPiece piece) {
@@ -150,7 +150,7 @@ public class Board implements IBoard {
 
     @Override
     public Map<Square, IPiece> getBoardSnapShot() {
-        return new HashMap<Square, IPiece>(boardMap);
+        return new HashMap<>(boardMap);
     }
 
     @Override

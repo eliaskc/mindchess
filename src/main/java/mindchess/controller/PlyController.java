@@ -57,15 +57,15 @@ public class PlyController extends AnchorPane {
     /**
      * Generates a list of ImageViews using a snapshot of the board after a move
      * @param performMove Dictates whether we want to perform the ply associated with this object or not
-     * <p>If false: the generated board will look like it did before the move was made
+     * <p> If false: the generated board will look like it did before the move was made
      * <p> If true: the generated board will look like it did after the move
-     * @return
+     * @return a list of all active pieces for the current board snapshot
      */
     public List<ImageView> generateBoardImages(boolean performMove) {
         List<ImageView> imageViewList = new ArrayList<>();
 
         for (Map.Entry<Square, IPiece> entry : ply.getBoardSnapshot().entrySet()) {
-            ImageView imageView = imageHandlerUtil.fetchPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
+            ImageView imageView = imageHandlerUtil.createPieceImageView(entry.getKey(), entry.getValue().getPieceType(), entry.getValue().getColor(), 40);
 
             imageViewList.add(imageView);
 
@@ -79,7 +79,7 @@ public class PlyController extends AnchorPane {
                 }
 
                 if (Objects.nonNull(ply.getTakenPiece())) {
-                    ImageView attackedImageView = imageHandlerUtil.fetchPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
+                    ImageView attackedImageView = imageHandlerUtil.createPieceImageView(ply.getMovedTo(), ply.getTakenPiece().getPieceType(), ply.getTakenPiece().getColor(), 40);
                     imageHandlerUtil.addScaleTransition(attackedImageView, 400, false);
                     imageViewList.add(attackedImageView);
                 }
@@ -92,7 +92,7 @@ public class PlyController extends AnchorPane {
     /**
      * Translates the x-position of a piece in the board map to a chessboard coordinate
      * @param x X-position
-     * @return
+     * @return the translated x-coordinate
      */
     private String translateXCoordinate(int x) {
         String[] translation = {"a", "b", "c", "d", "e", "f", "g", "h"};
@@ -102,7 +102,7 @@ public class PlyController extends AnchorPane {
     /**
      * Translates the y-position of a piece in the board map to a chessboard coordinate
      * @param y Y-position
-     * @return
+     * @return the translated y-coordinate
      */
     private String translateYCoordinate(int y) {
         String[] translation = {"8", "7", "6", "5", "4", "3", "2", "1"};

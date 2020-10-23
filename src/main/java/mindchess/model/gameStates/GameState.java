@@ -9,15 +9,15 @@ public interface GameState {
     /**
      * handles the input depending on which state the game currently is in
      *
-     * @param x
-     * @param y
+     * @param x the horizontal chess coordinate of the input
+     * @param y the vertical chess coordinate of the input
      */
     void handleInput(int x, int y);
 
     /**
      * gets the status of a game as a string, a status can be for example ongoing or game won by player 1
      *
-     * @return
+     * @return the current game status
      */
     String getGameStatus();
 
