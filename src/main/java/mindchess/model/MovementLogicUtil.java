@@ -14,6 +14,8 @@ import static mindchess.model.enums.SquareType.*;
 
 /**
  * Is responsible for finding legal moves by checking a specified direction and returning all legal moves in a Square list in that direction
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class MovementLogicUtil {
     private MovementLogicUtil() {

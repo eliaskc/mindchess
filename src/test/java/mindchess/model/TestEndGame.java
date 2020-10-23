@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Test the different ways you can end the game
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestEndGame {
     ChessFacade model;

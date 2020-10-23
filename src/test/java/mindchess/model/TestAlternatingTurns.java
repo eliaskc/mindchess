@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests that the players have alternating turns
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestAlternatingTurns {
     ChessFacade model;

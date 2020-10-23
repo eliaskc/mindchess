@@ -8,6 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests the methods for taking pieces
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
+ */
 public class TestTakePieces {
     ChessFacade model;
     IBoard board;

@@ -18,6 +18,8 @@ import java.util.Map;
  * <p>
  * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
  * The pawn promotion state also needs a Square representing the square which the promotion will occur on.
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStatePawnPromotion implements GameState {
 

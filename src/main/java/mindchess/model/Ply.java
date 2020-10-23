@@ -7,6 +7,8 @@ import java.util.Map;
 
 /**
  * Representation of a move by either Player. In chess terms a half-move, or a ply
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class Ply {
     private final String playerName;

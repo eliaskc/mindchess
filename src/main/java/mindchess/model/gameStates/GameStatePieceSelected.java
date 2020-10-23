@@ -23,6 +23,8 @@ import static mindchess.model.enums.SquareType.*;
  * <p>
  * Each state has to have a game context, a list of legal moves the current player can make, a list of plies to know what previous move has been made and a board.
  * The piece selected game state also needs a square which represent what piece is selected
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class GameStatePieceSelected implements GameState {
 

@@ -6,6 +6,8 @@ import mindchess.observers.GameStateObserver;
 
 /**
  * represents the GameStates' context
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public interface IGameContext {
     /**

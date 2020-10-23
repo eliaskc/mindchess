@@ -4,6 +4,8 @@ import mindchess.observers.GameStateObserver;
 
 /**
  * an interface for a GameState
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public interface GameState {
     /**

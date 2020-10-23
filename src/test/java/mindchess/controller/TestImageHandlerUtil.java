@@ -18,7 +18,9 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tests the ImageHandler class
  *
- * Only able to test the lists that are returned from methods with our knowlage of tests
+ * Only able to test the lists that are returned from methods with our knowledge of tests
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestImageHandlerUtil {
 

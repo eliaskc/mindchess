@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 
 /**
  * Tests for the class chessFacade
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class TestChessFacade {
     private ChessFacade model;

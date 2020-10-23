@@ -15,6 +15,8 @@ import java.util.Map;
  * Chess represents the model to the rest of the application
  * <p>
  * Delegates method calls from outside the model to the right part of the model
+ *
+ * @author Erik Wessman, Elias Carlson, Elias Hallberg, Arvid Holmqvist
  */
 public class ChessFacade {
     private final List<Game> gameList = new ArrayList<>();
